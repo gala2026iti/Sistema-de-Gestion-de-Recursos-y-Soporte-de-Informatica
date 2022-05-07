@@ -4,9 +4,9 @@
 
 ### Lineamientos generales
 
-- **Títulos:** deben ser concretos y concisos, describiendo únicamente la acción requerida.  
-- **Problema:** especificar brevemente qué se debe resolver.  
-- **Descripción:** incluir un desglose detallado y los parámetros del problema.  
+- **Títulos:** deben ser concretos y concisos, describiendo únicamente la acción requerida.
+- **Problema:** especificar brevemente qué se debe resolver.
+- **Descripción:** incluir un desglose detallado y los parámetros del problema.
 - **Entregable:** definir qué evidencia confirma la resolución del issue (por ejemplo, una sección de página actualizada).
 
 ## Plantilla
@@ -65,43 +65,30 @@ El commit debe citar el/los issues correspondientes al problema a resolver, expl
 
 Al inicio del mensaje de cada commit se deberá colocar uno de los siguientes prefijos:
 
-- **feat**: Nueva funcionalidad  
-- **fix**: Corrección de error  
-- **docs**: Cambios en documentación  
-- **style**: Cambios visuales o de formato  
-- **refactor**: Reescritura sin cambiar comportamiento  
-- **test**: Cambios en pruebas  
-- **chore**: Tareas menores  
-- **perf**: Optimización de rendimiento  
-- **build**: Cambios en build o dependencias  
-- **ci**: Cambios en integración continua  
+- **feat**: Nueva funcionalidad
+- **fix**: Corrección de error
+- **docs**: Cambios en documentación
+- **style**: Cambios visuales o de formato
+- **refactor**: Reescritura sin cambiar comportamiento
+- **test**: Cambios en pruebas
+- **chore**: Tareas menores
+- **perf**: Optimización de rendimiento
+- **build**: Cambios en build o dependencias
+- **ci**: Cambios en integración continua
 
 ### Closing keywords
 
 Al final de cada mensaje se deberá colocar una de las siguientes closing keywords seguido de su número de issue.
 
-- **close**: Cierra la issue indicada cuando el commit llega a la rama principal  
-- **closes**: Versión plural de *close*, con el mismo efecto  
-- **closed**: Variante en pasado, también válida para cerrar la issue  
-- **fix**: Cierra la issue asociada al corregir un error  
-- **fixes**: Versión plural de *fix*, con el mismo efecto  
-- **fixed**: Variante en pasado, también válida para cerrar la issue  
-- **resolve**: Cierra la issue al indicar que fue resuelta  
-- **resolves**: Versión plural de *resolve*, con el mismo efecto  
-- **resolved**: Variante en pasado, también válida para cerrar la issue  ### Regla #1: Manejo de prefijos
-
-Al inicio del mensaje de cada commit se deberá colocar uno de los siguientes prefijos:
-
-- **feat**: Nueva funcionalidad  
-- **fix**: Corrección de error  
-- **docs**: Cambios en documentación  
-- **style**: Cambios visuales o de formato  
-- **refactor**: Reescritura sin cambiar comportamiento  
-- **test**: Cambios en pruebas  
-- **chore**: Tareas menores  
-- **perf**: Optimización de rendimiento  
-- **build**: Cambios en build o dependencias  
-- **ci**: Cambios en integración continua  
+- **close**: Cierra la issue indicada cuando el commit llega a la rama principal
+- **closes**: Versión plural de *close*, con el mismo efecto
+- **closed**: Variante en pasado, también válida para cerrar la issue
+- **fix**: Cierra la issue asociada al corregir un error
+- **fixes**: Versión plural de *fix*, con el mismo efecto
+- **fixed**: Variante en pasado, también válida para cerrar la issue
+- **resolve**: Cierra la issue al indicar que fue resuelta
+- **resolves**: Versión plural de *resolve*, con el mismo efecto
+- **resolved**: Variante en pasado, también válida para cerrar la issue
 
 
 #### Ejemplo: `Issue 10`
@@ -124,7 +111,7 @@ Varios ejemplos de esto pueden ser la creación de un archivo con fines de docum
 #### Ejemplo:
 
 ```
-Se crea la estructura de carpetas que van a contener el código del sistema,
+feat: Se crea la estructura de carpetas que van a contener el código del sistema,
 incluyendo carpetas para el contenido .html y los assets.
 
 Este último incluye las carpetas img, css y js.
