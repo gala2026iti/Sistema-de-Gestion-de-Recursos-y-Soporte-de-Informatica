@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pagina principal</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+</head>
+
+<body>
+    <header>
+            <img class="imagen" src="../assets/img/logo_iti.png" alt="Logo">
+    </header>
+
+    <main>
+        <h2>Ingreso al sistema</h2>
+        <section class="Tarjeta-login">
+
+            <form action="formulario.html" method="get">
+                <fieldset>
+                    <span>Inicio de sesion</span>
+                    <div>
+                        <label for="cedula">Cédula</label>
+                        <input type="text" id="cedula" name="cedula" placeholder="ej:12345678" autocomplete="username"
+                            pattern="[1-9][0-9]{7}" title="Ingrese exactamente 8 dígitos sin puntos ni guiones"
+                            inputmode="numeric" maxlength="8" required>
+                    </div>
+                    <div>
+                        <label for="clave">Contraseña</label>
+                        <input type="password" id="clave" name="clave" autocomplete="current-password" required>
+                    </div>
+                </fieldset>
+
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span>
+    </footer>
+</body>
+
+</html>
