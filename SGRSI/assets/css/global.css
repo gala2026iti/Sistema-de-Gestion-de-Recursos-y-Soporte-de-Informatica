@@ -57,7 +57,7 @@ footer {
 }
 
 .nav-opciones-sistema {
-
+     list-style: none;
     justify-content: center;
     display: flex;
     gap: 1rem;

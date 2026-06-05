@@ -24,12 +24,12 @@
         <li><a href="pagsolicitudes.html">Solicitud de servicios</a></li>
       </ul>
 
-      <article class="nav-opciones-sistema">
-        <a href="index.html">Cerrar Sesión</a>
-        <a href="tecnico/t-TicketsRegistrados.html">Panel de soporte T</a>
-        <a href="administrador/a-TicketsRegistrados.html">Panel de Soporte A</a>
-        <a href="direccion/panelConsultas.html">Panel de Consultas</a>
-      </article>
+        <ul class="nav-opciones-sistema">
+                <li><a href="index.html">Cerrar Sesión</a></li>
+                <li><a href="tecnico/t-TicketsRegistrados.html">Panel de soporte T</a> </li>
+                <li><a href="administrador/a-TicketsRegistrados.html">Panel de Soporte A</a> </li>
+                <li><a href="direccion/panelConsultas.html">Panel de Consultas</a> </li>
+            </ul>
 
     </section>
 
@@ -47,15 +47,15 @@
         <fieldset>
           <div>
             <label for="asunto">Asunto:</label>
-            <input type="text" id="asunto">
+            <input type="text" id="asunto" placeholder="Ej: Instalacion de NetBeans" required>
           </div>
           <div class="descripcion">
             <label for="Area">Descripción:</label>
-            <textarea name="Area" id="Area"></textarea>
+            <textarea name="Area" id="Area" placeholder="Ej: Solicito que las pc del Laboratorio1 tengan instalado NetBeans" required></textarea>
           </div>
           <div>
-            <label for="fecha">Fecha límite de solicitud:</label>
-            <input type="date" name="fecha" id="fecha">
+            <label for="fecha">Fecha límite de solicitud:</lFbel>
+            <input type="date" name="fecha" id="fecha" required>
           </div>
         </fieldset>
         <button type="submit"> Enviar</button>
