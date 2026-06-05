@@ -1,0 +1,54 @@
+.orden-tablas {
+    display: flex;
+    gap: 8rem;
+    padding: 2rem;
+
+}
+
+.kanban-columna {
+    width: 20rem;
+    min-height: 20rem;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-marcado {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ticket-marcado:hover {
+    background-color: #dcebff;
+}
+
+.pendiente {
+    background-color: #dc2626;
+}
+
+.progreso {
+    background-color: #f59e0b;
+}
+
+.cerrado {
+    background-color: #16a34a;
+}
+
+@media screen and (max-width: 576px) {
+
+    .orden-tablas {
+        display: flex;
+        gap: 2rem;
+        padding: 2rem;
+        align-items: center;
+    }
+
+    .kanban-columna {
+        width: 90%;
+    }
+
+}

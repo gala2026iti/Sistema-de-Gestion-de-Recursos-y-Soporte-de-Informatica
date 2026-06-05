@@ -1,0 +1,372 @@
+:root {
+    --azul-principal: #1d4ed8;
+    --azul-oscuro: #0f172a;
+    --amarillo-iti: #facc15;
+    --gris-fondo: #f3f4f6;
+    --blanco: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+}
+
+main {
+    flex: 1;
+}
+
+header {
+    background-color: rgb(64, 64, 248);
+    border-bottom: 3px solid var(--azul-principal);
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+
+}
+
+.imagen {
+    width: 45rem;
+      overflow-x: auto;
+}
+
+footer {
+    background-color: rgb(64, 64, 248);
+    color: white;
+    font-family: 'Barlow', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+}
+
+.navbar {
+    background-color: rgb(15, 15, 160);
+    border-bottom: 0.3vw solid rgb(6, 6, 100);
+    padding: 1rem 2rem;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.nav-opciones-sistema {
+     list-style: none;
+    justify-content: center;
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.desplegable {
+    position: relative;
+}
+
+.desplegable-menu {
+
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: rgb(15, 15, 160);
+    list-style: none;
+    padding: 0;
+    min-width: 12rem;
+    border-radius: 0 0 8px 8px;
+}
+
+.desplegable:hover .desplegable-menu {
+    display: block;
+}
+
+.desplegable-menu li a {
+    display: block;
+    color: rgb(255, 238, 0);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.desplegable-menu li a:hover {
+    background-color: var(--amarillo-iti);
+    color: black;
+}
+
+.btn-menu,
+.btn-cerrar {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.nav-menu {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li a {
+    color: rgb(255, 238, 0);
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    transition: 0.2s;
+    white-space: nowrap;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.nav-menu li a:hover {
+    background-color: var(--amarillo-iti);
+    color: black;
+}
+
+.nav-opciones-sistema a {
+    background-color: var(--amarillo-iti);
+    color: black;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.2s;
+    overflow-x: auto;
+}
+
+.nav-opciones-sistema a:hover {
+
+    background-color: white;
+}
+
+table {
+    width: 100%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.tabla-contenedor {
+    width: 100%;
+}
+
+th {
+    background-color: rgb(15, 15, 160);
+    color: white;
+}
+
+th,
+td {
+    border: 1px solid #cccccc;
+    padding: 1rem;
+    text-align: center;
+}
+
+
+
+.centro {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+h2 {
+    text-align: center;
+    color: var(--azul-oscuro);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+
+
+textarea {
+    resize: none;
+    min-height: 120px;
+}
+form {
+    background-color: var(--gris-fondo);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,.1);
+}
+
+input,
+select,
+textarea {
+    padding: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+
+}
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem;
+    flex-wrap: wrap;
+}
+.filtros select {
+    padding: 0.6rem;
+    border-radius: 6px;
+}
+
+.leve {
+    color: green;
+    font-weight: bold;
+}
+
+.media {
+    color: orange;
+    font-weight: bold;
+}
+
+.grave {
+    color: red;
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-azul {
+    background-color: rgb(64, 64, 248);
+    color: white;
+}
+
+.btn-azul:hover {
+    background-color: rgb(15, 15, 160);
+}
+
+.btn-verde {
+    background-color: rgb(128, 255, 9);
+    color: white;
+}
+
+.btn-verde:hover {
+    background-color: rgb(81, 209, 6);
+}
+
+.btn-rojo {
+    background-color: rgb(230, 48, 48);
+    color: white;
+}
+
+.btn-rojo:hover {
+    background-color: rgb(160, 15, 15);
+}
+
+.btn-asignar {
+    background-color: rgb(64, 64, 248);
+    color: white;
+
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-asignar:hover {
+    background-color: rgb(15, 15, 160);
+}
+
+@media screen and (max-width: 576px) {
+
+    header,
+    .navbar,
+    footer {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    header section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .navbar {
+        padding: 1rem;
+    }
+
+    .nav-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-opciones-sistema {
+        flex-wrap: wrap;
+    }
+
+    .btn-menu {
+
+        display: flex;
+    }
+
+    .nav-menu.activo {
+
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgb(15, 15, 160);
+        padding: 1rem 0;
+        z-index: 91;
+    }
+
+    .desplegable-menu {
+        display: flex;
+        position: static;
+        flex-direction: column;
+
+        width: 100%;
+        background-color: rgb(9, 9, 124);
+    }
+
+    table,
+    main {
+
+        display: block;
+        overflow-x: auto;
+    }
+
+    form th,
+    td {
+        padding: 0.7rem;
+
+        font-size: 0.8rem;
+    }
+
+    .imagen {
+        width: 30rem;
+    }
+ .btn{
+        font-size:.75rem;
+        padding:.4rem .6rem;
+    }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion de prestamos</title>
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/administracion/registroUsuario.css">
+</head>
+
+<body>
+  <header>
+    <img class="imagen" src="../../assets/img/logo_iti.png" alt="Logo">
+  </header>
+  <nav class="navbar">
+    <section class="nav-container">
+
+      <button class="btn-menu" id="btn-menu">☰</button>
+      <button class="btn-cerrar" id="btn-cerrar">✖</button>
+      <ul class="nav-menu">
+        <li class="desplegable">
+          <a href="">Gestión de tickets 🡻 </a>
+
+          <ul class="desplegable-menu">
+            <li>
+              <a href="t-TicketsRegistrados.html">Tickets registrados</a>
+            </li>
+            <li>
+              <a href="t-TicketsPersonales.html">Tickets asignados</a>
+            </li>
+          </ul>
+
+        </li>
+        <li class="desplegable">
+          <a href="">Gestion de prestamos 🡻</a>
+          <ul class="desplegable-menu">
+            <li>
+              <a href="t-TablaPrestamos.html">Tabla de prestamos</a>
+            </li>
+            <li>
+              <a href="t-InventarioEquipos.html">Inventario de equipos</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="t-GestionSolicitudes.html">Gestion de solicitudes</a></li>
+      </ul>
+      <ul class="nav-opciones-sistema">
+        <li><a href="../index.html">Cerrar Sesion</a></li>
+        <li><a href="../formulario.html">Volver a panel de formularios</a></li>
+      </ul>
+    </section>
+  </nav>
+  <main>
+    <form action="t-RegistroPrestamo.html">
+      <h2>Registro de prestamo</h2>
+      <fieldset class="tarjeta">
+        <label for="CI-Solicitante">CI de la persona solicitante:</label>
+        <input type="text" id="CI-Solicitante" name="CI-Solicitante" placeholder="ej: 1234578" required maxlength="8"
+          inputmode="numeric">
+        <label for="nombre">Nombre completo del solicitante</label>
+        <input type="text" id="nombre" placeholder="ej: Javier Martinez" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+"
+          maxlength="30">
+        <div class="rol">
+          <select name="" id="" required>
+            <option value="">Elige el dispositivo</option>
+            <option value="LAP09">LAP08</option>
+            <option value="LAP08">LAP09</option>
+            <option value="LAP10">LAP10</option>
+            <option value="LAP12">LAP12</option>
+          </select>
+        </div>
+        <label for="final">Cuando sera devuelto el dispositivo</label>
+        <input type="datetime-local" id="final" name="final" required>
+        <button type="submit" class="btn">Registrar prestamo</button>
+    </form>
+
+  </main>
+  <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
+  <script src="../../assets/js/btn-menu-celular.js"></script>
+</body>
+
+</html>

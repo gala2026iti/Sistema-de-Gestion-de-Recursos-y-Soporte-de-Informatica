@@ -1,0 +1,35 @@
+.ticket-link {
+    color: rgb(15, 15, 160);
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.ticket-link:hover {
+    text-decoration: underline;
+}
+
+table a {
+    color: aliceblue;
+    cursor: pointer;
+}
+tbody tr:hover {
+    background-color: #dfe5f1;
+}
+
+@media screen and (max-width: 576px) {
+
+    .btn-asignar {
+
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .filtros {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filtros select {
+        width: 80%;
+    }
+}

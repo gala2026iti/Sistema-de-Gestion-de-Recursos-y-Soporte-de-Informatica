@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/formularioTickets.css">
+</head>
+
+<body>
+    <header>
+        <img class="imagen" src="../assets/img/logo_iti.png" alt="Logo">
+    </header>
+    <nav class="navbar">
+
+        <section class="nav-container">
+            <button class="btn-menu" id="btn-menu">☰</button>
+            <button class="btn-cerrar" id="btn-cerrar">✖</button>
+            <ul class="nav-menu">
+                <li><a href="formulario.html">Registro de incidencias</a></li>
+                <li><a href="pagsolicitudes.html">Solicitud de servicios</a></li>
+            </ul>
+
+            <ul class="nav-opciones-sistema">
+                <li><a href="index.html">Cerrar Sesión</a></li>
+                <li><a href="tecnico/t-TicketsRegistrados.html">Panel de soporte T</a> </li>
+                <li><a href="administrador/a-TicketsRegistrados.html">Panel de Soporte A</a> </li>
+                <li><a href="direccion/panelConsultas.html">Panel de Consultas</a> </li>
+            </ul>
+
+        </section>
+
+    </nav>
+
+    <main class="main-formulario">
+        <section>
+                <h2>Registro de incidencias</h2>
+
+                <form action="confirmacion-ticket.html">
+
+                    <div class="campo">
+                        <label for="sector">Seleccione taller o laboratorio</label>
+
+                        <select id="sector" name="sector" required>
+                            <option value="">Seleccione una opción</option>
+
+                            <optgroup label="Laboratorios">
+                                <option value="lab1">Laboratorio 1</option>
+                                <option value="lab2">Laboratorio 2</option>
+                                <option value="lab3">Laboratorio 3</option>
+                                <option value="lab4">Laboratorio 4</option>
+                            </optgroup>
+
+                            <optgroup label="Talleres">
+                                <option value="taller1">Taller 1</option>
+                                <option value="taller2">Taller 2</option>
+                                <option value="taller3">Taller 3</option>
+                                <option value="taller4">Taller 4</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="pc">
+
+                        <h3>PC01</h3>
+                        <label for="pc01_ok">Sin problemas</label>
+                        <input type="radio" id="pc01_ok" name="pc01_estado" value="ok" required>
+
+                        <label for="pc01_error">Hay incidencia </label>
+                        <input type="radio" id="pc01_error" name="pc01_estado" value="incidencia">
+
+
+
+                        <div class="incidencia">
+
+                            <label for="tipo01">
+                                Tipo de incidencia
+                            </label>
+
+                            <select id="tipo01" name="tipo01">
+
+                                <option value="">
+                                    Seleccione
+                                </option>
+
+                                <option value="hardware">
+                                    Hardware
+                                </option>
+
+                                <option value="software">
+                                    Software
+                                </option>
+
+                                <option value="red">
+                                    Red
+                                </option>
+
+                            </select>
+                            <label for="Asunto">
+                                Asunto:
+                            </label>
+                            <input type="text" id="asunto01" placeholder="ej: Pantalla de monitor rosa">
+                            <label for="persona-asig">
+                                Persona que estaba haciendo uso de la PC
+                            </label>
+                            <input type="text" id="persona-asig01" placeholder="ej: Maria Jose Martinez">
+                            <label>
+                                Gravedad de la incidencia
+                            </label>
+                            <div class="grupo-radios">
+
+                                <div class="opcion-radio">
+
+                                    <input type="radio" id="ligera01" name="gravedad01" value="ligera">
+
+                                    <label for="ligera01">Ligera</label>
+
+                                </div>
+
+                                <div class="opcion-radio">
+
+                                    <input type="radio" id="media01" name="gravedad01" value="media">
+
+                                    <label for="media01">Media</label>
+
+                                </div>
+
+                                <div class="opcion-radio">
+
+                                    <input type="radio" id="grave01" name="gravedad01" value="grave">
+
+                                    <label for="grave01">Grave</label>
+
+                                </div>
+
+                            </div>
+                            <label for="descripcion01">
+                                Descripción
+                            </label>
+
+                            <textarea id="descripcion01" name="descripcion01"
+                                placeholder="Informacion màs detallada si asi lo precisa" rows="3"
+                                maxlength="300"></textarea>
+
+                        </div>
+
+                    </div>
+                    <div class="pc">
+
+                        <h3>PC02</h3>
+
+                        <input type="radio" id="pc02_ok" name="pc02_estado" value="ok" required>
+
+                        <label for="pc02_ok">
+                            Sin problemas
+                        </label>
+
+                        <input type="radio" id="pc02_error" name="pc02_estado" value="incidencia">
+
+                        <label for="pc02_error">
+                            Hay incidencia
+                        </label>
+
+                        <div class="incidencia">
+
+                            <label for="tipo02">
+                                Tipo de incidencia
+                            </label>
+
+                            <select id="tipo02" name="tipo02">
+
+                                <option value="">
+                                    Seleccione
+                                </option>
+
+                                <option value="hardware">
+                                    Hardware
+                                </option>
+
+                                <option value="software">
+                                    Software
+                                </option>
+
+                                <option value="red">
+                                    Red
+                                </option>
+
+                            </select>
+                            <label for="Asunto">
+                                Asunto:
+                            </label>
+                            <input type="text" id="asunto02" placeholder="ej: Pantalla de monitor rosa">
+                            <label for="persona-asig">
+                                Persona que estaba haciendo uso de la PC
+                            </label>
+                            <input type="text" id="persona-asig02" placeholder="ej: Maria Jose Martinez">
+                            <label>
+                                Gravedad de la incidencia
+                            </label>
+                            <div class="grupo-radios">
+                                <div class="opcion-radio">
+                                    <label for="ligera02">Ligera</label>
+                                    <input type="radio" id="ligera02" name="gravedad02" value="ligera">
+                                </div>
+                                <div class="opcion-radio">
+                                    <label for="media02">media</label>
+                                    <input type="radio" id="media02" name="gravedad02" value="media">
+                                </div>
+                                <div class="opcion-radio">
+                                    <label for="grave02">grave</label>
+                                    <input type="radio" id="grave02" name="gravedad02" value="grave">
+                                </div>
+                            </div>
+                            <label for="descripcion01">
+                                Descripción
+                            </label>
+
+                            <textarea id="descripcion01" name="descripcion01"
+                                placeholder="Informacion mas detallada si asi lo precisa" rows="3"
+                                maxlength="300"></textarea>
+
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn">
+                        Registrar incidencias
+                    </button>
+
+                </form>
+
+    </main>
+    <footer>
+        <span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span>
+    </footer>
+    <script src="../assets/js/btn-menu-celular.js"></script>
+</body>
+
+</html>

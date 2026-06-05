@@ -1,0 +1,51 @@
+.pc {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 900px;
+}
+
+.incidencia {
+    margin-top: 1.5rem;
+
+    padding-top: 1.5rem;
+
+    border-top: 2px solid #ddd;
+}
+
+.grupo-radios {
+    display: flex;
+
+    gap: 2rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.opcion-radio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media screen and (max-width: 576px) {
+
+    .btn-asignar {
+
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .filtros {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filtros select {
+        width: 80%;
+    }
+}
+
+
