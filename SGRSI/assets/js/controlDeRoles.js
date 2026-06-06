@@ -12,6 +12,7 @@ const panelSoporteAdmin= document.getElementById('btnPanelSoporteA')
 const panelSoporteTecnico = document.getElementById('btnPanelSoporteT')
 const panelConsultas = document.getElementById('btnPanelConsultasD')
 
+console.log(rolUsuario)
 
 switch (rolUsuario){
 
@@ -27,7 +28,7 @@ case "admin":
 opcionesRespectivas = [true, true, true, true, false, false]
 
 break
-case "tecnico":
+case "asistente":
 opcionesRespectivas = [true, true, true, false, true, false]
 
 break    
