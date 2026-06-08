@@ -30,7 +30,7 @@ header {
 
 .imagen {
     width: 45rem;
-      overflow-x: auto;
+    overflow-x: auto;
 }
 
 footer {
@@ -42,7 +42,7 @@ footer {
     padding: 1rem;
 }
 
-.navbar {
+.navbarSGRSI {
     background-color: rgb(15, 15, 160);
     border-bottom: 0.3vw solid rgb(6, 6, 100);
     padding: 1rem 2rem;
@@ -54,14 +54,17 @@ footer {
     align-items: center;
     max-width: 1400px;
     margin: auto;
+    justify-content: space-between;
 }
 
 .nav-opciones-sistema {
-     list-style: none;
+    width: auto;
+    flex-shrink: 0;
+    list-style: none;
     justify-content: center;
     display: flex;
     gap: 1rem;
-    width: 100%;
+
 }
 
 .desplegable {
@@ -104,10 +107,11 @@ footer {
     color: white;
     font-size: 2rem;
     cursor: pointer;
+    align-self: flex-start;
 }
 
 .nav-menu {
-    width: 100%;
+    flex: 1;
     list-style: none;
     display: flex;
     gap: 2rem;
@@ -146,6 +150,12 @@ footer {
     background-color: white;
 }
 
+.nav-menu,
+.nav-opciones-sistema {
+    margin: 0;
+    padding: 0;
+}
+
 table {
     width: 100%;
     margin: 2rem auto;
@@ -177,6 +187,7 @@ td {
     text-align: center;
     align-items: center;
 }
+
 h2 {
     text-align: center;
     color: var(--azul-oscuro);
@@ -191,11 +202,12 @@ textarea {
     resize: none;
     min-height: 120px;
 }
+
 form {
     background-color: var(--gris-fondo);
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
 }
 
 input,
@@ -208,6 +220,7 @@ textarea {
     font-size: 1rem;
 
 }
+
 .filtros {
     display: flex;
     justify-content: center;
@@ -215,6 +228,7 @@ textarea {
     margin: 2rem;
     flex-wrap: wrap;
 }
+
 .filtros select {
     padding: 0.6rem;
     border-radius: 6px;
@@ -293,7 +307,7 @@ textarea {
 @media screen and (max-width: 576px) {
 
     header,
-    .navbar,
+    .navbarSGRSI,
     footer {
         width: 100%;
         box-sizing: border-box;
@@ -305,19 +319,29 @@ textarea {
         gap: 1rem;
     }
 
-    .navbar {
+    .navbarSGRSI {
         padding: 1rem;
     }
 
     .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .nav-opciones-sistema {
-        flex-wrap: wrap;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .nav-opciones-sistema li {
+        width: 100%;
+    }
+
+    .nav-opciones-sistema a {
+        display: block;
+        text-align: center;
     }
 
     .btn-menu {
@@ -365,8 +389,9 @@ textarea {
     .imagen {
         width: 30rem;
     }
- .btn{
-        font-size:.75rem;
-        padding:.4rem .6rem;
+
+    .btn {
+        font-size: .75rem;
+        padding: .4rem .6rem;
     }
 }
