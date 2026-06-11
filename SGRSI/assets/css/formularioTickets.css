@@ -1,108 +1,32 @@
-input,
-select,
-textarea {
-    width: 100%;
+:root {
+    --azul-principal: #1d4ed8;
+    --azul-oscuro: #0f172a;
+    --amarillo-iti: #facc15;
+    --gris-fondo: #f3f4f6;
+    --blanco: #ffffff;
 }
 
-.main-formulario {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:2rem;
-}
-
-.grupo-radios {
-    display: flex;
-
-    gap: 2rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-}
-
-.opcion-radio {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.pc {
-    background-color: white;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
+.container-formulario {
     max-width: 900px;
+}
+
+.bg-Formulario {
+    background-color: var(--gris-fondo) !important;
+}
+
+.texto-azul {
+    color: var(--azul-principal) !important;
+}
+.texto-azul-dark {
+    color: var(--azul-oscuro) !important;
 }
 
 .incidencia {
     display: none;
-    margin-top: 1.5rem;
-
-    padding-top: 1.5rem;
-
-    border-top: 2px solid #ddd;
 }
 
-.espacio {
-    gap: 3vw;
-}
-
-form {
-    width: 100%;
-}
-
-.campo {
-
+#pc01_error:checked ~ .incidencia,
+#pc02_error:checked ~ .incidencia {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-}
-
-.campo select {
-    width: 100%;
-    max-width: 500px;
-    padding: 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-#pc01_error:checked~.incidencia {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-#pc02_error:checked~.incidencia {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.btn {
-    background-color: var(--amarillo-iti);
-    color: black;
-    border: none;
-    border-radius: 8px;
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn:hover {
-    background-color: #eab308;
-}
-
-@media screen and (max-width: 576px) {
-
-    .pc {
-        width: 95%;
-        padding: 1rem;
-    }
-
-
 }

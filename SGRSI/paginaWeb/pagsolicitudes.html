@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitudes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
-  <link rel="stylesheet" href="../assets/css/solicitudes.css">
   <link rel="stylesheet" href="../assets/css/index.css">
+  <link rel="stylesheet" href="../assets/css/solicitudes.css">
 </head>
 
 <body>
-  <header>
-    <img class="imagen" src="../assets/img/logo_iti.png" alt="Logo">
+  <header class="d-flex justify-content-center align-items-center py-4">
+    <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
   </header>
-  <nav class="navbarSGRSI">
 
+  <nav class="navbarSGRSI">
     <section class="nav-container">
       <button class="btn-menu" id="btn-menu">☰</button>
       <button class="btn-cerrar" id="btn-cerrar">✖</button>
@@ -24,50 +25,53 @@
         <li><a href="pagsolicitudes.html">Solicitud de servicios</a></li>
       </ul>
 
-       <ul class="nav-opciones-sistema">
-                <li><a href="index.html" id="btnCerrarSesion">Cerrar Sesión</a></li>
-                <li><a href="tecnico/t-TicketsRegistrados.html" id="btnPanelSoporteT">Panel de soporte T</a> </li>
-                <li><a href="administrador/a-TicketsRegistrados.html" id="btnPanelSoporteA">Panel de Soporte A</a> </li>
-                <li><a href="direccion/panelConsultas.html" id="btnPanelConsultasD">Panel de Consultas</a> </li>
-            </ul>
-
+      <ul class="nav-opciones-sistema">
+        <li><a href="index.html" id="btnCerrarSesion">Cerrar Sesión</a></li>
+      </ul>
     </section>
-
   </nav>
 
-  <main>
-    <section class="columna">
-      <h2>Solicitud de servicio</h2>
-      <span>aqui podras hacer Solicitudes en el caso de precisar ayuda de administracion con la planificacion o
-        preparacion de clases.</span><br>
-      <span>le pedimos porfavor hacer con un tiempo de antisipacion adecuado.</span>
+  <main class="d-flex flex-column align-items-center justify-content-center py-5 px-3">
+    
+    <section class="text-center mb-4 ancho-texto">
+      <h2 class="fw-bold texto-azul mb-3">Solicitud de servicio</h2>
+      <p class="text-muted mb-1 fs-6">Aquí podrás hacer solicitudes en el caso de precisar ayuda de administración con la planificación o preparación de clases.</p>
+      <p class="text-danger fw-semibold small">Le pedimos por favor hacerlo con un tiempo de anticipación adecuado.</p>
     </section>
-    <section class="Tarjeta-login">
-      <form action="" method="get" class="columna1">
-        <fieldset>
-          <div>
-            <label for="asunto">Asunto:</label>
-            <input type="text" id="asunto" placeholder="Ej: Instalacion de NetBeans" required>
+
+    <section class="Tarjeta-login card p-4 shadow border-0 w-100">
+      <form action="" method="get">
+        <fieldset class="border-0 p-0 m-0">
+          
+          <div class="mb-3 text-start">
+            <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
+            <input type="text" id="asunto" class="form-control form-control-lg" placeholder="Ej: Instalación de NetBeans" required>
           </div>
-          <div class="descripcion">
-            <label for="Area">Descripción:</label>
-            <textarea name="Area" id="Area" placeholder="Ej: Solicito que las pc del Laboratorio1 tengan instalado NetBeans" required></textarea>
+
+          <div class="mb-3 text-start">
+            <label for="Area" class="form-label fw-semibold texto-azul-dark">Descripción:</label>
+            <textarea name="Area" id="Area" class="form-control" placeholder="Ej: Solicito que las PC del Laboratorio 1 tengan instalado NetBeans" rows="4" required></textarea>
           </div>
-          <div>
-            <label for="fecha">Fecha límite de solicitud:</lFbel>
-            <input type="date" name="fecha" id="fecha" required>
+
+          <div class="mb-4 text-start">
+            <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha límite de solicitud:</label>
+            <input type="date" name="fecha" id="fecha" class="form-control form-control-lg" required>
           </div>
+
         </fieldset>
-        <button type="submit"> Enviar</button>
+
+        <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-dark fs-5 shadow-sm">Enviar</button>
       </form>
     </section>
   </main>
-  <footer>
-    <span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span>
-  </footer>
-  <script src="../assets/js/btn-menu-celular.js"></script>
-      <script src="../assets/js/controlDeRoles.js"></script>
 
+  <footer>
+    <span>Copyright 2026 - DGTEP | Instituto tecnológico de Informática</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/btn-menu-celular.js"></script>
+  <script src="../assets/js/controlDeRoles.js"></script>
 </body>
 
 </html>
