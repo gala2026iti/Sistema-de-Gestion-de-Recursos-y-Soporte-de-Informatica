@@ -7,6 +7,8 @@
     <title>Gestión de Inventario Tecnológico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/administracion/gestionequipos.css">
+    
 </head>
 
 <body>
@@ -22,7 +24,7 @@
                 <li class="desplegable">
                     <a href="">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
-                        <li><a href="a-TicketsRegistrados.html">Tickets registrados</a></li>
+                        <li><a href="../homeAdmin.html">Tickets registrados</a></li>
                         <li><a href="a-TicketsPersonales.html">Tickets asignados</a></li>
                     </ul>
                 </li>
@@ -132,13 +134,56 @@
             </table>
         </section>
 
-        <section class="w-100 d-flex justify-content-end px-3 mt-4">
-            <a href="a-RegistroEquipo.html" class="btn btn-success">Registrar PC</a>
-        </section>
+       <section class="w-100 d-flex justify-content-end px-3 mt-4">
+    <button id="btnRegistrarEquipo"
+            class="btn btn-success"
+            type="button">
+        Registrar PC
+    </button>
+</section>
+
+<div id="modalEquipo"
+     class="modal-incidencia oculto">
+
+    <div class="modal-contenido">
+ <form action="confirmacionRegistro.html">
+
+    <h2>Registro de PC</h2>
+
+    <fieldset class="tarjeta">
+
+        <label for="id">
+            Código de identificación:
+        </label>
+
+        <input type="text"
+               id="id"
+               placeholder="ej: LAB01-PC02"
+               required>
+
+    </fieldset>
+
+    <button type="submit"
+            class="btn">
+        Registrar PC
+    </button>
+
+    <button type="button"
+            id="btnCancelarEquipo"
+            class="btn btn-secondary">
+        Cancelar
+    </button>
+
+</form>
+
+
+    </div>
+
+</div>
     </main>
 
     <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
-
+    <script src="../../assets/js/formularioequipo.js"></script>
     <script src="../../assets/js/btn-menu-celular.js"></script>
     <script src="../assets/js/controlDeRoles.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

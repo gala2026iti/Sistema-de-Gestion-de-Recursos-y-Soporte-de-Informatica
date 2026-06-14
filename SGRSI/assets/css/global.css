@@ -305,3 +305,6 @@ textarea {
     }
 
 }
+.oculto {
+    display: none !important;
+}
