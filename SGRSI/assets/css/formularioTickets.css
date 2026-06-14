@@ -63,3 +63,34 @@
 .btn-modificar {
     margin-left: 1rem;
 }
+#modal-incidencia .modal-contenido {
+    background-color: white;
+
+    border-radius: 12px;
+
+    padding: 2rem;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+#modal-incidencia h2 {
+    color: var(--azul-principal);
+
+    margin-bottom: 1.5rem;
+
+    font-weight: bold;
+}
+
+#modal-incidencia label {
+    font-weight: 600;
+
+    color: var(--azul-oscuro);
+
+    margin-bottom: 0.5rem;
+
+    display: block;
+}
+
+#modal-incidencia textarea {
+    resize: vertical;
+}
