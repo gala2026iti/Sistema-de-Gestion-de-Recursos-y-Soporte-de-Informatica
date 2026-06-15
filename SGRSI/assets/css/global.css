@@ -1,14 +1,18 @@
 :root {
-    --azul-principal: #1d4ed8;
-    --azul-oscuro: #0f172a;
-    --amarillo-iti: #facc15;
-    --gris-fondo: #f3f4f6;
+
+    --azul-principal: #2563eb;
+    --azul-institucional: #1e3a8a;
+    --azul-navbar: #172554;
+    --azul-oscuro: #1e293b;
+
+    --amarillo-iti: #eab308;
+    --amarillo-hover: #fef08a;
+    --gris-fondo: #f8fafc;
     --blanco: #ffffff;
 }
 
-
 header {
-    background-color: rgb(64, 64, 248);
+    background-color: var(--azul-institucional);
     border-bottom: 3px solid var(--azul-principal);
     padding: 2rem;
     display: flex;
@@ -17,8 +21,8 @@ header {
 }
 
 footer {
-    background-color: rgb(64, 64, 248);
-    color: white;
+    background-color: var(--azul-institucional);
+    color: var(--blanco);
     font-family: 'Barlow', sans-serif;
     text-align: center;
     margin-top: 2rem;
@@ -26,8 +30,8 @@ footer {
 }
 
 .navbarSGRSI {
-    background-color: rgb(15, 15, 160);
-    border-bottom: 0.3vw solid rgb(6, 6, 100);
+    background-color: var(--azul-navbar);
+    border-bottom: 3px solid var(--azul-institucional);
     padding: 1rem 2rem;
 }
 
@@ -53,6 +57,7 @@ footer {
 .desplegable {
     position: relative;
 }
+
 select {
     border-color: black;
 }
@@ -62,10 +67,10 @@ select {
     display: none;
     position: absolute;
     top: 100%;
-    background-color: rgb(15, 15, 160);
+    background-color: var(--azul-navbar);
     list-style: none;
     padding: 0;
-    min-width: 6rem;
+    min-width: 12rem;
     border-radius: 0 0 8px 8px;
 }
 
@@ -75,14 +80,14 @@ select {
 
 .desplegable-menu li a {
     display: block;
-    color: rgb(255, 238, 0);
+    color: var(--amarillo-iti);
     text-decoration: none;
     transition: 0.2s;
 }
 
 .desplegable-menu li a:hover {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
 }
 
 .btn-menu,
@@ -90,7 +95,7 @@ select {
     display: none;
     background: none;
     border: none;
-    color: white;
+    color: var(--blanco);
     font-size: 2rem;
     cursor: pointer;
     align-self: flex-start;
@@ -106,7 +111,7 @@ select {
 }
 
 .nav-menu li a {
-    color: rgb(255, 238, 0);
+    color: var(--amarillo-iti);
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
     transition: 0.2s;
@@ -117,12 +122,12 @@ select {
 
 .nav-menu li a:hover {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
 }
 
 .nav-opciones-sistema a {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
     padding: 0.7rem 1rem;
     border-radius: 8px;
     font-weight: bold;
@@ -132,8 +137,8 @@ select {
 }
 
 .nav-opciones-sistema a:hover {
-
-    background-color: white;
+    background-color: var(--amarillo-hover);
+    color: var(--azul-navbar);
 }
 
 .nav-menu,
@@ -171,6 +176,7 @@ td {
     text-align: center;
     align-items: center;
 }
+
 h2 {
     text-align: center;
     color: var(--azul-oscuro);
@@ -182,6 +188,7 @@ textarea {
     resize: none;
     min-height: 120px;
 }
+
 form {
     background-color: var(--gris-fondo);
     padding: 2rem;
@@ -199,6 +206,7 @@ textarea {
     font-size: 1rem;
 
 }
+
 .filtros {
     display: flex;
     justify-content: center;
@@ -206,6 +214,7 @@ textarea {
     margin: 2rem;
     flex-wrap: wrap;
 }
+
 .filtros select {
     padding: 0.6rem;
     border-radius: 6px;
@@ -306,6 +315,4 @@ textarea {
     }
 
 }
-.oculto {
-    display: none !important;
-}
+
