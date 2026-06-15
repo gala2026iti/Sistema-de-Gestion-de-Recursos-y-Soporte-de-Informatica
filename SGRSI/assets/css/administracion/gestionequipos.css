@@ -1,0 +1,180 @@
+.oculto {
+    display: none !important;
+}
+
+.modal-incidencia {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+.modal-contenido {
+    background: white;
+    width: 90%;
+    max-width: 40rem;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+#modalEquipo input,
+#modalEquipo select,
+#modalEquipo textarea {
+    width: 100%;
+}
+
+#modalEquipo .rol {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #ddd;
+}
+
+#modalEquipo form {
+    width: 100%;
+}
+
+#modalEquipo .btn {
+    margin-top: 2.5rem;
+    background-color: var(--amarillo-iti);
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#modalEquipo .btn:hover {
+    background-color: #eab308;
+}
+
+#modalEquipo .tarjeta {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 900px;
+}
+.barralateral-ubicaciones {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 18rem;
+    height: 100%;
+    background-color: rgb(15, 15, 160);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    transition: 0.3s ease-in-out;
+    z-index: 666; /*numero del daibolo*/
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.barralateral-ubicaciones.abierto {
+    left: 0;
+}
+
+.barralateral-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid rgb(6, 6, 100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barralateral-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--amarillo-iti);
+}
+
+.btn-cerrar-lateral {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.barralateral-contenido {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.barralateral-contenido h4 {
+    color: var(--amarillo-iti);
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: .5rem;
+}
+
+.barralateral-contenido ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.barralateral-contenido li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .6rem .5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.barralateral-contenido li a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.barralateral-contenido li a:hover {
+    color: var(--amarillo-iti);
+}
+
+.btn-accion-salon {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.btn-agregar-salon {
+    background-color: transparent;
+    color: #00ff66;
+    border: 1px dashed #00ff66;
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.2s;
+}
+
+.btn-agregar-salon:hover {
+    background-color: #00ff66;
+    color: black;
+}
+@media screen and (max-width: 576px) {
+
+    #modalEquipo form {
+        width: 100%;
+    }
+
+}
