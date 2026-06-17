@@ -182,83 +182,47 @@
 
             <div class="modal-contenido p-4 shadow border-0 bg-Formulario rounded-4">
 
-                <h2 id="titulo-modal">
-                    Registrar incidencia
-                </h2>
+                <h3 id="titulo-modal" class="h5 fw-bold texto-azul mb-3">Registro de incidencia</h3>
 
-                <label for="tipo">
-                    Tipo de incidencia
-                </label>
+                <div class="mt-3 pt-3 border-top">
+                    <label for="tipo02" class="form-label fw-semibold texto-azul-dark">Tipo de incidencia</label>
+                    <select id="tipo" name="tipo02" class="form-select mb-3">
+                        <option value="">Seleccione</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="software">Software</option>
+                        <option value="red">Red</option>
+                    </select>
 
-                <select id="tipo" class="form-select mb-3">
+                    <label for="asunto02" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
+                    <input type="text" id="asunto-modal" class="form-control mb-3"
+                        placeholder="ej: Pantalla de monitor rosa">
 
-                    <option value="">
-                        Seleccione
-                    </option>
+                    <label for="persona-asig02" class="form-label fw-semibold texto-azul-dark">Persona que estaba
+                        haciendo uso de la PC</label>
+                    <input type="text" id="persona-modal" class="form-control mb-3"
+                        placeholder="ej: Maria Jose Martinez">
 
-                    <option value="hardware">
-                        Hardware
-                    </option>
-
-                    <option value="software">
-                        Software
-                    </option>
-
-                    <option value="red">
-                        Red
-                    </option>
-
-                </select>
-
-                <label for="asunto-modal">
-                    Asunto
-                </label>
-
-                <input type="text" id="asunto-modal" class="form-control mb-3">
-
-                <label for="persona-modal">
-                    Persona que estaba usando la PC
-                </label>
-
-                <input type="text" id="persona-modal" class="form-control mb-3">
-
-                <label>
-                    Gravedad
-                </label>
-
-                <div class="grupo-radios d-flex gap-3 mb-3">
-
-                    <div>
-                        <input type="radio" id="ligera" name="gravedad" value="ligera">
-
-                        <label for="ligera">
-                            Ligera
-                        </label>
+                    <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la
+                        incidencia</label>
+                    <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">
+                        <div class="opcion-radio d-flex align-items-center gap-2">
+                            <input type="radio" id="ligera" name="gravedad" value="ligera" class="form-check-input">
+                            <label for="ligera02" class="form-check-label text-success">Ligera</label>
+                        </div>
+                        <div class="opcion-radio d-flex align-items-center gap-2">
+                            <input type="radio" id="media" name="gravedad" value="media" class="form-check-input">
+                            <label for="media02" class="form-check-label text-warning">Media</label>
+                        </div>
+                        <div class="opcion-radio d-flex align-items-center gap-2">
+                            <input type="radio" id="grave" name="gravedad" value="grave" class="form-check-input">
+                            <label for="grave02" class="form-check-label text-danger">Grave</label>
+                        </div>
                     </div>
 
-                    <div>
-                        <input type="radio" id="media" name="gravedad" value="media">
-
-                        <label for="media">
-                            Media
-                        </label>
-                    </div>
-
-                    <div>
-                        <input type="radio" id="grave" name="gravedad" value="grave">
-
-                        <label for="grave">
-                            Grave
-                        </label>
-                    </div>
-
+                    <label for="descripcion02" class="form-label fw-semibold texto-azul-dark">Descripción</label>
+                    <textarea id="descripcion-modal" name="descripcion02" class="form-control"
+                        placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
                 </div>
-
-                <label for="descripcion-modal">
-                    Descripción
-                </label>
-
-                <textarea id="descripcion-modal" rows="4" class="form-control mb-3"></textarea>
 
                 <button type="button" id="btnAceptarModal" class="btn btn-warning">
                     Aceptar
