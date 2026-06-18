@@ -40,7 +40,7 @@
     </section>
 
     <section class="Tarjeta-login card p-4 shadow border-0 w-100">
-      <form action="" method="get">
+      <form action="" method="get" id="formSolicitud">
         <fieldset class="border-0 p-0 m-0">
           
           <div class="mb-3 text-start">
@@ -56,6 +56,11 @@
           <div class="mb-4 text-start">
             <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha solicitada:</label>
             <input type="datetime-local" name="fecha" id="fecha" class="form-control form-control-lg" required>
+          </div>
+
+          <div class="mb-4 text-start">
+            <label for="hora" class="form-label fw-semibold texto-azul-dark">Hora:</label>
+            <input type="time"  id="hora" class="form-control form-control-lg" placeholder="Ej: 11:35" required>
           </div>
 
         </fieldset>

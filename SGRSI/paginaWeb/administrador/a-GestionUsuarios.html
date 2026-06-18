@@ -41,13 +41,11 @@
                     <ul class="desplegable-menu">
                         <li><a href="a-GestionUsuarios.html">Gestion de usuarios</a></li>
                         <li><a href="a-GestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-
                     </ul>
                 </li>
             </ul>
             <ul class="nav-opciones-sistema">
-                <li><a href="../index.html">Cerrar Sesion</a></li>
-
+                <li><a href="../index.html" id="cerrarSesion">Cerrar Sesion</a></li>
             </ul>
         </section>
     </nav>
@@ -57,29 +55,25 @@
         <span class="centro mb-4">A continuacion se muestran los usuarios registrados en el sistema</span>
 
         <section class="filtros">
-
-            <select>
-                <option>Filtrar por rol</option>
-                <option>Todos</option>
-                <option>Docente</option>
-                <option>Tecnico</option>
-                <option>Adminitrador</option>
-                <option>Direccion</option>
+            <select id="filtroRol">
+                <option value="">Filtrar por rol</option>
+                <option value="docente">Docente</option>
+                <option value="tecnico">Tecnico</option>
+                <option value="administrador">Administrador</option>
+                <option value="direccion">Direccion</option>
             </select>
-            <select>
-                <option>Filtrar por estado</option>
-                <option>Todos</option>
-                <option>Activo</option>
-                <option>De baja</option>
+            <select id="filtroEstado">
+                <option value="">Filtrar por estado</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">De baja</option>
             </select>
-            </div>
         </section>
 
         <section class="table-responsive w-100 m-0">
-            <table class="tabla-contenedor m-0">
+            <table class="tabla-contenedor m-0" id="tablaUsuarios">
                 <thead>
                     <tr>
-                        <th>Usuario</th>
+                        <th>Cedula/Usuario</th>
                         <th>Nombre completo</th>
                         <th>Correo</th>
                         <th>Rol</th>
@@ -87,52 +81,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>cLopez</td>
-                        <td>Carlos Lopez</td>
-                        <td>carlosdocenciaITI@gmail.com</td>
-                        <td>Docente</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>lGutierra</td>
-                        <td>Lorena Gutierra</td>
-                        <td>LorenatierraGU@gmail.com</td>
-                        <td>Tecnico</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>pSillas</td>
-                        <td>Pablo Sillas</td>
-                        <td>sillasDonPablo@gmail.com</td>
-                        <td>Administrador</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>ñJamal</td>
-                        <td>Mini Jamal</td>
-                        <td>namin2026Promesa@gmail.com</td>
-                        <td>Direccion</td>
-                        <td>De baja</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </section>
 
@@ -141,22 +90,29 @@
                 Registrar usuario
             </button>
         </section>
+
         <div id="modalUsuario" class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
-
             <div class="modal-contenido w-100 p-4">
-
-                <form class="form">
+                <form class="form" id="formUsuario">
                     <h2 class="text-primary">Registro de usuario</h2>
                     <fieldset>
-                        <label for="usuario" class="form-label">Usuario:</label>
-                        <input type="text" id="usuario" class="form-control" placeholder="ej: jMartinez" required>
+                        <label for="usuario" class="form-label">Usuario / Cédula:</label>
+                        <input type="text" inputmode="numeric" id="usuario" class="form-control" placeholder="ej: 12345678" minlength="8" maxlength="8" required>
+                        
                         <label for="nombre" class="form-label mt-3">Nombre completo</label>
-                        <input type="text" id="nombre" class="form-control" placeholder="ej: Javier Martinez" required
-                            pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
+                        <input type="text" id="nombre" class="form-control" placeholder="ej: Javier Martinez" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
+                        
                         <label for="correo" class="form-label mt-3">Correo electronico</label>
-                        <input type="text" id="correo" class="form-control " placeholder="ej: javierM1998@gmail.com"
-                            required maxlength="50" autocomplete="email" pattern=".*\.com$">
-                        <select name="" id="" class="form-select my-3" required>
+                        <input type="text" id="correo" class="form-control" placeholder="ej: javierM1998@gmail.com" required maxlength="50" autocomplete="email" pattern=".*\.com$">
+                        
+                        <label for="clave" class="form-label mt-3">Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" id="clave" class="form-control" placeholder="Ingrese contraseña" required>
+                            <button class="btn btn-outline-secondary" type="button" id="btnMostrarClave">Mostrar Contraseña</button>
+                        </div>
+
+                        <label for="rol" class="form-label mt-3">Rol del Sistema</label>
+                        <select id="rol" class="form-select mb-3" required>
                             <option value="">Elige el rol</option>
                             <option value="docente">Docente</option>
                             <option value="tecnico">Tecnico</option>
@@ -165,20 +121,17 @@
                         </select>
                     </fieldset>
 
-                    <button type="submit" class="btn btn-success">Registrar docente</button>
-                    <button type="button" id="btnCancelarUsuario" class="btn btn-danger">Cancelar </button>
+                    <button type="submit" class="btn btn-success">Guardar Usuario</button>
+                    <button type="button" id="btnCancelarUsuario" class="btn btn-danger">Cancelar</button>
                 </form>
-
             </div>
-
         </div>
     </main>
 
-    <footer><span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span></footer>
-    <script src="../../assets/js/formulariousuario.js"></script>
+    <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
     <script src="../../assets/js/btn-menu-celular.js"></script>
-    <script src="../../assets/js/controlDeRoles.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/gestionUsuarios.js" defer></script>
 </body>
 
 </html>
