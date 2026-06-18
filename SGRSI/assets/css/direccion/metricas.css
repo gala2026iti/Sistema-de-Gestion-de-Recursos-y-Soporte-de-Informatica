@@ -35,7 +35,7 @@
 }
 
 .reporte-card .card-header {
-    background-color: rgb(15, 15, 160);
+    background-color: rgb(9, 9, 124);
     color: white;
     font-weight: bold;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
@@ -55,12 +55,8 @@
 }
 
 .table thead th {
-    background-color: rgb(15, 15, 160);
+    background-color: rgb(9, 9, 124);
     color: white;
-}
-
-.table tbody tr:hover {
-    background-color: rgba(250, 204, 21, .15);
 }
 
 .reporte-card {
