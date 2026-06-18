@@ -5,12 +5,10 @@ let pcActual = "";
 const modal = document.getElementById("modal-incidencia");
 
 
-const btnCancelar =
-    document.getElementById("btnCancelarModal");
+const btnCancelar =document.getElementById("btnCancelarModal");
 
 
-const btnAceptar =
-    document.getElementById("btnAceptarModal");
+const btnAceptar = document.getElementById("btnAceptarModal");
 
 document
     .querySelectorAll('input[value="incidencia"]')
