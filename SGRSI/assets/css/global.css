@@ -275,14 +275,14 @@ textarea {
     }
 
     .nav-opciones-sistema {
-        width: 50%;
+        width: 132px;
         display: flex;
         flex-direction: column;
         gap: .5rem;
     }
 
     .nav-opciones-sistema li {
-        width: 100%;
+        align-items: end;
     }
 
     .nav-opciones-sistema a {
