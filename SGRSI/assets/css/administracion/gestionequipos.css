@@ -1,19 +1,3 @@
-.oculto {
-    display: none !important;
-}
-
-.modal-incidencia {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.modal-contenido {
-    max-width: 40rem;
-}
-
 .barralateral-ubicaciones {
     position: fixed;
     top: 0;
@@ -23,7 +7,7 @@
     background-color: rgb(15, 15, 160);
     box-shadow: 2px 0 10px rgba(0,0,0,0.5);
     transition: 0.3s ease-in-out;
-    z-index: 666; /*numero del daibolo*/
+    z-index: 666;
     display: flex;
     flex-direction: column;
     color: white;
