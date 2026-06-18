@@ -53,7 +53,10 @@ main {
     align-items: center;
     max-width: 1400px;
     margin: auto;
-    justify-content: space-between;
+}
+
+.nav-primera-fila {
+    order: 1;
 }
 
 .nav-opciones-sistema {
@@ -68,6 +71,11 @@ main {
 
 .desplegable {
     position: relative;
+}
+
+.desplegable-padding {
+    position: relative;
+    padding-right: 1rem;
 }
 
 select {
@@ -87,7 +95,11 @@ select {
     border-radius: 0 0 8px 8px;
 }
 
-.desplegable:hover .desplegable-menu {
+.desplegable:hover .desplegable-menu{
+    display: block;
+}
+
+.desplegable-padding:hover .desplegable-menu{
     display: block;
 }
 
@@ -121,6 +133,8 @@ select {
     gap: 1rem;
     margin: 0;
     padding: 0;
+    height: 50px;
+    align-items: center;
 }
 
 .nav-menu li a {
@@ -147,6 +161,7 @@ select {
     text-decoration: none;
     transition: 0.2s;
     overflow-x: auto;
+    white-space: nowrap;
 }
 
 .nav-opciones-sistema a:hover {
@@ -250,7 +265,7 @@ textarea {
 .btn-asignar:hover {
     background-color: rgb(15, 15, 160);
 }
-@media screen and (max-width: 1078px) {
+@media screen and (max-width: 1046px) {
 
     header,
     .navbarSGRSI,
@@ -265,45 +280,42 @@ textarea {
         gap: 1rem;
     }
 
+    .nav-primera-fila {
+        order: 0;
+    }
+
     .navbarSGRSI {
         padding: 1rem;
     }
 
     .nav-container {
-        flex-direction: column-reverse;
+        flex-direction: column;
         align-items: stretch;
     }
 
     .nav-opciones-sistema {
-        width: 132px;
         display: flex;
         flex-direction: column;
         gap: .5rem;
     }
 
-    .nav-opciones-sistema li {
-        align-items: end;
-    }
-
-    .nav-opciones-sistema a {
-        display: block;
-        text-align: center;
+    .nav-primera-fila {
+        display: flex;
+        justify-content: space-between;
     }
 
     .btn-menu {
         display: flex;
-        order: 2;
     }
 
     .btn-cerrar {
         display: flex;
-        order: 2;
     }
 
     .nav-menu.activo {
-
         display: flex;
-        margin-bottom: 1rem;
+        margin-top: 1rem;
+        align-items: stretch;
     }
 
     .nav-menu {
@@ -322,6 +334,10 @@ textarea {
 
         width: 100%;
         background-color: rgb(9, 9, 124);
+    }
+
+    .desplegable-padding {
+        padding: 0;
     }
 
     form th,
