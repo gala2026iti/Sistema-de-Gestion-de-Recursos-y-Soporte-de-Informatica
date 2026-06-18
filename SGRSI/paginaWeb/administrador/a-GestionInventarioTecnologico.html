@@ -63,18 +63,18 @@
 
             <div class="barralateral-contenido">
                 <h4>Laboratorios</h4>
-                <ul>
+                <ul id="listaLaboratorios">
                     <li><a href="">Laboratorio 1</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
                     <li><a href="">Laboratorio 2</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
                 </ul>
-                <button class="btn-agregar-salon">+ Añadir Laboratorio</button>
+                <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
 
                 <h4>Talleres</h4>
-                <ul>
+                <ul id="listaTalleres">
                     <li><a href="">Taller 1</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
                     <li><a href="">Taller 2</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
                 </ul>
-                <button class="btn-agregar-salon">+ Añadir Taller</button>
+                <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
 
                 <h4>Prestamos</h4>
                 <ul>
@@ -90,31 +90,30 @@
         <h2 class="centro mt-3 text-warning">Gestion de Equipos Tecnologicos</h2>
         <span class="centro mb-4">A continuacion se muestran los equipos registrados en el sistema</span>
 
-         <section class="filtros">
+        <section class="filtros">
 
-            <select>
-                <option>Ordenar por Estado</option>
-                <option>Operativo</option>
-                <option>De baja</option>
-                <option>Inactivo</option>
+            <select id="filtroEstado">
+                <option value="">Ordenar por Estado</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
             </select>
 
-            <select>
-                <option>Ordenar por cantidad de incidencias</option>
-                <option>Menor cantidad</option>
-                <option>Mayor cantidad</option>
+            <select id="filtroIncidencias">
+                <option value="">Ordenar por cantidad de incidencias</option>
+                <option value="menor">Menor cantidad</option>
+                <option value="mayor">Mayor cantidad</option>
             </select>
 
-            <select>
-                <option>Ordenar por fecha de intervención</option>
-                <option>Reciente primero</option>
-                <option>Antiguo primero</option>
+            <select id="filtroIntervencion">
+                <option value="">Ordenar por fecha de intervención</option>
+                <option value="reciente">Reciente primero</option>
+                <option value="antiguo">Antiguo primero</option>
             </select>
 
         </section>
 
         <section class="table-responsive w-100 m-0 overflow-x-auto">
-            <table class="tabla-contenedor m-0">
+            <table class="tabla-contenedor m-0" id="tablaEquipos">
                 <thead>
                     <tr>
                         <th>Codigo (ID Global)</th>
@@ -125,8 +124,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>EQ-2026-001</td>
-                        <td>Operativo</td>
+                        <td>123456</td>
+                        <td>Activo</td>
                         <td>22/1/2021</td>
                         <td>
                             <a href="" class="btn btn-primary">Modificar</a>
@@ -146,7 +145,7 @@
         <div id="modalEquipo" class="modal-incidencia oculto">
 
             <div class="modal-contenido">
-                <form action="confirmacionRegistro.html" class="form">
+                <form action="confirmacionRegistro.html" class="form" id="formEquipo">
 
                     <h2>Registro de PC</h2>
 
@@ -156,10 +155,11 @@
                             Código de identificación:
                         </label>
 
-                        <input class="form-control mb-3"  type="text" id="id" placeholder="ej: LG-12343123" required>
+                        <input class="form-control mb-3" type="text" inputmode="numeric" id="idPC"
+                            placeholder="ej: 123456" maxlength="6" required>
                         <label for="ubicacion">Ubicacion del Dispositivo</label>
                         <select name="" id="ubicacion" class="form-select mb-3">
-                            <option value="">Elegir ubicacion</option>
+                            <option value="invalido">Elegir ubicacion</option>
                             <optgroup label="Laboratorios"></optgroup>
                             <option value="">Laboratorio 1</option>
                             <option value="">Laboratorio 2</option>
@@ -173,12 +173,12 @@
 
                     </fieldset>
 
-                    <button type="submit" class="btn">
-                        Registrar PC
+                    <button type="submit" class="btn" id="btnGuardarEquipo">
+                        Guardar PC
                     </button>
 
                     <button type="button" id="btnCancelarEquipo" class="btn btn-secondary">
-                        Cancelar
+                        Volver
                     </button>
 
                 </form>
@@ -192,8 +192,7 @@
     <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
     <script src="../../assets/js/formularioequipo.js"></script>
     <script src="../../assets/js/btn-menu-celular.js"></script>
-    <script src="../assets/js/controlDeRoles.js"></script>
-    <script src="../../assets/js/menuubicacion.js"></script>
+    <script src="../../assets/js/gestionEquipos.js"></script>
 </body>
 
 </html>
