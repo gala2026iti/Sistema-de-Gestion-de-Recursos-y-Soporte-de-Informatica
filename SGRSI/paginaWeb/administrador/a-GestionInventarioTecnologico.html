@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/administracion/gestionequipos.css">
+    <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
 
 </head>
 
@@ -143,14 +144,14 @@
             </button>
         </section>
 
-        <div id="modalEquipo" class="modal-incidencia oculto">
+        <div id="modalEquipo" class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
 
-            <div class="modal-contenido">
-                <form action="confirmacionRegistro.html" class="form">
+            <div class="modal-contenido w-100 p-4">
+                <form class="form">
 
-                    <h2>Registro de PC</h2>
+                    <h2 class="text-primary border-bottom pb-3">Registro de PC</h2>
 
-                    <fieldset class="tarjeta">
+                    <fieldset>
 
                         <label class="form-label fw-semibold texto-azul-dark mb-2" for="id">
                             Código de identificación:
@@ -173,11 +174,11 @@
 
                     </fieldset>
 
-                    <button type="submit" class="btn">
+                    <button type="submit" class="btn btn-success">
                         Registrar PC
                     </button>
 
-                    <button type="button" id="btnCancelarEquipo" class="btn btn-secondary">
+                    <button type="button" id="btnCancelarEquipo" class="btn btn-danger">
                         Cancelar
                     </button>
 

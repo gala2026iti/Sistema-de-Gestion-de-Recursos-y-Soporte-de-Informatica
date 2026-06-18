@@ -10,13 +10,12 @@
 
 .Tarjeta-login {
     max-width: 29rem;
-    border-radius: 12px !important; 
 }
 
 .texto-azul {
-    color: var(--azul-principal) !important;
+    color: var(--azul-principal);
 }
 
 .texto-azul-dark {
-    color: var(--azul-oscuro) !important;
+    color: var(--azul-oscuro);
 }

@@ -9,90 +9,9 @@
 .container-formulario {
     max-width: 900px;
 }
-
-.bg-Formulario {
-    background-color: var(--gris-fondo) !important;
-}
-
 .texto-azul {
-    color: var(--azul-principal) !important;
+    color: var(--azul-principal);
 }
 .texto-azul-dark {
-    color: var(--azul-oscuro) !important;
-}
-
-.incidencia {
-    display: none;
-}
-
-
-.oculto {
-    display: none !important;
-}
-
-.modal-incidencia {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    min-height: 100%;
-
-    background: rgba(0, 0, 0, 0.5);
-
-    display: flex;
-    justify-content: center;
-
-    padding: 2rem;
-
-    z-index: 1000;
-}
-
-.modal-contenido {
-    background: white;
-
-    width: 100%;
-    max-width: 40rem;
-
-    border-radius: 1rem;
-
-    padding: 2rem;
-}
-
-
-
-.btn-modificar {
-    margin-left: 1rem;
-}
-#modal-incidencia .modal-contenido {
-    background-color: white;
-
-    border-radius: 12px;
-
-    padding: 2rem;
-
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-}
-
-#modal-incidencia h2 {
-    color: var(--azul-principal);
-
-    margin-bottom: 1.5rem;
-
-    font-weight: bold;
-}
-
-#modal-incidencia label {
-    font-weight: 600;
-
     color: var(--azul-oscuro);
-
-    margin-bottom: 0.5rem;
-
-    display: block;
-}
-
-#modal-incidencia textarea {
-    resize: vertical;
 }

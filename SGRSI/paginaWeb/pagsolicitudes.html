@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="../assets/css/index.css">
-  <link rel="stylesheet" href="../assets/css/solicitudes.css">
+
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 
   <main class="d-flex flex-column align-items-center justify-content-center py-5 px-3">
     
-    <section class="text-center mb-4 ancho-texto">
+    <section class="text-center mb-4">
       <h2 class="fw-bold texto-azul mb-3">Solicitud de servicio</h2>
       <p class="text-muted mb-1 fs-6">Aquí podrás hacer solicitudes en el caso de precisar ayuda de administración con la planificación o preparación de clases.</p>
       <p class="text-danger fw-semibold small">Le pedimos por favor hacerlo con un tiempo de anticipación adecuado.</p>
@@ -54,8 +54,8 @@
           </div>
 
           <div class="mb-4 text-start">
-            <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha límite de solicitud:</label>
-            <input type="date" name="fecha" id="fecha" class="form-control form-control-lg" required>
+            <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha solicitada:</label>
+            <input type="datetime-local" name="fecha" id="fecha" class="form-control form-control-lg" required>
           </div>
 
         </fieldset>

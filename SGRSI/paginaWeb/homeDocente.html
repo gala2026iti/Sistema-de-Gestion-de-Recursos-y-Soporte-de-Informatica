@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="../assets/css/formularioTickets.css">
+    <link rel="stylesheet" href="../assets/css/administracion/gestionequipos.css">
+     <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
 </head>
 
 <body>
@@ -59,128 +61,30 @@
                 <div class="pc p-4 mb-4 shadow-sm border rounded-3 bg-white">
                     <h3 class="h5 fw-bold texto-azul mb-3">PC01</h3>
 
-                    <input type="radio" id="pc01_ok" name="pc01_estado" value="ok" class="form-check-input me-1"
-                        required>
+                    <input type="radio" id="pc01_ok" name="pc01_estado" value="ok" class="form-check-input me-1" required>
                     <label for="pc01_ok" class="form-check-label me-4 text-success fw-semibold">Sin problemas</label>
 
-                    <input type="radio" id="pc01_error" name="pc01_estado" value="incidencia"
-                        class="form-check-input me-1">
+                    <input type="radio" id="pc01_error" name="pc01_estado" value="incidencia" class="form-check-input me-1">
                     <label for="pc01_error" class="form-check-label text-danger fw-semibold">Hay incidencia</label>
-                    <button type="button" class="btn-modificar oculto" data-pc="PC01">
-                        Modificar
-                    </button>
-                    <div class="incidencia mt-3 pt-3 border-top">
-                        <label for="tipo01" class="form-label fw-semibold texto-azul-dark">Tipo de incidencia</label>
-                        <select id="tipo01" name="tipo01" class="form-select mb-3">
-                            <option value="">Seleccione</option>
-                            <option value="hardware">Hardware</option>
-                            <option value="software">Software</option>
-                            <option value="red">Red</option>
-                        </select>
+                   
+                    <h3 class="h5 fw-bold texto-azul pt-3 mt-3 mb-3 border-top">PC02</h3>
 
-                        <label for="asunto01" class="form-label fw-bold texto-azul-dark">Asunto:</label>
-                        <input type="text" id="asunto01" class="form-control mb-3"
-                            placeholder="ej: Pantalla de monitor rosa">
-
-                        <label for="persona-asig01" class="form-label fw-semibold texto-azul-dark">Persona que estaba
-                            haciendo uso de la PC</label>
-                        <input type="text" id="persona-asig01" class="form-control mb-3"
-                            placeholder="ej: Maria Jose Martinez">
-
-                        <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la
-                            incidencia</label>
-                        <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="ligera01" name="gravedad01" value="ligera"
-                                    class="form-check-input">
-                                <label for="ligera01" class="form-check-label text-success">Ligera</label>
-                            </div>
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="media01" name="gravedad01" value="media"
-                                    class="form-check-input">
-                                <label for="media01" class="form-check-label text-warning">Media</label>
-                            </div>
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="grave01" name="gravedad01" value="grave"
-                                    class="form-check-input">
-                                <label for="grave01" class="form-check-label text-danger">Grave</label>
-                            </div>
-                        </div>
-
-                        <label for="descripcion01" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-                        <textarea id="descripcion01" name="descripcion01" class="form-control"
-                            placeholder="Información más detallada si así lo precisa" rows="3"
-                            maxlength="300"></textarea>
-                    </div>
-                </div>
-
-                <div class="pc p-4 mb-4 shadow-sm border rounded-3 bg-white">
-                    <h3 class="h5 fw-bold texto-azul mb-3">PC02</h3>
-
-                    <input type="radio" id="pc02_ok" name="pc02_estado" value="ok" class="form-check-input me-1"
-                        required>
+                    <input type="radio" id="pc02_ok" name="pc02_estado" value="ok" class="form-check-input me-1" required>
                     <label for="pc02_ok" class="form-check-label me-4 text-success fw-semibold">Sin problemas</label>
 
                     <input type="radio" id="pc02_error" name="pc02_estado" value="incidencia"
                         class="form-check-input me-1">
                     <label for="pc02_error" class="form-check-label text-danger fw-semibold">Hay incidencia</label>
-                    <button type="button" class="btn-modificar oculto" data-pc="PC02">
-                        Modificar
-                    </button>
-                    <div class="incidencia mt-3 pt-3 border-top">
-                        <label for="tipo02" class="form-label fw-semibold texto-azul-dark">Tipo de incidencia</label>
-                        <select id="tipo02" name="tipo02" class="form-select mb-3">
-                            <option value="">Seleccione</option>
-                            <option value="hardware">Hardware</option>
-                            <option value="software">Software</option>
-                            <option value="red">Red</option>
-                        </select>
 
-                        <label for="asunto02" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
-                        <input type="text" id="asunto02" class="form-control mb-3"
-                            placeholder="ej: Pantalla de monitor rosa">
-
-                        <label for="persona-asig02" class="form-label fw-semibold texto-azul-dark">Persona que estaba
-                            haciendo uso de la PC</label>
-                        <input type="text" id="persona-asig02" class="form-control mb-3"
-                            placeholder="ej: Maria Jose Martinez">
-
-                        <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la
-                            incidencia</label>
-                        <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="ligera02" name="gravedad02" value="ligera"
-                                    class="form-check-input">
-                                <label for="ligera02" class="form-check-label text-success">Ligera</label>
-                            </div>
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="media02" name="gravedad02" value="media"
-                                    class="form-check-input">
-                                <label for="media02" class="form-check-label text-warning">Media</label>
-                            </div>
-                            <div class="opcion-radio d-flex align-items-center gap-2">
-                                <input type="radio" id="grave02" name="gravedad02" value="grave"
-                                    class="form-check-input">
-                                <label for="grave02" class="form-check-label text-danger">Grave</label>
-                            </div>
-                        </div>
-
-                        <label for="descripcion02" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-                        <textarea id="descripcion02" name="descripcion02" class="form-control"
-                            placeholder="Información más detallada si así lo precisa" rows="3"
-                            maxlength="300"></textarea>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-warning w-100 py-3 fw-bold text-dark fs-5 shadow-sm">
+                <button type="submit" class="btn btn-warning w-100 py-3 mt-3 fw-bold text-dark fs-5 shadow-sm">
                     Registrar incidencias
                 </button>
-
+                </div>
             </form>
         </section>
-        <div id="modal-incidencia" class="modal-incidencia oculto">
+        <div id="modal-incidencia"  class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
 
-            <div class="modal-contenido p-4 shadow border-0 bg-Formulario rounded-4">
+            <form class="from modal-contenido w-100 p-4 bg-white">
 
                 <h3 id="titulo-modal" class="h5 fw-bold texto-azul mb-3">Registro de incidencia</h3>
 
@@ -220,21 +124,20 @@
                     </div>
 
                     <label for="descripcion02" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-                    <textarea id="descripcion-modal" name="descripcion02" class="form-control"
-                        placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
+                    <textarea id="descripcion-modal" name="descripcion02" class="form-control mb-3" placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
                 </div>
 
-                <button type="button" id="btnAceptarModal" class="btn btn-warning">
+                <button type="button" id="btnAceptarModal" class="btn btn-success">
                     Aceptar
                 </button>
 
-                <button type="button" id="btnCancelarModal" class="btn btn-secondary">
+                <button type="button" id="btnCancelarModal" class="btn btn-danger">
                     Cancelar
                 </button>
 
             </div>
 
-        </div>
+        </form>
 
     </main>
 
