@@ -21,12 +21,24 @@ header {
 }
 
 footer {
+   
     background-color: var(--azul-institucional);
     color: var(--blanco);
     font-family: 'Barlow', sans-serif;
     text-align: center;
     margin-top: 2rem;
     padding: 1rem;
+}
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;      
+    display: flex;
+    flex-direction: column; 
+}
+
+main {
+    flex: 1;
 }
 
 .navbarSGRSI {
@@ -237,7 +249,82 @@ textarea {
 .btn-asignar:hover {
     background-color: rgb(15, 15, 160);
 }
+@media screen and (max-width: 768px) {
 
+    header,
+    .navbarSGRSI,
+    footer {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    header section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .navbarSGRSI {
+        padding: 1rem;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-opciones-sistema {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .nav-opciones-sistema li {
+        width: 100%;
+    }
+
+    .nav-opciones-sistema a {
+        display: block;
+        text-align: center;
+    }
+
+    .btn-menu {
+
+        display: flex;
+    }
+
+    .nav-menu.activo {
+
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgb(15, 15, 160);
+        padding: 1rem 0;
+        z-index: 91;
+    }
+
+    .desplegable-menu {
+        display: flex;
+        position: static;
+        flex-direction: column;
+
+        width: 100%;
+        background-color: rgb(9, 9, 124);
+    }
+
+    form th,
+    td {
+        padding: 0.7rem;
+
+        font-size: 0.8rem;
+    }
+
+}
 
 @media screen and (max-width: 576px) {
 

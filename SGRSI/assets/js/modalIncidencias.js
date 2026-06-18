@@ -9,7 +9,7 @@ const btnCancelar =
     document.getElementById("btnCancelarModal");
 
 
-    const btnAceptar =
+const btnAceptar =
     document.getElementById("btnAceptarModal");
 
 document
@@ -17,42 +17,42 @@ document
     .forEach(radio => {
 
 
-      radio.addEventListener("change", () => {
+        radio.addEventListener("change", () => {
 
 
-    const pc = radio.closest(".pc");
+            const pc = radio.closest(".pc");
 
 
-    pcActual = pc.querySelector("h3").textContent;
+            pcActual = pc.querySelector("h3").textContent;
 
 
-    document.getElementById("tipo").value = "";
+            document.getElementById("tipo").value = "";
 
 
-document.getElementById("asunto-modal").value = "";
+            document.getElementById("asunto-modal").value = "";
 
 
-document.getElementById("persona-modal").value = "";
+            document.getElementById("persona-modal").value = "";
 
 
-document.getElementById("descripcion-modal").value = "";
+            document.getElementById("descripcion-modal").value = "";
 
 
-document
-    .querySelectorAll('input[name="gravedad"]')
-    .forEach(radio => radio.checked = false);
+            document
+                .querySelectorAll('input[name="gravedad"]')
+                .forEach(radio => radio.checked = false);
 
 
-    modal.classList.remove("oculto");
+            modal.classList.remove("oculto");
 
 
-});
+        });
 
 
     });
 
 
-    document
+document
     .querySelectorAll('input[value="ok"]')
     .forEach(radio => {
 
@@ -130,7 +130,7 @@ btnAceptar.addEventListener("click", () => {
         );
 
 
-     
+
 
 
     if (
@@ -149,19 +149,19 @@ btnAceptar.addEventListener("click", () => {
 
         return;
     }
-      const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
 
-if (!soloLetras.test(persona)) {
+    if (!soloLetras.test(persona)) {
 
 
-    alert(
-        "'Persona que estaba usando la PC' solo puede contener letras."
-    );
+        alert(
+            "'Persona que estaba usando la PC' solo puede contener letras."
+        );
 
 
-    return;
-}
+        return;
+    }
 
 
     incidencias[pcActual] = {
@@ -178,14 +178,14 @@ if (!soloLetras.test(persona)) {
 
 
     const pc = [...document.querySelectorAll(".pc")]
-    .find(pc => pc.querySelector("h3").textContent === pcActual);
+        .find(pc => pc.querySelector("h3").textContent === pcActual);
 
 
-const btnModificar =
-    pc.querySelector(".btn-modificar");
+    const btnModificar =
+        pc.querySelector(".btn-modificar");
 
 
-btnModificar.classList.remove("oculto");
+    btnModificar.classList.remove("oculto");
 
 
     console.log(incidencias);

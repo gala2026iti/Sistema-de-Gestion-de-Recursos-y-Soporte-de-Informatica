@@ -23,7 +23,7 @@
         <li class="desplegable">
           <a href="">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
-              <a href="../homeAsistente.html">Tickets registrados</a>
+            <li><a href="../homeAsistente.html">Tickets registrados</a></li>
             <li><a href="t-TicketsPersonales.html">Tickets asignados</a></li>
           </ul>
         </li>
@@ -45,56 +45,82 @@
   <main class="container-fluid py-4 px-0">
     <h2 class="centro mt-2 text-primary">Tickets personales</h2>
     <span class="centro mb-4 text-muted">Esto son tus tickets y el estado en que se encuentran</span>
-    
-    <section class="espacio-arriba-tabla d-flex flex-row justify-content-start justify-content-md-center align-items-start gap-4 pb-3 overflow-x-auto w-100 px-3">
-       
-        <table class="kanban-columna text-center pb-3 w-100">
-          <thead>
-            <tr>
-              <th class="bg-danger text-white py-3 fs-5 rounded-top">Pendiente &rarr;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="ticket-marcado">Letras de teclado atascadas</td></tr>
-            <tr><td class="ticket-marcado">Mouse sin lector</td></tr>
-            <tr><td class="ticket-marcado">No funciona NetBeans</td></tr>
-            <tr><td class="ticket-marcado">No tiene visual studio</td></tr>
-          </tbody>
-        </table>
 
-        <table class="kanban-columna pb-3 text-center w-100">
-          <thead>
-            <tr>
-              <th class="bg-warning text-white py-3 fs-5 rounded-top">&larr; En progreso &rarr;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="ticket-marcado"><a href="detalle-ticket.html" class="text-decoration-none text-dark d-block w-100">Monitor roto</a></td></tr>
-            <tr><td class="ticket-marcado">La PC salio corriendo</td></tr>
-            <tr><td class="ticket-marcado">El teclado no tiene teclas</td></tr>
-            <tr><td class="ticket-marcado">No tiene mouse ni teclado</td></tr>
-          </tbody>
-        </table>
+    <section
+      class="espacio-arriba-tabla d-flex flex-row justify-content-start justify-content-md-center align-items-start gap-4 pb-3 overflow-x-auto w-100 px-3">
 
-        <table class="kanban-columna pb-3 text-center w-100">
-          <thead>
-            <tr>
-              <th class="bg-success text-white py-3 fs-5 rounded-top">&larr; Cerrado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="ticket-marcado">No funciona el sistema operativo</td></tr>
-            <tr><td class="ticket-marcado">Esta todo de cabeza</td></tr>
-            <tr><td class="ticket-marcado">el mouse esta pegado al monitor</td></tr>
-            <tr><td class="ticket-marcado">La pc tiene instalado windowsXP</td></tr>
-          </tbody>
-        </table>
+      <table class="kanban-columna text-center pb-3 w-100">
+        <thead>
+          <tr>
+            <th class="bg-danger text-white py-3 fs-5 rounded-top">Pendiente &rarr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ticket-marcado">Letras de teclado atascadas</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">Mouse sin lector</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">No funciona NetBeans</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">No tiene visual studio</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="kanban-columna pb-3 text-center w-100">
+        <thead>
+          <tr>
+            <th class="bg-warning text-white py-3 fs-5 rounded-top">&larr; En progreso &rarr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ticket-marcado"><a href="detalle-ticket.html"
+                class="text-decoration-none text-dark d-block w-100">Monitor roto</a></td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">La PC salio corriendo</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">El teclado no tiene teclas</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">No tiene mouse ni teclado</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="kanban-columna pb-3 text-center w-100">
+        <thead>
+          <tr>
+            <th class="bg-success text-white py-3 fs-5 rounded-top">&larr; Cerrado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ticket-marcado">No funciona el sistema operativo</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">Esta todo de cabeza</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">el mouse esta pegado al monitor</td>
+          </tr>
+          <tr>
+            <td class="ticket-marcado">La pc tiene instalado windowsXP</td>
+          </tr>
+        </tbody>
+      </table>
 
     </section>
   </main>
 
   <footer>
-    <span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span>
+    <span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span>
   </footer>
 
   <script src="../../assets/js/btn-menu-celular.js"></script>

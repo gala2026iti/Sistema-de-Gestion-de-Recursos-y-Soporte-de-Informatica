@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/administracion/gestionequipos.css">
-
+    <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
 </head>
 
 <body>
@@ -22,14 +22,14 @@
             <button class="btn-cerrar" id="btn-cerrar">✖</button>
             <ul class="nav-menu">
                 <li class="desplegable">
-                    <a href="">Gestión de tickets 🡻 </a>
+                    <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
                         <li><a href="../homeAdmin.html">Tickets registrados</a></li>
                         <li><a href="a-TicketsPersonales.html">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
-                    <a href="">Gestion de prestamos 🡻</a>
+                    <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="a-TablaPrestamos.html">Tabla de prestamos</a></li>
                         <li><a href="a-InventarioEquipos.html">Inventario de equipos</a></li>
@@ -37,11 +37,10 @@
                 </li>
                 <li><a href="a-GestionSolicitudes.html">Gestion de solicitudes</a></li>
                 <li class="desplegable pe-3">
-                    <a href="">⚙ Administracion y control 🡻</a>
+                    <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="a-GestionUsuarios.html">Gestion de usuarios</a></li>
                         <li><a href="a-GestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-                        <li><a href="">Gestion de NULL</a></li>
                     </ul>
                 </li>
             </ul>
@@ -55,34 +54,25 @@
         <section class="px-4 mb-3">
             <button id="btn-abrir-ubicaciones" class="btn btn-primary">☰ Ver Ubicaciones / Salones</button>
         </section>
+
         <section class="barralateral-ubicaciones" id="barralateral-ubicaciones">
             <div class="barralateral-header">
                 <h3>Ubicaciones</h3>
                 <button id="btn-cerrar-ubicaciones" class="btn-cerrar-lateral">X</button>
             </div>
-
             <div class="barralateral-contenido">
                 <h4>Laboratorios</h4>
-                <ul id="listaLaboratorios">
-                    <li><a href="">Laboratorio 1</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
-                    <li><a href="">Laboratorio 2</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
-                </ul>
+                <ul id="listaLaboratorios"></ul>
                 <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
 
                 <h4>Talleres</h4>
-                <ul id="listaTalleres">
-                    <li><a href="">Taller 1</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
-                    <li><a href="">Taller 2</a> <button class="btn-accion-salon" title="Eliminar">X</button></li>
-                </ul>
+                <ul id="listaTalleres"></ul>
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
 
-                <h4>Prestamos</h4>
+                <h4>Otros</h4>
                 <ul>
-                    <li><a href="">Dispositivos para prestar</a></li>
-                </ul>
-                <h4>Inventario tecnologico</h4>
-                <ul>
-                    <li><a href="">Todos los Dispositivos registrados en el sistema</a></li>
+                    <li><a href="#" class="filtro-ubicacion-directa" data-ubicacion="prestamo">Dispositivos para prestar</a></li>
+                    <li><a href="#" class="filtro-ubicacion-directa" data-ubicacion="todos">Todos los Dispositivos</a></li>
                 </ul>
             </div>
         </section>
@@ -91,9 +81,8 @@
         <span class="centro mb-4">A continuacion se muestran los equipos registrados en el sistema</span>
 
         <section class="filtros">
-
             <select id="filtroEstado">
-                <option value="">Ordenar por Estado</option>
+                <option value="">Filtrar por Estado</option>
                 <option value="activo">Activo</option>
                 <option value="inactivo">Inactivo</option>
             </select>
@@ -109,7 +98,6 @@
                 <option value="reciente">Reciente primero</option>
                 <option value="antiguo">Antiguo primero</option>
             </select>
-
         </section>
 
         <section class="table-responsive w-100 m-0 overflow-x-auto">
@@ -117,22 +105,13 @@
                 <thead>
                     <tr>
                         <th>Codigo (ID Global)</th>
+                        <th>Ubicación</th>
                         <th>Estado</th>
-                        <th>Ultima intervencion</th>
+                        <th>Incidencias</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>123456</td>
-                        <td>Activo</td>
-                        <td>22/1/2021</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </section>
 
@@ -142,57 +121,41 @@
             </button>
         </section>
 
-        <div id="modalEquipo" class="modal-incidencia oculto">
+        <div id="modalEquipo" class="modal-incidencia oculto fixed-top w-100 h-100 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,0.5); z-index: 1050;">
+            
+            <form id="formEquipo" class="bg-white p-4 rounded shadow w-100" style="max-width: 450px;">
+                <h2 class="text-primary border-bottom pb-3">Registro de PC</h2>
+                
+                <fieldset class="tarjeta">
+                    <label class="form-label fw-semibold mb-2" for="idPC">
+                        Código de identificación:
+                    </label>
+                    <input class="form-control mb-3" type="text" inputmode="numeric" id="idPC" placeholder="ej: 123456" maxlength="6" required>
+                    
+                    <label class="form-label fw-semibold mb-2" for="ubicacion">Ubicacion del Dispositivo</label>
+                    <select id="ubicacion" class="form-select mb-3" required>
+                        <option value="">Elegir ubicacion</option>
+                        <optgroup label="Laboratorios" id="optgroupLaboratorios"></optgroup>
+                        <optgroup label="Talleres" id="optgroupTalleres"></optgroup>
+                        <optgroup label="Otros">
+                            <option value="prestamo">Dispositivo de prestamo</option>
+                            <option value="ninguna">Sin ubicacion</option>
+                        </optgroup>
+                    </select>
+                </fieldset>
 
-            <div class="modal-contenido">
-                <form action="confirmacionRegistro.html" class="form" id="formEquipo">
-
-                    <h2>Registro de PC</h2>
-
-                    <fieldset class="tarjeta">
-
-                        <label class="form-label fw-semibold texto-azul-dark mb-2" for="id">
-                            Código de identificación:
-                        </label>
-
-                        <input class="form-control mb-3" type="text" inputmode="numeric" id="idPC"
-                            placeholder="ej: 123456" maxlength="6" required>
-                        <label for="ubicacion">Ubicacion del Dispositivo</label>
-                        <select name="" id="ubicacion" class="form-select mb-3">
-                            <option value="invalido">Elegir ubicacion</option>
-                            <optgroup label="Laboratorios"></optgroup>
-                            <option value="">Laboratorio 1</option>
-                            <option value="">Laboratorio 2</option>
-                            <optgroup label="Talleres"></optgroup>
-                            <option value="">Taller 1</option>
-                            <option value="">Taller 2</option>
-                            <optgroup label="Otros"></optgroup>
-                            <option value="">Dispositivo de prestamo</option>
-                            <option value="">Sin ubicacion</option>
-                        </select>
-
-                    </fieldset>
-
-                    <button type="submit" class="btn" id="btnGuardarEquipo">
-                        Guardar PC
-                    </button>
-
-                    <button type="button" id="btnCancelarEquipo" class="btn btn-secondary">
-                        Volver
-                    </button>
-
-                </form>
-
-
-            </div>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="submit" class="btn btn-success" id="btnGuardarEquipo">Guardar PC</button>
+                    <button type="button" id="btnCancelarEquipo" class="btn btn-danger">Volver</button>
+                </div>
+            </form>
 
         </div>
     </main>
 
-    <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
-    <script src="../../assets/js/formularioequipo.js"></script>
+    <footer><span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span></footer>
     <script src="../../assets/js/btn-menu-celular.js"></script>
-    <script src="../../assets/js/gestionEquipos.js"></script>
+    <script src="../../assets/js/gestionEquipos.js" defer></script>
 </body>
 
 </html>

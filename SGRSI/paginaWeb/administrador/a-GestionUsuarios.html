@@ -7,7 +7,7 @@
     <title>Gestión de usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/administracion/gestionUsuarios.css">
+    <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
 </head>
 
 <body>
@@ -41,13 +41,11 @@
                     <ul class="desplegable-menu">
                         <li><a href="a-GestionUsuarios.html">Gestion de usuarios</a></li>
                         <li><a href="a-GestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-
                     </ul>
                 </li>
             </ul>
             <ul class="nav-opciones-sistema">
                 <li><a href="../index.html" id="cerrarSesion">Cerrar Sesion</a></li>
-
             </ul>
         </section>
     </nav>
@@ -57,7 +55,6 @@
         <span class="centro mb-4">A continuacion se muestran los usuarios registrados en el sistema</span>
 
         <section class="filtros">
-
             <select id="filtroRol">
                 <option value="">Filtrar por rol</option>
                 <option value="docente">Docente</option>
@@ -93,44 +90,48 @@
                 Registrar usuario
             </button>
         </section>
-        <div id="modalUsuario" class="modal-incidencia oculto">
 
-            <div class="modal-contenido">
+        <div id="modalUsuario" class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
+            <div class="modal-contenido w-100 p-4">
+                <form class="form" id="formUsuario">
+                    <h2 class="text-primary">Registro de usuario</h2>
+                    <fieldset>
+                        <label for="usuario" class="form-label">Usuario / Cédula:</label>
+                        <input type="text" inputmode="numeric" id="usuario" class="form-control" placeholder="ej: 12345678" minlength="8" maxlength="8" required>
+                        
+                        <label for="nombre" class="form-label mt-3">Nombre completo</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="ej: Javier Martinez" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
+                        
+                        <label for="correo" class="form-label mt-3">Correo electronico</label>
+                        <input type="text" id="correo" class="form-control" placeholder="ej: javierM1998@gmail.com" required maxlength="50" autocomplete="email" pattern=".*\.com$">
+                        
+                        <label for="clave" class="form-label mt-3">Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" id="clave" class="form-control" placeholder="Ingrese contraseña" required>
+                            <button class="btn btn-outline-secondary" type="button" id="btnMostrarClave">Mostrar Contraseña</button>
+                        </div>
 
-                <form id="formUsuario">
-                    <h2>Registro de usuario</h2>
-                    <fieldset class="tarjeta">
-                        <label for="usuario">Cedula/Usuario:</label>
-                        <input type="text" id="usuario" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="ej: 12345678" required>
-                        <label for="nombre">Nombre completo</label>
-                        <input type="text" id="nombre" placeholder="ej: Javier Martinez" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
-                        <label for="correo">Correo electrónico</label>
-                        <input type="text" id="correo" placeholder="ej: javierM1998@gmail.com" required maxlength="50" autocomplete="email" pattern=".*\.com$">
-                        <label for="clave">Contraseña</label>
-                        <input type="password" id="clave" required maxlength="50"> <button type="button" class="btn btn-info" id="btnMostrarClave">Mostrar Contraseña</button>
-                    </fieldset>
-                    <div class="rol">
-                        <select name="rolUsuario" id="rol" required>
+                        <label for="rol" class="form-label mt-3">Rol del Sistema</label>
+                        <select id="rol" class="form-select mb-3" required>
                             <option value="">Elige el rol</option>
                             <option value="docente">Docente</option>
                             <option value="tecnico">Tecnico</option>
                             <option value="administrador">Administrador</option>
                             <option value="direccion">Direccion</option>
                         </select>
-                    </div>
-                    <button type="submit" class="btn">Guardar usuario</button>
-                    <button type="button" id="btnCancelarUsuario" class="btn btn-secondary">Volver</button>
+                    </fieldset>
+
+                    <button type="submit" class="btn btn-success">Guardar Usuario</button>
+                    <button type="button" id="btnCancelarUsuario" class="btn btn-danger">Cancelar</button>
                 </form>
-
             </div>
-
         </div>
     </main>
 
     <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
     <script src="../../assets/js/btn-menu-celular.js"></script>
-    <script src="../../assets/js/gestionUsuarios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/gestionUsuarios.js" defer></script>
 </body>
 
 </html>
