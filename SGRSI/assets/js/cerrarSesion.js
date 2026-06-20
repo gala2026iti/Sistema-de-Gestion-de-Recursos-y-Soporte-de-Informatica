@@ -1,7 +1,10 @@
-btnSalir = document.getElementById("cerrarSesion")
+const btnSalir = document.getElementById("cerrarSesion")
 
-btnSalir.addEventListener("click", () => {
-    sessionStorage.setItem("usuario", "")
+btnSalir.addEventListener("click", function(e) {
+    e.preventDefault()
+    localStorage.setItem("usuario", "")
+
+    window.location.href = "index.html"
 })
 
 // Esto es para limpiar la memoria del usuario que inició sesión antes
