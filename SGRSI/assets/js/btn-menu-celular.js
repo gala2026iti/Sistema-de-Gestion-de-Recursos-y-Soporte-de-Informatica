@@ -21,22 +21,3 @@ btnCerrar.addEventListener("click", function () {
 
     btnMenu.style.display = "flex";
 });
-
-btnCerrar.style.display ="none";
-
-
-
-function comprobarPantalla() {
-    if (window.innerWidth > 1046) {
-        btnMenu.style.display = "none";
-        btnCerrar.style.display = "none";
-        menu.classList.remove("activo");
-    } else {
-        if (btnCerrar.style.display == "none"){
-            btnMenu.style.display = "flex";
-        }
-    }
-}
-
-comprobarPantalla();
-window.addEventListener("resize", comprobarPantalla);

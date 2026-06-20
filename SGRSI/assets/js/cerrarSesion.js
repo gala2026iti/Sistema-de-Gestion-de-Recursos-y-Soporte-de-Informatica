@@ -4,6 +4,6 @@ btnSalir.addEventListener("click", () => {
     sessionStorage.setItem("usuario", "")
 })
 
-// esto es para limpiar la memoria del usuario que inició sesión antes
-// sin esto, la info del usuario queda guardada en la memoria incluso
-// despues de cerrar sesión
+// Esto es para limpiar la memoria del usuario que inició sesión antes
+// Sin esto, la info del usuario queda guardada en la memoria incluso
+// Despues de cerrar sesión
