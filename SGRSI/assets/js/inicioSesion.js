@@ -1,8 +1,26 @@
+<<<<<<< HEAD
 // VARIABLES
 const cedula = document.getElementById('cedula')
 const clave = document.getElementById('clave')
+=======
+>>>>>>> marin
 const form = document.getElementById('formInicio')
-const rol = document.getElementById('rol')
+
+const cargarUsuarios = () => {
+    const datos = localStorage.getItem('usuarios')
+    if (datos === null || datos === undefined || datos === "") {
+        return []
+    }
+    return JSON.parse(datos)
+}
+
+const obtenerUsuario = (cedula) => {
+    return cargarUsuarios().find(u => u.usuario === cedula)
+}
+
+const usuarioExistente = (cedula) => {
+    return obtenerUsuario(cedula) !== undefined
+}
 
 let usuarios = localStorage.getItem("usuarios")
 if(usuarios === null || usuarios === undefined || usuarios === "") {
@@ -29,9 +47,9 @@ const obtenerUsuario = (cedula) => {
 
 // EVENTOS
 form.addEventListener("submit", function(e){
-
     e.preventDefault()
 
+<<<<<<< HEAD
     const usuarioLocal = {
         cedula: cedula.value.trim(),
         clave: clave.value.trim(),
@@ -78,3 +96,48 @@ if(usuarioLocal.cedula == 12345678 && usuarioLocal.clave === "adminITI"){ // Rol
     }
 }
 })
+=======
+    const inputCedula = document.getElementById('cedula').value.trim()
+    const inputClave = document.getElementById('clave').value.trim()
+
+    const usuarioLocal = {
+        cedula: inputCedula,
+        clave: inputClave,
+        rol: ""
+    }
+
+    if (inputCedula === "12345678" && inputClave === "adminITI") {
+        usuarioLocal.rol = "administrador"
+        localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
+        window.location.href = "homeAdmin.html"
+    } else {
+        if (usuarioExistente(inputCedula)) {
+            const usuarioLogueado = obtenerUsuario(inputCedula)
+
+            if (usuarioLogueado.clave === inputClave) {
+                if (usuarioLogueado.activo) {
+                    
+                    usuarioLocal.rol = usuarioLogueado.rol
+                    localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
+
+                    if (usuarioLogueado.rol === "administrador") {
+                        window.location.href = "homeAdmin.html"
+                    } else if (usuarioLogueado.rol === "docente") {
+                        window.location.href = "homeDocente.html"
+                    } else if (usuarioLogueado.rol === "tecnico") {
+                        window.location.href = "homeAsistente.html"
+                    } else if (usuarioLogueado.rol === "direccion") {
+                        window.location.href = "homeDirector.html"
+                    }
+                } else {
+                    alert("Usuario no disponible")
+                }
+            } else {
+                alert("Usuario o Contraseña incorrectos")
+            }
+        } else {
+            alert("Usuario o Contraseña incorrectos")
+        }
+    }
+})
+>>>>>>> marin
