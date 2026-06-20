@@ -38,14 +38,14 @@ form.addEventListener("submit", function(e){
         rol: rol.value
     }
 
-    sessionStorage.setItem("usuario", JSON.stringify(usuarioLocal));
-
-
 if(usuarioLocal.cedula == 12345678 && usuarioLocal.clave === "adminITI"){ // Rol administrador debug
 // no creen cuentas con esta cedula, no va a funcionar por la prioridad debug
 // no retes al sistema, capaz algun dia se revela y acaba con el mundo
 
     usuarioLocal.rol = "administrador"
+
+    localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
+
     window.location.href = "homeAdmin.html"
 }  else { // verificacion de usuario añadido al sistema manualmente por la cuenta de admin arriba o por algun otro admin
     if(usuarioExistente(usuarioLocal.cedula)){
@@ -53,6 +53,7 @@ if(usuarioLocal.cedula == 12345678 && usuarioLocal.clave === "adminITI"){ // Rol
 
       if(String(usuarioLogueado.clave) === String(usuarioLocal.clave)){ //los pongo en string para evitar bugs de comparacion
         if(usuarioLogueado.activo){
+
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 
       if(usuarioLogueado.rol === "administrador"){
