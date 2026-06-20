@@ -15,41 +15,48 @@
   <header class="d-flex justify-content-center align-items-center py-4">
     <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
   </header>
-
   <nav class="navbarSGRSI">
-        <section class="nav-container">
-            <section class="nav-primera-fila">
-                <button class="btn-menu" id="btn-menu">☰</button>
-                <button class="btn-cerrar" id="btn-cerrar">✖</button>
-            </section>
-                            <ul class="nav-opciones-sistema">
-                <li><a id="cerrarSesion">Cerrar Sesion</a></li>
-                </ul>
-            </section>
-            </nav>
+    <section class="nav-container">
+      <section class="nav-primera-fila">
+        <button class="btn-menu" id="btn-menu">☰</button>
+        <button class="btn-cerrar" id="btn-cerrar">✖</button>
+      </section>
+      <ul class="nav-menu">
+        <li><a href="homeDocente.html" id="btnIncidencias">Registro de incidencias</a></li>
+        <li><a href="pagsolicitudes.html" id="btnServicios">Solicitud de servicios</a></li>
+      </ul>
+      <ul class="nav-opciones-sistema">
+        <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+      </ul>
+    </section>
+  </nav>
 
-            
+
 
   <main class="d-flex flex-column align-items-center justify-content-center py-5 px-3">
-    
+
     <section class="text-center mb-4">
       <h2 class="fw-bold texto-azul mb-3">Solicitud de servicio</h2>
-      <p class="text-muted mb-1 fs-6">Aquí podrás hacer solicitudes en el caso de precisar ayuda de administración con la planificación o preparación de clases.</p>
+      <p class="text-muted mb-1 fs-6">Aquí podrás hacer solicitudes en el caso de precisar ayuda de administración con
+        la planificación o preparación de clases.</p>
       <p class="text-danger fw-semibold small">Le pedimos por favor hacerlo con un tiempo de anticipación adecuado.</p>
     </section>
 
     <section class="Tarjeta-login card p-4 shadow border-0 w-100">
       <form action="" method="get" id="formSolicitud">
         <fieldset class="border-0 p-0 m-0">
-          
+
           <div class="mb-3 text-start">
             <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
-            <input type="text" id="asunto" class="form-control form-control-lg" placeholder="Ej: Instalación de NetBeans" required>
+            <input type="text" id="asunto" class="form-control form-control-lg"
+              placeholder="Ej: Instalación de NetBeans" required>
           </div>
 
           <div class="mb-3 text-start">
             <label for="Area" class="form-label fw-semibold texto-azul-dark">Descripción:</label>
-            <textarea name="Area" id="Area" class="form-control" placeholder="Ej: Solicito que las PC del Laboratorio 1 tengan instalado NetBeans" rows="4" required></textarea>
+            <textarea name="Area" id="Area" class="form-control"
+              placeholder="Ej: Solicito que las PC del Laboratorio 1 tengan instalado NetBeans" rows="4"
+              required></textarea>
           </div>
 
           <div class="mb-4 text-start">
@@ -59,7 +66,7 @@
 
           <div class="mb-4 text-start">
             <label for="hora" class="form-label fw-semibold texto-azul-dark">Hora:</label>
-            <input type="time"  id="hora" class="form-control form-control-lg" placeholder="Ej: 11:35" required>
+            <input type="time" id="hora" class="form-control form-control-lg" placeholder="Ej: 11:35" required>
           </div>
 
         </fieldset>
@@ -76,7 +83,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/btn-menu-celular.js"></script>
   <script src="../assets/js/cerrarSesion.js"></script>
-      <script src="../assets/js/verificarSesion.js"></script>
+  <script src="../assets/js/verificarSesion.js"></script>
 
 </body>
 
