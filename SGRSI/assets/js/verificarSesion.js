@@ -14,8 +14,17 @@ const buscarUsuarioStorage = (cedula) => {
 
 const cierreSesion = (mensaje) => {
     alert(mensaje)
+    
+    // se corrige la ruta de salida segun donde este parado el usuario
+    const urlActual = window.location.pathname //obtiene la ruta donde se ejecuta el js
+    let rutaSalida = "index.html"
+
+    if (urlActual.includes("administracion-tecnico") || urlActual.includes("direccion")) {
+        rutaSalida = "../index.html"
+    }
+
     localStorage.setItem("usuario", "")
-    window.location.href = "index.html"
+    window.location.href = rutaSalida
 }
 
 const verificarAcceso = () => {
@@ -29,9 +38,9 @@ const verificarAcceso = () => {
     const usuarioLocalJSON = JSON.parse(usuarioLocal)
     let usuarioReal
 
-// primero se verifica si el usuario es debug o no
+// prioridad del usuario debug
     if (String(usuarioLocalJSON.cedula) === "12345678" && String(usuarioLocalJSON.clave) === "adminITI") {
-// mas cosas de objetos json correspondientes al usuario debug
+        // simulacion del usuario real con los datos fijos de debug para que pueda acceder a su info en el futuro
         usuarioReal = {
             usuario: "12345678",
             clave: "adminITI",
@@ -39,7 +48,7 @@ const verificarAcceso = () => {
             activo: true
         }
     } else {
-// si el usuario no es el debug, busca al usuario dentro del alamcenamiento
+// busca en el almacenamiento local 
         usuarioReal = buscarUsuarioStorage(usuarioLocalJSON.cedula)
 
         if (!usuarioReal || !usuarioReal.activo) {
@@ -47,7 +56,7 @@ const verificarAcceso = () => {
             return ""
         }
 
-        if (usuarioReal.clave !== usuarioLocalJSON.clave) {
+        if (String(usuarioReal.clave) !== String(usuarioLocalJSON.clave)) {
             cierreSesion("Error: Credenciales invalidas, se cerrará la sesión.")
             return ""
         }
