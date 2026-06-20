@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
+  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tickets registrados</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
-  <link rel="stylesheet" href="../assets/css/tecnico/ticketsRegistrados.css">
+  <link rel="stylesheet" href="../assets/css/administracion-tecnico/ticketsRegistrados.css">
 </head>
 
 <body>
@@ -24,22 +24,22 @@
           <a href="">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
             <li><a href="homeAdmin.html">Tickets registrados</a></li>
-            <li><a href="administrador/a-TicketsPersonales.html">Tickets asignados</a></li>
+            <li><a href="administracion-tecnico/ticketsPersonales.html">Tickets asignados</a></li>
           </ul>
         </li>
         <li class="desplegable">
           <a href="">Gestion de prestamos 🡻</a>
           <ul class="desplegable-menu">
-            <li><a href="administrador/a-TablaPrestamos.html">Tabla de prestamos</a></li>
-            <li><a href="administrador/a-InventarioEquipos.html">Inventario de equipos</a></li>
+            <li><a href="administracion-tecnico/tablaPrestamos.html">Tabla de prestamos</a></li>
+            <li><a href="administracion-tecnico/inventarioEquipos.html">Inventario de equipos</a></li>
           </ul>
         </li>
-        <li><a href="administrador/a-GestionSolicitudes.html">Gestion de solicitudes</a></li>
+        <li><a href="administracion-tecnico/gestionSolicitudes.html">Gestion de solicitudes</a></li>
                   <li class="desplegable pe-3">
                     <a href="">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="administrador/a-GestionUsuarios.html">Gestion de usuarios</a></li>
-                        <li><a href="administrador/a-InventarioEquipos.html">Gestion de inventario de equipos</a></li>
+                        <li><a href="administracion-tecnico/gestionUsuarios.html">Gestion de usuarios</a></li>
+                        <li><a href="administracion-tecnico/inventarioEquipos.html">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
       </ul>
@@ -50,7 +50,7 @@
   </nav>
 
   <main class="container-fluid px-0 py-3">
-    <a href="administrador/a-HistorialTickets.html" class="btn btn-primary">Historial de tickets</a>
+    <a href="administracion-tecnico/historialTickets.html" class="btn btn-primary">Historial de tickets</a>
     <h2 class="centro mt-3 text-primary">Tickets notificados</h2>
     <span class="centro mb-4"> A continuación se muestran los tickets</span>
 
@@ -92,21 +92,21 @@
         </thead>
         <tbody>
           <tr>
-            <td><a href="administrador/a-detalleTicket.html" class="ticket-link">El monitor está dañado</a></td>
+            <td><a href="administracion-tecnico/detalleTicket.html" class="ticket-link">El monitor está dañado</a></td>
             <td>Hardware</td>
             <td class="text-success fw-bold">Ligera</td>
             <td>Creado por <u class="fw-bold">Maria Fernandez</u> el 24/5/26</td>
             <td><a href="" class="btn-asignar"> Asignar ticket </a></td>
           </tr>
           <tr>
-            <td><a href="" class="ticket-link">La pc no se conecta a la Red</a></td>
+            <td><a href="administracion-tecnico/detalleTicket.html" class="ticket-link">La pc no se conecta a la Red</a></td>
             <td>Red</td>
             <td class="text-warning fw-bold">Media</td>
             <td>Creado por <u class="fw-bold">Cristian Florado</u> el 23/5/26</td>
             <td><a href="" class="btn-asignar"> Asignar ticket </a></td>
           </tr>
           <tr>
-            <td><a href="" class="ticket-link">Ninguna app carga correctamente</a></td>
+            <td><a href="administracion-tecnico/detalleTicket.html" class="ticket-link">Ninguna app carga correctamente</a></td>
             <td>Software</td>
             <td class="text-danger fw-bold">Grave</td>
             <td>Creado por <u class="fw-bold">Lorena Hernandez</u> el 21/5/26</td>
@@ -122,7 +122,6 @@
   </footer>
 
   <script src="../assets/js/btn-menu-celular.js"></script>
-  <script src="../assets/js/controlDeRoles.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

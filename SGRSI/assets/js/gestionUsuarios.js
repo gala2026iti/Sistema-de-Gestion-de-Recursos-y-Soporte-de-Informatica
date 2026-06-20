@@ -25,29 +25,13 @@ const inputClave = document.getElementById("clave")
 const filtroRol = document.getElementById("filtroRol")
 const filtroEstado = document.getElementById("filtroEstado") 
 
+// esto ya no debe ir con verificacion ya que si no cumple se cierra sesion en auto
+const usuarioLocal = localStorage.getItem("usuario")
+const usuarioLocalJSON = JSON.parse(usuarioLocal)
+
 // sin la verificación de usuario en las tablas posteriores tira error
 // por eso no se debe saltear el inicio de sesion
 // la verificacion es para en la tabla de usuarios no puedas auto borrarte
-
-// version vieja, si no hay usuario no debe dejar pasar pero lo hace
-
-// const usuarioLocal = localStorage.getItem("usuario") 
-// if (usuarioLocal === null || usuarioLocal === undefined) {
-//     const usuarioLocalJSON = { usuario: "" }
-// } else {
-//     const usuarioLocalJSON = JSON.parse(usuarioLocal)
-// }
-
-// version nueva, va a ser incluida en un nuevo js en cada html
-
-// const usuarioLocal = localStorage.getItem("usuario")
-// if (usuarioLocal === null || usuarioLocal === undefined || usuarioLocal === "") {
-//     const usuarioLocalJSON = { usuario: "" }
-//     alert("Error: No hay usuario logueado")
-//     window.location.href = "index.html"
-// } else {
-//     const usuarioLocalJSON = JSON.parse(usuarioLocal)
-// }
 
 // FUNCIONES     
 
@@ -73,7 +57,7 @@ const modificarUsuario = (usuarioModificado) => {
     usuarioEditando = null 
 
     limpiarCampos() 
-    modalUsuario.classList.add("oculto") 
+    modalUsuario.classList.replace("d-flex", "d-none") 
 } 
 
 const verificarRol = (rol) => rol !== "" 
@@ -145,20 +129,20 @@ const actualizarTabla = () => {
             document.getElementById("clave").value = u.clave 
             document.getElementById("rol").value = u.rol 
 
-            modalUsuario.classList.remove("oculto") 
+            modalUsuario.classList.replace("d-none", "d-flex") 
         }) 
 
         const accionesFila = document.createElement("td") 
         accionesFila.appendChild(btnModificar) 
 
-        if (u.usuario !== usuarioLocalJSON.usuario) {
+        if (u.usuario !== usuarioLocalJSON.cedula) {
             if (u.activo) {
                 const btnDesactivar = document.createElement("button") 
                 btnDesactivar.textContent = "Desactivar" 
                 btnDesactivar.className = "btn btn-danger" 
                 btnDesactivar.addEventListener("click", () => {
                     if (confirm("¿Estás seguro de que deseas desactivar este usuario?")) {
-                        if (confirm("ESTE USUARIO DEJARÁ DE SER ACCESIBLE, ¿QUERÉS CONTINUAR?")) { // no quiero quejas sobre el español
+                        if (confirm("ESTE USUARIO DEJARÁ DE SER ACCESIBLE, ¿QUERÉS CONTINUAR?")) {
                             desactivarUsuario(u.usuario) 
                         }
                     }
@@ -193,7 +177,7 @@ const guardarUsuario = (usuario) => {
     actualizarUsuarios(usuarios) 
 
     alert("Usuario registrado con exito!") 
-    modalUsuario.classList.add("oculto") // ni idea de q hace esto, lo robe del js que daba funcionalidad a la ventana desplegable
+    modalUsuario.classList.replace("d-flex", "d-none") 
     limpiarCampos() 
 } 
 
@@ -204,7 +188,7 @@ const actualizarUsuarios = (usuarios) => {
 
 const cargarUsuarios = () => {
     const usuariosLocales = localStorage.getItem("usuarios") 
-    if(usuariosLocales === null){
+    if(usuariosLocales === null || usuariosLocales === "" || usuariosLocales === undefined){
         return []
     }
     else {
@@ -217,6 +201,7 @@ const limpiarCampos = () => {
 } 
 
 const mostrarClave = () => {
+    booleanMostrarClave = !booleanMostrarClave 
     if (booleanMostrarClave) {
         inputClave.type = "text" 
         btnMostrarClave.innerText = "Ocultar Contraseña" 
@@ -224,7 +209,6 @@ const mostrarClave = () => {
         inputClave.type = "password" 
         btnMostrarClave.innerText = "Mostrar Contraseña" 
     }
-    booleanMostrarClave = !booleanMostrarClave 
 } 
 
 // EVENTOS
@@ -237,15 +221,15 @@ formulario.addEventListener("submit", function (e) {
     const inputRol = document.getElementById("rol") 
 
     const usuario = {
-        usuario: inputUsuario.value,
-        nombre: inputNombre.value,
-        correo: inputCorreo.value,
-        clave: inputClave.value,
+        usuario: inputUsuario.value.trim(),
+        nombre: inputNombre.value.trim(),
+        correo: inputCorreo.value.trim(),
+        clave: inputClave.value.trim(),
         rol: inputRol.value,
         activo: true
     } 
 
-    if (modoEdicion) {  //la condición del js de López, donde se usaba bandera en la tabla para editar en la misma
+    if (modoEdicion) {
         modificarUsuario(usuario) 
     } else {
         if (usuarioExistente(usuario.usuario)) {
@@ -265,7 +249,7 @@ registrarUsuario.addEventListener("click", () => {
     usuarioEditando = null 
     limpiarCampos() 
     inputUsuario.readOnly = false 
-    modalUsuario.classList.remove("oculto") 
+    modalUsuario.classList.replace("d-none", "d-flex") 
 }) 
 
 cancelarUsuario.addEventListener("click", () => {
@@ -273,7 +257,7 @@ cancelarUsuario.addEventListener("click", () => {
     usuarioEditando = null 
     inputUsuario.readOnly = false 
     limpiarCampos() 
-    modalUsuario.classList.add("oculto") 
+    modalUsuario.classList.replace("d-flex", "d-none") 
 }) 
 
 btnMostrarClave.addEventListener("click", mostrarClave) 

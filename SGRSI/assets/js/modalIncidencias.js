@@ -5,50 +5,22 @@ let pcActual = "";
 const modal = document.getElementById("modal-incidencia");
 
 
-const btnCancelar =document.getElementById("btnCancelarModal");
+const btnCancelar = document.getElementById("btnCancelarModal");
 
 
 const btnAceptar = document.getElementById("btnAceptarModal");
 
-document
-    .querySelectorAll('input[value="incidencia"]')
-    .forEach(radio => {
-
-
+document.querySelectorAll('input[value="incidencia"]').forEach(radio => {
         radio.addEventListener("change", () => {
-
-
             const pc = radio.closest(".pc");
-
-
             pcActual = pc.querySelector("h3").textContent;
-
-
             document.getElementById("tipo").value = "";
-
-
             document.getElementById("asunto-modal").value = "";
-
-
             document.getElementById("persona-modal").value = "";
-
-
             document.getElementById("descripcion-modal").value = "";
-
-
-            document
-                .querySelectorAll('input[name="gravedad"]')
-                .forEach(radio => radio.checked = false);
-
-
+            document.querySelectorAll('input[name="gravedad"]').forEach(radio => radio.checked = false);
             modal.classList.remove("oculto");
-
-
-        });
-
-
-    });
-
+        })})
 
 document
     .querySelectorAll('input[value="ok"]')
