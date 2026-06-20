@@ -1,5 +1,6 @@
 const form = document.getElementById('formInicio')
 
+// FUNCIONES
 const cargarUsuarios = () => {
     const datos = localStorage.getItem('usuarios')
     if (datos === null || datos === undefined || datos === "") {
@@ -16,29 +17,6 @@ const usuarioExistente = (cedula) => {
     return obtenerUsuario(cedula) !== undefined
 }
 
-let usuarios = localStorage.getItem("usuarios")
-if(usuarios === null || usuarios === undefined || usuarios === "") {
-    usuarios= []
-} else {
-    usuarios = JSON.parse(usuarios)
-}
-
-// FUNCIONES
-const usuarioExistente = (cedula) => {
-    let existe = false
-    usuarios.forEach(u => {
-        if(u.usuario === cedula){
-            existe = true
-        }
-    })
-    return existe
-}
-
-const obtenerUsuario = (cedula) => {
-    const usuarioObtenido = usuarios.find(u => u.usuario === cedula)
-    return usuarioObtenido
-}
-
 // EVENTOS
 form.addEventListener("submit", function(e){
     e.preventDefault()
@@ -52,11 +30,13 @@ form.addEventListener("submit", function(e){
         rol: ""
     }
 
+    // debug administrdor
     if (inputCedula === "12345678" && inputClave === "adminITI") {
         usuarioLocal.rol = "administrador"
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
         window.location.href = "homeAdmin.html"
     } else {
+        // inicio de sesion por usuario
         if (usuarioExistente(inputCedula)) {
             const usuarioLogueado = obtenerUsuario(inputCedula)
 
@@ -66,6 +46,7 @@ form.addEventListener("submit", function(e){
                     usuarioLocal.rol = usuarioLogueado.rol
                     localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 
+                    // redirecciones por rol
                     if (usuarioLogueado.rol === "administrador") {
                         window.location.href = "homeAdmin.html"
                     } else if (usuarioLogueado.rol === "docente") {
