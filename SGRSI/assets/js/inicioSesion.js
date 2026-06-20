@@ -16,6 +16,30 @@ const usuarioExistente = (cedula) => {
     return obtenerUsuario(cedula) !== undefined
 }
 
+let usuarios = localStorage.getItem("usuarios")
+if(usuarios === null || usuarios === undefined || usuarios === "") {
+    usuarios= []
+} else {
+    usuarios = JSON.parse(usuarios)
+}
+
+// FUNCIONES
+const usuarioExistente = (cedula) => {
+    let existe = false
+    usuarios.forEach(u => {
+        if(u.usuario === cedula){
+            existe = true
+        }
+    })
+    return existe
+}
+
+const obtenerUsuario = (cedula) => {
+    const usuarioObtenido = usuarios.find(u => u.usuario === cedula)
+    return usuarioObtenido
+}
+
+// EVENTOS
 form.addEventListener("submit", function(e){
     e.preventDefault()
 
@@ -47,7 +71,7 @@ form.addEventListener("submit", function(e){
                     } else if (usuarioLogueado.rol === "docente") {
                         window.location.href = "homeDocente.html"
                     } else if (usuarioLogueado.rol === "tecnico") {
-                        window.location.href = "homeAsistente.html"
+                        window.location.href = "homeAdmin.html"
                     } else if (usuarioLogueado.rol === "direccion") {
                         window.location.href = "homeDirector.html"
                     }
