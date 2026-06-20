@@ -5,15 +5,11 @@ futuros js con el mismo funcionamiento
 seran copias adaptadas al caso.
 */
 
-//  **********************
-//  |      VARIABLES     |
-//  **********************
+// VARIABLES 
 
 const formulario = document.getElementById("formSolicitud")
 
-//  **********************
-//  |      FUNCIONES     |
-//  **********************
+// FUNCIONES 
 
 const guardarSolicitud = (solicitud) => {
 
@@ -60,9 +56,7 @@ const fechaValida = (fecha) => {
     return fechaIngresada >= hoy;
 }
 
-//  **********************
-//  |      EVENTOS       |
-//  **********************
+// EVENTOS
 
 formulario.addEventListener("submit", function(e){
     e.preventDefault()

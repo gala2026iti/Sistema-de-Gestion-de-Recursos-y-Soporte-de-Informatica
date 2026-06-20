@@ -29,22 +29,32 @@
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
                         <li><a href="../homeAdmin.html">Tickets registrados</a></li>
-                        <li><a href="a-TicketsPersonales.html">Tickets asignados</a></li>
+                        <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="a-TablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="a-InventarioEquipos.html">Inventario de equipos</a></li>
+                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
                     </ul>
                 </li>
+<<<<<<< HEAD:SGRSI/paginaWeb/administrador/a-InventarioEquipos.html
                 <li><a href="a-GestionSolicitudes.html">Gestion de solicitudes</a></li>
                 <li class="desplegable-padding">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="a-GestionUsuarios.html">Gestion de usuarios</a></li>
                         <li><a href="a-GestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
+=======
+                <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
+                <li class="desplegable pe-3">
+                    <a href="">⚙ Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
+                   
+>>>>>>> marin:SGRSI/paginaWeb/administracion-tecnico/inventarioEquipos.html
                     </ul>
                 </li>
             </ul>
@@ -56,26 +66,24 @@
     <span class="centro mb-4">A continuacion se muestra el estado del inventario de los equipos</span>
     
     <section class="table-responsive w-100 m-0">
-      <table class="ajustar-td tabla-contenedor m-0">
+      <table class="ajustar-td tabla-contenedor m-0" id="tablaEquipos">
         <thead>
           <tr>
-            <th>Equipos</th>
+            <th>ID</th>
             <th>Estado</th>
+            <th>Prestamo</th>
+            <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Ceibalita 08672873715</td>
-            <td class="leve">10/10</td>
-          </tr>
-          <tr>
-            <td>Laptop robada</td>
-            <td class="grave">Prestado</td>
-          </tr>
-          <tr>
-            <td>XO</td>
-            <td class="grave">Irreparable</td>
-          </tr>
+            <td>123456</td>
+            <td>Activa</td>
+            <td>Juan Pablo (12312321)</td>
+            <td>
+              <button class="btn btn-warning">Ver Incidencias</button>
+            </td>
+            </tr>
         </tbody>
       </table>
     </section>
@@ -86,7 +94,7 @@
   </footer>
 
   <script src="../../assets/js/btn-menu-celular.js"></script>
-  <script src="../assets/js/controlDeRoles.js"></script>
+  <script src="../../assets/js/inventarioEquiposPrestamo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

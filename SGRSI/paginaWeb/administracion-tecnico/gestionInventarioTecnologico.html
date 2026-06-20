@@ -7,7 +7,7 @@
     <title>Gestión de Inventario Tecnológico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/administracion/gestionequipos.css">
+    <link rel="stylesheet" href="../../assets/css/administracion-tecnico/gestionequipos.css">
     <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
 </head>
 
@@ -30,22 +30,22 @@
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
                         <li><a href="../homeAdmin.html">Tickets registrados</a></li>
-                        <li><a href="a-TicketsPersonales.html">Tickets asignados</a></li>
+                        <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="a-TablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="a-InventarioEquipos.html">Inventario de equipos</a></li>
+                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
                     </ul>
                 </li>
                 <li><a href="a-GestionSolicitudes.html">Gestion de solicitudes</a></li>
                 <li class="desplegable-padding">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="a-GestionUsuarios.html">Gestion de usuarios</a></li>
-                        <li><a href="a-GestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
+                        <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
             </ul>
@@ -113,17 +113,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="a-HistorialEquipo.html"  class="fw-bold">EQ-2026-001</a></td>
-                        <td>Operativo</td>
-                        <td>22/1/2021</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Modificar</a>
-                            <a href="" class="btn btn-danger">Dar de baja</a>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </section>
 
@@ -133,7 +123,7 @@
             </button>
         </section>
 
-        <div id="modalEquipo" class="modal-incidencia oculto fixed-top w-100 h-100 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,0.5); z-index: 1050;">
+        <div id="modalEquipo" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
             
             <form id="formEquipo" class="bg-white p-4 rounded shadow w-100" style="max-width: 450px;">
                 <h2 class="text-primary border-bottom pb-3">Registro de PC</h2>
@@ -154,6 +144,13 @@
                             <option value="ninguna">Sin ubicacion</option>
                         </optgroup>
                     </select>
+
+                    <div id="contenedorLugar" class="d-none">
+                        <label class="form-label fw-semibold mb-2" for="posicionPC">
+                            Lugar de la PC (Número de banco):
+                        </label>
+                        <input class="form-control mb-3" type="number" id="posicionPC" min="1" placeholder="ej: 5">
+                    </div>
                 </fieldset>
 
                 <div class="d-flex justify-content-end gap-2 mt-3">
