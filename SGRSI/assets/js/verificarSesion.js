@@ -27,20 +27,33 @@ const verificarAcceso = () => {
     }
 
     const usuarioLocalJSON = JSON.parse(usuarioLocal)
-    const usuarioReal = buscarUsuarioStorage(usuarioLocalJSON.cedula)
+    let usuarioReal
 
-    if (!usuarioReal || !usuarioReal.activo) {
-        cierreSesion("Error: Usuario inexistente o inactivo.")
-        return ""
-    }
+// primero se verifica si el usuario es debug o no
+    if (String(usuarioLocalJSON.cedula) === "12345678" && String(usuarioLocalJSON.clave) === "adminITI") {
+// mas cosas de objetos json correspondientes al usuario debug
+        usuarioReal = {
+            usuario: "12345678",
+            clave: "adminITI",
+            rol: "administrador",
+            activo: true
+        }
+    } else {
+// si el usuario no es el debug, busca al usuario dentro del alamcenamiento
+        usuarioReal = buscarUsuarioStorage(usuarioLocalJSON.cedula)
 
-    if (usuarioReal.clave !== usuarioLocalJSON.clave) {
-        cierreSesion("Error: Credenciales invalidas, se cerrará la sesión.")
-        return ""
+        if (!usuarioReal || !usuarioReal.activo) {
+            cierreSesion("Error: Usuario inexistente o inactivo.")
+            return ""
+        }
+
+        if (usuarioReal.clave !== usuarioLocalJSON.clave) {
+            cierreSesion("Error: Credenciales invalidas, se cerrará la sesión.")
+            return ""
+        }
     }
 
     const atributoPagina = document.body.getAttribute("data-rol-permitido")
-
 
     const rolesPermitidos = atributoPagina.split(" ")
     // para saber que usuarios pueden entrar a x pagina, se agrega un valor nuevo en el body de cada pagina
