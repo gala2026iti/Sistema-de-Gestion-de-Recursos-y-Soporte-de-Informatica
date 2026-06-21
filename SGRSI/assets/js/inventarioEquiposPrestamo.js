@@ -21,14 +21,36 @@ const obtenerPrestamista = (idEquipo) => {
     }
 }
 
+const cargarSalonPrestamo = () => { //busca entre todos los salones el salon que sea tipo prestamo
+   const salones = localStorage.getItem("salones")
+    if (salones === null || salones === undefined || salones === "") {
+        return []
+    } else {
+        const salonesJSON = JSON.parse(salones)
+        return salonesJSON.find(s => s.tipo === "prestamo")
+    }
+}
+
 const cargarEquiposFiltrados = () => {
+let equiposEncontrados = []
+const salonPrestamo = cargarSalonPrestamo()
+const espacios = salonPrestamo.espacios
+
+espacios.forEach(espacio => {
+if(espacio !== null && espacio !== undefined && espacio !== "") {
+    equiposEncontrados.push(espacio)
+}
+})
+return equiposEncontrados
+}
+
+const obtenerEquipo = (idEquipo) => {
     const equipos = localStorage.getItem("equipos")
     if (equipos === null || equipos === undefined || equipos === "") {
         return []
     } else {
         const equiposJSON = JSON.parse(equipos)
-        return equiposJSON.filter(e => e.ubicacion === "prestamo")
-
+        return equiposJSON.find(e => e.id === idEquipo)
     }
 }
 
@@ -42,7 +64,7 @@ const actualizarTabla = () => {
         idEquipo.innerText = e.id
 
         const estadoEquipo = document.createElement("td")
-        estadoEquipo.innerText = e.activo ? "Activo" : "Inactivo"
+        estadoEquipo.innerText = obtenerEquipo(e.id).activo ? "Activo" : "Inactivo"
 
         const prestamistaEquipo = document.createElement("td")
         prestamistaEquipo.innerText = obtenerPrestamista(e.id)

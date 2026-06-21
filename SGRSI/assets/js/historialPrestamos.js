@@ -10,17 +10,27 @@ const cargarHistorial = () => {
         return JSON.parse(historial)
     }
 }
-
 const encontrarNombre = (cedula) => {
-    const usuarios = localStorage.getItem("usuarios")
-    if (usuarios === null || usuarios === undefined || usuarios === "") {
-        return "Desconocido"
-    } else {
-        const usuariosJSON = JSON.parse(usuarios)
-        const usuario = usuariosJSON.find(u => u.usuario === cedula)
-        return usuario.nombre
+
+    if (!cedula || cedula === "Desconocido") {
+        return "Desconocido";
     }
-}
+
+    const usuarios = localStorage.getItem("usuarios");
+    if (usuarios === null || usuarios === undefined || usuarios === "") {
+        return "Desconocido";
+    } else {
+        const usuariosJSON = JSON.parse(usuarios);
+        
+        const usuarioFiltrado = usuariosJSON.find(u => String(u.usuario) === String(cedula));
+        
+        if (usuarioFiltrado) {
+            return usuarioFiltrado.nombre;
+        } else {
+            return "Usuario no registrado ";
+        }
+    }
+};
 
 const mostrarHistorial = () => {
     contenedorGeneral.innerHTML = ""
@@ -32,6 +42,8 @@ const mostrarHistorial = () => {
         const personaPrestada = registro.afectado
         const nombrePersonaPrestada = registro.nombreAfectado
         const registradorID = registro.responsable
+                console.log(registradorID)
+
         const registradorNombre = encontrarNombre(registradorID)
 
         if (ultimaFecha !== registro.fecha) {

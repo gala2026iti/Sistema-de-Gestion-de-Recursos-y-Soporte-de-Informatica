@@ -10,7 +10,7 @@ const cargarUsuarios = () => {
 }
 
 const obtenerUsuario = (cedula) => {
-    return cargarUsuarios().find(u => String(u.usuario) === String(cedula))
+    return cargarUsuarios().find(u => u.usuario === cedula)
 }
 
 const usuarioExistente = (cedula) => {
@@ -25,7 +25,7 @@ form.addEventListener("submit", function (e) {
     const inputClave = document.getElementById('clave').value.trim()
 
     const usuarioLocal = {
-        cedula: inputCedula,
+        usuario: inputCedula,
         clave: inputClave,
         rol: ""
     }
@@ -39,19 +39,17 @@ form.addEventListener("submit", function (e) {
         if (usuarioExistente(inputCedula)) {
             const usuarioLogueado = obtenerUsuario(inputCedula)
 
-            if (String(usuarioLogueado.clave) === String(inputClave)) {
+            if (usuarioLogueado.clave === inputClave) {
                 
                 if (usuarioLogueado.activo) {
                     
                     usuarioLocal.rol = usuarioLogueado.rol
                     localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 
-                    if (usuarioLogueado.rol === "administrador") {
+                    if (usuarioLogueado.rol === "administrador" || usuarioLogueado.rol === "tecnico") {
                         window.location.href = "homeAdmin.html"
                     } else if (usuarioLogueado.rol === "docente") {
                         window.location.href = "homeDocente.html"
-                    } else if (usuarioLogueado.rol === "tecnico") {
-                        window.location.href = "homeAsistente.html"
                     } else if (usuarioLogueado.rol === "direccion") {
                         window.location.href = "homeDirector.html"
                     }

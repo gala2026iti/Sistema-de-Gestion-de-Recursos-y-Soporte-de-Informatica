@@ -11,113 +11,58 @@
 </head>
 
 <body data-rol-permitido="administrador tecnico">
-       <header class="d-flex justify-content-center align-items-center py-4">
+    <header class="d-flex justify-content-center align-items-center py-4">
         <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <nav class="navbarSGRSI">
-    <section class="nav-container">
-      <section class="nav-primera-fila">
-        <button class="btn-menu" id="btn-menu">☰</button>
-        <button class="btn-cerrar" id="btn-cerrar">✖</button>
-      </section>
-      <ul class="nav-menu">
-        <li class="desplegable">
-          <a href="">Gestión de tickets 🡻 </a>
-          <ul class="desplegable-menu">
-            <li><a href="../homeAdmin.html">Tickets registrados</a></li>
-            <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
-          </ul>
-        </li>
-        <li class="desplegable">
-          <a href="">Gestion de prestamos 🡻</a>
-          <ul class="desplegable-menu">
-            <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-            <li><a href="inventarioEquipos.html">Estado de equipos para prestamos</a></li>
-          </ul>
-        </li>
-        <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-        <li class="desplegable pe-3">
-          <a href="">⚙ Administracion y control 🡻</a>
-          <ul class="desplegable-menu">
-            <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
-            <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="nav-opciones-sistema">
-        <li><a id="cerrarSesion">Cerrar Sesion</a></li>
-      </ul>
-    </section>
-  </nav>
+        <section class="nav-container">
+            <section class="nav-primera-fila">
+                <button class="btn-menu" id="btn-menu">☰</button>
+                <button class="btn-cerrar" id="btn-cerrar">✖</button>
+            </section>
+            <ul class="nav-menu">
+                <li class="desplegable">
+                    <a href="">Gestión de tickets 🡻 </a>
+                    <ul class="desplegable-menu">
+                        <li><a href="../homeAdmin.html">Tickets registrados</a></li>
+                        <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
+                    </ul>
+                </li>
+                <li class="desplegable">
+                    <a href="">Gestion de prestamos 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.html">Estado de equipos para prestamos</a></li>
+                    </ul>
+                </li>
+                <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
+        <li class="desplegable pe-3" id="opcionesAdmin">
+                    <a href="">⚙ Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav-opciones-sistema">
+                <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
+        </section>
+    </nav>
 
     <main class="container-fluid px-4 py-4">
-
         <section class="mb-4 border-bottom pb-2">
             <h2 class="text-start mb-1 text-primary">Historial de Intervenciones</h2>
-            <span class="text-muted fs-6">Hoja de ruta y cambios cronológicos registrados sobre las incidencias
+            <span class="text-muted fs-6">Hoja de ruta y cambios cronológicos registrados sobre las incidencias</span>
         </section>
 
-        <section>
-            <span class="fw-bold">Intervenciones el 5 de Junio, 2026</span>
-            <ul class="historial-lista mt-2 mb-3">
-                <li class="historial-contenido d-flex justify-content-between align-items-center ">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold">Se arreglo el monitor de la PC2 del laboratorio 3 que estaba rosado, remplazando las led viejas por unas nuevas</span>
-                        <span class="text-muted">Enrique Martinez intervino hace 2 semanas</span>
-                    </div>
-                    <span class="badge bg-primary">#12</span>
-                </li>
-
-                <li class="historial-contenido d-flex justify-content-between align-items-center">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold">Se arreglo el monitor de la PC2 del laboratorio 3 que estaba rosado, remplazando las led viejas por unas nuevas</span>
-                        <span class="text-muted">Enrique Martinez intervino hace 2 semanas</span>
-                    </div>
-                    <span class="badge bg-primary">#12</span>
-
-                </li>
-            </ul>
-
-            <span class="fw-bold">Intervenciones el 5 de Junio, 2026</span>
-            <ul class="historial-lista mt-2 mb-3">
-                <li class="historial-contenido d-flex justify-content-between align-items-center">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold">Se arreglo el monitor de la PC2 del laboratorio 3 que estaba rosado, remplazando las led viejas por unas nuevas</span>
-                        <span class="text-muted">Enrique Martinez intervino hace 2 semanas</span>
-                    </div>
-                    <span class="badge bg-primary">#12</span>
-                </li>
-                <li class="historial-contenido d-flex justify-content-between align-items-center">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold">Se arreglo el monitor de la PC2 del laboratorio 3 que estaba rosado, remplazando las led viejas por unas nuevas</span>
-                        <span class="text-muted">Enrique Martinez intervino hace 2 semanas</span>
-                    </div>
-
-                    </div>
-                    <span class="badge bg-primary">#12</span>
-
-                </li>
-            </ul>
-
-            <span class="fw-bold">Intervenciones el 1 de Junio, 2026</span>
-            <ul class="historial-lista mt-2 mb-3">
-                <li class="historial-contenido d-flex justify-content-between align-items-center ">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold">Monitor rosado</span>
-                        <span class="text-muted">Enrique Martinez registro el ticket hace 3 semanas</span>
-                    </div>
-                    <span class="badge bg-primary">#12</span>
-                </li>
-            </ul>
-
-
-        </section>
+        <section id="contenedor-historial">
+            </section>
 
         <section class="mt-4">
-            <a href="gestionInventarioTecnologico.html" class="btn-asignar">&larr; Volver al Inventario</a>
+            <a href="../homeAdmin.html" class="btn-asignar"> Volver</a>
         </section>
-
     </main>
 
     <footer>
@@ -125,9 +70,10 @@
     </footer>
 
     <script src="../../assets/js/btn-menu-celular.js"></script>
-        <script src="../../assets/js/verificarSesion.js"></script>
-          <script src="../../assets/js/cerrarSesion.js"></script>
-
+    <script src="../../assets/js/verificarSesion.js"></script>
+    <script src="../../assets/js/cerrarSesion.js"></script>
+    <script src="../../assets/js/historialTickets.js"></script>
+        <script src="../assets/js/ocultarAdminDeTecnico.js"></script>
 
 </body>
 

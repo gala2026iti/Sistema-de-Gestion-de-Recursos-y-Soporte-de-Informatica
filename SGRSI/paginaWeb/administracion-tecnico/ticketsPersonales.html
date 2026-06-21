@@ -11,7 +11,7 @@
 </head>
 
 <body data-rol-permitido="administrador tecnico">
-     <header class="d-flex justify-content-center align-items-center py-4">
+  <header class="d-flex justify-content-center align-items-center py-4">
     <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
   </header>
 
@@ -37,7 +37,7 @@
           </ul>
         </li>
         <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-        <li class="desplegable pe-3">
+        <li class="desplegable pe-3" id="opcionesAdmin">
           <a href="">⚙ Administracion y control 🡻</a>
           <ul class="desplegable-menu">
             <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
@@ -53,50 +53,38 @@
 
   <main class="container-fluid py-4 px-0">
     <h2 class="centro mt-2 text-primary">Tickets personales</h2>
-    <span class="centro mb-4 text-muted">Esto son tus tickets y el estado en que se encuentran</span>
+    <span class="centro mb-4 text-muted">Estos son tus tickets y el estado en que se encuentran</span>
     
     <section class="espacio-arriba-tabla d-flex flex-row justify-content-start justify-content-md-center align-items-start gap-4 pb-3 overflow-x-auto w-100 px-3">
        
         <table class="kanban-columna text-center pb-3 w-100">
           <thead>
             <tr>
-              <th class="bg-danger text-white py-3 fs-5 rounded-top">Pendiente &rarr;</th>
+              <th class="bg-danger text-white py-3 fs-5 rounded-top">Pendiente</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td class="ticket-marcado">Letras de teclado atascadas</td></tr>
-            <tr><td class="ticket-marcado">Mouse sin lector</td></tr>
-            <tr><td class="ticket-marcado">No funciona NetBeans</td></tr>
-            <tr><td class="ticket-marcado">No tiene visual studio</td></tr>
-          </tbody>
+          <tbody id="columna-pendiente">
+            </tbody>
         </table>
 
         <table class="kanban-columna pb-3 text-center w-100">
           <thead>
             <tr>
-              <th class="bg-warning text-white py-3 fs-5 rounded-top">&larr; En progreso &rarr;</th>
+              <th class="bg-warning text-white py-3 fs-5 rounded-top">En progreso</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td class="ticket-marcado"><a href="detalle-ticket.html" class="text-decoration-none text-dark d-block w-100">Monitor roto</a></td></tr>
-            <tr><td class="ticket-marcado">La PC salio corriendo</td></tr>
-            <tr><td class="ticket-marcado">El teclado no tiene teclas</td></tr>
-            <tr><td class="ticket-marcado">No tiene mouse ni teclado</td></tr>
-          </tbody>
+          <tbody id="columna-en-proceso">
+            </tbody>
         </table>
 
         <table class="kanban-columna pb-3 text-center w-100">
           <thead>
             <tr>
-              <th class="bg-success text-white py-3 fs-5 rounded-top">&larr; Cerrado</th>
+              <th class="bg-success text-white py-3 fs-5 rounded-top">Cerrado / Resuelto</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td class="ticket-marcado">No funciona el sistema operativo</td></tr>
-            <tr><td class="ticket-marcado">Esta todo de cabeza</td></tr>
-            <tr><td class="ticket-marcado">el mouse esta pegado al monitor</td></tr>
-            <tr><td class="ticket-marcado">La pc tiene instalado windowsXP</td></tr>
-          </tbody>
+          <tbody id="columna-resuelto">
+            </tbody>
         </table>
 
     </section>
@@ -109,7 +97,9 @@
   <script src="../../assets/js/btn-menu-celular.js"></script>
   <script src="../../assets/js/cerrarSesion.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="../../assets/js/verificarSesion.js"></script>
+  <script src="../../assets/js/verificarSesion.js"></script>
+  <script src="../../assets/js/ticketsPersonales.js"></script>
+      <script src="../assets/js/ocultarAdminDeTecnico.js"></script>
 
 </body>
  

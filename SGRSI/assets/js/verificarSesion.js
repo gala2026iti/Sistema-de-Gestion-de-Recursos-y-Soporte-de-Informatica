@@ -39,7 +39,7 @@ const verificarAcceso = () => {
     let usuarioReal
 
 // prioridad del usuario debug
-    if (String(usuarioLocalJSON.cedula) === "12345678" && String(usuarioLocalJSON.clave) === "adminITI") {
+    if (String(usuarioLocalJSON.usuario) === "12345678" && String(usuarioLocalJSON.clave) === "adminITI") {
         // simulacion del usuario real con los datos fijos de debug para que pueda acceder a su info en el futuro
         usuarioReal = {
             usuario: "12345678",
@@ -49,14 +49,16 @@ const verificarAcceso = () => {
         }
     } else {
 // busca en el almacenamiento local 
-        usuarioReal = buscarUsuarioStorage(usuarioLocalJSON.cedula)
+        usuarioReal = buscarUsuarioStorage(usuarioLocalJSON.usuario)
 
         if (!usuarioReal || !usuarioReal.activo) {
+            localStorage.setItem("usuario", "")
             cierreSesion("Error: Usuario inexistente o inactivo.")
             return ""
         }
 
         if (String(usuarioReal.clave) !== String(usuarioLocalJSON.clave)) {
+            localStorage.setItem("usuario", "")
             cierreSesion("Error: Credenciales invalidas, se cerrará la sesión.")
             return ""
         }
@@ -69,17 +71,22 @@ const verificarAcceso = () => {
     // no es muy seguro, pero algo es mejor que nada
     // y como se pueden guardar multiples valores, se obtiene como array
 
-    if (!rolesPermitidos.includes(usuarioReal.rol)) {
+if (!rolesPermitidos.includes(usuarioReal.rol)) {
         alert("No podes ingresar acá, vas a ser llevado a tu espacio.")
         
-        if (usuarioReal.rol === "administrador") {
-            window.location.href = "homeAdmin.html"
+        const urlActual = window.location.pathname
+        let prefijoRuta = "" //si está en la raiz de paginaweb se queda vacío
+
+        if (urlActual.includes("administracion-tecnico") || urlActual.includes("direccion")) {
+            prefijoRuta = "../" //sube un nivel si esta adentro de una carpeta
+        }
+
+        if (usuarioReal.rol === "administrador" || usuarioReal.rol === "tecnico") {
+            window.location.href = `${prefijoRuta}homeAdmin.html`
         } else if (usuarioReal.rol === "docente") {
-            window.location.href = "homeDocente.html"
-        } else if (usuarioReal.rol === "tecnico") {
-            window.location.href = "homeAdmin.html" 
+            window.location.href = `${prefijoRuta}homeDocente.html`
         } else if (usuarioReal.rol === "direccion") {
-            window.location.href = "homeDirector.html"
+            window.location.href = `${prefijoRuta}homeDirector.html`
         } else {
             cierreSesion("Error: Rol no reconocido por el sistema.")
         }

@@ -1,6 +1,3 @@
-// en gran parte se reciclo gestionUsuarios para este js, algunos nombres deben ser
-
-// VARIABLES
 const btnAbrirUbicaciones = document.getElementById("btn-abrir-ubicaciones")
 const btnCerrarUbicaciones = document.getElementById("btn-cerrar-ubicaciones")
 const barralateralUbicaciones = document.getElementById("barralateral-ubicaciones")
@@ -30,31 +27,144 @@ let modoEdicion = false
 let equipoEditando = null
 let filtroUbicacionActual = "todos"
 
-// FUNCIONES
-
-const cargarSalones = (tipo) => {
-    if(tipo === "laboratorios") {
-    const labs = localStorage.getItem("laboratorios")
-    if (labs === null || labs === "" || labs === undefined) { //las verificaciones son para que el programa no la quede al trabahar con null
-        return []
-    } else {
-        return JSON.parse(labs)
+const cargarTodosLosSalones = () => {
+    const data = localStorage.getItem("salones")
+    if (data === null || data === "" || data === undefined) {
+        const estructuraInicial = [
+            { tipo: "prestamo", id: "prestamo", espacios: [] }
+        ]
+        localStorage.setItem("salones", JSON.stringify(estructuraInicial))
+        return estructuraInicial
     }
-} else if (tipo === "talleres") {
-    const talleres = localStorage.getItem("talleres")
-    if (talleres === null || talleres === "" || talleres === undefined) {
-        return []
-    } else {
-        return JSON.parse(talleres)
-    }
-}
+    return JSON.parse(data)
 }
 
-const guardarSalones = (tipo, lista) => {
-    localStorage.setItem(tipo, JSON.stringify(lista))
+const guardarSalonesBase = (listaCompleta) => {
+    localStorage.setItem("salones", JSON.stringify(listaCompleta))
     actualizarListaSalones()
     actualizarSelectUbicaciones()
 }
+
+const cargarSalones = (tipo) => {
+    const todos = cargarTodosLosSalones()
+    const filtrados = []
+    for (let i = 0; i < todos.length; i++) {
+        if (todos[i].tipo === tipo) {
+            filtrados.push(todos[i])
+        }
+    }
+    return filtrados
+}
+
+const guardarSalones = (tipo, listaModificada) => {
+    const todos = cargarTodosLosSalones()
+    const resultadoUnificado = []
+
+    for (let i = 0; i < todos.length; i++) {
+        if (todos[i].tipo !== tipo) {
+            resultadoUnificado.push(todos[i])
+        }
+    }
+
+    for (let i = 0; i < listaModificada.length; i++) {
+        resultadoUnificado.push(listaModificada[i])
+    }
+
+    guardarSalonesBase(resultadoUnificado)
+}
+
+const obtenerUbicacionDeEquipo = (idEquipo) => {
+    const todos = cargarTodosLosSalones()
+    for (let i = 0; i < todos.length; i++) {
+        const salon = todos[i]
+        
+        if (salon.tipo === "laboratorios" || salon.tipo === "talleres") {
+            for (let j = 0; j < salon.espacios.length; j++) {
+                if (salon.espacios[j] === idEquipo) {
+                    let prefijo = salon.tipo === "laboratorios" ? "Laboratorio " : "Taller "
+                    return {
+                        tipo: salon.tipo,
+                        nombreUbicacion: prefijo + salon.id,
+                        posicion: j + 1,
+                        prestado: false
+                    }
+                }
+            }
+        } else if (salon.tipo === "prestamo") {
+            for (let j = 0; j < salon.espacios.length; j++) {
+                const item = salon.espacios[j]
+                if (item && item.id === idEquipo) {
+                    return {
+                        tipo: "prestamo",
+                        nombreUbicacion: "prestamo",
+                        posicion: 0,
+                        prestado: item.prestado
+                    }
+                }
+            }
+        }
+    }
+    return {
+        tipo: "ninguna",
+        nombreUbicacion: "ninguna",
+        posicion: 0,
+        prestado: false
+    }
+}
+
+const desvincularEquipoDeSalones = (idEquipo, listaSalones) => {
+    for (let i = 0; i < listaSalones.length; i++) {
+        const salon = listaSalones[i]
+        if (salon.tipo === "laboratorios" || salon.tipo === "talleres") {
+            for (let j = 0; j < salon.espacios.length; j++) {
+                if (salon.espacios[j] === idEquipo) {
+                    salon.espacios[j] = null
+                }
+            }
+            while (salon.espacios.length > 0 && salon.espacios[salon.espacios.length - 1] === null) {
+                salon.espacios.pop()
+            }
+        } else if (salon.tipo === "prestamo") {
+            const nuevosPrestamos = []
+            for (let j = 0; j < salon.espacios.length; j++) {
+                if (salon.espacios[j].id !== idEquipo) {
+                    nuevosPrestamos.push(salon.espacios[j])
+                }
+            }
+            salon.espacios = nuevosPrestamos
+        }
+    }
+}
+
+const asignarEquipoAUbicacion = (idEquipo, nuevaUbicacion, posicionDeseada) => {
+    const todos = cargarTodosLosSalones()
+    
+    desvincularEquipoDeSalones(idEquipo, todos)
+
+    if (nuevaUbicacion !== "ninguna" && nuevaUbicacion !== "prestamo") {
+        for (let i = 0; i < todos.length; i++) {
+            const salon = todos[i]
+            let nombreUbicacionCompleta = (salon.tipo === "laboratorios" ? "Laboratorio " : "Taller ") + salon.id
+            
+            if (nombreUbicacionCompleta === nuevaUbicacion) {
+                const indiceDestino = parseInt(posicionDeseada) - 1
+                while (salon.espacios.length <= indiceDestino) {
+                    salon.espacios.push(null)
+                }
+                salon.espacios[indiceDestino] = idEquipo
+            }
+        }
+    } else if (nuevaUbicacion === "prestamo") {
+        for (let i = 0; i < todos.length; i++) {
+            if (todos[i].tipo === "prestamo") {
+                todos[i].espacios.push({ id: idEquipo, prestado: false })
+            }
+        }
+    }
+
+    guardarSalonesBase(todos)
+}
+
 
 const agregarSalon = (tipo) => {
     const salones = cargarSalones(tipo)
@@ -78,6 +188,7 @@ const agregarSalon = (tipo) => {
     }
 
     const nuevoSalon = {
+        tipo: tipo,
         id: nuevoId,
         espacios: []
     }
@@ -112,14 +223,7 @@ const eliminarSalon = (tipo, id) => {
 
             guardarSalones(tipo, salonesFiltrados)
 
-            let nombreUbicacionCompleta = ""
-            if (tipo === "laboratorios") {
-                nombreUbicacionCompleta = "Laboratorio " + id
-            } else {
-                nombreUbicacionCompleta = "Taller " + id
-            }
-            desvincularEquipos(nombreUbicacionCompleta)
-
+            let nombreUbicacionCompleta = tipo === "laboratorios" ? "Laboratorio " + id : "Taller " + id
             if (filtroUbicacionActual === nombreUbicacionCompleta) {
                 filtroUbicacionActual = "todos"
             }
@@ -220,58 +324,51 @@ const guardarEquiposBase = (lista) => {
     actualizarTabla()
 }
 
-const posicionEstaOcupada = (salonNombre, posicion, listaEquipos, idActual) => {
-    for (let i = 0; i < listaEquipos.length; i++) {
-        if (listaEquipos[i].id !== idActual && listaEquipos[i].ubicacion === salonNombre && listaEquipos[i].posicion === parseInt(posicion)) {
-            return true
+const posicionEstaOcupada = (salonNombre, posicion, idActual) => {
+    const todos = cargarTodosLosSalones()
+    for (let i = 0; i < todos.length; i++) {
+        const salon = todos[i]
+        let nombreUbicacionCompleta = (salon.tipo === "laboratorios" ? "Laboratorio " : "Taller ") + salon.id
+        
+        if (nombreUbicacionCompleta === salonNombre) {
+            const indice = parseInt(posicion) - 1
+            if (indice >= 0 && indice < salon.espacios.length) {
+                const ocupante = salon.espacios[indice]
+                if (ocupante !== null && ocupante !== idActual) {
+                    return true
+                }
+            }
         }
     }
     return false
 }
 
-const obtenerPrimeraPosicionLibre = (salonNombre, listaEquipos) => {
+const obtenerPrimeraPosicionLibre = (salonNombre) => {
     if (salonNombre === "ninguna" || salonNombre === "prestamo") {
         return 0
     }
-    let posicionCandidata = 1
-    let encontrado = false
-    while (encontrado === false) {
-        let ocupado = false
-        for (let i = 0; i < listaEquipos.length; i++) {
-            if (listaEquipos[i].ubicacion === salonNombre && listaEquipos[i].posicion === posicionCandidata) {
-                ocupado = true
+    const todos = cargarTodosLosSalones()
+    for (let i = 0; i < todos.length; i++) {
+        const salon = todos[i]
+        let nombreUbicacionCompleta = (salon.tipo === "laboratorios" ? "Laboratorio " : "Taller ") + salon.id
+        
+        if (nombreUbicacionCompleta === salonNombre) {
+            for (let j = 0; j < salon.espacios.length; j++) {
+                if (salon.espacios[j] === null) {
+                    return j + 1
+                }
             }
-        }
-        if (ocupado === false) {
-            encontrado = true
-        } else {
-            posicionCandidata = posicionCandidata + 1
+            return salon.espacios.length + 1
         }
     }
-    return posicionCandidata
-}
-
-const desvincularEquipos = (nombreSalon) => {
-    const equipos = cargarEquipos()
-    for (let i = 0; i < equipos.length; i++) {
-        if (equipos[i].ubicacion === nombreSalon) {
-            equipos[i].ubicacion = "ninguna"
-            equipos[i].posicion = 0
-        }
-    }
-    guardarEquiposBase(equipos)
+    return 1
 }
 
 const removerDeSalonIndividual = (id) => {
-    const equipos = cargarEquipos()
-    for (let i = 0; i < equipos.length; i++) {
-        if (equipos[i].id === id) {
-            equipos[i].ubicacion = "ninguna"
-            equipos[i].posicion = 0
-            equipos[i].equipoPrestado = false
-        }
-    }
-    guardarEquiposBase(equipos)
+    const todos = cargarTodosLosSalones()
+    desvincularEquipoDeSalones(id, todos)
+    guardarSalonesBase(todos)
+    actualizarTabla()
 }
 
 const activarEquipo = (id) => {
@@ -295,16 +392,16 @@ const desactivarEquipo = (id) => {
 }
 
 const modificarEquipo = (equipoModificado) => {
+    asignarEquipoAUbicacion(equipoEditando, equipoModificado.ubicacion, equipoModificado.posicion)
+
     const equipos = cargarEquipos()
     for (let i = 0; i < equipos.length; i++) {
         if (equipos[i].id === equipoEditando) {
-            equipos[i].ubicacion = equipoModificado.ubicacion
-            equipos[i].posicion = equipoModificado.posicion
             equipos[i].ultimaIntervencion = equipoModificado.ultimaIntervencion
-            // CORREGIDO: No pisamos 'equipoPrestado' en la edición para no alterar el estado real del préstamo
         }
     }
     guardarEquiposBase(equipos)
+    
     modoEdicion = false
     equipoEditando = null
     modalEquipo.classList.replace("d-flex", "d-none")
@@ -344,12 +441,13 @@ const actualizarTabla = () => {
 
     for (let i = 0; i < equipos.length; i++) {
         const equipo = equipos[i]
+        const infoUbicacion = obtenerUbicacionDeEquipo(equipo.id)
+
         if (filtroUbicacionActual === "todos") {
             equiposFiltrados.push(equipo)
-        // CORREGIDO: El filtro evalúa por la ubicación del inventario ("prestamo"), mostrando todas las PCs asignadas allí
-        } else if (filtroUbicacionActual === "prestamo" && equipo.ubicacion === "prestamo") {
+        } else if (filtroUbicacionActual === "prestamo" && infoUbicacion.nombreUbicacion === "prestamo") {
             equiposFiltrados.push(equipo)
-        } else if (equipo.ubicacion === filtroUbicacionActual) {
+        } else if (infoUbicacion.nombreUbicacion === filtroUbicacionActual) {
             equiposFiltrados.push(equipo)
         }
     }
@@ -412,6 +510,7 @@ const actualizarTabla = () => {
 
     for (let i = 0; i < equiposFiltrados.length; i++) {
         const eq = equiposFiltrados[i]
+        const infoUbicacion = obtenerUbicacionDeEquipo(eq.id)
 
         const fila = document.createElement("tr")
 
@@ -421,19 +520,18 @@ const actualizarTabla = () => {
         const tdEstado = document.createElement("td")
         tdEstado.textContent = eq.activo ? "Activo" : "Inactivo"
 
-        // CORREGIDO: Muestra el estado del préstamo de manera descriptiva e independiente si es del almacén de préstamos
         const tdPrestamo = document.createElement("td")
-        if (eq.ubicacion === "ninguna") {
+        if (infoUbicacion.nombreUbicacion === "ninguna") {
             tdPrestamo.textContent = "Sin asignar"
-        } else if (eq.ubicacion === "prestamo") {
-            tdPrestamo.textContent = eq.equipoPrestado ? "Prestado" : "No prestado"
+        } else if (infoUbicacion.nombreUbicacion === "prestamo") {
+            tdPrestamo.textContent = infoUbicacion.prestado ? "Prestado" : "No prestado"
         } else {
             tdPrestamo.textContent = "En salón"
         }
 
         const tdFisica = document.createElement("td")
-        if (eq.ubicacion !== "ninguna" && eq.ubicacion !== "prestamo") {
-            tdFisica.textContent = eq.ubicacion + " - " + eq.posicion
+        if (infoUbicacion.nombreUbicacion !== "ninguna" && infoUbicacion.nombreUbicacion !== "prestamo") {
+            tdFisica.textContent = infoUbicacion.nombreUbicacion + " - " + infoUbicacion.posicion
         } else {
             tdFisica.textContent = "N/A"
         }
@@ -458,13 +556,13 @@ const actualizarTabla = () => {
             inputIDPC.readOnly = true
 
             const selectUbicacion = document.getElementById("ubicacion")
-            selectUbicacion.value = eq.ubicacion
+            selectUbicacion.value = infoUbicacion.nombreUbicacion
 
-            evaluarVisibilidadLugar(eq.ubicacion)
+            evaluarVisibilidadLugar(infoUbicacion.nombreUbicacion)
 
             const inputLugar = document.getElementById("posicionPC")
-            if (eq.ubicacion !== "ninguna" && eq.ubicacion !== "prestamo") {
-                inputLugar.value = eq.posicion
+            if (infoUbicacion.nombreUbicacion !== "ninguna" && infoUbicacion.nombreUbicacion !== "prestamo") {
+                inputLugar.value = infoUbicacion.posicion
             } else {
                 inputLugar.value = ""
             }
@@ -505,7 +603,7 @@ const actualizarTabla = () => {
         tdAcciones.appendChild(btnEstado)
         tdAcciones.appendChild(btnIncidencias)
 
-        if (eq.ubicacion !== "ninguna" && eq.ubicacion !== "prestamo") {
+        if (infoUbicacion.nombreUbicacion !== "ninguna" && infoUbicacion.nombreUbicacion !== "prestamo") {
             const btnQuitar = document.createElement("button")
             btnQuitar.textContent = "Quitar del salón"
             btnQuitar.className = "btn btn-secondary btn-sm"
@@ -530,7 +628,6 @@ const actualizarTabla = () => {
     }
 }
 
-// eso se encarga de ocultar o mostrar el contenedor del lugar cuando hay taller o laboratorio
 const evaluarVisibilidadLugar = (valorUbicacion) => {
     const contenedorLugar = document.getElementById("contenedorLugar")
     const inputLugar = document.getElementById("posicionPC")
@@ -571,12 +668,12 @@ formulario.addEventListener("submit", function (e) {
                 return
             }
 
-            if (posicionEstaOcupada(inputSalon.value, posicionFinal, equipos, inputIDPC.value)) {
+            if (posicionEstaOcupada(inputSalon.value, posicionFinal, inputIDPC.value)) {
                 alert("Error: El Lugar ingresado ya está ocupado por otra computadora.")
                 return
             }
         } else {
-            posicionFinal = obtenerPrimeraPosicionLibre(inputSalon.value, equipos)
+            posicionFinal = obtenerPrimeraPosicionLibre(inputSalon.value)
         }
     }
 
@@ -600,11 +697,10 @@ formulario.addEventListener("submit", function (e) {
             return
         }
 
-        const equipoData = { //la idea es variar con los nombres para evitar posibles conflictos
-            id: inputIDPC.value.trim(), //tambien se implementa trim para borrar posibles espacios antes de guardar la data en el almacenamiento local
-            ubicacion: inputSalon.value,
-            posicion: posicionFinal,
-            equipoPrestado: false, 
+        asignarEquipoAUbicacion(inputIDPC.value.trim(), inputSalon.value, posicionFinal)
+
+        const equipoData = {
+            id: inputIDPC.value.trim(),
             activo: true,
             incidencias: [],
             ultimaIntervencion: formatoFecha

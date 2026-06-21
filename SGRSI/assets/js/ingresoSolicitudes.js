@@ -1,85 +1,59 @@
-/* 
-El archivo ingresoSolicitudes.js fue el primer
-js creado para el manejo de forms y tablas,
-futuros js con el mismo funcionamiento
-seran copias adaptadas al caso.
-*/
+ // VARIABLES 
+const formulario = document.getElementById("formSolicitud");
 
-// VARIABLES 
-
-const formulario = document.getElementById("formSolicitud")
-
-// FUNCIONES 
-
-const guardarSolicitud = (solicitud) => {
-
-    const solicitudes = (cargarSolicitudes());
-    solicitudes.push(solicitud);
-    actualizarSolicitudes(solicitudes);
-
-    solicitud.id = longitudID()
-    alert("Solicitud registrada con Exito!")
-    limpiarCampos()
-
-}
-
-const actualizarSolicitudes = (solicitudes) => {
-    localStorage.setItem("solicitudes", JSON.stringify(solicitudes))
-}
-
+ // FUNCIONES 
 const cargarSolicitudes = () => {
     const solicitudesLocales = localStorage.getItem("solicitudes");
-    if (solicitudesLocales === null){
-        return []
-    }
+    if (!solicitudesLocales) return [];
     return JSON.parse(solicitudesLocales);
-}
+};
 
-const longitudID = () => {
+const guardarSolicitud = (solicitud) => {
     const solicitudes = cargarSolicitudes();
-    const longitud = solicitudes.length
-    return longitud + 1;
-}
+    solicitudes.push(solicitud);
+    localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
 
-const limpiarCampos = () => {
-    formulario.reset()
-}
+    alert("¡Solicitud registrada con éxito!");
+    formulario.reset();
+};
 
-const fechaValida = (fecha) => {
-    const [anio, mes, dia] = fecha.split("-").map(Number);
-
-    const fechaIngresada = new Date(anio, mes - 1, dia);
+const fechaValida = (fechaInput) => {
+    const fechaSeleccionada = new Date(fechaInput);
     const hoy = new Date();
-
-    hoy.setHours(0, 0, 0, 0);
-
-    return fechaIngresada >= hoy;
-}
+    
+    return fechaSeleccionada > hoy;
+};
 
 // EVENTOS
+formulario.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-formulario.addEventListener("submit", function(e){
-    e.preventDefault()
+    const entradaAsunto = document.getElementById("asunto");
+    const entradaDescripcion = document.getElementById("Area");
+    const entradaFecha = document.getElementById("fecha");
+    
+    const sesion = localStorage.getItem('usuario');
+    const usuario = sesion ? JSON.parse(sesion) : null;
+    const identificadorCreador = usuario ? (usuario.cedula || usuario.usuario || "Docente") : "Desconocido";
 
-const entradaAsunto = document.getElementById("asunto")
-const entradaDescripcion = document.getElementById("Area")
-const entradaFecha = document.getElementById("fecha")
-const usuario = JSON.parse(localStorage.getItem('usuario'))
+    const solicitudes = cargarSolicitudes();
+    const nuevoId = solicitudes.length > 0 ? solicitudes[solicitudes.length - 1].id + 1 : 1;
 
-const solicitud = {
-    id: longitudID(),
-    asunto: entradaAsunto.value,
-    descripcion: entradaDescripcion.value,
-    fecha: entradaFecha.value,
-    creador: usuario.cedula,
-    finalizada: false
-}
+    const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+    const fechaFormateada = new Date(entradaFecha.value).toLocaleDateString('es-ES', opcionesFecha);
 
-if(fechaValida(solicitud.fecha)){
+    const solicitud = {
+        id: nuevoId,
+        asunto: entradaAsunto.value.trim(),
+        descripcion: entradaDescripcion.value.trim(),
+        fecha: fechaFormateada,
+        creador: identificadorCreador,
+        finalizada: false
+    };
 
-    guardarSolicitud(solicitud)
-
-} else {
-    alert("Error: Fecha Invalida")
-}
-})
+    if (fechaValida(entradaFecha.value)) {
+        guardarSolicitud(solicitud);
+    } else {
+        alert("Error: La fecha y hora deben ser posteriores al momento actual.");
+    }
+});
