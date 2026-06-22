@@ -12,15 +12,6 @@ if (btnMenu && menu) {
     })
 }
 
-<<<<<<< HEAD
-if (btnCerrar && menu) {
-    btnCerrar.addEventListener("click", function () {
-        menu.classList.remove("activo")
-        btnCerrar.style.display = "none"
-        if (btnMenu) btnMenu.style.display = "flex"
-    })
-}
-=======
 const menu = document.querySelector(".nav-menu");
 
 btnMenu.addEventListener("click", function () {
@@ -59,4 +50,3 @@ function comprobarPantalla() {
 
 comprobarPantalla();
 window.addEventListener("resize", comprobarPantalla);
->>>>>>> guerra
