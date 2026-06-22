@@ -90,7 +90,7 @@ select {
     background-color: var(--azul-navbar);
     list-style: none;
     padding: 0;
-    margin-top: 0.7rem;
+    margin-top: 0.6rem;
     min-width: 12rem;
     border-radius: 0 0 8px 8px;
 }
