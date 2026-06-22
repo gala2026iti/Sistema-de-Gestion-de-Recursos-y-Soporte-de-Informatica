@@ -1,11 +1,4 @@
-// VARIABLES 
-
-// los modal diseñados en js separados seran insertados en un solo js
-// que contemple esa pagina
-
-// la estructura se tomo como referencia lo dicho por López, variables, funciones y al final eventos
-// pero mas al final deje lo que se debe ejecutar al cargar la pagina, como el cargar la tabla
-
+// VARIABLES
 let modoEdicion = false
 let usuarioEditando = null
 let booleanMostrarClave = false
@@ -25,19 +18,31 @@ const inputClave = document.getElementById("clave")
 const filtroRol = document.getElementById("filtroRol")
 const filtroEstado = document.getElementById("filtroEstado") 
 
-// esto ya no debe ir con verificacion ya que si no cumple se cierra sesion en auto
 const usuarioLocal = localStorage.getItem("usuario")
 const usuarioLocalJSON = JSON.parse(usuarioLocal)
 
-// sin la verificación de usuario en las tablas posteriores tira error
-// por eso no se debe saltear el inicio de sesion
-// la verificacion es para en la tabla de usuarios no puedas auto borrarte
-
 // FUNCIONES     
+const cargarUsuarios = () => {
+    const usuariosLocales = localStorage.getItem("usuarios") 
+    if (usuariosLocales === null || usuariosLocales === "" || usuariosLocales === undefined) {
+        return []
+    } else {
+        return JSON.parse(usuariosLocales)
+    }
+} 
 
 const usuarioExistente = (cedula) => {
     const usuarios = cargarUsuarios() 
     return usuarios.some(usuario => usuario.usuario === cedula) 
+} 
+
+const limpiarCampos = () => {
+    formulario.reset() 
+} 
+
+const actualizarUsuarios = (usuarios) => {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios)) 
+    actualizarTabla() 
 } 
 
 const modificarUsuario = (usuarioModificado) => {
@@ -80,6 +85,27 @@ const activarUsuario = (cedula) => {
         }
     }
     actualizarUsuarios(usuarios) 
+} 
+
+const guardarUsuario = (usuario) => {
+    const usuarios = cargarUsuarios() 
+    usuarios.push(usuario) 
+    actualizarUsuarios(usuarios) 
+
+    alert("Usuario registrado con exito") 
+    modalUsuario.classList.replace("d-flex", "d-none") 
+    limpiarCampos() 
+} 
+
+const mostrarClave = () => {
+    booleanMostrarClave = !booleanMostrarClave 
+    if (booleanMostrarClave) {
+        inputClave.type = "text" 
+        btnMostrarClave.innerText = "Ocultar Contraseña" 
+    } else {
+        inputClave.type = "password" 
+        btnMostrarClave.innerText = "Mostrar Contraseña" 
+    }
 } 
 
 const actualizarTabla = () => {
@@ -171,48 +197,9 @@ const actualizarTabla = () => {
     }) 
 } 
 
-const guardarUsuario = (usuario) => {
-    const usuarios = cargarUsuarios() 
-    usuarios.push(usuario) 
-    actualizarUsuarios(usuarios) 
-
-    alert("Usuario registrado con exito!") 
-    modalUsuario.classList.replace("d-flex", "d-none") 
-    limpiarCampos() 
-} 
-
-const actualizarUsuarios = (usuarios) => {
-    localStorage.setItem("usuarios", JSON.stringify(usuarios)) 
-    actualizarTabla() 
-} 
-
-const cargarUsuarios = () => {
-    const usuariosLocales = localStorage.getItem("usuarios") 
-    if(usuariosLocales === null || usuariosLocales === "" || usuariosLocales === undefined){
-        return []
-    }
-    else {
-        return JSON.parse(usuariosLocales)
-    }
-} 
-
-const limpiarCampos = () => {
-    formulario.reset() 
-} 
-
-const mostrarClave = () => {
-    booleanMostrarClave = !booleanMostrarClave 
-    if (booleanMostrarClave) {
-        inputClave.type = "text" 
-        btnMostrarClave.innerText = "Ocultar Contraseña" 
-    } else {
-        inputClave.type = "password" 
-        btnMostrarClave.innerText = "Mostrar Contraseña" 
-    }
-} 
+actualizarTabla()
 
 // EVENTOS
-
 formulario.addEventListener("submit", function (e) {
     e.preventDefault() 
 
@@ -238,7 +225,7 @@ formulario.addEventListener("submit", function (e) {
             if (verificarRol(usuario.rol)) {
                 guardarUsuario(usuario) 
             } else {
-                alert("Error: Rol inválido") 
+                alert("Error: Rol invalido") 
             }
         }
     }
@@ -257,11 +244,9 @@ cancelarUsuario.addEventListener("click", () => {
     usuarioEditando = null 
     inputUsuario.readOnly = false 
     limpiarCampos() 
-    modalUsuario.classList.replace("d-flex", "d-none") 
+    modalUsuario.classList.replace("d-none", "d-flex") 
 }) 
 
 btnMostrarClave.addEventListener("click", mostrarClave) 
 filtroRol.addEventListener("change", actualizarTabla) 
-filtroEstado.addEventListener("change", actualizarTabla) 
-
-actualizarTabla()
+filtroEstado.addEventListener("change", actualizarTabla)

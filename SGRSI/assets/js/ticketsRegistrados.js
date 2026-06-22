@@ -46,7 +46,7 @@ const registrarEnHistorialSistema = (descripcion, detalle) => {
     localStorage.setItem("registroTickets", JSON.stringify(listaHistorial))
 }
 
-const mapearFechaParaOrdenar = (stringFecha) => { //se tiene que separar la fecha sino el filtro de antiguedad no funca
+const mapearFechaParaOrdenar = (stringFecha) => {
     if (!stringFecha) return 0
     const partes = stringFecha.split("/")
     if (partes.length !== 3) return 0
@@ -77,7 +77,7 @@ const actualizarTablaTickets = () => {
         }
     })
 
-    for (let i = 0 ;i < ticketsFiltrados.length - 1 ;i++) { //organizar por fecha haciendo uso de un sistema de filtrado
+    for (let i = 0 ;i < ticketsFiltrados.length - 1 ;i++) {
         for (let j = 0; j < ticketsFiltrados.length - i - 1 ;j++) {
             const fechaA = mapearFechaParaOrdenar(ticketsFiltrados[j].fechaCreacion)
             const fechaB = mapearFechaParaOrdenar(ticketsFiltrados[j + 1].fechaCreacion)
@@ -119,9 +119,6 @@ const actualizarTablaTickets = () => {
         spanEstado.textContent = String(ticket.estado).toUpperCase()
         
         const estadoLimpio = String(ticket.estado).toLowerCase()
-        if (estadoLimpio === "pendiente") spanEstado.className = "badge bg-secondary text-wrap"
-        else if (estadoLimpio === "en proceso") spanEstado.className = "badge bg-info text-dark text-wrap"
-        else if (estadoLimpio === "resuelto") spanEstado.className = "badge bg-success text-wrap"
         tdEstado.appendChild(spanEstado)
 
         const tdCreacion = document.createElement("td")
@@ -136,19 +133,21 @@ const actualizarTablaTickets = () => {
         tdCreacion.appendChild(textoFecha)
 
         const tdAccion = document.createElement("td")
+        tdAccion.className = "d-flex gap-1"
+
         const btnAsignacion = document.createElement("button")
         
         let yaEstaAsignado = false
-        if (ticket.colaboradores && ticket.colaboradores.includes(idUsuarioActual)) { //verifica si la id del usuario esta en el array de colaboradores
+        if (ticket.colaboradores && ticket.colaboradores.includes(idUsuarioActual)) {
             yaEstaAsignado = true
         }
 
         if (yaEstaAsignado) {
             btnAsignacion.textContent = "Desasignarme"
-            btnAsignacion.className = "btn btn-sm btn-danger w-100 fw-semibold"
+            btnAsignacion.className = "btn btn-sm btn-danger fw-semibold flex-grow-1"
         } else {
             btnAsignacion.textContent = "Asignar ticket"
-            btnAsignacion.className = "btn btn-sm btn-primary w-100 btn-asignar fw-semibold"
+            btnAsignacion.className = "btn btn-sm btn-primary btn-asignar fw-semibold flex-grow-1"
         }
 
         btnAsignacion.addEventListener("click", () => {
@@ -177,7 +176,7 @@ const actualizarTablaTickets = () => {
                     }
 
                     detalleHistorial = `${idUsuarioActual} se desvinculó (Estado actual: ${ticketEncontrado.estado.toUpperCase()})`
-                    alert("Te has desvinculado de este ticket correctamente.")
+                    alert("Te desvinculaste de este ticket correctamente")
                 } else {
                     ticketEncontrado.colaboradores.push(idUsuarioActual)
                     
@@ -186,7 +185,7 @@ const actualizarTablaTickets = () => {
                     }
 
                     detalleHistorial = `${idUsuarioActual} se asignó al ticket (Pasó a En Proceso)`
-                    alert("Te has asignado al ticket con éxito.")
+                    alert("Te asignaste al ticket con exito")
                 }
 
                 guardarTicketsSistema(ticketsTotales)
@@ -194,7 +193,15 @@ const actualizarTablaTickets = () => {
             }
         })
 
+        const btnVerDetalle = document.createElement("button")
+        btnVerDetalle.textContent = "Ver"
+        btnVerDetalle.className = "btn btn-sm btn-secondary fw-semibold"
+        btnVerDetalle.addEventListener("click", () => {
+            window.location.href = `administracion-tecnico/detalleTicket.html?id=${ticket.id}`
+        })
+
         tdAccion.appendChild(btnAsignacion)
+        tdAccion.appendChild(btnVerDetalle)
 
         fila.appendChild(tdAsunto)
         fila.appendChild(tdTipo)
@@ -207,10 +214,10 @@ const actualizarTablaTickets = () => {
     })
 }
 
-// EVENTOS 
-filtroFecha.addEventListener("change", renderizarTablaTickets)
-filtroGravedad.addEventListener("change", renderizarTablaTickets)
-filtroClasificacion.addEventListener("change", renderizarTablaTickets)
-filtroEstado.addEventListener("change", renderizarTablaTickets)
+actualizarTablaTickets()
 
-renderizarTablaTickets()
+// EVENTOS
+filtroFecha.addEventListener("change", actualizarTablaTickets)
+filtroGravedad.addEventListener("change", actualizarTablaTickets)
+filtroClasificacion.addEventListener("change", actualizarTablaTickets)
+filtroEstado.addEventListener("change", actualizarTablaTickets)

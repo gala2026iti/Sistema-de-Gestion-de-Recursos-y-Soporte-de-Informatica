@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial del Equipo - SGRSI</title>
+    <title>Historial por Equipo - SGRSI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/historial.css">
@@ -37,7 +37,7 @@
                     </ul>
                 </li>
                 <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-        <li class="desplegable pe-3" id="opcionesAdmin">
+                <li class="desplegable pe-3" id="opcionesAdmin">
                     <a href="">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
@@ -53,15 +53,27 @@
 
     <main class="container-fluid px-4 py-4">
         <section class="mb-4 border-bottom pb-2">
-            <h2 class="text-start mb-1 text-primary">Historial de Intervenciones</h2>
-            <span class="text-muted fs-6">Hoja de ruta y cambios cronológicos registrados sobre las incidencias</span>
+            <h2 class="text-start mb-1 text-primary" id="titulo-historial-equipo">Historial de Incidencias</h2>
+            <span class="text-muted fs-6">Reportes y estados sobre el equipo seleccionado</span>
+        </section>
+        <section class="table-responsive w-100 m-0">
+            <table class="tabla-contenedor m-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Asunto / Incidencia</th>
+                        <th>Fecha Reporte</th>
+                        <th>Estado</th>
+                        <th>Gravedad</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoHistorialEquipo">
+                    </tbody>
+            </table>
         </section>
 
-        <section id="contenedor-historial">
-            </section>
-
         <section class="mt-4">
-            <a href="../homeAdmin.html" class="btn-asignar"> Volver</a>
+            <a href="javascript:history.back()" class="btn-asignar">Volver</a>
         </section>
     </main>
 
@@ -72,9 +84,8 @@
     <script src="../../assets/js/btn-menu-celular.js"></script>
     <script src="../../assets/js/verificarSesion.js"></script>
     <script src="../../assets/js/cerrarSesion.js"></script>
-    <script src="../../assets/js/historialTickets.js"></script>
-        <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
-
+    <script src="../../assets/js/historialPorEquipo.js"></script>
+    <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
 </body>
 
 </html>
