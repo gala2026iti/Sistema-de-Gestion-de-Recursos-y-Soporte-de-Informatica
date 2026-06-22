@@ -70,6 +70,7 @@ const mostrarHistorial = () => {
         spanDescripcion.className = "fw-bold text-dark"
         spanDescripcion.textContent = registro.asunto || registro.tipo
 
+
         const spanDetalle = document.createElement("span")
         spanDetalle.className = "text-muted small"
         spanDetalle.textContent = ` ${registro.gravedad} - ${registro.descripcion}`
