@@ -315,17 +315,48 @@ const actualizarTabla = () => {
         tdFallas.appendChild(document.createTextNode(fallas))
 
         const tdAcciones = document.createElement("td")
+        
         const btnEditar = document.createElement("button")
-        btnEditar.className = "btn btn-primary me-2"
+        btnEditar.className = "btn btn-primary btn-sm me-1"
         btnEditar.appendChild(document.createTextNode("Editar"))
         btnEditar.addEventListener("click", () => abrirModalParaEditar(eq))
+        tdAcciones.appendChild(btnEditar)
+
+        if (ubic.modo === "salon") {
+            const btnQuitar = document.createElement("button")
+            btnQuitar.className = "btn btn-warning btn-sm me-1"
+            btnQuitar.appendChild(document.createTextNode("Quitar del salón"))
+            btnQuitar.addEventListener("click", () => {
+                if (confirm(`¿Desea desvincular el dispositivo #${idReal} de su salón actual?`)) {
+                    const salones = cargarTodosLosSalones()
+                    salones.forEach(s => {
+                        if (s.espacios) {
+                            s.espacios = s.espacios.filter(item => {
+                                const idItem = item && typeof item === "object" ? (item.id || item.codigo) : item
+                                return String(idItem) !== String(idReal)
+                            })
+                        }
+                    })
+                    guardarTodosLosSalones(salones)
+                    actualizarTabla()
+                    alert("El equipo se removió del salón y quedó sin asignación.")
+                }
+            })
+            tdAcciones.appendChild(btnQuitar)
+        }
+
+        const btnVerIncidencias = document.createElement("button")
+        btnVerIncidencias.className = "btn btn-danger btn-sm me-1 text-white"
+        btnVerIncidencias.appendChild(document.createTextNode(`Ver Incidencias`))
+        btnVerIncidencias.addEventListener("click", () => {
+            window.location.href = `historialTickets.html?equipoId=${idReal}`
+        })
+        tdAcciones.appendChild(btnVerIncidencias)
 
         const btnEliminar = document.createElement("button")
-        btnEliminar.className = "btn btn-danger me-2"
+        btnEliminar.className = "btn btn-danger btn-sm"
         btnEliminar.appendChild(document.createTextNode("Eliminar"))
         btnEliminar.addEventListener("click", () => eliminarEquipoDelSistema(idReal))
-
-        tdAcciones.appendChild(btnEditar)
         tdAcciones.appendChild(btnEliminar)
 
         tr.appendChild(tdId)
