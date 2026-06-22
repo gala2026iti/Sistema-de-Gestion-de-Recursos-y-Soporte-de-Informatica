@@ -12,6 +12,7 @@ if (btnMenu && menu) {
     })
 }
 
+<<<<<<< HEAD
 if (btnCerrar && menu) {
     btnCerrar.addEventListener("click", function () {
         menu.classList.remove("activo")
@@ -19,3 +20,43 @@ if (btnCerrar && menu) {
         if (btnMenu) btnMenu.style.display = "flex"
     })
 }
+=======
+const menu = document.querySelector(".nav-menu");
+
+btnMenu.addEventListener("click", function () {
+
+    menu.classList.add("activo");
+
+    btnMenu.style.display = "none";
+
+    btnCerrar.style.display = "flex";
+});
+
+btnCerrar.addEventListener("click", function () {
+
+    menu.classList.remove("activo");
+
+    btnCerrar.style.display = "none";
+
+    btnMenu.style.display = "flex";
+});
+
+btnCerrar.style.display ="none";
+
+
+
+function comprobarPantalla() {
+    if (window.innerWidth > 1046) {
+        btnMenu.style.display = "none";
+        btnCerrar.style.display = "none";
+        menu.classList.remove("activo");
+    } else {
+        if (btnCerrar.style.display == "none"){
+            btnMenu.style.display = "flex";
+        }
+    }
+}
+
+comprobarPantalla();
+window.addEventListener("resize", comprobarPantalla);
+>>>>>>> guerra
