@@ -1,4 +1,3 @@
-// VARIABLES
 const formulario = document.getElementById("formPrestamo")
 const btnRegistrarPrestamo = document.getElementById("btnRegistrarPrestamo")
 const modalPrestamo = document.getElementById("modalPrestamo")
@@ -7,7 +6,6 @@ const opciones = document.getElementById("listaDispositivos")
 const tabla = document.getElementById("tablaPrestamos")
 const cuerpoTabla = tabla.querySelector("tbody")
 
-// FUNCIONES
 const obtenerCedulaOperadorActivo = () => {
     const usuario = localStorage.getItem("usuario")
     if (!usuario) return "Desconocido"
@@ -33,39 +31,13 @@ const cargarSalones = () => {
 const cargarEspacios = () => {
     const salones = cargarSalones()
     const salonPrestamos = salones.find(salon => 
-        String(salon.tipo).toLowerCase() === "prestamo" || String(salon.id) === "1"
+        String(salon.tipo).toLowerCase() === "prestamo"
     )
     
     if (salonPrestamos) {
-        return salonPrestamos.espacios || salonPrestamos.prestamos || []
+        return salonPrestamos.prestamos || salonPrestamos.espacios || []
     }
     return []
-}
-
-const cargarLista = () => {
-    const espacios = cargarEspacios()
-    
-    const equiposLibres = espacios.filter(e => {
-        const yaPrestado = e.prestado === true || e.prestado === "true"
-        return !yaPrestado
-    })
-
-    opciones.innerHTML = `<option value="" selected>Elegir equipo</option>`
-    
-    if (equiposLibres.length === 0) {
-        const opcionVacia = document.createElement("option")
-        opcionVacia.value = ""
-        opcionVacia.textContent = "No hay equipos disponibles"
-        opcionVacia.disabled = true
-        opciones.appendChild(opcionVacia)
-    } else {
-        equiposLibres.forEach((equipoLibre) => {
-            const opcion = document.createElement("option")
-            opcion.value = equipoLibre.id
-            opcion.textContent = `Equipo ID: ${equipoLibre.id}`
-            opciones.appendChild(opcion)
-        })
-    }
 }
 
 const cargarPrestamos = () => {
@@ -77,238 +49,180 @@ const cargarPrestamos = () => {
     }
 }
 
-const registrarAccion = (caso, responsable, afectado, nombreAfectado, idDispositivo) => {
-    const registros = localStorage.getItem("registrosPrestamos")
-    const registrosJSON = registros ? JSON.parse(registros) : []
+const guardarPrestamo = (prestamo) => {
+    const lista = cargarPrestamos()
+    lista.push(prestamo)
+    localStorage.setItem("prestamos", JSON.stringify(lista))
+}
 
-    const hoy = new Date()
-    const dia = String(hoy.getDate()).padStart(2, '0')
-    const mes = String(hoy.getMonth() + 1).padStart(2, '0')
-    const anio = hoy.getFullYear()
+const registrarAccion = (tipoAccion, operador, cedula, nombre, idEquipo) => {
+    const historial = localStorage.getItem("registroTickets")
+    const lista = historial ? JSON.parse(historial) : []
 
-    const nuevoRegistro = {
-        id: registrosJSON.length + 1,
-        fecha: `${dia}/${mes}/${anio}`,
-        caso: caso,
-        responsable: responsable,
-        afectado: afectado.trim(),
-        nombreAfectado: nombreAfectado.trim(),
-        idDispositivo: idDispositivo
+    const nuevaAccion = {
+        id: lista.length + 1,
+        fecha: new Date().toLocaleDateString('es-ES'),
+        descripcionAccion: `Registro de ${tipoAccion}`,
+        detalleOperador: `El operador ${operador} realizó un préstamo al usuario ${nombre} (C.I: ${cedula}) del equipo con ID: ${idEquipo}`
     }
 
-    registrosJSON.push(nuevoRegistro)
-    localStorage.setItem("registrosPrestamos", JSON.stringify(registrosJSON))
+    lista.push(nuevaAccion)
+    localStorage.setItem("registroTickets", JSON.stringify(lista))
+}
+
+const usuarioValido = (cedula) => {
+    const usuarios = localStorage.getItem("usuarios")
+    if (!usuarios) return true
+    const lista = JSON.parse(usuarios)
+    return lista.some(u => String(u.cedula) === String(cedula))
+}
+
+const popularSelectDispositivos = () => {
+    if (!opciones) return
+    opciones.innerHTML = ""
+
+    const defaultOpt = document.createElement("option")
+    defaultOpt.value = ""
+    defaultOpt.appendChild(document.createTextNode("Seleccione un dispositivo"))
+    opciones.appendChild(defaultOpt)
+
+    const equipos = cargarEspacios()
+    equipos.forEach(eq => {
+        const idReal = typeof eq === "object" && eq !== null ? (eq.id || eq.codigo) : String(eq)
+        const opt = document.createElement("option")
+        opt.value = idReal
+        opt.appendChild(document.createTextNode(`Dispositivo ID: ${idReal}`))
+        opciones.appendChild(opt)
+    })
 }
 
 const actualizarTabla = () => {
-    if (!cuerpoTabla) return
     cuerpoTabla.innerHTML = ""
-    const prestamos = cargarPrestamos()
-    const prestamosActivos = prestamos.filter(prestamo => !prestamo.devuelto)
+    const lista = cargarPrestamos()
 
-    prestamosActivos.forEach((prestamo) => {
-        const fila = document.createElement("tr")
-        const idFila = document.createElement("td")
-        const filaPrestador = document.createElement("td")
-        const filaPrestado = document.createElement("td")
-        const filaNombrePrestado = document.createElement("td")
-        const filaEquipo = document.createElement("td")
-        const filaFechaInicio = document.createElement("td")
-        const filaFechaFinal = document.createElement("td")
-        const filaEstado = document.createElement("td")
-        const filaAcciones = document.createElement("td")
+    lista.forEach(p => {
+        const tr = document.createElement("tr")
 
-        idFila.textContent = prestamo.id
-        filaPrestador.textContent = prestamo.cedulaPrestador
-        filaPrestado.textContent = prestamo.cedulaPrestado
-        filaNombrePrestado.textContent = prestamo.nombrePrestado
-        filaEquipo.textContent = prestamo.idEquipo
+        const tdId = document.createElement("td")
+        tdId.appendChild(document.createTextNode(p.id))
 
-        const fInicio = new Date(prestamo.fechaInicio)
-        const fFinal = new Date(prestamo.fechaDevolucion)
+        const tdCedula = document.createElement("td")
+        tdCedula.appendChild(document.createTextNode(p.cedulaPrestado))
 
-        filaFechaInicio.textContent = isNaN(fInicio.getTime()) ? "" : fInicio.toLocaleDateString('es-ES')
-        filaFechaFinal.textContent = isNaN(fFinal.getTime()) ? "" : fFinal.toLocaleDateString('es-ES')
+        const tdNombre = document.createElement("td")
+        tdNombre.appendChild(document.createTextNode(p.nombrePrestado))
 
-        filaEstado.textContent = prestamo.entregaAtrasada ? "Atrasado" : "Activo"
+        const tdEquipo = document.createElement("td")
+        tdEquipo.appendChild(document.createTextNode(p.idEquipo))
 
-        const botonFinalizar = document.createElement("button")
-        botonFinalizar.textContent = "Finalizar"
-        botonFinalizar.classList.add("btn", "btn-danger", "btn-sm")
+        const tdFechaI = document.createElement("td")
+        tdFechaI.appendChild(document.createTextNode(new Date(p.fechaInicio).toLocaleDateString('es-ES')))
 
-        botonFinalizar.addEventListener("click", () => {
-            finalizarPrestamo(prestamo.id)
-        })
+        const tdFechaD = document.createElement("td")
+        tdFechaD.appendChild(document.createTextNode(new Date(p.fechaDevolucion).toLocaleDateString('es-ES')))
 
-        filaAcciones.appendChild(botonFinalizar)
-        fila.appendChild(idFila)
-        fila.appendChild(filaPrestador)
-        fila.appendChild(filaPrestado)
-        fila.appendChild(filaNombrePrestado)
-        fila.appendChild(filaEquipo)
-        fila.appendChild(filaFechaInicio)
-        fila.appendChild(filaFechaFinal)
-        fila.appendChild(filaEstado)
-        fila.appendChild(filaAcciones)
-        cuerpoTabla.appendChild(fila)
+        const tdEstado = document.createElement("td")
+        tdEstado.appendChild(document.createTextNode(p.devuelto ? "Devuelto" : "Activo"))
+
+        const tdAcciones = document.createElement("td")
+        if (!p.devuelto) {
+            const btnDevolver = document.createElement("button")
+            btnDevolver.className = "btn btn-success btn-sm"
+            btnDevolver.appendChild(document.createTextNode("Devolver"))
+            btnDevolver.addEventListener("click", () => {
+                p.devuelto = true
+                const todos = cargarPrestamos()
+                const index = todos.findIndex(t => t.id === p.id)
+                if (index !== -1) {
+                    todos[index].devuelto = true
+                    localStorage.setItem("prestamos", JSON.stringify(todos))
+                    actualizarTabla()
+                }
+            })
+            tdAcciones.appendChild(btnDevolver)
+        }
+
+        tr.appendChild(tdId)
+        tr.appendChild(tdCedula)
+        tr.appendChild(tdNombre)
+        tr.appendChild(tdEquipo)
+        tr.appendChild(tdFechaI)
+        tr.appendChild(tdFechaD)
+        tr.appendChild(tdEstado)
+        tr.appendChild(tdAcciones)
+
+        cuerpoTabla.appendChild(tr)
     })
 }
 
-const revisarAtrasados = () => {
-    const prestamos = cargarPrestamos()
-    const fechaActual = new Date()
-
-    prestamos.forEach((prestamo) => {
-        const fechaDevolucion = new Date(prestamo.fechaDevolucion)
-        if (fechaActual > fechaDevolucion && !prestamo.devuelto) {
-            prestamo.entregaAtrasada = true
-        }
+if (btnRegistrarPrestamo) {
+    btnRegistrarPrestamo.addEventListener("click", () => {
+        popularSelectDispositivos()
+        modalPrestamo.classList.replace("d-none", "d-flex")
     })
-
-    localStorage.setItem("prestamos", JSON.stringify(prestamos))
-    actualizarTabla()
 }
 
-const finalizarPrestamo = (idPrestamo) => {
-    if (!confirm("¿Estás seguro de marcar el préstamo como finalizado? La acción no puede deshacerse")) {
-        return;
-    }
-
-    const prestamos = cargarPrestamos()
-    const prestamo = prestamos.find(p => p.id === idPrestamo)
-
-    if (prestamo) {
-        prestamo.devuelto = true
-        localStorage.setItem("prestamos", JSON.stringify(prestamos))
-
-        const espacios = cargarEspacios()
-        const espaciosModificados = espacios.map(e => {
-            if (String(e.id) === String(prestamo.idEquipo)) {
-                e.prestado = false
-            }
-            return e
-        })
-
-        const salonesEnviar = cargarSalones()
-        salonesEnviar.forEach(salon => {
-            if (String(salon.tipo).toLowerCase() === "prestamo" || String(salon.id) === "1") {
-                if (salon.espacios) salon.espacios = espaciosModificados
-                if (salon.prestamos) salon.prestamos = espaciosModificados
-            }
-        })
-
-        localStorage.setItem("salones", JSON.stringify(salonesEnviar))
-
-        const cedulaOperador = obtenerCedulaOperadorActivo()
-        registrarAccion("devolucion", cedulaOperador, prestamo.cedulaPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
-
-        actualizarTabla()
-    }
-}
-
-const usuarioValido = (cedulaPrestado) => {
-    let valido = true
-    const prestamos = cargarPrestamos()
-    prestamos.forEach((prestamo) => {
-        if (prestamo.cedulaPrestado === cedulaPrestado && !prestamo.devuelto) {
-            valido = false
-        }
-    })
-    return valido
-}
-
-const guardarPrestamo = (prestamo) => {
-    const espacios = cargarEspacios()
-    const espaciosModificados = espacios.map(espacio => {
-        if (String(espacio.id) === String(prestamo.idEquipo)) {
-            espacio.prestado = true
-        }
-        return espacio
-    })
-
-    const salones = cargarSalones()
-    salones.forEach(salon => {
-        if (String(salon.tipo).toLowerCase() === "prestamo" || String(salon.id) === "1") {
-            if (salon.espacios) salon.espacios = espaciosModificados
-            if (salon.prestamos) salon.prestamos = espaciosModificados
-        }
-    })
-    localStorage.setItem("salones", JSON.stringify(salones))
-
-    const prestamos = cargarPrestamos()
-    prestamos.push(prestamo)
-    localStorage.setItem("prestamos", JSON.stringify(prestamos))
-}
-
-revisarAtrasados()
-actualizarTabla()
-
-// EVENTOS
-btnCancelarPrestamo.addEventListener("click", () => {
-    formulario.reset()
-    modalPrestamo.classList.replace("d-flex", "d-none")
-})
-
-btnRegistrarPrestamo.addEventListener("click", () => {
-    modalPrestamo.classList.replace("d-none", "d-flex")
-    cargarLista()
-})
-
-formulario.addEventListener("submit", (e) => {
-    e.preventDefault()
-
-    const inputNombrePrestado = document.getElementById("nombre-solicitante")
-    const inputCedulaPrestado = document.getElementById("CI-Solicitante")
-    const inputEquipoElegido = document.getElementById("listaDispositivos")
-    const inputFechaDevolucion = document.getElementById("final")
-
-    if (!inputEquipoElegido.value) {
-        alert("Seleccione un equipo válido.")
-        return
-    }
-
-    const fechaSeleccionada = new Date(inputFechaDevolucion.value)
-    const fechaActual = new Date()
-
-    if (fechaSeleccionada <= fechaActual) {
-        alert("La fecha de devolución debe ser posterior a la fecha y hora actual.")
-        return
-    }
-
-    const contadorID = () => {
-        let contador = localStorage.getItem("contador")
-        if (contador === null || contador === undefined || contador === "") {
-            contador = 1
-        } else {
-            contador = parseInt(contador) + 1
-        }
-        localStorage.setItem("contador", contador)
-        return contador
-    }
-
-    const cedulaOperador = obtenerCedulaOperadorActivo()
-
-    const prestamo = {
-        id: contadorID(),
-        cedulaPrestado: inputCedulaPrestado.value.trim(),
-        nombrePrestado: inputNombrePrestado.value.trim(),
-        idEquipo: inputEquipoElegido.value,
-        cedulaPrestador: cedulaOperador, 
-        fechaInicio: new Date().toISOString(),
-        fechaDevolucion: inputFechaDevolucion.value,
-        devuelto: false,
-        entregaAtrasada: false
-    }
-
-    if (usuarioValido(prestamo.cedulaPrestado)) {
-        guardarPrestamo(prestamo)
-        registrarAccion("prestamo", cedulaOperador, prestamo.cedulaPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
-
-        alert("Préstamo registrado con éxito.")
+if (btnCancelarPrestamo) {
+    btnCancelarPrestamo.addEventListener("click", () => {
         formulario.reset()
         modalPrestamo.classList.replace("d-flex", "d-none")
-        actualizarTabla()
-    } else {
-        alert("La persona ya cuenta con un préstamo activo.")
-    }
-})
+    })
+}
+
+if (formulario) {
+    formulario.addEventListener("submit", (e) => {
+        e.preventDefault()
+
+        const inputCedulaPrestado = document.getElementById("cedulaPrestado")
+        const inputNombrePrestado = document.getElementById("nombrePrestado")
+        const inputEquipoElegido = document.getElementById("listaDispositivos")
+        const inputFechaDevolucion = document.getElementById("fechaDevolucion")
+
+        const fechaSeleccionada = new Date(inputFechaDevolucion.value)
+        const fechaActual = new Date()
+
+        if (fechaSeleccionada <= fechaActual) {
+            alert("La fecha de devolución debe ser posterior a la fecha y hora actual.")
+            return
+        }
+
+        const contadorID = () => {
+            let contador = localStorage.getItem("contador")
+            if (contador === null || contador === undefined || contador === "") {
+                contador = 1
+            } else {
+                contador = parseInt(contador) + 1
+            }
+            localStorage.setItem("contador", contador)
+            return contador
+        }
+
+        const cedulaOperador = obtenerCedulaOperadorActivo()
+
+        const prestamo = {
+            id: contadorID(),
+            cedulaPrestado: inputCedulaPrestado.value.trim(),
+            nombrePrestado: inputNombrePrestado.value.trim(),
+            idEquipo: inputEquipoElegido.value,
+            cedulaPrestador: cedulaOperador, 
+            fechaInicio: new Date().toISOString(),
+            fechaDevolucion: inputFechaDevolucion.value,
+            devuelto: false,
+            entregaAtrasada: false
+        }
+
+        if (usuarioValido(prestamo.cedulaPrestado)) {
+            guardarPrestamo(prestamo)
+            registrarAccion("prestamo", cedulaOperador, prestamo.cedulaPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
+
+            alert("Préstamo registrado con éxito.")
+            formulario.reset()
+            modalPrestamo.classList.replace("d-flex", "d-none")
+            actualizarTabla()
+        } else {
+            alert("Usuario no válido.")
+        }
+    })
+}
+
+actualizarTabla()

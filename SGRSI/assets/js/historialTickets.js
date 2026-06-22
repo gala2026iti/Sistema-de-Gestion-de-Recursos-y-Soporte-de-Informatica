@@ -1,9 +1,7 @@
-// VARIABLES
 const contenedorHistorial = document.getElementById("contenedor-historial")
 
-// FUNCIONES
 const cargarRegistrosTickets = () => {
-    const datos = localStorage.getItem("registroTickets")
+    const datos = localStorage.getItem("tickets")
     if (datos === null || datos === undefined || datos === "") {
         return []
     }
@@ -20,7 +18,18 @@ const mapearFechaParaOrdenar = (stringFecha) => {
 const mostrarHistorial = () => {
     contenedorHistorial.innerHTML = ""
     
-    const historial = cargarRegistrosTickets()
+    const urlParams = new URLSearchParams(window.location.search)
+    const equipoIdUrl = urlParams.get("equipoId")
+
+    let historial = cargarRegistrosTickets()
+
+    if (equipoIdUrl) {
+        const idBuscado = String(equipoIdUrl).trim().toLowerCase()
+        historial = historial.filter(ticket => {
+            const idTicketEquipo = String(ticket.equipoId || ticket.idEquipo || "").trim().toLowerCase()
+            return idTicketEquipo === idBuscado
+        })
+    }
 
     for (let i = 0; i < historial.length - 1; i++) {
         for (let j = 0; j < historial.length - i - 1; j++) {
@@ -38,12 +47,12 @@ const mostrarHistorial = () => {
     let listaActualUl = null
 
     historial.forEach(registro => {
-        if (ultimaFechaRenderizada !== registro.fecha) {
-            ultimaFechaRenderizada = registro.fecha
+        if (ultimaFechaRenderizada !== registro.fechaCreacion) {
+            ultimaFechaRenderizada = registro.fechaCreacion
 
             const spanFecha = document.createElement("span")
             spanFecha.className = "fw-bold d-block mt-3 text-secondary"
-            spanFecha.textContent = `Intervenciones el ${registro.fecha}`
+            spanFecha.textContent = `Intervenciones el ${registro.fechaCreacion}`
             contenedorHistorial.appendChild(spanFecha)
 
             listaActualUl = document.createElement("ul")
@@ -59,15 +68,21 @@ const mostrarHistorial = () => {
 
         const spanDescripcion = document.createElement("span")
         spanDescripcion.className = "fw-bold text-dark"
-        spanDescripcion.textContent = registro.descripcionAccion
+        spanDescripcion.textContent = registro.asunto || registro.tipo
 
         const spanDetalle = document.createElement("span")
         spanDetalle.className = "text-muted small"
-        spanDetalle.textContent = registro.detalleOperador
+        spanDetalle.textContent = ` ${registro.gravedad} - ${registro.descripcion}`
 
         divColumn.appendChild(spanDescripcion)
         divColumn.appendChild(spanDetalle)
+        
+        const spanFechaRegistro = document.createElement("span")
+        spanFechaRegistro.className = "text-muted small"
+        spanFechaRegistro.textContent = registro.fechaCreacion
+        
         li.appendChild(divColumn)
+        li.appendChild(spanFechaRegistro)
 
         if (listaActualUl) {
             listaActualUl.appendChild(li)
@@ -76,4 +91,3 @@ const mostrarHistorial = () => {
 }
 
 mostrarHistorial()
-

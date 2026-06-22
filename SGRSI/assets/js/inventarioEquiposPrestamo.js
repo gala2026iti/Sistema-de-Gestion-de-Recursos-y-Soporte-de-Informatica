@@ -1,4 +1,3 @@
-// VARIABLES
 const tabla = document.getElementById("tablaEquipos")
 const cuerpoTabla = tabla.querySelector("tbody")
 
@@ -13,7 +12,6 @@ const inputAsunto = document.getElementById("asunto-modal")
 const inputPersona = document.getElementById("persona-modal")
 const inputDescripcion = document.getElementById("descripcion-modal")
 
-// FUNCIONES
 const cargarPrestamos = () => {
     const prestamos = localStorage.getItem("prestamos")
     return (prestamos === null || prestamos === undefined || prestamos === "") ? [] : JSON.parse(prestamos)
@@ -34,98 +32,59 @@ const cargarSalonPrestamo = () => {
     if (salones === null || salones === undefined || salones === "") {
         return []
     } else {
-        const salonesJSON = JSON.parse(salones)
-        return salonesJSON.find(s => s.tipo === "prestamo")
-    }
-}
-
-const cargarEquiposFiltrados = () => {
-    let equiposEncontrados = []
-    const salonPrestamo = cargarSalonPrestamo()
-    if (!salonPrestamo || !salonPrestamo.espacios) return []
-    
-    const espacios = salonPrestamo.espacios
-    espacios.forEach(espacio => {
-        if (espacio !== null && espacio !== undefined && espacio !== "") {
-            equiposEncontrados.push(espacio)
-        }
-    })
-    return equiposEncontrados
-}
-
-const obtenerEquipo = (idEquipo) => {
-    const equipos = localStorage.getItem("equipos")
-    if (equipos === null || equipos === undefined || equipos === "") {
-        return []
-    } else {
-        const equiposJSON = JSON.parse(equipos)
-        return equiposJSON.find(e => e.id === idEquipo)
+        return JSON.parse(salones)
     }
 }
 
 const actualizarTabla = () => {
     cuerpoTabla.innerHTML = ""
-    const equiposPrestamo = cargarEquiposFiltrados()
+    if (equipoSeleccionado) equipoSeleccionado.innerHTML = ""
 
-    equiposPrestamo.forEach(e => {
-        const fila = document.createElement("tr")
-        
-        const idEquipo = document.createElement("td")
-        idEquipo.innerText = e.id
+    const salones = cargarSalonPrestamo()
+    const salonPrestamo = salones.find(s => s.tipo === "prestamo")
+    const listaEquipos = salonPrestamo ? (salonPrestamo.prestamos || salonPrestamo.espacios || []) : []
 
-        const estadoEquipo = document.createElement("td")
-        const equipoInfo = obtenerEquipo(e.id)
-        estadoEquipo.innerText = equipoInfo && equipoInfo.activo ? "Activo" : "Inactivo"
+    listaEquipos.forEach(eq => {
+        const idReal = typeof eq === "object" && eq !== null ? (eq.id || eq.codigo) : String(eq)
+        const asignadoA = obtenerPrestamista(idReal)
+        const estadoTexto = asignadoA !== "No asignado" ? "Prestado" : "Disponible"
 
-        const prestamistaEquipo = document.createElement("td")
-        prestamistaEquipo.innerText = obtenerPrestamista(e.id)
+        const tr = document.createElement("tr")
 
-        const opciones = document.createElement("td")
-        const botonIncidencias = document.createElement("button")
-        botonIncidencias.addEventListener("click", () => {
-            localStorage.setItem("idEquipoIncidencias", e.id)
-            window.location.href = "historialPorEquipo.html"
+        const tdId = document.createElement("td")
+        tdId.appendChild(document.createTextNode(idReal))
+
+        const tdAsignado = document.createElement("td")
+        tdAsignado.appendChild(document.createTextNode(asignadoA))
+
+        const tdEstado = document.createElement("td")
+        tdEstado.appendChild(document.createTextNode(estadoTexto))
+
+        const tdAcciones = document.createElement("td")
+        const btnVerIncidencias = document.createElement("button")
+        btnVerIncidencias.className = "btn btn-warning btn-sm"
+        btnVerIncidencias.appendChild(document.createTextNode("Ver Incidencias"))
+        btnVerIncidencias.addEventListener("click", () => {
+            window.location.href = `historialTickets.html?equipoId=${idReal}`
         })
+        tdAcciones.appendChild(btnVerIncidencias)
 
-        botonIncidencias.textContent = "Ver Incidencias"
-        botonIncidencias.classList.add("btn", "btn-warning")
+        tr.appendChild(tdId)
+        tr.appendChild(tdEstado)
+        tr.appendChild(tdAsignado)
+        tr.appendChild(tdAcciones)
+        cuerpoTabla.appendChild(tr)
 
-        opciones.appendChild(botonIncidencias)
-        fila.appendChild(idEquipo)
-        fila.appendChild(estadoEquipo)
-        fila.appendChild(prestamistaEquipo)
-        fila.appendChild(opciones)
-
-        cuerpoTabla.appendChild(fila)
-    })
-}
-
-const obtenerEquiposDisponiblesParaIncidencia = () => {
-    const equiposPrestamo = cargarEquiposFiltrados()
-    const prestamos = cargarPrestamos()
-
-    return equiposPrestamo.filter(e => {
-        const estaPrestado = prestamos.some(p => p.idEquipo === e.id && p.devuelto === false)
-        return !estaPrestado
+        if (equipoSeleccionado) {
+            const opt = document.createElement("option")
+            opt.value = idReal
+            opt.appendChild(document.createTextNode(`PC: ${idReal}`))
+            equipoSeleccionado.appendChild(opt)
+        }
     })
 }
 
 const abrirModalIncidencia = () => {
-    equipoSeleccionado.innerHTML = '<option value="">Seleccione una opción</option>'
-    const disponibles = obtenerEquiposDisponiblesParaIncidencia()
-
-    if (disponibles.length === 0) {
-        alert("No hay equipos de prestamo disponibles (sin prestar) en este momento para reportar")
-        return
-    }
-
-    disponibles.forEach(e => {
-        const opt = document.createElement("option")
-        opt.value = e.id
-        opt.textContent = `PC: ${e.id}`
-        equipoSeleccionado.appendChild(opt)
-    })
-
     modalIncidenciaPrestamo.classList.replace("d-none", "d-flex")
 }
 
@@ -136,7 +95,6 @@ const cerrarModalIncidencia = () => {
 
 actualizarTabla()
 
-// EVENTOS
 formIncidenciaIndividual.addEventListener("submit", (e) => {
     e.preventDefault()
 
