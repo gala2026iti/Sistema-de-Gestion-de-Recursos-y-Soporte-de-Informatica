@@ -244,7 +244,7 @@ cancelarUsuario.addEventListener("click", () => {
     usuarioEditando = null 
     inputUsuario.readOnly = false 
     limpiarCampos() 
-    modalUsuario.classList.replace("d-none", "d-flex") 
+    modalUsuario.classList.replace("d-flex", "d-none") 
 }) 
 
 btnMostrarClave.addEventListener("click", mostrarClave) 

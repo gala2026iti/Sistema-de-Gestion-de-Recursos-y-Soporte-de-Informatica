@@ -12,8 +12,6 @@ if (btnMenu && menu) {
     })
 }
 
-const menu = document.querySelector(".nav-menu");
-
 btnMenu.addEventListener("click", function () {
 
     menu.classList.add("activo");
