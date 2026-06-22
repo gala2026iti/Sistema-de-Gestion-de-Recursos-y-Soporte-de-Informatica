@@ -1,0 +1,36 @@
+.kanban-columna {
+    width: 20rem;
+    min-width: 20rem; 
+    min-height: 20rem;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: block;
+    padding: 0; 
+}
+
+.kanban-columna thead,
+.kanban-columna tbody,
+.kanban-columna tr,
+.kanban-columna th {
+    display: block;
+    width: 100%;
+}
+.kanban-columna td {
+    display: block;
+    box-sizing: border-box; 
+}
+.ticket-marcado {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background-color 0.2s;
+    margin: 0.8rem 0.8rem 0 0.8rem; 
+}
+
+.ticket-marcado:hover {
+    background-color: #dcebff;
+}

@@ -1,26 +1,18 @@
 :root {
-    --azul-principal: #1d4ed8;
-    --azul-oscuro: #0f172a;
-    --amarillo-iti: #facc15;
-    --gris-fondo: #f3f4f6;
+
+    --azul-principal: #2563eb;
+    --azul-institucional: #1e3a8a;
+    --azul-navbar: #172554;
+    --azul-oscuro: #1e293b;
+
+    --amarillo-iti: #eab308;
+    --amarillo-hover: #fef08a;
+    --gris-fondo: #f8fafc;
     --blanco: #ffffff;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-}
-
-main {
-    flex: 1;
-}
-
 header {
-    background-color: rgb(64, 64, 248);
+    background-color: var(--azul-institucional);
     border-bottom: 3px solid var(--azul-principal);
     padding: 2rem;
     display: flex;
@@ -28,23 +20,30 @@ header {
 
 }
 
-.imagen {
-    width: 45rem;
-      overflow-x: auto;
-}
-
 footer {
-    background-color: rgb(64, 64, 248);
-    color: white;
+   
+    background-color: var(--azul-institucional);
+    color: var(--blanco);
     font-family: 'Barlow', sans-serif;
     text-align: center;
-    margin: 0;
+    margin-top: 2rem;
     padding: 1rem;
 }
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;      
+    display: flex;
+    flex-direction: column; 
+}
 
-.navbar {
-    background-color: rgb(15, 15, 160);
-    border-bottom: 0.3vw solid rgb(6, 6, 100);
+main {
+    flex: 1;
+}
+
+.navbarSGRSI {
+    background-color: var(--azul-navbar);
+    border-bottom: 3px solid var(--azul-institucional);
     padding: 1rem 2rem;
 }
 
@@ -56,16 +55,31 @@ footer {
     margin: auto;
 }
 
+.nav-primera-fila {
+    order: 1;
+}
+
 .nav-opciones-sistema {
-     list-style: none;
+    width: auto;
+    flex-shrink: 0;
+    list-style: none;
     justify-content: center;
     display: flex;
     gap: 1rem;
-    width: 100%;
+
 }
 
 .desplegable {
     position: relative;
+}
+
+.desplegable-padding {
+    position: relative;
+    padding-right: 1rem;
+}
+
+select {
+    border-color: black;
 }
 
 .desplegable-menu {
@@ -73,27 +87,32 @@ footer {
     display: none;
     position: absolute;
     top: 100%;
-    background-color: rgb(15, 15, 160);
+    background-color: var(--azul-navbar);
     list-style: none;
     padding: 0;
+    margin-top: 0.6rem;
     min-width: 12rem;
     border-radius: 0 0 8px 8px;
 }
 
-.desplegable:hover .desplegable-menu {
+.desplegable:hover .desplegable-menu{
+    display: block;
+}
+
+.desplegable-padding:hover .desplegable-menu{
     display: block;
 }
 
 .desplegable-menu li a {
     display: block;
-    color: rgb(255, 238, 0);
+    color: var(--amarillo-iti);
     text-decoration: none;
     transition: 0.2s;
 }
 
 .desplegable-menu li a:hover {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
 }
 
 .btn-menu,
@@ -101,22 +120,25 @@ footer {
     display: none;
     background: none;
     border: none;
-    color: white;
+    color: var(--blanco);
     font-size: 2rem;
     cursor: pointer;
+    align-self: flex-start;
 }
 
 .nav-menu {
-    width: 100%;
+    flex: 1;
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     margin: 0;
     padding: 0;
+    height: 50px;
+    align-items: center;
 }
 
 .nav-menu li a {
-    color: rgb(255, 238, 0);
+    color: var(--amarillo-iti);
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
     transition: 0.2s;
@@ -127,23 +149,30 @@ footer {
 
 .nav-menu li a:hover {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
 }
 
 .nav-opciones-sistema a {
     background-color: var(--amarillo-iti);
-    color: black;
+    color: var(--azul-navbar);
     padding: 0.7rem 1rem;
     border-radius: 8px;
     font-weight: bold;
     text-decoration: none;
     transition: 0.2s;
     overflow-x: auto;
+    white-space: nowrap;
 }
 
 .nav-opciones-sistema a:hover {
+    background-color: var(--amarillo-hover);
+    color: var(--azul-navbar);
+}
 
-    background-color: white;
+.nav-menu,
+.nav-opciones-sistema {
+    margin: 0;
+    padding: 0;
 }
 
 table {
@@ -169,14 +198,13 @@ td {
     text-align: center;
 }
 
-
-
 .centro {
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
 }
+
 h2 {
     text-align: center;
     color: var(--azul-oscuro);
@@ -184,18 +212,16 @@ h2 {
     margin-bottom: 2rem;
 }
 
-
-
-
 textarea {
     resize: none;
     min-height: 120px;
 }
+
 form {
     background-color: var(--gris-fondo);
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
 }
 
 input,
@@ -208,6 +234,7 @@ textarea {
     font-size: 1rem;
 
 }
+
 .filtros {
     display: flex;
     justify-content: center;
@@ -215,64 +242,13 @@ textarea {
     margin: 2rem;
     flex-wrap: wrap;
 }
+
 .filtros select {
     padding: 0.6rem;
     border-radius: 6px;
 }
 
-.leve {
-    color: green;
-    font-weight: bold;
-}
 
-.media {
-    color: orange;
-    font-weight: bold;
-}
-
-.grave {
-    color: red;
-    font-weight: bold;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.7rem 1rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    white-space: nowrap;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-azul {
-    background-color: rgb(64, 64, 248);
-    color: white;
-}
-
-.btn-azul:hover {
-    background-color: rgb(15, 15, 160);
-}
-
-.btn-verde {
-    background-color: rgb(128, 255, 9);
-    color: white;
-}
-
-.btn-verde:hover {
-    background-color: rgb(81, 209, 6);
-}
-
-.btn-rojo {
-    background-color: rgb(230, 48, 48);
-    color: white;
-}
-
-.btn-rojo:hover {
-    background-color: rgb(160, 15, 15);
-}
 
 .btn-asignar {
     background-color: rgb(64, 64, 248);
@@ -289,11 +265,10 @@ textarea {
 .btn-asignar:hover {
     background-color: rgb(15, 15, 160);
 }
-
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 1046px) {
 
     header,
-    .navbar,
+    .navbarSGRSI,
     footer {
         width: 100%;
         box-sizing: border-box;
@@ -305,29 +280,42 @@ textarea {
         gap: 1rem;
     }
 
-    .navbar {
+    .nav-primera-fila {
+        order: 0;
+    }
+
+    .navbarSGRSI {
         padding: 1rem;
     }
 
     .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .nav-opciones-sistema {
-        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .nav-primera-fila {
+        display: flex;
+        justify-content: space-between;
     }
 
     .btn-menu {
+        display: flex;
+    }
 
+    .btn-cerrar {
         display: flex;
     }
 
     .nav-menu.activo {
-
         display: flex;
+        margin-top: 1rem;
+        align-items: stretch;
     }
 
     .nav-menu {
@@ -348,11 +336,8 @@ textarea {
         background-color: rgb(9, 9, 124);
     }
 
-    table,
-    main {
-
-        display: block;
-        overflow-x: auto;
+    .desplegable-padding {
+        padding: 0;
     }
 
     form th,
@@ -362,11 +347,4 @@ textarea {
         font-size: 0.8rem;
     }
 
-    .imagen {
-        width: 30rem;
-    }
- .btn{
-        font-size:.75rem;
-        padding:.4rem .6rem;
-    }
 }
