@@ -1,20 +1,17 @@
-const btnRegistrarEquipo =
-    document.getElementById("btnRegistrarEquipo");
+// VARIABLES
+const btnRegistrarEquipo = document.getElementById("btnRegistrarEquipo")
+const modalEquipo = document.getElementById("modalEquipo")
+const btnCancelarEquipo = document.getElementById("btnCancelarEquipo")
 
-const modalEquipo =
-    document.getElementById("modalEquipo");
+// EVENTOS
+if (btnRegistrarEquipo && modalEquipo) {
+    btnRegistrarEquipo.addEventListener("click", () => {
+        modalEquipo.classList.remove("oculto")
+    })
+}
 
-const btnCancelarEquipo =
-    document.getElementById("btnCancelarEquipo");
-
-btnRegistrarEquipo.addEventListener("click", () => {
-
-    modalEquipo.classList.remove("oculto");
-
-});
-
-btnCancelarEquipo.addEventListener("click", () => {
-
-    modalEquipo.classList.add("oculto");
-
-});
+if (btnCancelarEquipo && modalEquipo) {
+    btnCancelarEquipo.addEventListener("click", () => {
+        modalEquipo.classList.add("oculto")
+    })
+}

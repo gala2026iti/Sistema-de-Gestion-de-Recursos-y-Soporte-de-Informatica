@@ -9,147 +9,109 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/direccion/panelConsultas.css">
-    <link rel="stylesheet" href="../../assets/css/administracion/gestionequipos.css">
-
+    <link rel="stylesheet" href="../../assets/css/administracion-tecnico/gestionequipos.css">
 </head>
 
 <body data-rol-permitido="direccion">
-     <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
-  </header>
+    <header class="d-flex justify-content-center align-items-center py-4">
+        <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+    </header>
+
     <nav class="navbarSGRSI">
-                <section class="nav-container">
+        <section class="nav-container">
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btn-menu">☰</button>
                 <button class="btn-cerrar" id="btn-cerrar">✖</button>
-             
             </section>
             <ul class="nav-menu">
-                <li class="desplegable">
-                    <a href="../homeDirector.html">Dashboard</a>
-                </li>
-                <li class="desplegable">
-                    <a href="d-estadoEquipos.html">Estado de equipos</a>
-                </li>
-                <li class="desplegable">
-                    <a href="d-reportes.html">Reportes y estadisticas</a>
-                </li>
+                <li class="desplegable"><a href="../homeDirector.html">Dashboard</a></li>
+                <li class="desplegable"><a href="d-estadoEquipos.html">Estado de equipos</a></li>
+                <li class="desplegable"><a href="d-reportes.html">Reportes y estadisticas</a></li>
                 <li><a href="d-metricas.html">Metricas del sistema</a></li>
             </ul>
-                         <ul class="nav-opciones-sistema">
-                <li><a  id="cerrarSesion">Cerrar Sesion</a></li>
-                </ul>
+            <ul class="nav-opciones-sistema">
+                <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
         </section>
     </nav>
-    <main class="py-4 px-0">
-          <section class="px-4 mb-3">
-            <button id="btn-abrir-ubicaciones" class="btn btn-primary">☰ Ver Ubicaciones / Salones</button>
-        </section>
-        <section class="barralateral-ubicaciones" id="barralateral-ubicaciones">
-            <div class="barralateral-header">
-                <h3>Ubicaciones</h3>
-                <button id="btn-cerrar-ubicaciones" class="btn-cerrar-lateral">X</button>
-            </div>
 
-            <div class="barralateral-contenido">
-                <h4>Laboratorios</h4>
-                <ul>
-                    <li><a href="">Laboratorio 1</a></li>
-                    <li><a href="">Laboratorio 2</a></li>
-                </ul>
+    <main class="container-fluid px-0 py-3">
+        <h2 class="centro mt-3 text-primary" id="tituloVista">Estado de Equipos Tecnológicos</h2>
+        <span class="centro mb-4">Consulta analítica de los dispositivos y sus historiales de falla</span>
 
-                <h4>Talleres</h4>
-                <ul>
-                    <li><a href="">Taller 1</a> </li>
-                    <li><a href="">Taller 2</a> </li>
-                </ul>
-
-
-                <h4>Prestamos</h4>
-                <ul>
-                    <li><a href="">Dispositivos para prestar</a></li>
-                </ul>
-                <h4>Inventario tecnologico</h4>
-                <ul>
-                    <li><a href="">Todos los Dispositivos registrados en el sistema</a></li>
-                </ul>
-            </div>
-        </section>
-        <h2 class="centro  mt-4 text-primary">Estado de equipos</h2>
         <section class="filtros">
-
-            <select>
-                <option>Ordenar por Estado</option>
-                <option>Operativo</option>
-                <option>De baja</option>
-                <option>Inactivo</option>
+            <select id="filtroUbicacion">
+                <option value="todos">Todas las ubicaciones</option>
+                <option value="prestamo">Dispositivos para prestar</option>
+                <option value="ninguna">Sin asignar / No ingresados</option>
             </select>
 
-            <select>
-                <option>Ordenar por cantidad de incidencias</option>
-                <option>Menor cantidad</option>
-                <option>Mayor cantidad</option>
+            <select id="filtroEstado">
+                <option value="">Filtrar por Estado</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
             </select>
 
-            <select>
-                <option>Ordenar por fecha de intervención</option>
-                <option>Reciente primero</option>
-                <option>Antiguo primero</option>
+            <select id="filtroIncidencias">
+                <option value="">Ordenar por cantidad de incidencias</option>
+                <option value="menor">Menor cantidad</option>
+                <option value="mayor">Mayor cantidad</option>
             </select>
 
+            <select id="filtroIntervencion">
+                <option value="">Ordenar por fecha de intervención</option>
+                <option value="reciente">Reciente primero</option>
+                <option value="antiguo">Antiguo primero</option>
+            </select>
         </section>
-        <section>
-            <h2></h2>
-            <table>
+
+        <section class="table-responsive w-100 m-0 overflow-x-auto">
+            <table class="tabla-contenedor m-0" id="tablaEquipos">
                 <thead>
-                    <th>Equipo</th>
-                    <th>Laboratorio/Taller</th>
-                    <th>Estado</th>
-                    <th>Incidencias</th>
-                    <th>Ultima intervención</th>
-                </thead>
-                <tbody>
                     <tr>
-                        <td>EQ-2026-001</td>
-                        <td>Laboratorio 1</td>
-                        <td>Operativo</td>
-                        <td>2</td>
-                        <td>13/6/2026</td>
+                        <th>Codigo (ID Global)</th>
+                        <th>Estado</th>
+                        <th>Asignación / Préstamo</th>
+                        <th>Ubicación Física</th>
+                        <th>Ultima intervencion</th>
+                        <th>Incidencias</th>
                     </tr>
-                        <tr>
-                        <td>EQ-2026-002</td>
-                        <td>Laboratorio 1</td>
-                        <td>De baja</td>
-                        <td>2</td>
-                        <td>10/8/2022</td>
-                    </tr>
-                        <tr>
-                        <td>EQ-2026-003</td>
-                        <td>Laboratorio 1</td>
-                        <td>inactivo</td>
-                        <td>2</td>
-                        <td>1/9/2025</td>
-                    </tr>
-                </tbody>
+                </thead>
+                <tbody></tbody>
             </table>
         </section>
 
-
+        <section class="container mt-5 mb-4">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="card p-3 shadow-sm border-0 bg-white">
+                        <h3 class="titulo-grafica text-center fs-5 mb-3">Equipos por estado</h3>
+                        <div class="contenedor-grafica">
+                            <canvas id="graficaEstados"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card p-3 shadow-sm border-0 bg-white">
+                        <h3 class="titulo-grafica text-center fs-5 mb-3">Incidencias Por Equipo</h3>
+                        <div class="contenedor-grafica">
+                            <canvas id="graficaEstados1"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
     <footer>
-
         <span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span>
-
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../assets/js/graficodireccion.js"></script>
-    <script src="../../assets/js/btn-menu-celular.js"></script>
-     <script src="../../assets/js/menuubicacion.js"></script>
-     <script src="../../assets/js/cerrarSesion.js"></script>
-         <script src="../../assets/js/verificarSesion.js"></script>
-         
-
+    <script src="../../assets/js/btn-menu-celular.js" defer></script>
+    <script src="../../assets/js/cerrarSesion.js" defer></script>
+    <script src="../../assets/js/verificarSesion.js" defer></script>
+    <script src="../../assets/js/graficoDireccion.js" defer></script>
 </body>
 
 </html>

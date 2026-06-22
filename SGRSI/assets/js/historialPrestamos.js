@@ -10,39 +10,38 @@ const cargarHistorial = () => {
         return JSON.parse(historial)
     }
 }
-const encontrarNombre = (cedula) => {
 
+const encontrarNombre = (cedula) => {
     if (!cedula || cedula === "Desconocido") {
-        return "Desconocido";
+        return "Desconocido"
     }
 
-    const usuarios = localStorage.getItem("usuarios");
+    const usuarios = localStorage.getItem("usuarios")
     if (usuarios === null || usuarios === undefined || usuarios === "") {
-        return "Desconocido";
+        return "Desconocido"
     } else {
-        const usuariosJSON = JSON.parse(usuarios);
-        
-        const usuarioFiltrado = usuariosJSON.find(u => String(u.usuario) === String(cedula));
+        const usuariosJSON = JSON.parse(usuarios)
+        const usuarioFiltrado = usuariosJSON.find(u => String(u.usuario) === String(cedula))
         
         if (usuarioFiltrado) {
-            return usuarioFiltrado.nombre;
+            return usuarioFiltrado.nombre
         } else {
-            return "Usuario no registrado ";
+            return "Usuario no registrado "
         }
     }
-};
+}
 
 const mostrarHistorial = () => {
     contenedorGeneral.innerHTML = ""
     const historial = cargarHistorial()
     let ultimaFecha
+    let listaDiaria
 
     historial.forEach(registro => {
         const equipoInvolucrado = registro.idDispositivo
         const personaPrestada = registro.afectado
         const nombrePersonaPrestada = registro.nombreAfectado
         const registradorID = registro.responsable
-                console.log(registradorID)
 
         const registradorNombre = encontrarNombre(registradorID)
 
