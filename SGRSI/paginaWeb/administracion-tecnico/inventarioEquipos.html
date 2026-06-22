@@ -19,33 +19,34 @@
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btn-menu">☰</button>
         <button class="btn-cerrar" id="btn-cerrar">✖</button>
+        <ul class="nav-opciones-sistema">
+          <li><a href="../index.html">Cerrar Sesion</a></li>
+        </ul>
       </section>
+
       <ul class="nav-menu">
         <li class="desplegable">
-          <a href="">Gestión de tickets 🡻 </a>
+          <a href="#">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
             <li><a href="../homeAdmin.html">Tickets registrados</a></li>
             <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
           </ul>
         </li>
         <li class="desplegable">
-          <a href="">Gestion de prestamos 🡻</a>
+          <a href="#">Gestion de prestamos 🡻</a>
           <ul class="desplegable-menu">
             <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-            <li><a href="inventarioEquipos.html">Estado de equipos para prestamos</a></li>
+            <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
           </ul>
         </li>
         <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-        <li class="desplegable pe-3" id="opcionesAdmin">
-          <a href="">⚙ Administration y control 🡻</a>
+        <li class="desplegable-padding pe-3" id="opcionesAdmin">
+          <a href="#">⚙ Administracion y control 🡻</a>
           <ul class="desplegable-menu">
             <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
             <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
           </ul>
         </li>
-      </ul>
-      <ul class="nav-opciones-sistema">
-        <li><a id="cerrarSesion">Cerrar Sesion</a></li>
       </ul>
     </section>
   </nav>
@@ -79,7 +80,8 @@
     </section>
   </main>
 
-  <div id="modalIncidenciaPrestamo" class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center">
+  <div id="modalIncidenciaPrestamo"
+    class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center">
     <form id="formIncidenciaIndividual" class="from modal-contenido w-100 p-4 bg-white rounded-4 shadow">
 
       <h3 id="titulo-modal" class="h5 fw-bold texto-azul mb-3">Registro de incidencia - Equipos de Préstamo</h3>
@@ -101,10 +103,13 @@
         </select>
 
         <label for="asunto-modal" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
-        <input type="text" id="asunto-modal" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa" required="">
+        <input type="text" id="asunto-modal" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa"
+          required="">
 
-        <label for="persona-modal" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso de la PC</label>
-        <input type="text" id="persona-modal" class="form-control mb-3" placeholder="ej: Maria Jose Martinez" required="">
+        <label for="persona-modal" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso de la
+          PC</label>
+        <input type="text" id="persona-modal" class="form-control mb-3" placeholder="ej: Maria Jose Martinez"
+          required="">
 
         <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la incidencia</label>
         <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">
@@ -123,7 +128,8 @@
         </div>
 
         <label for="descripcion-modal" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-        <textarea id="descripcion-modal" name="descripcion02" class="form-control mb-3" placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300" required=""></textarea>
+        <textarea id="descripcion-modal" name="descripcion02" class="form-control mb-3"
+          placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300" required=""></textarea>
       </div>
 
       <div class="d-flex gap-2">
