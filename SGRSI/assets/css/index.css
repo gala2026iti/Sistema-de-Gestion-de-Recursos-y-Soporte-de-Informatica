@@ -10,6 +10,12 @@
 
 .Tarjeta-login {
     max-width: 29rem;
+    border-radius: 15px;
+}
+
+.formInicio{
+    background-color: var(--blanco);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0);
 }
 
 .texto-azul {
