@@ -1,52 +1,49 @@
 // VARIABLES
-const selectSector = document.getElementById("sector")
-const optgroupLaboratorios = document.getElementById("optgroupLaboratorios")
-const optgroupTalleres = document.getElementById("optgroupTalleres")
-const contenedorEquipos = document.getElementById("contenedor-equipos")
+const selectSalon = document.getElementById("ubicacionSalon")
+const grupoLaboratorios = document.getElementById("grupoLaboratorio")
+const grupoTalleres = document.getElementById("grupoTalleres")
+const contenedorEquipos = document.getElementById("contenedorEquipos")
 
-const formularioSalon = document.querySelector(".main-formulario form")
+const formularioSalon = document.getElementById("formIncidencia")
 
-const modalIncidencia = document.getElementById("modal-incidencia")
-const tituloModal = document.getElementById("titulo-modal")
-const inputTipo = document.getElementById("tipo")
-const inputAsunto = document.getElementById("asunto-modal")
-const inputPersona = document.getElementById("persona-modal")
-const txtDescripcion = document.getElementById("descripcion-modal")
-const btnAceptarModal = document.getElementById("btnAceptarModal")
-const btnCancelarModal = document.getElementById("btnCancelarModal")
+const campoIncidencia = document.getElementById("incidencia")
+const campoTitulo = document.getElementById("titulo")
+const campoTipo = document.getElementById("tipo")
+const campoAsunto = document.getElementById("asunto")
+const campoPersona = document.getElementById("persona")
+const campoDescripcion = document.getElementById("descripcion")
+const btnAceptar = document.getElementById("btnAceptar")
+const btnCancelar = document.getElementById("btnCancelar")
 
 let incidenciasTemporales = {}  
 let pcActualId = null           
 
 // FUNCIONES
-const obtenerSalonesSistema = () => {
+const obtenerSalones = () => {
     const datos = localStorage.getItem("salones")
-    if (datos === null || datos === undefined || datos === "") {
-        return []
-    } else {
+    if (datos === null || datos === undefined || datos === "") return []
         return JSON.parse(datos)
-    }
 }
 
-const popularSelectSalones = () => {
-    optgroupLaboratorios.innerHTML = ""
-    optgroupTalleres.innerHTML = ""
+const cargarSalones = () => {
+    grupoLaboratorios.innerHTML = ""
+    grupoTalleres.innerHTML = ""
 
-    const salones = obtenerSalonesSistema()
+    const salones = obtenerSalones()
 
     salones.forEach(salon => {
-        const option = document.createElement("option")
+        const opcion = document.createElement("option")
         
-        option.value = `${salon.tipo}-${salon.id}` 
+        opcion.value = `${salon.tipo}-${salon.id}` 
         
-        const tipoFormateado = String(salon.tipo).toLowerCase().includes("lab") ? "Laboratorio" : "Taller"
-        option.textContent = `${tipoFormateado} ${salon.id}`
+        const tipoFormateado = salon.tipo.toLowerCase().includes("laboratorio") ? "Laboratorio" : "Taller"
+        opcion.innerText = `${tipoFormateado} ${salon.id}`
 
-        const tipoLimpio = String(salon.tipo).toLowerCase()
-        if (tipoLimpio === "laboratorio" || tipoLimpio === "laboratorios") {
-            optgroupLaboratorios.appendChild(option)
-        } else if (tipoLimpio === "taller" || tipoLimpio === "talleres") {
-            optgroupTalleres.appendChild(option)
+        const tipoLimpio = salon.tipo.toLowerCase()
+        if (tipoLimpio === "laboratorio") { 
+            grupoLaboratorios.appendChild(opcion)
+        } else if (tipoLimpio === "talleres") { 
+            grupoTalleres.appendChild(opcion)
         }
     })
 }
@@ -55,57 +52,54 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
     contenedorEquipos.innerHTML = ""
 
     if (valorSeleccionado === "") return
-
+    
     const partes = valorSeleccionado.split("-")
     const tipoSalon = partes[0]
     const idSalon = partes[1]
 
-    const salones = obtenerSalonesSistema()
+    const salones = obtenerSalones()
     
-    const salonEncontrated = salones.find(s => String(s.id) === String(idSalon) && String(s.tipo) === String(tipoSalon))
+    const salonEncontrado = salones.find(s => String(s.id) === String(idSalon) && String(s.tipo) === String(tipoSalon)) //Para ver si es el salon correcto, deben coincidir el tipo y el id
     
-    if (!salonEncontrated) return
-
-    const equipos = salonEncontrated.espacios || salonEncontrated.prestamos || []
+    const equipos = salonEncontrado.espacios || []
 
     equipos.forEach((equipo, indice) => {
-        if (!equipo) return 
+        if (equipo === null || equipo === undefined || equipo === "") return 
 
-        const pcId = typeof equipo === "object" && equipo !== null 
-            ? (equipo.id || equipo.numeroBanco) 
-            : String(equipo)
+        const pcId = equipo.id
 
-        if (!pcId) return
+        if (pcId === null || pcId === undefined || pcId === "") return
 
-        const tieneBorrador = incidenciasTemporales[pcId] !== undefined
+        const tieneBorrador = incidenciasTemporales[pcId] !== undefined //Verifica si ya se hizo un borrador sobre dicha incidencia, para mantenerlo en caso de missclick o arrepentimiento
 
-        const col = document.createElement("div")
-        col.className = "col-12 col-md-6 col-lg-4 mb-3"
+        const columna = document.createElement("div")
+        columna.className = "columna-12 columna-md-6 columna-lg-4 mb-3"
 
-        const card = document.createElement("div")
-        card.className = "card shadow-sm h-100 border-1"
+        const espacioEquipo = document.createElement("div")
+        espacioEquipo.className = "espacioEquipo shadow-sm h-100 border-1"
 
-        const cardBody = document.createElement("div")
-        cardBody.className = "card-body d-flex flex-column justify-content-between p-3"
+        const cuerpoEspacio = document.createElement("div")
+        cuerpoEspacio.className = "espacioEquipo-body d-flex flex-column justify-content-between p-3"
 
         const headerDiv = document.createElement("div")
         headerDiv.className = "d-flex justify-content-between align-items-center mb-3"
 
-        const h4 = document.createElement("h4")
-        h4.className = "h5 mb-0 fw-bold text-secondary"
-        h4.textContent = `PC: ${pcId}`
+        const nombrePC = document.createElement("h4")
+        nombrePC.className = "h5 mb-0 fw-bold text-secondary"
+        nombrePC.innerText = `PC: ${pcId}`
 
 
-        headerDiv.appendChild(h4)
+        headerDiv.appendChild(nombrePC)
 
-        const bgLightDiv = document.createElement("div")
-        bgLightDiv.className = "bg-light p-2 rounded-3 d-flex justify-content-around"
+        const divFondo = document.createElement("div")
+        divFondo.className = "bg-light p-2 rounded-3 d-flex justify-content-around"
 
-        const checkInlineOk = document.createElement("div")
-        checkInlineOk.className = "form-check form-check-inline mb-0"
+        const divFormulario = document.createElement("div")
+        divFormulario.className = "form-check form-check-inline mb-0"
 
         const radioOk = document.createElement("input")
         radioOk.className = "form-check-input"
+
         radioOk.type = "radio"
         radioOk.name = `estado-${pcId}`
         radioOk.id = `ok-${pcId}`
@@ -115,13 +109,13 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
         const labelOk = document.createElement("label")
         labelOk.className = "form-check-label text-success fw-semibold"
         labelOk.htmlFor = `ok-${pcId}`
-        labelOk.textContent = "Sin problemas"
+        labelOk.innerText = "Sin problemas"
 
-        checkInlineOk.appendChild(radioOk)
-        checkInlineOk.appendChild(labelOk)
+        divFormulario.appendChild(radioOk)
+        divFormulario.appendChild(labelOk)
 
-        const checkInlineInc = document.createElement("div")
-        checkInlineInc.className = "form-check form-check-inline mb-0"
+        const separadorInput = document.createElement("div") 
+        separadorInput.className = "form-check form-check-inline mb-0"
 
         const radioInc = document.createElement("input")
         radioInc.className = "form-check-input"
@@ -133,21 +127,20 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
 
         const labelInc = document.createElement("label")
         labelInc.className = "form-check-label text-danger fw-semibold"
-        labelInc.htmlFor = `inc-${pcId}`
-        labelInc.textContent = "Hay incidencia"
+        labelInc.innerText = "Hay incidencia"
 
-        checkInlineInc.appendChild(radioInc)
-        checkInlineInc.appendChild(labelInc)
+        separadorInput.appendChild(radioInc)
+        separadorInput.appendChild(labelInc)
 
-        bgLightDiv.appendChild(checkInlineOk)
-        bgLightDiv.appendChild(checkInlineInc)
+        divFondo.appendChild(divFormulario)
+        divFondo.appendChild(separadorInput)
 
-        cardBody.appendChild(headerDiv)
-        cardBody.appendChild(bgLightDiv)
+        cuerpoEspacio.appendChild(headerDiv)
+        cuerpoEspacio.appendChild(divFondo)
 
-        card.appendChild(cardBody)
-        col.appendChild(card)
-        contenedorEquipos.appendChild(col)
+        espacioEquipo.appendChild(cuerpoEspacio)
+        columna.appendChild(espacioEquipo)
+        contenedorEquipos.appendChild(columna)
 
         radioInc.addEventListener("change", () => {
             abrirFormularioModal(pcId)
@@ -158,39 +151,41 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
 
 const abrirFormularioModal = (pcId) => {
     pcActualId = pcId
-    tituloModal.textContent = `Registro de incidencia - PC: ${pcId}`
+    campoTitulo.innerText = `Registro de incidencia - PC: ${pcId}`
 
     const datosPrevios = incidenciasTemporales[pcId]
 
-    if (datosPrevios !== undefined) {
-        inputTipo.value = datosPrevios.tipo
-        inputAsunto.value = datosPrevios.asunto
-        inputPersona.value = datosPrevios.persona
-        txtDescripcion.value = datosPrevios.descripcion
+    if (datosPrevios !== undefined && datosPrevios !== null && datosPrevios !== "") {
+        campoTipo.value = datosPrevios.tipo
+        campoAsunto.value = datosPrevios.asunto
+        campoPersona.value = datosPrevios.persona
+        campoDescripcion.value = datosPrevios.descripcion
         
-        const radioGravedad = modalIncidencia.querySelector(`input[name="gravedad"][value="${datosPrevios.gravedad}"]`)
+        const radioGravedad = campoIncidencia.querySelector(`input[type="radio"]`) 
         if (radioGravedad) {
             radioGravedad.checked = true
         }
     } else {
-        inputTipo.value = ""
-        inputAsunto.value = ""
-        inputPersona.value = ""
-        txtDescripcion.value = ""
+        campoTipo.value = ""
+        campoAsunto.value = ""
+        campoPersona.value = ""
+        campoDescripcion.value = ""
         
-        const gravedades = modalIncidencia.querySelectorAll('input[name="gravedad"]')
+        const gravedades = campoIncidencia.querySelectorAll('input[name="gravedad"]') //Ese selector es especifico para agarrar todos los objetos input cuyo name sea gravedad
+        // Recurso: https://stackoverflow.com/questions/15148659/how-can-i-use-queryselector-on-to-pick-an-input-element-by-name
+
         gravedades.forEach(radio => {
             radio.checked = false
         })
     }
 
-    modalIncidencia.classList.remove("oculto")
-    modalIncidencia.classList.add("d-flex") 
+    campoIncidencia.classList.remove("oculto") //Clase propia encargada de esconder ventanas
+    campoIncidencia.classList.add("d-flex") 
 }
 
 const cerrarFormularioModal = () => {
-    modalIncidencia.classList.remove("d-flex")
-    modalIncidencia.classList.add("oculto")
+    campoIncidencia.classList.remove("d-flex")
+    campoIncidencia.classList.add("oculto")
     pcActualId = null
 }
 
@@ -213,21 +208,21 @@ const registrarEnHistorialSistema = (descripcion, detalle) => {
     localStorage.setItem("registroTickets", JSON.stringify(listaHistorial))
 }
 
-popularSelectSalones()
+cargarSalones()
 
 // EVENTOS
-btnAceptarModal.addEventListener("click", () => {
-    const tipo = inputTipo.value
-    const asunto = inputAsunto.value.trim()
-    const persona = inputPersona.value.trim()
-    const descripcion = txtDescripcion.value.trim()
+btnAceptar.addEventListener("click", () => {
+    const tipo = campoTipo.value
+    const asunto = campoAsunto.value.trim()
+    const persona = campoPersona.value.trim()
+    const descripcion = campoDescripcion.value.trim()
     
-    const gravedadRadio = modalIncidencia.querySelector('input[name="gravedad"]:checked')
+    const gravedadRadio = campoIncidencia.querySelector('input[name="gravedad"]:checked')
 
     if (tipo === "" || asunto === "" || persona === "" || descripcion === "" || !gravedadRadio) {
-        alert("Complete todos los campos del formulario de incidencias")
-        return
-    }
+        alert("Error: Complete todos los campos del formulario de incidencias")
+        
+    } else {
 
     incidenciasTemporales[pcActualId] = {
         tipo: tipo,
@@ -237,15 +232,15 @@ btnAceptarModal.addEventListener("click", () => {
         descripcion: descripcion
     }
 
-
     cerrarFormularioModal()
+}
 })
 
-btnCancelarModal.addEventListener("click", () => {
-    if (pcActualId && incidenciasTemporales[pcActualId] === undefined) {
-        const radioOk = document.getElementById(`ok-${pcActualId}`)
+btnCancelar.addEventListener("click", () => {
+    if (pcActualId && incidenciasTemporales[pcActualId] === undefined) { //Verifica si el pc tiene incidencias registradas
+        const radioOk = document.getElementById(`ok-${pcActualId}`) //Busca su radio de Sin incidencias
         if (radioOk) {
-            radioOk.checked = true
+            radioOk.checked = true //Marca que no hay incidencias
         }
     }
     cerrarFormularioModal()
@@ -254,34 +249,32 @@ btnCancelarModal.addEventListener("click", () => {
 formularioSalon.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    const idSalonSeleccionado = selectSector.value
-    if (idSalonSeleccionado === "") {
-        alert("Selecciona un salon para continuar")
-        return
-    }
+    const idSalonSeleccionado = selectSalon.value
+    if (idSalonSeleccionado === "" || idSalonSeleccionado === null || idSalonSeleccionado === undefined) {
+        alert("Error: Selecciona un salon para continuar")
+        
+    } else {
 
     const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
-    if (!confirmacion) return
+    if (confirmacion) {
 
-    const llavesIncidencias = Object.keys(incidenciasTemporales)
+    const llavesIncidencias = Object.keys(incidenciasTemporales) //Obtiene el array dentro del objeto {[]} --> []
 
     if (llavesIncidencias.length > 0) {
         const datosTickets = localStorage.getItem("tickets")
         let listaTickets = []
-        if (datosTickets !== null && datosTickets !== undefined && datosTickets !== "") {
-            listaTickets = JSON.parse(datosTickets)
-        }
+        if (!(datosTickets === null || datosTickets === undefined || datosTickets === "")) listaTickets = JSON.parse(datosTickets)
 
         let contadorID = listaTickets.length
 
         const usuarioSesion = localStorage.getItem("usuario")
-        let docenteId = "Docente Generico"
+        let docenteId = "N/A"
         if (usuarioSesion) {
             const uObj = JSON.parse(usuarioSesion)
-            docenteId = uObj.usuario || uObj.cedula || docenteId
+            docenteId = uObj.usuario || docenteId
         }
 
-        const textoSalon = selectSector.options[selectSector.selectedIndex].text
+        const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
 
         llavesIncidencias.forEach(pcId => {
             contadorID = contadorID + 1
@@ -302,7 +295,6 @@ formularioSalon.addEventListener("submit", (e) => {
                 colaboradores: [],
                 comentarios: [],
                 justificacion: "",
-                resuelto: false
             }
 
             listaTickets.push(nuevoTicket)
@@ -314,18 +306,21 @@ formularioSalon.addEventListener("submit", (e) => {
         })
 
         localStorage.setItem("tickets", JSON.stringify(listaTickets))
-        alert(`Operación exitosa, se registraron ${llavesIncidencias.length} incidencias`)
+        alert(`Se registraron ${llavesIncidencias.length} incidencias`)
     } else {
-        alert("El estado del salon se regsitro con exito, sin novedades")
+        alert("El estado del salon se regsitro con exito")
     }
 
     formularioSalon.reset()
-    selectSector.value = ""
+    selectSalon.value = ""
     incidenciasTemporales = {}
     contenedorEquipos.innerHTML = ""
+    }}
 })
 
-selectSector.addEventListener("change", (e) => {
+
+selectSalon.addEventListener("change", (e) => {
     incidenciasTemporales = {} 
-    renderizarEquiposDelSalon(e.target.value)
+    renderizarEquiposDelSalon(e.target.value) //Del evento change, se agarra el valor correspondiente a la opcion que eligió el usuario
+    //Basicamente, le dice al metodo que salon se eligio, para poder mostrar la info correspondiente al mismo
 })

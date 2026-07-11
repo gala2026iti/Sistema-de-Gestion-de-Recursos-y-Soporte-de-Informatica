@@ -1,154 +1,133 @@
 // VARIABLES
-const metricTotalEquipos = document.getElementById("metric-total-equipos")
-const metricEquiposFallas = document.getElementById("metric-equipos-fallas")
-const metricUltimoIncidente = document.getElementById("metric-ultimo-incidente")
-const topEquipoId = document.getElementById("top-equipo-id")
-const topEquipoCantidad = document.getElementById("top-equipo-cantidad")
-const contadorVandalismo = document.getElementById("contador-vandalismo")
-const tablaRankingFallas = document.getElementById("tabla-ranking-fallas")
-const tablaUsuariosActivos = document.getElementById("tabla-usuarios-activos")
-
-const obtenerDatos = (clave) => {
-    const datos = localStorage.getItem(clave)
-    return datos ? JSON.parse(datos) : []
-}
-
-const equipos = obtenerDatos("equipos")
-const tickets = obtenerDatos("tickets")
+const metricaTotalEquipos = document.getElementById("cantTotalEquipos") //Las variables de los objetos "dinamicos" si existen en el html, y son citadas por id ya que no hay necesidad de crear objetos nuevos, solo se debe modificar los objetos actuales
+const metricaEquiposFallas = document.getElementById("cantEquiposFallados")
+const metricaUltimoIncidente = document.getElementById("fechaUltimoIncidente")
+const topEquipoId = document.getElementById("equipoMasFallado")
+const topEquipoCantidad = document.getElementById("cantEquipoMasFallado")
+const contadorVandalismo = document.getElementById("cantIncidencias")
+const tablaRankingFallas = document.getElementById("tablaFallas")
+const tablaUsuarios = document.getElementById("tablaUsuarios")
 
 // FUNCIONES
-const renderizarUsuariosActivos = () => {
-    tablaUsuariosActivos.innerHTML = ""
-    const listaUsuarios = obtenerDatos("usuarios")
+const obtenerDatos = (clave) => {
+    const datos = localStorage.getItem(clave)
+    if (datos === null || datos === undefined || datos === "") return []
+    return JSON.parse(datos)
+}
 
-    const usuariosActivos = listaUsuarios.filter(u => {
-        return u.activo === true || 
-               String(u.activo).toLowerCase() === "activo" || 
-               String(u.activo).toLowerCase() === "true" ||
-               String(u.estado).toLowerCase() === "activo"
-    })
+const actualizarPagina = () => {
+    const equipos = obtenerDatos("equipos")
+    const tickets = obtenerDatos("tickets")
 
-    if (usuariosActivos.length === 0) {
-        const tr = document.createElement("tr")
-        const td = document.createElement("td")
-        td.setAttribute("colspan", "4")
-        td.className = "text-center text-muted py-4 italic"
-        td.appendChild(document.createTextNode("No se registran usuarios activos cargados en la plataforma."))
-        tr.appendChild(td)
-        tablaUsuariosActivos.appendChild(tr)
-        return
+    metricaTotalEquipos.innerText = equipos.length
+
+    const equiposConFallasActivas = new Set(tickets.filter(t => t.estado.toLowerCase() !== "resuelto").map(t => t.equipoId))  //Un set es como un array, pero los conjuntos obligatoriamente no se repiten, tambien cuenta con metodos unicos
+    metricaEquiposFallas.innerText = equiposConFallasActivas.size
+
+    if (tickets.length > 0) {
+        const ticketsOrdenadosPorId = [...tickets].sort((a, b) => b.id - a.id) // El [...tickets] es una funcion que agarra los elementos restantes en el set, al ponerlo asi nada mas, lee como que el restante es todo el set, por lo que, en resumen, agarra tooodo el set
+        metricaUltimoIncidente.innerHTML = ticketsOrdenadosPorId[0].fechaCreacion || ticketsOrdenadosPorId[0].fecha || "N/A"
+    } else {
+        metricaUltimoIncidente.innerText = "Sin registros"
     }
 
-    usuariosActivos.forEach(u => {
+    const historialFallasPorEquipo = {}
+
+    tickets.forEach(ticket => {
+        const idEq = ticket.equipoId
+        if (idEq === null || idEq === undefined || idEq === "") return null // Si no hay id de equipo, salta el ticket
+
+        if (!historialFallasPorEquipo[idEq]) {
+            historialFallasPorEquipo[idEq] = {
+                id: idEq,
+                salon: ticket.salon || 'N/A',
+                fallas: 0
+            }
+        }
+        historialFallasPorEquipo[idEq].fallas += 1
+    })
+
+    const listaOrdenadaEquipos = Object.values(historialFallasPorEquipo).sort((a, b) => b.fallas - a.fallas) //Obtiene el valor dentro del objeto
+
+    if (listaOrdenadaEquipos.length > 0) {
+        topEquipoId.innerText = listaOrdenadaEquipos[0].id
+        topEquipoCantidad.innerText = listaOrdenadaEquipos[0].fallas
+    } else {
+        topEquipoId.innerText = "Ninguno"
+        topEquipoCantidad.innerText = "0"
+    }
+
+    tablaRankingFallas.innerHTML = ""
+    listaOrdenadaEquipos.forEach(item => {
+        const fila = document.createElement("tr")
+
+        const celdaId = document.createElement("td")
+        const fuerte = document.createElement("strong")
+        fuerte.innerText = item.id
+        celdaId.appendChild(fuerte)
+
+        const celdaSalon = document.createElement("td")
+        celdaSalon.innerText = item.salon
+
+        const celdaBadge = document.createElement("td")
+        const spanBadge = document.createElement("span")
+        spanBadge.className = "badge bg-secondary px-2 py-1.5"
+        spanBadge.innerText = item.fallas
+        celdaBadge.appendChild(spanBadge)
+
+        fila.appendChild(celdaId)
+        fila.appendChild(celdaSalon)
+        fila.appendChild(celdaBadge)
+        tablaRankingFallas.appendChild(fila)
+    })
+
+
+    const totalCriticos = tickets.filter(t => {
+        const grav = t.gravedad.toLowerCase()
+        return grav === "baja" || grav === "media" || grav === "alta"
+    }).length
+    contadorVandalismo.innerText = totalCriticos
+
+    tablaUsuarios.innerHTML = ""
+    const listaUsuarios = obtenerDatos("usuarios")
+
+    const usuariosRegistrados = listaUsuarios.sort(u => {
+        return u.activo
+    })
+
+    usuariosRegistrados.forEach(u => {
         const tr = document.createElement("tr")
 
         const tdNombre = document.createElement("td")
         tdNombre.className = "ps-4 fw-bold text-dark"
-        const nombreMostrar = u.nombre || u.nombreCompleto || u.usuario || "Usuario Anónimo"
-        tdNombre.appendChild(document.createTextNode(nombreMostrar))
+        tdNombre.innerText = u.nombre
 
         const tdCorreo = document.createElement("td")
         tdCorreo.className = "text-muted"
-        tdCorreo.appendChild(document.createTextNode(u.correo || u.email || "Sin correo registrado"))
+        tdCorreo.innerText = u.correo
 
         const tdRol = document.createElement("td")
-        const rolTexto = String(u.rol || "Técnico").toUpperCase()
-        tdRol.appendChild(document.createTextNode(rolTexto))
+        tdRol.innerText = u.rol
 
         const tdEstado = document.createElement("td")
         tdEstado.className = "pe-4 text-center"
-        const badge = document.createElement("span")
-        badge.className = "badge bg-success px-3 py-1.5 rounded-pill"
-        badge.appendChild(document.createTextNode("Activo"))
-        tdEstado.appendChild(badge)
+
+        const spanActivo = document.createElement("span")
+        let estiloCampoActivo = ""
+        if (u.activo) estiloCampoActivo = "badge bg-success px-3 py-1.5 rounded-pill"
+        else estiloCampoActivo = "badge bg-danger px-3 py-1.5 rounded-pill"
+
+        spanActivo.className = estiloCampoActivo
+        spanActivo.innerText = u.activo ? "Activo" : "Inactivo"
+        tdEstado.appendChild(spanActivo)
 
         tr.appendChild(tdNombre)
         tr.appendChild(tdCorreo)
         tr.appendChild(tdRol)
         tr.appendChild(tdEstado)
-        
-        tablaUsuariosActivos.appendChild(tr)
+
+        tablaUsuarios.appendChild(tr)
     })
 }
 
-// EVENTOS
-    metricTotalEquipos.textContent = equipos.length
-
-    const equiposConFallasActivas = new Set(
-        tickets.filter(t => String(t.estado).toLowerCase() !== "resuelto" && String(t.estado).toLowerCase() !== "cerrado").map(t => t.equipoId)
-    )
-    metricEquiposFallas.textContent = equiposConFallasActivas.size
-
-    if (tickets.length > 0) {
-        const ticketsOrdenadosPorId = [...tickets].sort((a, b) => Number(b.id) - Number(a.id))
-        metricUltimoIncidente.textContent = ticketsOrdenadosPorId[0].fechaCreacion || ticketsOrdenadosPorId[0].fecha || "S/D"
-    } else {
-        metricUltimoIncidente.textContent = "Sin registros"
-    }
-
-    const historialFallasPorEquipo = {}
-    tickets.forEach(ticket => {
-        const idEq = ticket.equipoId
-        if (idEq) {
-            if (!historialFallasPorEquipo[idEq]) {
-                historialFallasPorEquipo[idEq] = {
-                    id: idEq,
-                    salon: ticket.salon || "General",
-                    fallas: 0
-                }
-            }
-            historialFallasPorEquipo[idEq].fallas += 1
-        }
-    })
-
-    const listaOrdenadaEquipos = Object.values(historialFallasPorEquipo).sort((a, b) => b.fallas - a.fallas)
-
-    if (listaOrdenadaEquipos.length > 0) {
-        topEquipoId.textContent = listaOrdenadaEquipos[0].id
-        topEquipoCantidad.textContent = listaOrdenadaEquipos[0].fallas
-    } else {
-        topEquipoId.textContent = "Ninguno"
-        topEquipoCantidad.textContent = "0"
-    }
-
-    tablaRankingFallas.innerHTML = ""
-    if (listaOrdenadaEquipos.length === 0) {
-        const filaVacia = document.createElement("tr")
-        const celdaVacia = document.createElement("td")
-        celdaVacia.setAttribute("colspan", "3")
-        celdaVacia.className = "text-center text-muted"
-        celdaVacia.appendChild(document.createTextNode("No hay registros de incidencias históricas."))
-        filaVacia.appendChild(celdaVacia)
-        tablaRankingFallas.appendChild(filaVacia)
-    } else {
-        listaOrdenadaEquipos.forEach(item => {
-            const fila = document.createElement("tr")
-
-            const celdaId = document.createElement("td")
-            const fuerte = document.createElement("strong")
-            fuerte.appendChild(document.createTextNode(item.id))
-            celdaId.appendChild(fuerte)
-
-            const celdaSalon = document.createElement("td")
-            celdaSalon.appendChild(document.createTextNode(item.salon))
-
-            const celdaBadge = document.createElement("td")
-            const spanBadge = document.createElement("span")
-            spanBadge.className = "badge bg-secondary px-2 py-1.5"
-            spanBadge.appendChild(document.createTextNode(item.fallas))
-            celdaBadge.appendChild(spanBadge)
-
-            fila.appendChild(celdaId)
-            fila.appendChild(celdaSalon)
-            fila.appendChild(celdaBadge)
-            tablaRankingFallas.appendChild(fila)
-        })
-    }
-
-    const totalCriticos = tickets.filter(t => {
-        const grav = String(t.gravedad).toLowerCase()
-        return grav === "alta" || grav === "grave" || grav === "critica" || grav === "crítica"
-    }).length
-    contadorVandalismo.textContent = totalCriticos
-
-    renderizarUsuariosActivos()
+actualizarPagina()

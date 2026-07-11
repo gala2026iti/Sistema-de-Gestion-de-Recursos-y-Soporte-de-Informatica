@@ -2,117 +2,75 @@
 const parametros = new URLSearchParams(window.location.search)
 const idBuscado = parametros.get("id")
 
-const txtTitulo = document.getElementById("txt-titulo-ticket")
-const contenedorBadges = document.getElementById("contenedor-badges")
+const txtTitulo = document.getElementById("tituloTicket")
+const contenedorAsunto = document.getElementById("contenedorAsunto")
+const infoDocente = document.getElementById("infoDocente")
+const infoFecha = document.getElementById("infoFecha")
+const infoSalon = document.getElementById("infoSalon")
+const infoPc = document.getElementById("infoPC")
+const infoGravedad = document.getElementById("infoGravedad")
+const infoCategoria = document.getElementById("infoCategoria")
+const infoDescripcion = document.getElementById("infoDescripcion")
+const infoEncargados = document.getElementById("infoEncargados")
 
-const infoDocente = document.getElementById("info-docente")
-const infoFecha = document.getElementById("info-fecha")
-const infoSalon = document.getElementById("info-salon")
-const infoPc = document.getElementById("info-pc")
-const infoGravedad = document.getElementById("info-gravedad")
-const infoCategoria = document.getElementById("info-categoria")
-const infoDescripcion = document.getElementById("info-descripcion")
-const infoEncargados = document.getElementById("info-encargados")
-
-const bloqueJustificacion = document.getElementById("bloque-justificacion")
-const infoJustificacion = document.getElementById("info-justificacion")
-const contenedorComentarios = document.getElementById("contenedor-comentarios")
+const bloqueJustificacion = document.getElementById("bloqueJustificacion")
+const infoJustificacion = document.getElementById("infoJustificacion")
+const contenedorComentarios = document.getElementById("contenedorComentarios")
 
 // FUNCIONES
 const cargarTicketEspecifico = () => {
     const datos = localStorage.getItem("tickets")
-    if (!datos) return null
+    if (datos === null || datos === undefined || datos == "") return []
     const lista = JSON.parse(datos)
-    return lista.find(t => String(t.id) === String(idBuscado))
+    return lista.find(t => String(t.id) === String(idBuscado)) //Por algun motivo, sin los String no funca el filtro y agarra todo
 }
 
 const rellenarCampos = () => {
     const ticket = cargarTicketEspecifico()
 
-    if (!ticket) {
-        if (txtTitulo) {
-            txtTitulo.textContent = ""
-            txtTitulo.appendChild(document.createTextNode("Incidencia no encontrada en la base de datos"))
-        }
+    if (ticket === null || ticket === undefined | ticket === "") {
+        txtTitulo.innerText = "Incidencia no encontrada en la base de datos"
         return
     }
+    txtTitulo.innerHTML = `<span class="fw-bold text-muted">${ticket.asunto} - </span> #${ticket.id} `
 
-    if (txtTitulo) {
-        txtTitulo.textContent = ""
-        txtTitulo.appendChild(document.createTextNode(ticket.asunto + " "))
-        const spanId = document.createElement("span")
-        spanId.className = "fw-bold text-muted"
-        spanId.appendChild(document.createTextNode(`#${ticket.id}`))
-        txtTitulo.appendChild(spanId)
+
+    contenedorAsunto.innerHTML = ""
+    const campoEstado = document.createElement("span")
+    const estadoLimpio = ticket.estado.toLowerCase()
+
+    if (estadoLimpio === "resuelto") {
+        campoEstado.className = "badge bg-success px-3 py-2 fs-6"
+        campoEstado.innerText = "Cerrado / Resuelto"
+
+        bloqueJustificacion.classList.remove("d-none") //Como el ticket esta resuelto, se muetra el campo de justificacion
+        infoJustificacion.innerText = ticket.justificacion || "No se pudo obtener información de justificación."
+
+    } else if (estadoLimpio === "en proceso") {
+        campoEstado.className = "badge bg-warning text-dark px-3 py-2 fs-6"
+        campoEstado.innerText = "En progreso"
+    } else {
+        campoEstado.className = "badge bg-danger px-3 py-2 fs-6"
+        campoEstado.innerText = "Pendiente"
+    }
+    contenedorAsunto.appendChild(campoEstado)
+
+
+    if (infoDocente) { //Se mantienen, con el objetivo de que, si se manipula el HTML de manera forzada, no colapse el js
+        infoDocente.innerText = ""
+        infoDocente.innerText = ticket.docente || "No registrado"
     }
 
-    if (contenedorBadges) {
-        contenedorBadges.innerHTML = ""
-        const badgeEstado = document.createElement("span")
-        const estadoLimpio = String(ticket.estado).toLowerCase()
-
-        if (ticket.resuelto === true || estadoLimpio === "resuelto") {
-            badgeEstado.className = "badge bg-success px-3 py-2 fs-6"
-            badgeEstado.appendChild(document.createTextNode("Cerrado / Resuelto"))
-            
-            if (bloqueJustificacion) bloqueJustificacion.classList.remove("d-none")
-            if (infoJustificacion) {
-                infoJustificacion.textContent = ""
-                infoJustificacion.appendChild(document.createTextNode(ticket.justificacion || "Sin desglose de justificación."))
-            }
-        } else if (estadoLimpio === "en proceso") {
-            badgeEstado.className = "badge bg-warning text-dark px-3 py-2 fs-6"
-            badgeEstado.appendChild(document.createTextNode("En progreso"))
-        } else {
-            badgeEstado.className = "badge bg-danger px-3 py-2 fs-6"
-            badgeEstado.appendChild(document.createTextNode("Pendiente"))
-        }
-        contenedorBadges.appendChild(badgeEstado)
-    }
-
-    if (infoDocente) {
-        infoDocente.textContent = ""
-        infoDocente.appendChild(document.createTextNode(ticket.docente || "No registrado"))
-    }
-
-    if (infoFecha) {
-        infoFecha.textContent = ""
-        infoFecha.appendChild(document.createTextNode(ticket.fechaCreacion || "N/A"))
-    }
-
-    if (infoSalon) {
-        infoSalon.textContent = ""
-        infoSalon.appendChild(document.createTextNode(ticket.salon || "General"))
-    }
-
-    if (infoPc) {
-        infoPc.textContent = ""
-        infoPc.appendChild(document.createTextNode(ticket.equipoId || "N/A"))
-    }
-
-    if (infoGravedad) {
-        infoGravedad.textContent = ""
-        infoGravedad.appendChild(document.createTextNode(String(ticket.gravedad || "Ligera").toUpperCase()))
-    }
-
-    if (infoCategoria) {
-        infoCategoria.textContent = ""
-        infoCategoria.appendChild(document.createTextNode(ticket.tipo || "General"))
-    }
-
-    if (infoDescripcion) {
-        infoDescripcion.textContent = ""
-        infoDescripcion.appendChild(document.createTextNode(ticket.descripcion || "Sin descripción adicional."))
-    }
-
+    if (infoFecha) infoFecha.innerText = ticket.fechaCreacion || "N/A"
+    if (infoSalon) infoSalon.innerText = ticket.salon || "General"
+    if (infoPc) infoPc.innerText = ticket.equipoId || "N/A"
+    if (infoGravedad) infoGravedad.innerText = ticket.gravedad || "N/A".toUpperCase()
+    if (infoCategoria) infoCategoria.innerText = ticket.tipo || "N/A"
+    if (infoDescripcion) infoDescripcion.innerText = ticket.descripcion || "Descripción no disponible."
     if (infoEncargados) {
-        infoEncargados.textContent = ""
-        const colaboradores = ticket.colaboradores && ticket.colaboradores.length > 0 
-            ? ticket.colaboradores.join(", ") 
-            : "Sin técnicos asignados actualmente"
-        infoEncargados.appendChild(document.createTextNode(colaboradores))
+        const colaboradores = ticket.colaboradores && ticket.colaboradores.length > 0 ? ticket.colaboradores.join(", ") : "Sin técnicos asignados." //El join une los elementos de un array o set usando el separador 
+        infoEncargados.innerText = colaboradores
     }
-
     if (contenedorComentarios) {
         contenedorComentarios.innerHTML = ""
         const comentarios = ticket.comentarios || []
@@ -120,23 +78,23 @@ const rellenarCampos = () => {
         if (comentarios.length === 0) {
             const aviso = document.createElement("p")
             aviso.className = "text-muted small italic p-2"
-            aviso.appendChild(document.createTextNode("No se registran comentarios en este flujo operativo."))
+            aviso.innerText = "No se encontraron comentarios."
             contenedorComentarios.appendChild(aviso)
         } else {
-            comentarios.forEach(com => {
+            comentarios.forEach(c => {
                 const itemComentario = document.createElement("article")
                 itemComentario.className = "card mb-3 shadow-sm"
 
                 const cabecera = document.createElement("div")
                 cabecera.className = "card-header d-flex justify-content-between align-items-center bg-white py-2"
 
-                const autor = document.createElement("strong")
+                const autor = document.createElement("strong") //strong marca el texto como negrita, y en el sistema interno, se marca como contenido importante, afectando en el pasaje a voz
                 autor.className = "text-secondary small"
-                autor.appendChild(document.createTextNode(com.autor))
+                autor.innerText = c.autor
 
                 const tiempo = document.createElement("span")
                 tiempo.className = "text-muted small"
-                tiempo.appendChild(document.createTextNode(`el ${com.fecha}`))
+                tiempo.innerText = `el ${c.fecha}`
 
                 cabecera.appendChild(autor)
                 cabecera.appendChild(tiempo)
@@ -146,7 +104,7 @@ const rellenarCampos = () => {
 
                 const parrafo = document.createElement("p")
                 parrafo.className = "card-text text-dark m-0 small"
-                parrafo.appendChild(document.createTextNode(com.texto))
+                parrafo.innerText = c.texto
 
                 cuerpo.appendChild(parrafo)
                 itemComentario.appendChild(cabecera)
@@ -158,4 +116,4 @@ const rellenarCampos = () => {
     }
 }
 
-    rellenarCampos()
+rellenarCampos()

@@ -9,7 +9,7 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/direccion/panelConsultas.css">
-    <link rel="stylesheet" href="../../assets/css/administracion-tecnico/gestionequipos.css">
+    <link rel="stylesheet" href="../../assets/css/administracion-tecnico/gestionEquipos.css">
 </head>
 
 <body data-rol-permitido="direccion">
@@ -20,8 +20,8 @@
     <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
-                <button class="btn-menu" id="btn-menu">☰</button>
-                <button class="btn-cerrar" id="btn-cerrar">✖</button>
+                <button class="btn-menu" id="btnMenu">☰</button>
+                <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeDirector.html">Dashboard</a></li>
@@ -95,7 +95,7 @@
                     <div class="card p-3 shadow-sm border-0 bg-white">
                         <h3 class="titulo-grafica text-center fs-5 mb-3">Incidencias Por Equipo</h3>
                         <div class="contenedor-grafica">
-                            <canvas id="graficaEstados1"></canvas>
+                            <canvas id="graficaIncidencias"></canvas>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../assets/js/btn-menu-celular.js" defer></script>
+    <script src="../../assets/js/btnMenuCelular.js" defer></script>
     <script src="../../assets/js/cerrarSesion.js" defer></script>
     <script src="../../assets/js/verificarSesion.js" defer></script>
     <script src="../../assets/js/graficoDireccion.js" defer></script>

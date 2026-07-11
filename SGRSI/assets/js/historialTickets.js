@@ -1,7 +1,10 @@
-const contenedorHistorial = document.getElementById("contenedor-historial")
+// VARIABLES
+const contenedorHistorial = document.getElementById("contenedorHistorial")
+const btnVolver = document.getElementById("btnVolver")
 
+// EVENTOS
 const cargarRegistrosTickets = () => {
-    const datos = localStorage.getItem("tickets")
+    const datos = localStorage.getItem("registroTickets")
     if (datos === null || datos === undefined || datos === "") {
         return []
     }
@@ -9,50 +12,46 @@ const cargarRegistrosTickets = () => {
 }
 
 const mapearFechaParaOrdenar = (stringFecha) => {
-    if (!stringFecha) return 0
+    if (stringFecha === null || stringFecha === undefined || stringFecha === "") {
+        return 0
+    }
     const partes = stringFecha.split("/")
-    if (partes.length !== 3) return 0
-    return parseInt(partes[2] + partes[1].padStart(2, "0") + partes[0].padStart(2, "0"))
+    if (partes.length !== 3) {
+        return 0
+    }
+    return partes[2] + partes[1].padStart(2, "0") + partes[0].padStart(2, "0") //El pad start añade ceros a la izquierda para que la longitud del texto sea la esperada
 }
 
 const mostrarHistorial = () => {
     contenedorHistorial.innerHTML = ""
-    
-    const urlParams = new URLSearchParams(window.location.search)
-    const equipoIdUrl = urlParams.get("equipoId")
+
+    const urlParams = new URLSearchParams(window.location.search) //Esto debe aplicarse a casos similares usando URL
+    const equipoIdUrl = urlParams.get("equipoId")                 //Es un objeto encargado de leer los datos del URL
 
     let historial = cargarRegistrosTickets()
 
     if (equipoIdUrl) {
-        const idBuscado = String(equipoIdUrl).trim().toLowerCase()
+        const idBuscado = equipoIdUrl.trim()
         historial = historial.filter(ticket => {
-            const idTicketEquipo = String(ticket.equipoId || ticket.idEquipo || "").trim().toLowerCase()
+            const idTicketEquipo = ticket.equipoInvolucrado
             return idTicketEquipo === idBuscado
         })
     }
 
-    for (let i = 0; i < historial.length - 1; i++) {
-        for (let j = 0; j < historial.length - i - 1; j++) {
-            const fechaA = mapearFechaParaOrdenar(historial[j].fecha)
-            const fechaB = mapearFechaParaOrdenar(historial[j + 1].fecha)
-            if (fechaA < fechaB) {
-                const temp = historial[j]
-                historial[j] = historial[j + 1]
-                historial[j + 1] = temp
-            }
-        }
-    }
-
-    let ultimaFechaRenderizada = ""
+    historial.sort((a, b) => {
+        return mapearFechaParaOrdenar(b.fecha) - mapearFechaParaOrdenar(a.fecha)
+    })
+    
+    let ultimaFecha = ""
     let listaActualUl = null
 
     historial.forEach(registro => {
-        if (ultimaFechaRenderizada !== registro.fechaCreacion) {
-            ultimaFechaRenderizada = registro.fechaCreacion
+        if (ultimaFecha !== registro.fecha) {
+            ultimaFecha = registro.fecha
 
             const spanFecha = document.createElement("span")
             spanFecha.className = "fw-bold d-block mt-3 text-secondary"
-            spanFecha.textContent = `Intervenciones el ${registro.fechaCreacion}`
+            spanFecha.innerText = `Intervenciones del ${registro.fecha}`
             contenedorHistorial.appendChild(spanFecha)
 
             listaActualUl = document.createElement("ul")
@@ -63,32 +62,33 @@ const mostrarHistorial = () => {
         const li = document.createElement("li")
         li.className = "historial-contenido d-flex justify-content-between align-items-center p-3 mb-2 bg-light rounded shadow-sm"
 
-        const divColumn = document.createElement("div")
-        divColumn.className = "d-flex flex-column"
+        const columna = document.createElement("div")
+        columna.className = "d-flex flex-column"
 
         const spanDescripcion = document.createElement("span")
         spanDescripcion.className = "fw-bold text-dark"
-        spanDescripcion.textContent = registro.asunto || registro.tipo
+        spanDescripcion.innerText = registro.descripcionAccion
 
+        const detalles = document.createElement("span")
+        detalles.className = "text-muted small"
+        detalles.innerText = registro.detalleOperador
 
-        const spanDetalle = document.createElement("span")
-        spanDetalle.className = "text-muted small"
-        spanDetalle.textContent = ` ${registro.gravedad} - ${registro.descripcion}`
+        columna.appendChild(spanDescripcion)
+        columna.appendChild(detalles)
 
-        divColumn.appendChild(spanDescripcion)
-        divColumn.appendChild(spanDetalle)
-        
         const spanFechaRegistro = document.createElement("span")
         spanFechaRegistro.className = "text-muted small"
-        spanFechaRegistro.textContent = registro.fechaCreacion
-        
-        li.appendChild(divColumn)
+        spanFechaRegistro.innerText = registro.fechaCreacion
+
+        li.appendChild(columna)
         li.appendChild(spanFechaRegistro)
 
-        if (listaActualUl) {
-            listaActualUl.appendChild(li)
-        }
+        listaActualUl.appendChild(li)
     })
 }
 
 mostrarHistorial()
+
+btnVolver.addEventListener("click", (e) => { //Si hay una página que puede ser ingresada desde multiples espacios, esta es una muy buena alternativa para volver mas facilmente
+history.back()
+})

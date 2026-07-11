@@ -1,35 +1,34 @@
 // VARIABLES
-const tabla = document.getElementById("tablaEquipos") || document.querySelector("table")
-const cuerpoTabla = document.getElementById("cuerpoSolicitudes")
+const cuerpoTabla = document.querySelector("#tablaSolicitudes tbody")
 const filtroEstado = document.getElementById("filtroEstado")
 
 // FUNCIONES
-const obtenerSolicitudesServidor = () => {
+const obtenerSolicitudes = () => {
     const solicitudesLocales = localStorage.getItem("solicitudes")
-    if (!solicitudesLocales) return []
+    if (solicitudesLocales === null || solicitudesLocales === undefined || solicitudesLocales === "") return []
     return JSON.parse(solicitudesLocales)
 }
 
-const guardarSolicitudesServidor = (solicitudes) => {
+const guardarSolicitudes = (solicitudes) => {
     localStorage.setItem("solicitudes", JSON.stringify(solicitudes))
     actualizarTabla()
 }
 
 const finalizarSolicitud = (id) => {
-    const solicitudes = obtenerSolicitudesServidor()
-    const solicitud = solicitudes.find(s => Number(s.id) === Number(id))
+    const solicitudes = obtenerSolicitudes()
+    const solicitud = solicitudes.find(s => s.id === id)
     
     if (solicitud) {
         solicitud.finalizada = true 
-        guardarSolicitudesServidor(solicitudes)
+        guardarSolicitudes(solicitudes)
     }
 }
 
 const actualizarTabla = () => {
-    if (!cuerpoTabla) return
+    if (!cuerpoTabla) return //Si no se encuentra el cuerpoTabla, no se continua, esto para evitar errores de null o undefined
     cuerpoTabla.innerHTML = ""
     
-    const solicitudes = obtenerSolicitudesServidor()
+    const solicitudes = obtenerSolicitudes()
     let solicitudesFiltradas = solicitudes
 
     if (filtroEstado && filtroEstado.value !== "todas") {
@@ -45,22 +44,22 @@ const actualizarTabla = () => {
 
         const asuntoFila = document.createElement("td")
         asuntoFila.className = "text-primary fw-bold"
-        asuntoFila.textContent = s.asunto
+        asuntoFila.innerText = s.asunto
 
         const fechaFila = document.createElement("td")
-        fechaFila.textContent = s.fecha 
+        fechaFila.innerText = s.fecha 
 
         const descripcionFila = document.createElement("td")
-        descripcionFila.textContent = s.descripcion
+        descripcionFila.innerText = s.descripcion
 
         const datosFila = document.createElement("td")
-        datosFila.textContent = `Creado por: ${s.creador}` 
+        datosFila.innerText = `Creado por: ${(s.creador || "N/A")}` 
 
         const accionesFila = document.createElement("td")
 
-        if (s.finalizada === false) {
+        if (!s.finalizada) {
             const btnFinalizar = document.createElement("button")
-            btnFinalizar.textContent = "Finalizar petición"
+            btnFinalizar.innerText = "Finalizar petición"
             btnFinalizar.className = "btn btn-primary btn-sm"
             btnFinalizar.addEventListener("click", () => {
                 if (confirm("¿Estás seguro de que querés finalizar esta solicitud? Esta acción va a registrar el trabajo como completado y no se puede deshacer.")) {
@@ -71,7 +70,7 @@ const actualizarTabla = () => {
         } else {
             const spanFinalizado = document.createElement("span")
             spanFinalizado.className = "badge bg-success text-white px-2 py-1"
-            spanFinalizado.textContent = "Resuelta"
+            spanFinalizado.innerText = "Resuelta"
             accionesFila.appendChild(spanFinalizado)
         }
 
@@ -84,9 +83,8 @@ const actualizarTabla = () => {
     })
 }
 
-actualizarTabla()
-
 // EVENTOS
-if (filtroEstado) {
+if (filtroEstado) { //Estas verificaciones se hacen para que, al momento de llamar al metodo, el mismo si exista, esto para no tener errores por null, undefined, etc.
     filtroEstado.addEventListener("change", actualizarTabla)
 }
+actualizarTabla()

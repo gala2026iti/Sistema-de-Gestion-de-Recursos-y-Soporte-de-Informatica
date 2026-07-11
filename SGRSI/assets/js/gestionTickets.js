@@ -1,55 +1,56 @@
 // VARIABLES
-const queryParams = new URLSearchParams(window.location.search)
-const ticketIdActual = queryParams.get("id")
+const valoresPagina = new URLSearchParams(window.location.search)
+const ticketIdActual = valoresPagina.get("id")
 
-const txtTituloTicket = document.getElementById("txt-titulo-ticket")
-const txtIdTicket = document.getElementById("txt-id-ticket")
-const txtMetaCreacion = document.getElementById("txt-meta-creacion")
+const tituloTicket = document.getElementById("tituloTicket")
 
-const badgePendiente = document.getElementById("badge-pendiente")
-const badgeEnProceso = document.getElementById("badge-en-proceso")
-const badgeResuelto = document.getElementById("badge-resuelto")
+const estadoPendiente = document.getElementById("pendiente")
+const estadoEnProceso = document.getElementById("proceso")
+const estadoResuelto = document.getElementById("resuelto")
 
-const inputUsuarioAsignado = document.getElementById("usuario-asignado")
-const btnAutoasignar = document.getElementById("btn-autoasignar")
+const usuarioAsignado = document.getElementById("usuarioAsignado")
+const btnAutoasignar = document.getElementById("btnAutoasignar")
 
-const selectEstado = document.getElementById("select-estado")
-const selectGravedad = document.getElementById("select-gravedad")
-const inputSalon = document.getElementById("input-salon")
-const inputPc = document.getElementById("input-pc")
-const inputCategoria = document.getElementById("input-categoria")
-const textareaContenido = document.getElementById("textarea-contenido")
+const selectEstado = document.getElementById("selectorEstado")
+const selectGravedad = document.getElementById("selectorGravedad")
+const inputSalon = document.getElementById("ubicacionSalon")
+const inputPc = document.getElementById("entradaPC")
+const inputCategoria = document.getElementById("entradaCategoria")
+const contenido = document.getElementById("contenido")
 
-const contenedorJustificacion = document.getElementById("contenedor-justificacion")
-const textareaJustificacion = document.getElementById("textarea-justificacion")
+const contenedorJustificacion = document.getElementById("espacioJustificacion")
+const justificacion = document.getElementById("justificacion")
 
-const formControlTicket = document.getElementById("form-control-ticket")
-const btnFinalizarTicket = document.getElementById("btn-finalizar-ticket")
+const formControlTicket = document.getElementById("formDetalleTicket")
+const btnFinalizarTicket = document.getElementById("btnFinalizarTicket")
 
-const contenedorComentarios = document.getElementById("contenedor-comentarios")
-const txtNuevoComentario = document.getElementById("txt-nuevo-comentario")
-const btnGuardarComentario = document.getElementById("btn-guardar-comentario")
+const contenedorComentarios = document.getElementById("contenedorComentarios")
+const nuevoComentario = document.getElementById("nuevoComentario")
+const btnGuardarComentario = document.getElementById("btnGuardarComentario")
 
-const tarjetaEscribirComentario = txtNuevoComentario ? txtNuevoComentario.closest(".card") : null
+const tarjetaEscribirComentario = nuevoComentario ? nuevoComentario.closest(".card") : null
+
+const btnVolver = document.getElementById("btnVolver")
 
 // FUNCIONES
 const obtenerUsuarioFirmado = () => {
-    const sesion = localStorage.getItem("usuario")
-    if (sesion) return JSON.parse(sesion)
-    return null
+    const usuario = localStorage.getItem("usuario")
+    if (usuario === null || usuario === undefined || usuario === "") return null
+    return JSON.parse(usuario)
+
 }
 
-const cargarColeccionTickets = () => {
+const cargarTickets = () => {
     const datos = localStorage.getItem("tickets")
     if (!datos) return []
     return JSON.parse(datos)
 }
 
-const persistirColeccionTickets = (lista) => {
+const guardarTickets = (lista) => {
     localStorage.setItem("tickets", JSON.stringify(lista))
 }
 
-const registrarEnHistorialGeneral = (asunto, detalle) => {
+const registrarEnHistorialGeneral = (asunto, detalle, idEquipo) => {
     const datos = localStorage.getItem("registroTickets")
     let historial = datos ? JSON.parse(datos) : []
 
@@ -57,79 +58,72 @@ const registrarEnHistorialGeneral = (asunto, detalle) => {
         id: historial.length + 1,
         fecha: new Date().toLocaleDateString('es-ES'),
         descripcionAccion: asunto,
-        detalleOperador: detalle
+        detalleOperador: detalle,
+        equipoInvolucrado: idEquipo
     })
     localStorage.setItem("registroTickets", JSON.stringify(historial))
 }
 
-const renderizarInformacionTicket = () => {
-    const lista = cargarColeccionTickets()
+const mostrarInfoTicket = () => {
+    const lista = cargarTickets()
+    // Se hace pasaje a string para evitar errores de tipo con el igual estricto
     const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
     if (!ticket) {
-        txtTituloTicket.textContent = "Ticket no encontrado"
+        tituloTicket.innerText = "Ticket no encontrado"
         return
     }
 
-    txtTituloTicket.textContent = ticket.asunto + " "
+    tituloTicket.innerText = ticket.asunto + " "
     const spanId = document.createElement("span")
     spanId.className = "fw-bold"
-    spanId.textContent = `#${ticket.id}`
-    txtTituloTicket.appendChild(spanId)
+    spanId.innerText = `#${ticket.id}`
+    tituloTicket.appendChild(spanId)
 
-    txtMetaCreacion.textContent = ""
-    const txtDocenteNegrita = document.createElement("span")
-    txtDocenteNegrita.className = "fw-bold"
-    txtDocenteNegrita.textContent = ticket.docente || "Sistema"
-    txtMetaCreacion.appendChild(txtDocenteNegrita)
-    txtMetaCreacion.appendChild(document.createTextNode(` abrió esta incidencia el `))
-    const txtFechaNegrita = document.createElement("span")
-    txtFechaNegrita.className = "fw-bold"
-    txtFechaNegrita.textContent = ticket.fechaCreacion || "N/A"
-    txtMetaCreacion.appendChild(txtFechaNegrita)
+    const estadoLimpio = ticket.estado ? ticket.estado.toLowerCase() : "pendiente"
 
-    const estadoLimpio = String(ticket.estado).toLowerCase()
+    //Se despintan todas las opciones de estado debido a que aun no se sabe cual es el estado del ticket
+    if (estadoResuelto) estadoResuelto.className = "d-none"
+    if (estadoEnProceso) estadoEnProceso.className = "d-none"
+    if (estadoPendiente) estadoPendiente.className = "d-none"
 
-    if (ticket.resuelto === true || estadoLimpio === "resuelto" || estadoLimpio === "cerrado") {
-        badgeResuelto.className = "badge bg-success px-2 py-1 fs-6"
-        btnFinalizarTicket.style.setProperty("display", "none", "important")
+    if (estadoLimpio === "resuelto") {
+        if (estadoResuelto) estadoResuelto.className = "badge bg-success px-2 py-1 fs-6"
+        if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "none")
         if (selectEstado) selectEstado.disabled = true
 
         if (contenedorJustificacion) contenedorJustificacion.classList.remove("d-none")
-        if (textareaJustificacion) textareaJustificacion.value = ticket.justificacion || "Sin justificación registrada."
+        if (justificacion) justificacion.value = ticket.justificacion || "Sin justificación registrada."
 
-        if (tarjetaEscribirComentario) {
-            tarjetaEscribirComentario.style.setProperty("display", "none", "important")
-        }
+        if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "none")
+        
     } else {
-        if (tarjetaEscribirComentario) {
-            tarjetaEscribirComentario.style.setProperty("display", "block", "important")
-        }
-
+        if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "block")
+        
         if (estadoLimpio === "en proceso") {
-            badgeEnProceso.className = "badge bg-warning px-2 py-1 fs-6"
-            btnFinalizarTicket.style.setProperty("display", "block", "important")
+            if (estadoEnProceso) estadoEnProceso.className = "badge bg-warning px-2 py-1 fs-6"
+            if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "block")
             if (selectEstado) selectEstado.disabled = false
             if (contenedorJustificacion) contenedorJustificacion.classList.add("d-none")
         } else {
-            badgePendiente.className = "badge bg-danger px-2 py-1 fs-6"
-            btnFinalizarTicket.style.setProperty("display", "none", "important")
+            if (estadoPendiente) estadoPendiente.className = "badge bg-danger px-2 py-1 fs-6"
+            if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "none")
             if (selectEstado) selectEstado.disabled = false
             if (contenedorJustificacion) contenedorJustificacion.classList.add("d-none")
         }
     }
 
-    const encargados = ticket.colaboradores && ticket.colaboradores.length > 0
-        ? ticket.colaboradores.join(", ")
-        : "Ninguno - Sin asignar"
+    //Se filtran los colaboradores quitando los null y los undefined del array
+    const colaboradoresValidos = (ticket.colaboradores || []).filter(c => c !== null && c !== undefined && c !== "")
+    const encargados = colaboradoresValidos.length > 0 ? colaboradoresValidos.join(", ") : "Ninguno - Sin asignar"
 
-    inputUsuarioAsignado.value = encargados
+    if (usuarioAsignado) usuarioAsignado.value = encargados
     if (selectEstado) selectEstado.value = estadoLimpio
-    selectGravedad.value = String(ticket.gravedad).toLowerCase()
-    inputSalon.value = ticket.salon || "No especificado"
-    inputPc.value = ticket.equipoId || "N/A"
-    inputCategoria.value = ticket.tipo || "General"
-    textareaContenido.value = ticket.descripcion || ""
+    if (selectGravedad && ticket.gravedad) selectGravedad.value = ticket.gravedad.toLowerCase()
+    if (inputSalon) inputSalon.value = ticket.salon || "No especificado"
+    if (inputPc) inputPc.value = ticket.equipoId || "N/A"
+    if (inputCategoria) inputCategoria.value = ticket.tipo || "General"
+    if (contenido) contenido.value = ticket.descripcion || ""
 
     contenedorComentarios.innerHTML = ""
     const comentarios = ticket.comentarios || []
@@ -143,11 +137,11 @@ const renderizarInformacionTicket = () => {
 
         const h3User = document.createElement("h3")
         h3User.className = "h6 m-0 fw-bold text-secondary"
-        h3User.textContent = com.autor
+        h3User.innerText = com.autor
 
         const spanTiempo = document.createElement("span")
         spanTiempo.className = "text-muted small"
-        spanTiempo.textContent = `el ${com.fecha}`
+        spanTiempo.innerText = `el ${com.fecha}`
 
         divHeader.appendChild(h3User)
         divHeader.appendChild(spanTiempo)
@@ -155,30 +149,30 @@ const renderizarInformacionTicket = () => {
         const divBody = document.createElement("div")
         divBody.className = "card-body"
 
-        const pContenido = document.createElement("p")
-        pContenido.className = "card-text text-dark"
-        pContenido.textContent = com.texto
+        const espacioContenido = document.createElement("p")
+        espacioContenido.className = "card-text text-dark"
+        espacioContenido.innerText = com.texto
 
-        divBody.appendChild(pContenido)
+        divBody.appendChild(espacioContenido)
         articulo.appendChild(divHeader)
         articulo.appendChild(divBody)
 
         contenedorComentarios.appendChild(articulo)
     })
 
-    if (ticket.resuelto === true || String(ticket.estado).toLowerCase() === "resuelto") {
-        if (txtNuevoComentario) {
-            txtNuevoComentario.disabled = true
-            txtNuevoComentario.placeholder = "Este ticket ha sido resuelto. No se permiten más comentarios."
+    if (estadoLimpio === "resuelto") {
+        if (nuevoComentario) {
+            nuevoComentario.disabled = true
+            nuevoComentario.placeholder = "Este ticket ha sido resuelto. No se permiten más comentarios."
         }
         if (btnGuardarComentario) {
             btnGuardarComentario.disabled = true
             btnGuardarComentario.classList.add("disabled")
         }
     } else {
-        if (txtNuevoComentario) {
-            txtNuevoComentario.disabled = false
-            txtNuevoComentario.placeholder = "Escribe un comentario o actualización de la PC..."
+        if (nuevoComentario) {
+            nuevoComentario.disabled = false
+            nuevoComentario.placeholder = "Escribe un comentario o actualización de la PC..."
         }
         if (btnGuardarComentario) {
             btnGuardarComentario.disabled = false
@@ -187,113 +181,142 @@ const renderizarInformacionTicket = () => {
     }
 }
 
-renderizarInformacionTicket()
+//EVENTOS
 
-// EVENTOS
-btnAutoasignar.addEventListener("click", () => {
-    const usuarioLogueado = obtenerUsuarioFirmado()
-    const idUsuarioActual = usuarioLogueado ? (usuarioLogueado.usuario || "Técnico Genérico") : "Administrador Técnico"
+btnVolver.addEventListener("click", (e) => { //Si hay una página que puede ser ingresada desde multiples espacios, esta es una muy buena alternativa para volver mas facilmente
+history.back()
+})
 
-    const lista = cargarColeccionTickets()
-    const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
+mostrarInfoTicket()
 
-    if (ticket) {
-        if (ticket.resuelto === true || String(ticket.estado).toLowerCase() === "resuelto") return
-        if (!ticket.colaboradores) ticket.colaboradores = []
+if (btnAutoasignar) {
+    btnAutoasignar.addEventListener("click", () => {
+        const usuarioLogueado = obtenerUsuarioFirmado()
+        
+        let idUsuarioActual = "N/A"
+        if (usuarioLogueado) {
+            idUsuarioActual = usuarioLogueado.usuario || "N/A"
+        }
 
-        if (ticket.colaboradores.includes(idUsuarioActual)) {
-            alert("Ya te encuentras asignado a este ticket.")
+        if (idUsuarioActual === "N/A") {
+            alert("Error: No se pudo identificar tu sesión de operador técnico.")
             return
         }
 
-        ticket.colaboradores.push(idUsuarioActual)
+        const lista = cargarTickets()
+        
+        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
-        persistirColeccionTickets(lista)
-        renderizarInformacionTicket()
-        registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`)
-        alert("Te has asignado exitosamente.")
-    }
-})
+        if (ticket) {
+            if (ticket.estado.toLowerCase() === "resuelto") {
+                alert("Error: Este ticket ya está resuelto y cerrado.")
+                return
+            }
+            
+            //Se limpian los valores nulos del array de colaboradores para evitar errores
+            ticket.colaboradores = (ticket.colaboradores || []).filter(col => col !== null && col !== undefined)
 
-formControlTicket.addEventListener("submit", (e) => {
-    e.preventDefault()
-    const lista = cargarColeccionTickets()
-    const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
+            const yaEstaAsignado = ticket.colaboradores.some(col => String(col) === String(idUsuarioActual))
 
-    if (ticket) {
-        if (ticket.resuelto === true || String(ticket.estado).toLowerCase() === "resuelto") return
-        const usuarioLogueado = obtenerUsuarioFirmado()
-        const idUsuarioActual = usuarioLogueado ? (usuarioLogueado.usuario || "Técnico Genérico") : "Administrador Técnico"
+            if (yaEstaAsignado) {
+                alert("Error: Ya te encuentras asignado a este ticket.")
+                return
+            }
 
-        if (selectEstado) ticket.estado = selectEstado.value
-        ticket.gravedad = selectGravedad.value
+            ticket.colaboradores.push(idUsuarioActual)
 
-        persistirColeccionTickets(lista)
-        renderizarInformacionTicket()
-        registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`)
-        alert("Cambios guardados con éxito.")
-    }
-})
 
-btnFinalizarTicket.addEventListener("click", () => {
-    const justificacionPrevia = prompt("Por favor, introduzca una justificación detallada de cómo se resolvió la incidencia:")
+            guardarTickets(lista)
+            mostrarInfoTicket()
+            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`, ticket.equipoId)
+            
+            alert("Te has asignado exitosamente al ticket.")
+        }
+    })
+}
 
-    if (justificacionPrevia === null) return
+if (formControlTicket) {
+    formControlTicket.addEventListener("submit", (e) => {
+        e.preventDefault()
+        const lista = cargarTickets()
+        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
-    const justificacionLimpia = justificacionPrevia.trim()
-    if (justificacionLimpia === "") {
-        alert("Operación cancelada. La justificación de cierre es obligatoria.")
-        return
-    }
+        if (ticket) {
+            if (ticket.estado.toLowerCase() === "resuelto") return
+            const usuarioLogueado = obtenerUsuarioFirmado()
+            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
 
-    const lista = cargarColeccionTickets()
-    const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
+            if (selectEstado) ticket.estado = selectEstado.value
+            if (selectGravedad) ticket.gravedad = selectGravedad.value
 
-    if (ticket) {
-        const usuarioLogueado = obtenerUsuarioFirmado()
-        const idUsuarioActual = usuarioLogueado ? (usuarioLogueado.usuario || "Técnico Genérico") : "Administrador Técnico"
+            guardarTickets(lista)
+            mostrarInfoTicket()
+            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.equipoId)
+            alert("Cambios guardados con éxito.")
+        }
+    })
+}
 
-        ticket.resuelto = true
-        ticket.estado = "resuelto"
-        ticket.justificacion = justificacionLimpia
+if (btnFinalizarTicket) {
+    btnFinalizarTicket.addEventListener("click", () => {
+        const justificacionPrevia = prompt("Por favor, introduzca una justificación detallada de cómo se resolvió la incidencia:")
+                const justificacionLimpia = justificacionPrevia.trim() || ""
 
-        persistirColeccionTickets(lista)
-        renderizarInformacionTicket()
-        registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} finalizó el ticket. Resolución: ${justificacionLimpia}`)
-        alert("Ticket finalizado y cerrado con éxito.")
-    }
-})
-
-btnGuardarComentario.addEventListener("click", () => {
-    const textoComentario = txtNuevoComentario.value.trim()
-    if (textoComentario === "") {
-        alert("El comentario no puede estar vacío.")
-        return
-    }
-
-    const lista = cargarColeccionTickets()
-    const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
-
-    if (ticket) {
-        if (ticket.resuelto === true || String(ticket.estado).toLowerCase() === "resuelto") {
-            alert("No se permiten comentarios en tickets cerrados.")
+        if (justificacionLimpia === "") {
+            alert("Error: Operación cancelada. La justificación de cierre es obligatoria.")
             return
         }
 
-        const usuarioLogueado = obtenerUsuarioFirmado()
-        const idUsuarioActual = usuarioLogueado ? (usuarioLogueado.usuario || "Técnico Genérico") : "Administrador Técnico"
+        const lista = cargarTickets()
+        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
-        if (!ticket.comentarios) ticket.comentarios = []
+        if (ticket) {
+            const usuarioLogueado = obtenerUsuarioFirmado()
+            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
 
-        ticket.comentarios.push({
-            autor: idUsuarioActual,
-            fecha: new Date().toLocaleDateString('es-ES'),
-            texto: textoComentario
-        })
+            ticket.estado = "resuelto"
+            ticket.justificacion = justificacionLimpia
 
-        persistirColeccionTickets(lista)
-        txtNuevoComentario.value = ""
-        renderizarInformacionTicket()
-        alert("Comentario registrado.")
-    }
-})
+            guardarTickets(lista)
+            mostrarInfoTicket()
+            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} finalizó el ticket. Resolución: ${justificacionLimpia}`, ticket.equipoId)
+            alert("Ticket finalizado y cerrado con éxito.")
+        }
+    })
+}
+
+if (btnGuardarComentario) {
+    btnGuardarComentario.addEventListener("click", () => {
+        const textoComentario = nuevoComentario.value.trim()
+        if (textoComentario === "") {
+            alert("Error: El comentario no puede estar vacío.")
+            return
+        }
+
+        const lista = cargarTickets()
+        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
+
+        if (ticket) {
+            if (ticket.estado.toLowerCase() === "resuelto") {
+                alert("Error: No se permiten comentarios en tickets cerrados.")
+                return
+            }
+
+            const usuarioLogueado = obtenerUsuarioFirmado()
+            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
+
+            if (!ticket.comentarios) ticket.comentarios = []
+
+            ticket.comentarios.push({
+                autor: idUsuarioActual,
+                fecha: new Date().toLocaleDateString('es-ES'),
+                texto: textoComentario
+            })
+
+            guardarTickets(lista)
+            nuevoComentario.value = ""
+            mostrarInfoTicket()
+            alert("Comentario registrado.")
+        }
+    })
+}

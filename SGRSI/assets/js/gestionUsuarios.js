@@ -4,8 +4,7 @@ let usuarioEditando = null
 let booleanMostrarClave = false
 
 const formulario = document.getElementById("formUsuario")
-const tabla = document.getElementById("tablaUsuarios")
-const cuerpoTabla = tabla.querySelector("tbody")
+const cuerpoTabla = document.querySelector("#tablaUsuarios tbody")
 const modalUsuario = document.getElementById("modalUsuario")
 
 const registrarUsuario = document.getElementById("btnRegistrarUsuario")
@@ -33,7 +32,7 @@ const cargarUsuarios = () => {
 
 const usuarioExistente = (cedula) => {
     const usuarios = cargarUsuarios() 
-    return usuarios.some(usuario => usuario.usuario === cedula) 
+    return usuarios.some(usuario => usuario.usuario === cedula) //El comando some se usa para verificar si existe algun elemento en el array que coincida con la busqueda
 } 
 
 const limpiarCampos = () => {
@@ -48,14 +47,15 @@ const actualizarUsuarios = (usuarios) => {
 const modificarUsuario = (usuarioModificado) => {
     const usuarios = cargarUsuarios() 
 
-    for (const usuario of usuarios) {
-        if (usuario.usuario === usuarioEditando) {
-            usuario.nombre = usuarioModificado.nombre 
-            usuario.correo = usuarioModificado.correo 
-            usuario.clave = usuarioModificado.clave 
-            usuario.rol = usuarioModificado.rol 
+    usuarios.forEach(u => {
+        if (u.usuario === usuarioEditando) {
+            u.nombre = usuarioModificado.nombre 
+            u.correo = usuarioModificado.correo 
+            u.clave = usuarioModificado.clave 
+            u.rol = usuarioModificado.rol 
         }
-    }
+})
+    
 
     actualizarUsuarios(usuarios) 
     modoEdicion = false 
@@ -65,25 +65,26 @@ const modificarUsuario = (usuarioModificado) => {
     modalUsuario.classList.replace("d-flex", "d-none") 
 } 
 
-const verificarRol = (rol) => rol !== "" 
+const verificarRol = (rol) => rol === "docente" || rol === "administrador" || rol === "docente" || rol === "direccion"
 
 const desactivarUsuario = (cedula) => {
     const usuarios = cargarUsuarios() 
-    for (const usuario of usuarios) {
-        if (usuario.usuario === cedula) {
-            usuario.activo = false 
-        }
-    }
+    usuarios.forEach(u => {
+        if (u.usuario === cedula) {
+            u.activo = false 
+        }})
+    
     actualizarUsuarios(usuarios) 
+
 } 
 
 const activarUsuario = (cedula) => {
-    const usuarios = cargarUsuarios() 
-    for (const usuario of usuarios) {
-        if (usuario.usuario === cedula) {
-            usuario.activo = true 
+    const usuarios = cargarUsuarios()
+    usuarios.forEach(u => { 
+        if (u.usuario === cedula) {
+            u.activo = true 
         }
-    }
+    })
     actualizarUsuarios(usuarios) 
 } 
 
@@ -126,22 +127,22 @@ const actualizarTabla = () => {
         const fila = document.createElement("tr") 
 
         const usuarioFila = document.createElement("td") 
-        usuarioFila.textContent = u.usuario 
+        usuarioFila.innerText = u.usuario 
 
         const nombreFila = document.createElement("td") 
-        nombreFila.textContent = u.nombre 
+        nombreFila.innerText = u.nombre 
 
         const correoFila = document.createElement("td") 
-        correoFila.textContent = u.correo 
+        correoFila.innerText = u.correo 
 
         const rolFila = document.createElement("td") 
-        rolFila.textContent = u.rol 
+        rolFila.innerText = u.rol 
 
         const estadoFila = document.createElement("td") 
-        estadoFila.textContent = u.activo ? "Activo" : "De baja" 
+        estadoFila.innerText = u.activo ? "Activo" : "De baja" 
 
         const btnModificar = document.createElement("button") 
-        btnModificar.textContent = "Modificar" 
+        btnModificar.innerText = "Modificar" 
         btnModificar.className = "btn btn-primary me-2" 
         btnModificar.addEventListener("click", () => {
             modoEdicion = true 
@@ -161,10 +162,10 @@ const actualizarTabla = () => {
         const accionesFila = document.createElement("td") 
         accionesFila.appendChild(btnModificar) 
 
-        if (u.usuario !== usuarioLocalJSON.cedula) {
+        if (u.usuario !== usuarioLocalJSON.cedula) { //Se asegura que el usuario que se quiere eliminar no sea de mismo usuario activo
             if (u.activo) {
                 const btnDesactivar = document.createElement("button") 
-                btnDesactivar.textContent = "Desactivar" 
+                btnDesactivar.innerText = "Desactivar" 
                 btnDesactivar.className = "btn btn-danger" 
                 btnDesactivar.addEventListener("click", () => {
                     if (confirm("¿Estás seguro de que deseas desactivar este usuario?")) {
@@ -176,7 +177,7 @@ const actualizarTabla = () => {
                 accionesFila.appendChild(btnDesactivar) 
             } else {
                 const btnActivar = document.createElement("button") 
-                btnActivar.textContent = "Activar" 
+                btnActivar.innerText = "Activar" 
                 btnActivar.className = "btn btn-success" 
                 btnActivar.addEventListener("click", () => {
                     if (confirm("¿Estás seguro de que querés activar nuevamente este usuario?")) {
@@ -196,8 +197,6 @@ const actualizarTabla = () => {
         cuerpoTabla.appendChild(fila) 
     }) 
 } 
-
-actualizarTabla()
 
 // EVENTOS
 formulario.addEventListener("submit", function (e) {
@@ -250,3 +249,5 @@ cancelarUsuario.addEventListener("click", () => {
 btnMostrarClave.addEventListener("click", mostrarClave) 
 filtroRol.addEventListener("change", actualizarTabla) 
 filtroEstado.addEventListener("change", actualizarTabla)
+
+actualizarTabla()

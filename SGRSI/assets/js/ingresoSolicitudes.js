@@ -4,7 +4,9 @@ const formulario = document.getElementById("formSolicitud")
 // FUNCIONES
 const cargarSolicitudes = () => {
     const solicitudesLocales = localStorage.getItem("solicitudes")
-    if (!solicitudesLocales) return []
+    if (solicitudesLocales === null || solicitudesLocales === undefined || solicitudesLocales === "") {
+        return []
+    }
     return JSON.parse(solicitudesLocales)
 }
 
@@ -29,16 +31,16 @@ formulario.addEventListener("submit", function(e) {
     e.preventDefault()
 
     const entradaAsunto = document.getElementById("asunto")
-    const entradaDescripcion = document.getElementById("Area")
+    const entradaDescripcion = document.getElementById("descripcion")
     const entradaFecha = document.getElementById("fecha")
     
-    const sesion = localStorage.getItem('usuario')
-    const usuario = sesion ? JSON.parse(sesion) : null
-    const identificadorCreador = usuario ? (usuario.cedula || usuario.usuario || "Docente") : "Desconocido"
+    const usuario = localStorage.getItem('usuario')
+    const usuarioJSON = JSON.parse(usuario)
 
     const solicitudes = cargarSolicitudes()
-    const nuevoId = solicitudes.length > 0 ? solicitudes[solicitudes.length - 1].id + 1 : 1
+    const nuevoId = solicitudes.length + 1 
 
+    // Se establecen atributos para la adaptacion de la fecha a guardar
     const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }
     const fechaFormateada = new Date(entradaFecha.value).toLocaleDateString('es-ES', opcionesFecha)
 
@@ -47,7 +49,7 @@ formulario.addEventListener("submit", function(e) {
         asunto: entradaAsunto.value.trim(),
         descripcion: entradaDescripcion.value.trim(),
         fecha: fechaFormateada,
-        creador: identificadorCreador,
+        creador: usuarioJSON.cedula,
         finalizada: false
     }
 
