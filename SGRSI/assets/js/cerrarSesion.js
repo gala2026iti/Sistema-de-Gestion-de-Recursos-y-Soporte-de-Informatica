@@ -10,10 +10,10 @@ btnSalir.addEventListener("click", function (e) {
 
     if (urlActual.includes("administracion-tecnico") || urlActual.includes("direccion")) {
 
-            rutaSalida = "../index.html"
-        }
+        rutaSalida = "../index.html"
+    }
 
-        localStorage.setItem("usuario", "")
-        window.location.href = rutaSalida
-    })
+    localStorage.setItem("usuario", "")
+    window.location.href = rutaSalida
+})
 

@@ -37,15 +37,15 @@ form.addEventListener("submit", function (e) {
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
         window.location.href = "homeAdmin.html"
     } else {
-        
+
         //Logueo normal
         if (usuarioExistente(inputCedula)) {
             const usuarioLogueado = obtenerUsuario(inputCedula)
 
             if (usuarioLogueado.clave === inputClave) {
-                
+
                 if (usuarioLogueado.activo) {
-                    
+
                     usuarioLocal.rol = usuarioLogueado.rol
                     localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 

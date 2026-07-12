@@ -9,7 +9,7 @@ const txtPrestamosActivos = document.getElementById("cantPrestamosActivos")
 // FUNCIONES
 const obtenerDatos = (dato) => {
     const datos = localStorage.getItem(dato)
-    if(datos === null || datos === undefined || datos === "") return []
+    if (datos === null || datos === undefined || datos === "") return []
     return JSON.parse(datos)
 }
 
@@ -20,13 +20,13 @@ const actualizarDatos = () => {
 
     const abiertos = tickets.filter(t => t.estado === "pendiente").length
     const cerrados = tickets.filter(t => t.estado === "resuelto").length
-    
+
     if (!(txtTicketsAbiertos === null || txtTicketsAbiertos === undefined || txtTicketsAbiertos === "")) txtTicketsAbiertos.innerText = abiertos
     if (!(txtTicketsCerrados === null || txtTicketsCerrados === undefined || txtTicketsCerrados === "")) txtTicketsCerrados.innerText = cerrados
 
     const activos = equipos.filter(e => e.activo === true).length
     const inactivos = equipos.filter(e => e.activo === false).length
-    
+
     if (!(txtEquiposActivos === null || txtEquiposActivos === undefined || txtEquiposActivos === "")) txtEquiposActivos.innerText = activos
     if (!(txtEquiposInactivos === null || txtEquiposInactivos === undefined || txtEquiposInactivos === "")) txtEquiposInactivos.innerText = inactivos
 
@@ -37,7 +37,7 @@ const actualizarDatos = () => {
     let prestamoCount = 0
 
     tickets.forEach(t => {
-        const salon =  t.salon.toLowerCase()
+        const salon = t.salon.toLowerCase()
         if (salon.includes("laboratorio") || salon.includes("taller")) {
             labCount++
         } else {
@@ -69,4 +69,4 @@ const actualizarDatos = () => {
     }
 }
 
-    actualizarDatos()
+actualizarDatos()

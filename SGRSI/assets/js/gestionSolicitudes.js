@@ -17,9 +17,9 @@ const guardarSolicitudes = (solicitudes) => {
 const finalizarSolicitud = (id) => {
     const solicitudes = obtenerSolicitudes()
     const solicitud = solicitudes.find(s => s.id === id)
-    
+
     if (solicitud) {
-        solicitud.finalizada = true 
+        solicitud.finalizada = true
         guardarSolicitudes(solicitudes)
     }
 }
@@ -27,7 +27,7 @@ const finalizarSolicitud = (id) => {
 const actualizarTabla = () => {
     if (!cuerpoTabla) return //Si no se encuentra el cuerpoTabla, no se continua, esto para evitar errores de null o undefined
     cuerpoTabla.innerHTML = ""
-    
+
     const solicitudes = obtenerSolicitudes()
     let solicitudesFiltradas = solicitudes
 
@@ -47,13 +47,13 @@ const actualizarTabla = () => {
         asuntoFila.innerText = s.asunto
 
         const fechaFila = document.createElement("td")
-        fechaFila.innerText = s.fecha 
+        fechaFila.innerText = s.fecha
 
         const descripcionFila = document.createElement("td")
         descripcionFila.innerText = s.descripcion
 
         const datosFila = document.createElement("td")
-        datosFila.innerText = `Creado por: ${(s.creador || "N/A")}` 
+        datosFila.innerText = `Creado por: ${(s.creador || "N/A")}`
 
         const accionesFila = document.createElement("td")
 

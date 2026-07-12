@@ -107,7 +107,7 @@ const encontrarUbicacion = (idEquipo) => {
     const idBuscado = idEquipo.trim().toLowerCase()
 
     for (let s of salones) { //Recorre todos los salones, se usa este tipo de for y no forEach ya que el forEach presenta problemas con los return
-        const espacios = s.espacios || s.prestamos || []
+        const espacios = s.espacios || []
         for (let j = 0; j < espacios.length; j++) { //Recorre todos los espacios de cada salon
             const espacio = espacios[j]
             let idEspacio = espacio.id
@@ -260,12 +260,6 @@ const desactivarEquipo = (idEquipo) => {
                 return (idItem) !== (idEquipo)
             })
         }
-        if (s.prestamos) {
-            s.prestamos = s.prestamos.filter(e => {
-                const idItem = e.id
-                return idItem !== idEquipo
-            })
-        }
     })
     guardarSalones(salones)
     actualizarTabla()
@@ -304,10 +298,10 @@ const agregarSalon = (tipo) => {
 }
 
 ordenarEspacios = (espacios) => {
-    const espaciosOrdenados = espacios.sort((a,b) => 
+    const espaciosOrdenados = espacios.sort((a, b) =>
         a.posicion - b.posicion
     )
-        return espaciosOrdenados
+    return espaciosOrdenados
 }
 
 const actualizarTabla = () => {
@@ -367,7 +361,7 @@ const actualizarTabla = () => {
         tdId.innerText = idReal
 
         const tdDetalleUbic = document.createElement("td")
-        const txtDetalle = ubic.modo === "salon" ? `${ubic.nombre} - Posicion ${ubic.posicion}` : (ubic.modo === "prestamo" ? "Dispositivo para préstamo" : "Sin asignar") 
+        const txtDetalle = ubic.modo === "salon" ? `${ubic.nombre} - Posicion ${ubic.posicion}` : (ubic.modo === "prestamo" ? "Dispositivo para préstamo" : "Sin asignar")
         tdDetalleUbic.innerText = txtDetalle
 
         const tdEstado = document.createElement("td")
@@ -490,19 +484,13 @@ if (formulario) {
                 eq.ultimaIntervencion = new Date().toLocaleDateString('es-ES')
             }
         }
-        
+
         guardarEquipos(listaEquipos)
 
         salones.forEach(s => {
             if (s.espacios) {
                 s.espacios = s.espacios.filter(e => {
                     return e.id !== codigo
-                })
-            }
-            if (s.prestamos) {
-                s.prestamos = s.prestamos.filter(item => {
-                    const idItem = item.id
-                    return idItem !== codigo
                 })
             }
         })
@@ -512,12 +500,12 @@ if (formulario) {
             if (!pSalon) { //Si no existe el salon de prestamos, el sistema lo crea
                 pSalon = {
                     tipo: "prestamo",
-                    id: "prestamo",
-                    prestamos: []
+                    id: 1,
+                    espacios: []
                 }
                 salones.push(pSalon)
             }
-            pSalon.prestamos.push({ id: codigo, prestado: false })
+            pSalon.espacios.push({ id: codigo, prestado: false })
 
         } else if (lugarVal !== "ninguna") {
             const partes = lugarVal.split("-")

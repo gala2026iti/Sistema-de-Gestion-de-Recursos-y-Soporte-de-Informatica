@@ -14,7 +14,7 @@ const buscarUsuarioStorage = (cedula) => {
 
 const cierreSesion = (mensaje) => {
     alert(mensaje)
-    
+
     const urlActual = window.location.pathname
     let rutaSalida = "index.html"
 
@@ -66,7 +66,7 @@ const verificarAcceso = () => {
 
     if (!rolesPermitidos.includes(usuarioReal.rol)) {
         alert("Error: Zona Restringida. No podes ingresar acá, vas a ser llevado al espacio designado por tu rol.")
-        
+
         const urlActual = window.location.pathname
         let volverAtras = ""
 

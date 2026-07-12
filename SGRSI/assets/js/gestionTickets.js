@@ -96,10 +96,10 @@ const mostrarInfoTicket = () => {
         if (justificacion) justificacion.value = ticket.justificacion || "Sin justificación registrada."
 
         if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "none")
-        
+
     } else {
         if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "block")
-        
+
         if (estadoLimpio === "en proceso") {
             if (estadoEnProceso) estadoEnProceso.className = "badge bg-warning px-2 py-1 fs-6"
             if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "block")
@@ -184,7 +184,7 @@ const mostrarInfoTicket = () => {
 //EVENTOS
 
 btnVolver.addEventListener("click", (e) => { //Si hay una página que puede ser ingresada desde multiples espacios, esta es una muy buena alternativa para volver mas facilmente
-history.back()
+    history.back()
 })
 
 mostrarInfoTicket()
@@ -192,7 +192,7 @@ mostrarInfoTicket()
 if (btnAutoasignar) {
     btnAutoasignar.addEventListener("click", () => {
         const usuarioLogueado = obtenerUsuarioFirmado()
-        
+
         let idUsuarioActual = "N/A"
         if (usuarioLogueado) {
             idUsuarioActual = usuarioLogueado.usuario || "N/A"
@@ -204,7 +204,7 @@ if (btnAutoasignar) {
         }
 
         const lista = cargarTickets()
-        
+
         const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
         if (ticket) {
@@ -212,7 +212,7 @@ if (btnAutoasignar) {
                 alert("Error: Este ticket ya está resuelto y cerrado.")
                 return
             }
-            
+
             //Se limpian los valores nulos del array de colaboradores para evitar errores
             ticket.colaboradores = (ticket.colaboradores || []).filter(col => col !== null && col !== undefined)
 
@@ -229,7 +229,7 @@ if (btnAutoasignar) {
             guardarTickets(lista)
             mostrarInfoTicket()
             registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`, ticket.equipoId)
-            
+
             alert("Te has asignado exitosamente al ticket.")
         }
     })
@@ -260,7 +260,7 @@ if (formControlTicket) {
 if (btnFinalizarTicket) {
     btnFinalizarTicket.addEventListener("click", () => {
         const justificacionPrevia = prompt("Por favor, introduzca una justificación detallada de cómo se resolvió la incidencia:")
-                const justificacionLimpia = justificacionPrevia.trim() || ""
+        const justificacionLimpia = justificacionPrevia.trim() || ""
 
         if (justificacionLimpia === "") {
             alert("Error: Operación cancelada. La justificación de cierre es obligatoria.")

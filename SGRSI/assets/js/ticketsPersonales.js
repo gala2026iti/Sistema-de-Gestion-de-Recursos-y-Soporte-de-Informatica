@@ -32,7 +32,7 @@ const renderizarTableroKanban = () => {
 
     const ticketsResueltosUsuario = []
     todosLosTickets.forEach(ticket => {
-        if(!ticket.colaboradores) ticket.colaboradores = [] //Si en algun caso no existen colaboradores, se crea un array vacio
+        if (!ticket.colaboradores) ticket.colaboradores = [] //Si en algun caso no existen colaboradores, se crea un array vacio
         if (ticket.colaboradores.includes(idUsuarioActual)) {
             const estado = ticket.estado.toLowerCase()
 
@@ -58,7 +58,7 @@ const renderizarTableroKanban = () => {
                 }
             }
         }
-    
+
     })
 
     ticketsResueltosUsuario.sort((a, b) => b.id - a.id)

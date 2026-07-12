@@ -127,7 +127,7 @@ const procesarYRenderizar = () => {
     listaEquipos.forEach(eq => {
         const equipoID = eq.id
         const ubicacionPC = encontrarUbicacion(equipoID)
-        if (seleccion === "todos" || ubicacionPC .nombre === seleccion) {
+        if (seleccion === "todos" || ubicacionPC.nombre === seleccion) {
             equiposFiltrados.push(eq)
         }
     })

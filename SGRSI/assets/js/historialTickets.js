@@ -41,7 +41,7 @@ const mostrarHistorial = () => {
     historial.sort((a, b) => {
         return mapearFechaParaOrdenar(b.fecha) - mapearFechaParaOrdenar(a.fecha)
     })
-    
+
     let ultimaFecha = ""
     let listaActualUl = null
 
@@ -90,5 +90,5 @@ const mostrarHistorial = () => {
 mostrarHistorial()
 
 btnVolver.addEventListener("click", (e) => { //Si hay una página que puede ser ingresada desde multiples espacios, esta es una muy buena alternativa para volver mas facilmente
-history.back()
+    history.back()
 })

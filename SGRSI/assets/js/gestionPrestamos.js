@@ -9,24 +9,24 @@ const obtenerCedulaLocal = () => {
     const usuario = localStorage.getItem("usuario")
     if (usuario === null || usuario === undefined || usuario === "") return "Desconocido"
     return usuario.usuario
-    
+
 }
 
 const cargarSalones = () => {
     const salones = localStorage.getItem("salones")
     if (salones === null || salones === undefined || salones === "") return []
     return JSON.parse(salones)
-    
+
 }
 
 const cargarEspacios = () => {
     const salones = cargarSalones()
-    const salonPrestamos = salones.find(salon => 
+    const salonPrestamos = salones.find(salon =>
         salon.tipo.toLowerCase() === "prestamo"
     )
-    
+
     if (salonPrestamos) {
-        return salonPrestamos.prestamos || []
+        return salonPrestamos.espacios || []
     }
 }
 
@@ -50,7 +50,7 @@ const registrarAccion = (tipoAccion, operador, cedula, nombre, idEquipo) => {
     const lista = historial ? JSON.parse(historial) : []
 
     let tipoAccionDetalle = `El operador ${operador} realizó un préstamo al usuario ${nombre} (C.I: ${cedula}) del equipo con ID: ${idEquipo}`
-    if(tipoAccion === "devolucion") tipoAccionDetalle = `El operador ${operador} finalizo el préstamo del usuario ${nombre} (C.I: ${cedula}) al equipo con ID: ${idEquipo}`
+    if (tipoAccion === "devolucion") tipoAccionDetalle = `El operador ${operador} finalizo el préstamo del usuario ${nombre} (C.I: ${cedula}) al equipo con ID: ${idEquipo}`
 
     const nuevaAccion = {
         id: lista.length + 1,
@@ -64,41 +64,41 @@ const registrarAccion = (tipoAccion, operador, cedula, nombre, idEquipo) => {
 }
 
 const guardarSalonPrestamo = (salon) => {
-const salones = cargarSalones()
-const salonesActulizados = []
-salones.forEach(s => {
-    if(s.tipo === "prestamo") s = salon 
-    salonesActulizados.push(s)
-})
+    const salones = cargarSalones()
+    const salonesActulizados = []
+    salones.forEach(s => {
+        if (s.tipo === "prestamo") s = salon
+        salonesActulizados.push(s)
+    })
 
     localStorage.setItem("salones", JSON.stringify(salonesActulizados))
 
 }
 
 const modificarPrestamoEquipo = (idEq, booleano) => {
-const salones = cargarSalones()
-const salonPrestamos = cargarSalones().find(s => s.tipo === "prestamo")
-const equiposPrestamo = salonPrestamos.prestamos
-const equiposPrestamoModificados = []
-equiposPrestamo.forEach(e => {
-    if(String(e.id) === String(idEq)) e.prestado = booleano
-    equiposPrestamoModificados.push(e)
+    const salones = cargarSalones()
+    const salonPrestamos = cargarSalones().find(s => s.tipo === "prestamo")
+    const equiposPrestamo = salonPrestamos.espacios
+    const equiposPrestamoModificados = []
+    equiposPrestamo.forEach(e => {
+        if (String(e.id) === String(idEq)) e.prestado = booleano
+        equiposPrestamoModificados.push(e)
     })
-salonPrestamos.prestamos = equiposPrestamoModificados
-    
-guardarSalonPrestamo(salonPrestamos)
+    salonPrestamos.espacios = equiposPrestamoModificados
+
+    guardarSalonPrestamo(salonPrestamos)
 
 }
 const usuarioValido = (cedula) => {
-return (cedula.trim() >= 10000000 && cedula.trim() <= 99999999)
+    return (cedula.trim() >= 10000000 && cedula.trim() <= 99999999)
 }
 
 const equipoPrestable = (idEquipo) => {
     const salonPrestamos = cargarSalones().find(s => s.tipo === "prestamo")
-    const equiposPrestamo = salonPrestamos.prestamos
+    const equiposPrestamo = salonPrestamos.espacios
 
     const equipoEncontrado = equiposPrestamo.find(e => String(e.id) === String(idEquipo))
-    
+
     if (!equipoEncontrado || equipoEncontrado.prestado === true) {
         return false
     }
@@ -109,8 +109,8 @@ const equipoPrestable = (idEquipo) => {
         return false
     }
     const todosLosTickets = JSON.parse(localStorage.getItem("tickets") || "[]")
-    const tieneTicketAbierto = todosLosTickets.some(t => 
-        String(t.equipoId) === String(idEquipo) && 
+    const tieneTicketAbierto = todosLosTickets.some(t =>
+        String(t.equipoId) === String(idEquipo) &&
         (t.estado === "pendiente" || t.estado === "en proceso")
     )
     if (tieneTicketAbierto) {
@@ -131,12 +131,12 @@ const opcionesDispositivos = () => {
 
     const equipos = cargarEspacios()
     equipos.forEach(eq => {
-        if(equipoPrestable(eq.id)){
-        const idReal = eq.id
-        const opt = document.createElement("option")
-        opt.value = idReal
-        opt.innerText = `PC ID: ${idReal}`
-        opciones.appendChild(opt)
+        if (equipoPrestable(eq.id)) {
+            const idReal = eq.id
+            const opt = document.createElement("option")
+            opt.value = idReal
+            opt.innerText = `PC ID: ${idReal}`
+            opciones.appendChild(opt)
         }
     })
 }
@@ -147,71 +147,71 @@ const actualizarTabla = () => {
     const lista = cargarPrestamos()
 
     lista.forEach(p => {
-        if(!p.devuelto){
-        const tr = document.createElement("tr")
-
-        const tdId = document.createElement("td")
-        tdId.innerText = p.id
-
-        const tdPrestador = document.createElement("td")
-        tdPrestador.innerText = p.cedulaPrestador
-
-        const tdCedula = document.createElement("td")
-        tdCedula.innerText = p.cedulaPrestado
-
-        const tdNombre = document.createElement("td")
-        tdNombre.innerText = p.nombrePrestado
-
-        const tdEquipo = document.createElement("td")
-        tdEquipo.innerText = p.idEquipo
-""
-        const tdFechaI = document.createElement("td")
-        tdFechaI.innerText = new Date(p.fechaInicio).toLocaleDateString('es-ES')
-
-        const tdFechaD = document.createElement("td")
-        tdFechaD.innerText = new Date(p.fechaDevolucion).toLocaleDateString('es-ES')
-
-        const tdEstado = document.createElement("td")
-        tdEstado.innerText = p.devuelto ? "Devuelto" : "Activo"
-
-        const tdAcciones = document.createElement("td")
         if (!p.devuelto) {
-            const btnDevolver = document.createElement("button")
-            btnDevolver.className = "btn btn-success btn-sm"
-            btnDevolver.innerText = "Devolver"
-            btnDevolver.addEventListener("click", () => {
-                if(!confirm("¿Estas seguro de que deseas finalizar este préstamo?\nEsta opción no se puede deshacer"))
-                p.devuelto = true
-                
-                const todos = cargarPrestamos()
-                const index = todos.findIndex(t => t.id === p.id)
-                const cedulaOperador = obtenerCedulaLocal() || "N/A"
+            const tr = document.createElement("tr")
 
-            
-                if (index !== -1) {
-                    todos[index].devuelto = true
-                    localStorage.setItem("prestamos", JSON.stringify(todos))
-                    modificarPrestamoEquipo(p.idEquipo, false)
-                    registrarAccion("devolucion", cedulaOperador, p.cedulaPrestado, p.nombrePrestado, p.idEquipo)
+            const tdId = document.createElement("td")
+            tdId.innerText = p.id
 
-                    actualizarTabla()
-                }
-            })
-            tdAcciones.appendChild(btnDevolver)
+            const tdPrestador = document.createElement("td")
+            tdPrestador.innerText = p.cedulaPrestador
+
+            const tdCedula = document.createElement("td")
+            tdCedula.innerText = p.cedulaPrestado
+
+            const tdNombre = document.createElement("td")
+            tdNombre.innerText = p.nombrePrestado
+
+            const tdEquipo = document.createElement("td")
+            tdEquipo.innerText = p.idEquipo
+            ""
+            const tdFechaI = document.createElement("td")
+            tdFechaI.innerText = new Date(p.fechaInicio).toLocaleDateString('es-ES')
+
+            const tdFechaD = document.createElement("td")
+            tdFechaD.innerText = new Date(p.fechaDevolucion).toLocaleDateString('es-ES')
+
+            const tdEstado = document.createElement("td")
+            tdEstado.innerText = p.devuelto ? "Devuelto" : "Activo"
+
+            const tdAcciones = document.createElement("td")
+            if (!p.devuelto) {
+                const btnDevolver = document.createElement("button")
+                btnDevolver.className = "btn btn-success btn-sm"
+                btnDevolver.innerText = "Devolver"
+                btnDevolver.addEventListener("click", () => {
+                    if (!confirm("¿Estas seguro de que deseas finalizar este préstamo?\nEsta opción no se puede deshacer"))
+                        p.devuelto = true
+
+                    const todos = cargarPrestamos()
+                    const index = todos.findIndex(t => t.id === p.id)
+                    const cedulaOperador = obtenerCedulaLocal() || "N/A"
+
+
+                    if (index !== -1) {
+                        todos[index].devuelto = true
+                        localStorage.setItem("prestamos", JSON.stringify(todos))
+                        modificarPrestamoEquipo(p.idEquipo, false)
+                        registrarAccion("devolucion", cedulaOperador, p.cedulaPrestado, p.nombrePrestado, p.idEquipo)
+
+                        actualizarTabla()
+                    }
+                })
+                tdAcciones.appendChild(btnDevolver)
+            }
+
+            tr.appendChild(tdId)
+            tr.appendChild(tdPrestador)
+            tr.appendChild(tdCedula)
+            tr.appendChild(tdNombre)
+            tr.appendChild(tdEquipo)
+            tr.appendChild(tdFechaI)
+            tr.appendChild(tdFechaD)
+            tr.appendChild(tdEstado)
+            tr.appendChild(tdAcciones)
+
+            cuerpoTabla.appendChild(tr)
         }
-
-        tr.appendChild(tdId)
-        tr.appendChild(tdPrestador)
-        tr.appendChild(tdCedula)
-        tr.appendChild(tdNombre)
-        tr.appendChild(tdEquipo)
-        tr.appendChild(tdFechaI)
-        tr.appendChild(tdFechaD)
-        tr.appendChild(tdEstado)
-        tr.appendChild(tdAcciones)
-
-        cuerpoTabla.appendChild(tr)
-    }
     })
 
 }
@@ -249,13 +249,13 @@ if (formulario) {
         }
 
         const contadorID = () => {
-            let contador = localStorage.getItem("contador")
+            let prestamos = cargarPrestamos()
+            contador = prestamos.length
             if (contador === null || contador === undefined || contador === "") {
-                contador = 1
+                contador = 0
             } else {
-                contador = parseInt(contador) + 1
+                contador = contador + 1
             }
-            localStorage.setItem("contador", contador)
             return contador
         }
 
@@ -266,7 +266,7 @@ if (formulario) {
             cedulaPrestado: inputCedulaPrestado.value.trim(),
             nombrePrestado: inputNombrePrestado.value.trim(),
             idEquipo: inputEquipoElegido.value,
-            cedulaPrestador: cedulaOperador, 
+            cedulaPrestador: cedulaOperador,
             fechaInicio: new Date().toISOString(),
             fechaDevolucion: inputFechaDevolucion.value,
             devuelto: false,

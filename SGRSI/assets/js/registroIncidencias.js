@@ -15,14 +15,14 @@ const campoDescripcion = document.getElementById("descripcion")
 const btnAceptar = document.getElementById("btnAceptar")
 const btnCancelar = document.getElementById("btnCancelar")
 
-let incidenciasTemporales = {}  
-let pcActualId = null           
+let incidenciasTemporales = {}
+let pcActualId = null
 
 // FUNCIONES
 const obtenerSalones = () => {
     const datos = localStorage.getItem("salones")
     if (datos === null || datos === undefined || datos === "") return []
-        return JSON.parse(datos)
+    return JSON.parse(datos)
 }
 
 const cargarSalones = () => {
@@ -33,16 +33,16 @@ const cargarSalones = () => {
 
     salones.forEach(salon => {
         const opcion = document.createElement("option")
-        
-        opcion.value = `${salon.tipo}-${salon.id}` 
-        
+
+        opcion.value = `${salon.tipo}-${salon.id}`
+
         const tipoFormateado = salon.tipo.toLowerCase().includes("laboratorio") ? "Laboratorio" : "Taller"
         opcion.innerText = `${tipoFormateado} ${salon.id}`
 
         const tipoLimpio = salon.tipo.toLowerCase()
-        if (tipoLimpio === "laboratorio") { 
+        if (tipoLimpio === "laboratorio") {
             grupoLaboratorios.appendChild(opcion)
-        } else if (tipoLimpio === "talleres") { 
+        } else if (tipoLimpio === "talleres") {
             grupoTalleres.appendChild(opcion)
         }
     })
@@ -52,19 +52,19 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
     contenedorEquipos.innerHTML = ""
 
     if (valorSeleccionado === "") return
-    
+
     const partes = valorSeleccionado.split("-")
     const tipoSalon = partes[0]
     const idSalon = partes[1]
 
     const salones = obtenerSalones()
-    
+
     const salonEncontrado = salones.find(s => String(s.id) === String(idSalon) && String(s.tipo) === String(tipoSalon)) //Para ver si es el salon correcto, deben coincidir el tipo y el id
-    
+
     const equipos = salonEncontrado.espacios || []
 
     equipos.forEach((equipo, indice) => {
-        if (equipo === null || equipo === undefined || equipo === "") return 
+        if (equipo === null || equipo === undefined || equipo === "") return
 
         const pcId = equipo.id
 
@@ -114,7 +114,7 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
         divFormulario.appendChild(radioOk)
         divFormulario.appendChild(labelOk)
 
-        const separadorInput = document.createElement("div") 
+        const separadorInput = document.createElement("div")
         separadorInput.className = "form-check form-check-inline mb-0"
 
         const radioInc = document.createElement("input")
@@ -160,8 +160,8 @@ const abrirFormularioModal = (pcId) => {
         campoAsunto.value = datosPrevios.asunto
         campoPersona.value = datosPrevios.persona
         campoDescripcion.value = datosPrevios.descripcion
-        
-        const radioGravedad = campoIncidencia.querySelector(`input[type="radio"]`) 
+
+        const radioGravedad = campoIncidencia.querySelector(`input[type="radio"]`)
         if (radioGravedad) {
             radioGravedad.checked = true
         }
@@ -170,7 +170,7 @@ const abrirFormularioModal = (pcId) => {
         campoAsunto.value = ""
         campoPersona.value = ""
         campoDescripcion.value = ""
-        
+
         const gravedades = campoIncidencia.querySelectorAll('input[name="gravedad"]') //Ese selector es especifico para agarrar todos los objetos input cuyo name sea gravedad
         // Recurso: https://stackoverflow.com/questions/15148659/how-can-i-use-queryselector-on-to-pick-an-input-element-by-name
 
@@ -180,7 +180,7 @@ const abrirFormularioModal = (pcId) => {
     }
 
     campoIncidencia.classList.remove("oculto") //Clase propia encargada de esconder ventanas
-    campoIncidencia.classList.add("d-flex") 
+    campoIncidencia.classList.add("d-flex")
 }
 
 const cerrarFormularioModal = () => {
@@ -192,7 +192,7 @@ const cerrarFormularioModal = () => {
 const registrarEnHistorialSistema = (descripcion, detalle) => {
     const datosHistorial = localStorage.getItem("registroTickets")
     let listaHistorial = []
-    
+
     if (datosHistorial !== null && datosHistorial !== undefined && datosHistorial !== "") {
         listaHistorial = JSON.parse(datosHistorial)
     }
@@ -216,24 +216,24 @@ btnAceptar.addEventListener("click", () => {
     const asunto = campoAsunto.value.trim()
     const persona = campoPersona.value.trim()
     const descripcion = campoDescripcion.value.trim()
-    
+
     const gravedadRadio = campoIncidencia.querySelector('input[name="gravedad"]:checked')
 
     if (tipo === "" || asunto === "" || persona === "" || descripcion === "" || !gravedadRadio) {
         alert("Error: Complete todos los campos del formulario de incidencias")
-        
+
     } else {
 
-    incidenciasTemporales[pcActualId] = {
-        tipo: tipo,
-        asunto: asunto,
-        persona: persona,
-        gravedad: gravedadRadio.value,
-        descripcion: descripcion
-    }
+        incidenciasTemporales[pcActualId] = {
+            tipo: tipo,
+            asunto: asunto,
+            persona: persona,
+            gravedad: gravedadRadio.value,
+            descripcion: descripcion
+        }
 
-    cerrarFormularioModal()
-}
+        cerrarFormularioModal()
+    }
 })
 
 btnCancelar.addEventListener("click", () => {
@@ -252,75 +252,76 @@ formularioSalon.addEventListener("submit", (e) => {
     const idSalonSeleccionado = selectSalon.value
     if (idSalonSeleccionado === "" || idSalonSeleccionado === null || idSalonSeleccionado === undefined) {
         alert("Error: Selecciona un salon para continuar")
-        
+
     } else {
 
-    const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
-    if (confirmacion) {
+        const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
+        if (confirmacion) {
 
-    const llavesIncidencias = Object.keys(incidenciasTemporales) //Obtiene el array dentro del objeto {[]} --> []
+            const llavesIncidencias = Object.keys(incidenciasTemporales) //Obtiene el array dentro del objeto {[]} --> []
 
-    if (llavesIncidencias.length > 0) {
-        const datosTickets = localStorage.getItem("tickets")
-        let listaTickets = []
-        if (!(datosTickets === null || datosTickets === undefined || datosTickets === "")) listaTickets = JSON.parse(datosTickets)
+            if (llavesIncidencias.length > 0) {
+                const datosTickets = localStorage.getItem("tickets")
+                let listaTickets = []
+                if (!(datosTickets === null || datosTickets === undefined || datosTickets === "")) listaTickets = JSON.parse(datosTickets)
 
-        let contadorID = listaTickets.length
+                let contadorID = listaTickets.length
 
-        const usuarioSesion = localStorage.getItem("usuario")
-        let docenteId = "N/A"
-        if (usuarioSesion) {
-            const uObj = JSON.parse(usuarioSesion)
-            docenteId = uObj.usuario || docenteId
-        }
+                const usuarioSesion = localStorage.getItem("usuario")
+                let docenteId = "N/A"
+                if (usuarioSesion) {
+                    const uObj = JSON.parse(usuarioSesion)
+                    docenteId = uObj.usuario || docenteId
+                }
 
-        const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
+                const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
 
-        llavesIncidencias.forEach(pcId => {
-            contadorID = contadorID + 1
-            const info = incidenciasTemporales[pcId]
+                llavesIncidencias.forEach(pcId => {
+                    contadorID = contadorID + 1
+                    const info = incidenciasTemporales[pcId]
 
-            const nuevoTicket = {
-                id: contadorID,
-                docente: docenteId,
-                fechaCreacion: new Date().toLocaleDateString('es-ES'),
-                salon: textoSalon, 
-                equipoId: pcId,
-                tipo: info.tipo,
-                asunto: info.asunto,
-                usuarioPc: info.persona,
-                gravedad: info.gravedad,
-                descripcion: info.descripcion,
-                estado: "pendiente",
-                colaboradores: [],
-                comentarios: [],
-                justificacion: "",
+                    const nuevoTicket = {
+                        id: contadorID,
+                        docente: docenteId,
+                        fechaCreacion: new Date().toLocaleDateString('es-ES'),
+                        salon: textoSalon,
+                        equipoId: pcId,
+                        tipo: info.tipo,
+                        asunto: info.asunto,
+                        usuarioPc: info.persona,
+                        gravedad: info.gravedad,
+                        descripcion: info.descripcion,
+                        estado: "pendiente",
+                        colaboradores: [],
+                        comentarios: [],
+                        justificacion: "",
+                    }
+
+                    listaTickets.push(nuevoTicket)
+
+                    const descripcionHistorial = info.asunto
+                    const detalleHistorial = `El docente ${docenteId} registro una incidencia sobre la PC: ${pcId} del ${textoSalon}`
+
+                    registrarEnHistorialSistema(descripcionHistorial, detalleHistorial)
+                })
+
+                localStorage.setItem("tickets", JSON.stringify(listaTickets))
+                alert(`Se registraron ${llavesIncidencias.length} incidencias`)
+            } else {
+                alert("El estado del salon se regsitro con exito")
             }
 
-            listaTickets.push(nuevoTicket)
-
-            const descripcionHistorial = info.asunto 
-            const detalleHistorial = `El docente ${docenteId} registro una incidencia sobre la PC: ${pcId} del ${textoSalon}`
-            
-            registrarEnHistorialSistema(descripcionHistorial, detalleHistorial)
-        })
-
-        localStorage.setItem("tickets", JSON.stringify(listaTickets))
-        alert(`Se registraron ${llavesIncidencias.length} incidencias`)
-    } else {
-        alert("El estado del salon se regsitro con exito")
+            formularioSalon.reset()
+            selectSalon.value = ""
+            incidenciasTemporales = {}
+            contenedorEquipos.innerHTML = ""
+        }
     }
-
-    formularioSalon.reset()
-    selectSalon.value = ""
-    incidenciasTemporales = {}
-    contenedorEquipos.innerHTML = ""
-    }}
 })
 
 
 selectSalon.addEventListener("change", (e) => {
-    incidenciasTemporales = {} 
+    incidenciasTemporales = {}
     renderizarEquiposDelSalon(e.target.value) //Del evento change, se agarra el valor correspondiente a la opcion que eligió el usuario
     //Basicamente, le dice al metodo que salon se eligio, para poder mostrar la info correspondiente al mismo
 })

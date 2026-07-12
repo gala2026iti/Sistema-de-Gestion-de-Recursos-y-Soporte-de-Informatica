@@ -2,7 +2,7 @@
 const cuerpoTabla = document.querySelector("#tablaEquipos tbody")
 
 const btnRegistrarIncidencia = document.getElementById("btnRegistrarIncidencia")
-const modalIncidenciaPrestamo = document.getElementById("modalIncidenciaPrestamo") 
+const modalIncidenciaPrestamo = document.getElementById("modalIncidenciaPrestamo")
 const formIncidenciaIndividual = document.getElementById("formIncidenciaIndividual")
 const btnCancelarModal = document.getElementById("btnCancelar")
 const equipoSeleccionado = document.getElementById("equipoSeleccionado")
@@ -49,8 +49,8 @@ const cargarTickets = () => {
 }
 
 const tieneTicketsActivos = (idEquipo) => {
-    const tickets = cargarTickets() 
-    return tickets.some(t => 
+    const tickets = cargarTickets()
+    return tickets.some(t =>
         String(t.equipoId) === String(idEquipo) && (t.estado.toLowerCase() === "pendiente" || t.estado.toLowerCase() === "en proceso")
     )
 }
@@ -61,21 +61,23 @@ const actualizarTabla = () => {
 
     const salones = cargarSalonPrestamo()
     const salonPrestamo = salones.find(s => s.tipo === "prestamo")
-    const listaEquipos = salonPrestamo ? (salonPrestamo.prestamos || []) : []
-    
-    const todosLosEquipos = cargarEquipos()
+    const listaEquipos = salonPrestamo ? salonPrestamo.espacios : []
 
+    const todosLosEquipos = cargarEquipos()
+    if (!listaEquipos) return
     listaEquipos.forEach(eq => {
-        
+
         const infoGlobalEquipo = todosLosEquipos.find(e => String(e.id) === String(eq.id))
         const esActivo = infoGlobalEquipo.activo
 
         const asignadoA = obtenerPrestamista(eq.id)
-        
+
         let estadoTexto = "Disponible"
-        if (!esActivo) {
+        if (!esActivo || tieneTicketsActivos(eq.id)) {
             estadoTexto = "No disponible"
-        } else if (asignadoA !== "No asignado") {
+        }
+
+        if (asignadoA !== "No asignado") {
             estadoTexto = "Prestado"
         }
 
@@ -89,11 +91,11 @@ const actualizarTabla = () => {
 
         const tdEstado = document.createElement("td")
         tdEstado.innerText = estadoTexto
-        
+
         //Se le asigna un color segun el estado, desprende aura y mejora la visualizacion
         if (estadoTexto === "Disponible") tdEstado.className = "text-success fw-bold"
         else if (estadoTexto === "Prestado") tdEstado.className = "text-warning fw-bold"
-        else if (estadoTexto === "Desactivado") tdEstado.className = "text-danger fw-bold"
+        else if (estadoTexto === "No disponible") tdEstado.className = "text-danger fw-bold"
 
         const tdAcciones = document.createElement("td")
         const btnVerIncidencias = document.createElement("button")
@@ -111,8 +113,8 @@ const actualizarTabla = () => {
         tr.appendChild(tdAcciones)
         cuerpoTabla.appendChild(tr)
 
-        
-        if (equipoSeleccionado && esActivo && asignadoA === "No asignado" && !tieneTicketsActivos(eq.id)) { 
+
+        if (equipoSeleccionado && esActivo && asignadoA === "No asignado" && !tieneTicketsActivos(eq.id)) {
             //Un equipo solo puede ser prestado si esta activo, no fue prestado y no tiene incidencias activas
             const opt = document.createElement("option")
             opt.value = eq.id
@@ -120,7 +122,7 @@ const actualizarTabla = () => {
             equipoSeleccionado.appendChild(opt)
         }
     })
-            //Opcion cuando no hayan equipos disponibles
+    //Opcion cuando no hayan equipos disponibles
     if (equipoSeleccionado && equipoSeleccionado.options.length === 0) {
         const opt = document.createElement("option")
         opt.value = ""
@@ -130,7 +132,7 @@ const actualizarTabla = () => {
 }
 
 const abrirModalIncidencia = () => {
-    actualizarTabla() 
+    actualizarTabla()
     modalIncidenciaPrestamo.classList.remove("d-none")
     modalIncidenciaPrestamo.classList.add("d-flex")
 }
@@ -146,7 +148,7 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const idPC = equipoSeleccionado.value
-    
+
     if (idPC === "") {
         alert("Error: Debe seleccionar un dispositivo válido para continuar.")
         return
@@ -154,8 +156,8 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     const todosLosEquipos = cargarEquipos()
     const equipoValidar = todosLosEquipos.find(e => String(e.id) === String(idPC))
-    
-        //Por si no funcan los filtros para equipos no disponibles, se hace otra verificación
+
+    //Por si no funcan los filtros para equipos no disponibles, se hace otra verificación
 
     if (equipoValidar && !equipoValidar.activo) {
         alert("Error: El equipo seleccionado se encuentra desactivado.")
@@ -176,7 +178,7 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
     const asunto = inputAsunto.value.trim()
     const persona = inputPersona.value.trim()
     const desc = inputDescripcion.value.trim()
-    
+
     const gravedadSeleccionada = formIncidenciaIndividual.querySelector('input[name="gravedad"]:checked').value
 
     const fechaActual = new Date()
@@ -189,18 +191,18 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     //Por motivos de compatibilidad, el ticket es igual al presentado en gestionTickets
     const nuevoTicket = {
-        id: proximoId,                     
-        equipoId: idPC,                    
-        tipo: tipo,                      
-        asunto: asunto,                   
-        docente: persona,              
-        gravedad: gravedadSeleccionada,    
-        descripcion: desc,                 
-        fechaCreacion: formatoFecha,       
-        estado: "pendiente",               
-        salon: "Préstamos",                
-        colaboradores: [],                 
-        comentarios: []                   
+        id: proximoId,
+        equipoId: idPC,
+        tipo: tipo,
+        asunto: asunto,
+        docente: persona,
+        gravedad: gravedadSeleccionada,
+        descripcion: desc,
+        fechaCreacion: formatoFecha,
+        estado: "pendiente",
+        salon: "prestamos",
+        colaboradores: [],
+        comentarios: []
     }
 
     tickets.push(nuevoTicket)
@@ -208,7 +210,7 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     alert(`Ticket #${proximoId} registrado con éxito.`)
     cerrarModalIncidencia()
-    actualizarTabla() 
+    actualizarTabla()
 })
 
 btnRegistrarIncidencia.addEventListener("click", abrirModalIncidencia)

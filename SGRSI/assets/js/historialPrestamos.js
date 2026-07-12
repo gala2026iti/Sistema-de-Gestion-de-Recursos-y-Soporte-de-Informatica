@@ -14,14 +14,14 @@ const actualizarVentana = () => {
     listaDiaria.classList = "historial-lista mt-2 mb-3"
 
     const historialPrestamos = cargarHistorial()
-        let fechaGrupo = ""
+    let fechaGrupo = ""
 
     historialPrestamos.forEach(e => {
         let fechaGrupoHistorial = e.fecha
 
-        if(!(fechaGrupo === fechaGrupoHistorial)){
-            fechaGrupo = fechaGrupoHistorial 
-        
+        if (!(fechaGrupo === fechaGrupoHistorial)) {
+            fechaGrupo = fechaGrupoHistorial
+
 
             const indicadorFecha = document.createElement("span")
             indicadorFecha.innerText = `Intervenciones el ${fechaGrupoHistorial}`
@@ -32,12 +32,12 @@ const actualizarVentana = () => {
             listaDiaria = document.createElement("ul")
             listaDiaria.classList = "historial-lista mt-2 mb-3"
 
-            
+
             contenedorGeneral.appendChild(indicadorFecha)
             contenedorGeneral.appendChild(listaDiaria)
 
         }
-        
+
         const registro = document.createElement("li")
         registro.classList = "historial-contenido d-flex justify-content-between align-items-center"
 
@@ -47,7 +47,7 @@ const actualizarVentana = () => {
         const detalleCaso = document.createElement("span")
         detalleCaso.classList = "fw-bold"
         detalleCaso.innerText = e.detalleOperador
-        
+
         const tipoCaso = document.createElement("span")
         tipoCaso.classList = "text.muted"
         tipoCaso.innerText = e.descripcionAccion

@@ -22,23 +22,23 @@ const guardarSolicitud = (solicitud) => {
 const fechaValida = (fechaInput) => {
     const fechaSeleccionada = new Date(fechaInput)
     const hoy = new Date()
-    
+
     return fechaSeleccionada > hoy
 }
 
 // EVENTOS
-formulario.addEventListener("submit", function(e) {
+formulario.addEventListener("submit", function (e) {
     e.preventDefault()
 
     const entradaAsunto = document.getElementById("asunto")
     const entradaDescripcion = document.getElementById("descripcion")
     const entradaFecha = document.getElementById("fecha")
-    
+
     const usuario = localStorage.getItem('usuario')
     const usuarioJSON = JSON.parse(usuario)
 
     const solicitudes = cargarSolicitudes()
-    const nuevoId = solicitudes.length + 1 
+    const nuevoId = solicitudes.length + 1
 
     // Se establecen atributos para la adaptacion de la fecha a guardar
     const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }

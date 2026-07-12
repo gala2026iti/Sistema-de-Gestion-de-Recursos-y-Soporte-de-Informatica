@@ -4,6 +4,6 @@ const usuarioIngresadoJSON = JSON.parse(usuarioIngresado)
 const opcionesAdmin = document.getElementById("opcionesAdmin")
 
 // FUNCIONES
-if(usuarioIngresadoJSON.rol === "tecnico") {
+if (usuarioIngresadoJSON.rol === "tecnico") {
     opcionesAdmin.style.display = "none"
 }
