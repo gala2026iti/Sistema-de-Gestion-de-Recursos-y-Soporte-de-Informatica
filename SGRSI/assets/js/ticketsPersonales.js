@@ -1,21 +1,23 @@
 // VARIABLES
-const columnaPendiente = document.getElementById("columna-pendiente")
-const columnaEnProceso = document.getElementById("columna-en-proceso")
-const columnaResuelto = document.getElementById("columna-resuelto")
+const columnaPendiente = document.querySelector("#tablaPendiente tbody")
+const columnaEnProceso = document.querySelector("#tablaEnProceso tbody")
+const columnaResuelto = document.querySelector("#tablaResuelto tbody")
 
 // FUNCIONES
 const obtenerOperadorLogueado = () => {
     const sesion = localStorage.getItem("usuario")
-    if (sesion) {
-        return JSON.parse(sesion)
+    if (sesion === null || sesion === undefined || sesion === "") {
+        return []
     }
-    return null
+    return JSON.parse(sesion)
 }
 
 const cargarTicketsGlobales = () => {
-    const datos = localStorage.getItem("tickets")
-    if (!datos) return []
-    return JSON.parse(datos)
+    const tickets = localStorage.getItem("tickets")
+    if (tickets === null || tickets === undefined || tickets === "") {
+        return []
+    }
+    return JSON.parse(tickets)
 }
 
 const renderizarTableroKanban = () => {
@@ -24,17 +26,17 @@ const renderizarTableroKanban = () => {
     columnaResuelto.innerHTML = ""
 
     const usuario = obtenerOperadorLogueado()
-    const idUsuarioActual = usuario ? (usuario.usuario || "Técnico Genérico") : "Administrador Técnico"
-    
+    const idUsuarioActual = usuario.usuario || "N/A"
+
     const todosLosTickets = cargarTicketsGlobales()
 
     const ticketsResueltosUsuario = []
-
     todosLosTickets.forEach(ticket => {
-        if (ticket.colaboradores && ticket.colaboradores.includes(idUsuarioActual)) {
-            const estadoLimpio = String(ticket.estado).toLowerCase()
+        if (!ticket.colaboradores) ticket.colaboradores = [] //Si en algun caso no existen colaboradores, se crea un array vacio
+        if (ticket.colaboradores.includes(idUsuarioActual)) {
+            const estado = ticket.estado.toLowerCase()
 
-            if (ticket.resuelto === true || estadoLimpio === "resuelto") {
+            if (estado === "resuelto") {
                 ticketsResueltosUsuario.push(ticket)
             } else {
                 const tr = document.createElement("tr")
@@ -44,22 +46,22 @@ const renderizarTableroKanban = () => {
                 const enlace = document.createElement("a")
                 enlace.href = `detalleTicket.html?id=${ticket.id}`
                 enlace.className = "text-decoration-none text-dark d-block w-100 h-100 py-2"
-                
-                const textoAsunto = document.createTextNode(ticket.asunto)
-                enlace.appendChild(textoAsunto)
+
+                enlace.innerText = ticket.asunto
                 td.appendChild(enlace)
                 tr.appendChild(td)
 
-                if (estadoLimpio === "en proceso") {
+                if (estado === "en proceso") {
                     columnaEnProceso.appendChild(tr)
                 } else {
                     columnaPendiente.appendChild(tr)
                 }
             }
         }
+
     })
 
-    ticketsResueltosUsuario.sort((a, b) => Number(b.id) - Number(a.id))
+    ticketsResueltosUsuario.sort((a, b) => b.id - a.id)
 
     const ultimosDiezResueltos = ticketsResueltosUsuario.slice(0, 10)
 
@@ -71,9 +73,8 @@ const renderizarTableroKanban = () => {
         const enlace = document.createElement("a")
         enlace.href = `detalleTicket.html?id=${ticket.id}`
         enlace.className = "text-decoration-none text-dark d-block w-100 h-100 py-2"
-        
-        const textoAsunto = document.createTextNode(ticket.asunto)
-        enlace.appendChild(textoAsunto)
+
+        enlace.innerText = ticket.asunto
         td.appendChild(enlace)
         tr.appendChild(td)
 

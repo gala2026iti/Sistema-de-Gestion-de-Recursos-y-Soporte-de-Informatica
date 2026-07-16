@@ -1,12 +1,14 @@
 // VARIABLES
-const colPendiente = document.getElementById("columna-pendiente")
-const colEnProceso = document.getElementById("columna-en-proceso")
-const colCerrado = document.getElementById("columna-cerrado")
+const colPendiente = document.querySelector("#tablaPendiente tbody")
+const colEnProceso = document.querySelector("#tablaEnProceso tbody")
+const colCerrado = document.querySelector("#tablaResuelto tbody")
 
 // FUNCIONES
 const cargarTickets = () => {
     const datos = localStorage.getItem("tickets")
-    if (!datos) return []
+    if (datos === null || datos === undefined || datos === "") {
+        return []
+    }
     return JSON.parse(datos)
 }
 
@@ -19,9 +21,9 @@ const renderizarTablero = () => {
     const ticketsCerrados = []
 
     todosLosTickets.forEach(ticket => {
-        const estadoLimpio = String(ticket.estado).toLowerCase()
+        const estado = ticket.estado.toLowerCase() //Prevencion en caso de que el texto presente mayusculas
 
-        if (ticket.resuelto === true || estadoLimpio === "resuelto" || estadoLimpio === "cerrado") {
+        if (ticket.resuelto) {
             ticketsCerrados.push(ticket)
         } else {
             const fila = document.createElement("tr")
@@ -31,13 +33,12 @@ const renderizarTablero = () => {
             const enlace = document.createElement("a")
             enlace.href = `detalleTicketDirector.html?id=${ticket.id}`
             enlace.className = "text-decoration-none text-dark d-block w-100 h-100 py-2"
-            
-            const textoNode = document.createTextNode(ticket.asunto)
-            enlace.appendChild(textoNode)
+
+            enlace.innerText = ticket.asunto
             celda.appendChild(enlace)
             fila.appendChild(celda)
 
-            if (estadoLimpio === "en proceso") {
+            if (estado === "en proceso") {
                 colEnProceso.appendChild(fila)
             } else {
                 colPendiente.appendChild(fila)
@@ -45,8 +46,8 @@ const renderizarTablero = () => {
         }
     })
 
-    ticketsCerrados.sort((a, b) => Number(b.id) - Number(a.id))
-    
+    ticketsCerrados.sort((a, b) => b.id - a.id)
+
     const ultimosVeinte = ticketsCerrados.slice(0, 20)
 
     ultimosVeinte.forEach(ticket => {
@@ -58,8 +59,7 @@ const renderizarTablero = () => {
         enlace.href = `detalleTicketDirector.html?id=${ticket.id}`
         enlace.className = "text-decoration-none text-dark d-block w-100 h-100 py-2"
 
-        const textoNode = document.createTextNode(ticket.asunto)
-        enlace.appendChild(textoNode)
+        enlace.innerText = ticket.asunto
         celda.appendChild(enlace)
         fila.appendChild(celda)
 
@@ -68,4 +68,4 @@ const renderizarTablero = () => {
 }
 
 // EVENTOS
-    renderizarTablero()
+renderizarTablero()

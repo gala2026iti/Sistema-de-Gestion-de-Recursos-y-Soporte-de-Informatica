@@ -17,8 +17,8 @@
     <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
-                <button class="btn-menu" id="btn-menu">☰</button>
-                <button class="btn-cerrar" id="btn-cerrar">✖</button>
+                <button class="btn-menu" id="btnMenu">☰</button>
+                <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeDirector.html">Dashboard</a></li>
@@ -35,11 +35,11 @@
     <main class="container py-4">
         <section class="border-bottom pb-3 mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <h2 class="text-start mb-2 text-primary" id="txt-titulo-ticket">Cargando Asunto...</h2>
-                <div class="d-flex flex-wrap align-items-center gap-2 text-muted small" id="contenedor-badges">
+                <h2 class="text-start mb-2 text-primary" id="tituloTicket">Cargando Asunto...</h2>
+                <div class="d-flex flex-wrap align-items-center gap-2 text-muted small" id="contenedorAsunto">
                     </div>
             </div>
-            <a href="d-reportes.html" class="btn btn-secondary fw-bold px-4">← Volver a Reportes</a>
+            <a href="d-reportes.html" class="btn btn-secondary fw-bold px-4">Volver a Reportes</a>
         </section>
 
         <section class="bg-light p-4 rounded-3 border mb-5">
@@ -48,46 +48,46 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <span class="d-block small fw-bold text-secondary">Docente Emisor</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-docente">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoDocente">-</p>
                 </div>
                 <div class="col-md-6">
                     <span class="d-block small fw-bold text-secondary">Fecha de Apertura</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-fecha">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoFecha">-</p>
                 </div>
                 <div class="col-md-4">
                     <span class="d-block small fw-bold text-secondary">Ubicación Física</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-salon">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoSalon">-</p>
                 </div>
                 <div class="col-md-4">
                     <span class="d-block small fw-bold text-secondary">Código del Equipo (ID PC)</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-pc">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoPC">-</p>
                 </div>
                 <div class="col-md-4">
                     <span class="d-block small fw-bold text-secondary">Gravedad / Criticidad</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-gravedad">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoGravedad">-</p>
                 </div>
                 <div class="col-12">
                     <span class="d-block small fw-bold text-secondary">Categoría del Incidente</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-categoria">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoCategoria">-</p>
                 </div>
                 <div class="col-12">
                     <span class="d-block small fw-bold text-secondary">Descripción Original del Problema</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-descripcion">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoDescripcion">-</p>
                 </div>
                 <div class="col-12">
                     <span class="d-block small fw-bold text-secondary">Operadores/Técnicos Asignados</span>
-                    <p class="fs-6 p-2 bg-white rounded border" id="info-encargados">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border" id="infoEncargados">-</p>
                 </div>
-                <div class="col-12 d-none" id="bloque-justificacion">
+                <div class="col-12 d-none" id="bloqueJustificacion">
                     <span class="d-block small fw-bold text-success">Resolución Técnica e Informe de Cierre</span>
-                    <p class="fs-6 p-2 bg-white rounded border border-success text-dark" id="info-justificacion">-</p>
+                    <p class="fs-6 p-2 bg-white rounded border border-success text-dark" id="infoJustificacion">-</p>
                 </div>
             </div>
         </section>
 
         <section class="border-top pt-4">
             <h3 class="text-primary mb-3 h4">Historial de comentarios e hitos</h3>
-            <div id="contenedor-comentarios"></div>
+            <div id="contenedorComentarios"></div>
         </section>
     </main>
 
@@ -95,7 +95,7 @@
         <span>Copyright 2026 - SGRSI | Instituto tecnológico de Informática</span>
     </footer>
 
-    <script src="../../assets/js/btn-menu-celular.js"></script>
+    <script src="../../assets/js/btnMenuCelular.js"></script>
     <script src="../../assets/js/verificarSesion.js"></script>
     <script src="../../assets/js/cerrarSesion.js"></script>
     <script src="../../assets/js/detalleTicketDirector.js" defer></script>

@@ -1,50 +1,58 @@
 // VARIABLES
-let chartEstadosInstance = null
-let chartIncidenciasInstance = null
+let instanciaGraficaEstados = ""
+let instanciaGraficaIncidencias = ""
 
 const filtroUbicacion = document.getElementById("filtroUbicacion")
 const filtroEstado = document.getElementById("filtroEstado")
 const filtroIncidencias = document.getElementById("filtroIncidencias")
 const filtroIntervencion = document.getElementById("filtroIntervencion")
-const cuerpoTabla = document.querySelector("#tablaEquipos tbody")
+
+
+const cuerpoTabla = document.querySelector("#tablaEquipos tbody") //El # es para buscar por ID, para posteriormente agarrar su tbody hijo
 
 // FUNCIONES
 const obtenerSalones = () => {
-    const datos = localStorage.getItem("salones")
-    return datos ? JSON.parse(datos) : []
+    const salones = localStorage.getItem("salones")
+    if (salones === null || salones === undefined || salones === "") {
+        return null
+    }
+    return JSON.parse(salones)
 }
 
 const obtenerEquipos = () => {
-    const datos = localStorage.getItem("equipos")
-    return datos ? JSON.parse(datos) : []
+    const equipos = localStorage.getItem("equipos")
+    if (equipos === null || equipos === undefined || equipos === "") {
+        return null
+    }
+    return JSON.parse(equipos)
 }
 
 const calcularIncidencias = (idEquipo) => {
-    const datos = localStorage.getItem("tickets")
-    if (!datos) return 0
-    const lista = JSON.parse(datos)
-    const buscado = String(idEquipo).trim().toLowerCase()
-    
-    return lista.filter(t => {
-        const idTicket = t.equipoId || t.idEquipo || t.codigoEquipo || ""
-        const limpio = String(idTicket).trim().toLowerCase()
-        return limpio === buscado || limpio === "pc-" + buscado
-    }).length
+    const equipos = localStorage.getItem("tickets")
+    if (!equipos) return 0
+    const lista = JSON.parse(equipos)
+    const buscado = idEquipo
+
+    const incidenciasFiltradas = lista.filter(t => {
+        const idTicket = t.equipoId
+        return idTicket === buscado //El return es para decirle al filtro que filtre lo que dió verdadero
+    })
+
+    return incidenciasFiltradas.length
 }
 
 const encontrarUbicacion = (idEquipo) => {
     const salones = obtenerSalones()
-    const buscado = String(idEquipo).trim().toLowerCase()
+    const buscado = idEquipo
 
     for (let s of salones) {
-        if (s.espacios && Array.isArray(s.espacios)) {
-            for (let j = 0; j < s.espacios.length; j++) {
-                const item = s.espacios[j]
-                let idEspacio = item && typeof item === 'object' ? (item.id || item.codigo || "") : (item || "")
-                
-                if (String(idEspacio).trim().toLowerCase() === buscado) {
-                    if (s.tipo === "laboratorios") return { nombre: "Laboratorio " + s.id, posicion: j + 1, modo: "salon" }
-                    if (s.tipo === "talleres") return { nombre: "Taller " + s.id, posicion: j + 1, modo: "salon" }
+        if (!(s.espacios === null || s.espacios === undefined || s.espacios === "")) { // Se verifica si el espacio existe y si esta vacio
+            for (let j = 0; j < s.espacios.length; j++) { // Se recorren los espacios dentro del salon
+                const equipo = s.espacios[j]
+
+                if (equipo.id === buscado) {
+                    if (s.tipo === "laboratorio") return { nombre: "Laboratorio " + s.id, posicion: j + 1, modo: "ubicacionSalon" }
+                    if (s.tipo === "talleres") return { nombre: "Taller " + s.id, posicion: j + 1, modo: "ubicacionSalon" }
                     if (s.tipo === "prestamo") return { nombre: "prestamo", posicion: 0, modo: "prestamo", prestado: item.prestado }
                 }
             }
@@ -54,72 +62,54 @@ const encontrarUbicacion = (idEquipo) => {
 }
 
 const poblarFiltroUbicaciones = () => {
-    filtroUbicacion.innerHTML = ""
-    
-    const optTodos = document.createElement("option")
-    optTodos.value = "todos"
-    optTodos.appendChild(document.createTextNode("Todas las ubicaciones"))
-    
-    const optPrestamo = document.createElement("option")
-    optPrestamo.value = "prestamo"
-    optPrestamo.appendChild(document.createTextNode("Dispositivos para prestar"))
-    
-    const optNinguna = document.createElement("option")
-    optNinguna.value = "ninguna"
-    optNinguna.appendChild(document.createTextNode("Sin asignar / No ingresados"))
-    
-    filtroUbicacion.appendChild(optTodos)
-    filtroUbicacion.appendChild(optPrestamo)
-    filtroUbicacion.appendChild(optNinguna)
 
     const salones = obtenerSalones()
     salones.forEach(s => {
-        if (s.tipo === "laboratorios" || s.tipo === "talleres") {
-            const opt = document.createElement("option")
-            const texto = (s.tipo === "laboratorios" ? "Laboratorio " : "Taller ") + s.id
-            opt.value = texto
-            opt.appendChild(document.createTextNode(texto))
-            filtroUbicacion.appendChild(opt)
+        if (s.tipo === "laboratorio" || s.tipo === "talleres") { //Verifica que el tipo de salon es
+            const opcion = document.createElement("option")
+            const tipoSalon = (s.tipo === "laboratorio" ? "Laboratorio " : "Taller ") + s.id //Añade su nombre correspondiente
+            opcion.value = tipoSalon
+            opcion.innerText = tipoSalon
+            filtroUbicacion.appendChild(opcion)
         }
     })
 }
 
-const convertirFechaAEntero = (fTexto) => {
-    if (!fTexto) return 0
-    const p = String(fTexto).split("/")
+const convertirFechaAEntero = (fechaTexto) => {
+    const p = fechaTexto.split("/")
     if (p.length !== 3) return 0
-    return parseInt(p[2] + p[1].padStart(2, "0") + p[0].padStart(2, "0"))
+    return parseInt(p[2] + p[1].padStart(2, "0") + p[0].padStart(2, "0")) //Se pasa la fecha a un numero tipo AAAAMMDD para poder ordenarlo
 }
 
-const renderizarGraficas = (activos, inactivos, labelsB, dataB) => {
-    if (chartEstadosInstance) chartEstadosInstance.destroy()
-    const ctx1 = document.getElementById("graficaEstados").getContext("2d")
-    chartEstadosInstance = new Chart(ctx1, {
+const renderizarGraficas = (activos, inactivos, columnas, dataB) => {
+    if (instanciaGraficaEstados) instanciaGraficaEstados.destroy() //Se debe verificar si la grafica existe, sino, tira error por no saber si existe, y si no existe... ¿sabes que pasa?... tira error :)
+    const graficaEstados = document.getElementById("graficaEstados").getContext("2d") //El ultimo metodo es para habilitar el dibujo sobre la grafica
+    instanciaGraficaEstados = new Chart(graficaEstados, { //Se crea un objeto con los parametros que requiere la grafica para funcionar
         type: 'bar',
         data: {
             labels: ['Operativos', 'Inactivos'],
             datasets: [{
                 label: 'Cantidad de Equipos',
                 data: [activos, inactivos],
-                backgroundColor: ['rgba(25, 135, 84, 0.6)', 'rgba(220, 53, 69, 0.6)'],
-                borderColor: ['#198754', '#dc3545'],
+                backgroundColor: ['#5fe0a440', '#f4576740'], //Ese hex ocupa rgba (a = opacidad)
+                borderColor: ['#5fe0a4', '#f45767'], //Estos no tienen opacidad porque no pinta la vdd
                 borderWidth: 1
             }]
         },
         options: { responsive: true, maintainAspectRatio: false }
     })
 
-    if (chartIncidenciasInstance) chartIncidenciasInstance.destroy()
-    const ctx2 = document.getElementById("graficaEstados1").getContext("2d")
-    chartIncidenciasInstance = new Chart(ctx2, {
+    if (instanciaGraficaIncidencias) instanciaGraficaIncidencias.destroy()
+    const graficaIncidencias = document.getElementById("graficaIncidencias").getContext("2d")
+    instanciaGraficaIncidencias = new Chart(graficaIncidencias, {
         type: 'bar',
         data: {
-            labels: labelsB.length > 0 ? labelsB : ["Sin Equipos"],
+            labels: columnas.length > 0 ? columnas : ["Sin Equipos"], //Si no hay equipos en el grupo seleccionado, muestra el mensaje
             datasets: [{
-                label: 'Número de Falla(s)',
-                data: dataB.length > 0 ? dataB : [0],
-                backgroundColor: 'rgba(13, 110, 253, 0.6)',
-                borderColor: '#0d6efd',
+                label: 'Numero de Fallas',
+                data: dataB.length > 0 ? dataB : [0], //Si no hay datos para utilizar, usa un array vacio
+                backgroundColor: '#9cc4ff40',
+                borderColor: '#6ea8ff',
                 borderWidth: 1
             }]
         },
@@ -129,84 +119,84 @@ const renderizarGraficas = (activos, inactivos, labelsB, dataB) => {
 
 const procesarYRenderizar = () => {
     cuerpoTabla.innerHTML = ""
-    
-    const lista = obtenerEquipos()
-    let filtrados = []
-    const uSel = filtroUbicacion.value
 
-    lista.forEach(eq => {
-        const idReal = eq.codigo || eq.id
-        const ubic = encontrarUbicacion(idReal)
-        if (uSel === "todos" || ubic.nombre === uSel) {
-            filtrados.push(eq)
+    const listaEquipos = obtenerEquipos()
+    let equiposFiltrados = []
+    const seleccion = filtroUbicacion.value
+
+    listaEquipos.forEach(eq => {
+        const equipoID = eq.id
+        const ubicacionPC = encontrarUbicacion(equipoID)
+        if (seleccion === "todos" || ubicacionPC.nombre === seleccion) {
+            equiposFiltrados.push(eq)
         }
     })
 
     if (filtroEstado.value !== "") {
         const activoBuscado = filtroEstado.value === "activo"
-        filtrados = filtrados.filter(eq => {
-            const esActivo = eq.activo === true || String(eq.activo).toLowerCase() === "activo" || String(eq.activo).toLowerCase() === "true" || String(eq.estado).toLowerCase() === "activo"
+        equiposFiltrados = equiposFiltrados.filter(eq => {
+            const esActivo = eq.activo
             return esActivo === activoBuscado
         })
     }
 
     if (filtroIncidencias.value !== "") {
-        filtrados.sort((a, b) => {
-            const incA = calcularIncidencias(a.codigo || a.id)
-            const incB = calcularIncidencias(b.codigo || b.id)
+        equiposFiltrados.sort((a, b) => {
+            const incA = calcularIncidencias(a.id)
+            const incB = calcularIncidencias(b.id)
             return filtroIncidencias.value === "menor" ? incA - incB : incB - incA
         })
     }
 
-    if (filtroIntervencion.value !== "") {
-        filtrados.sort((a, b) => {
+    if (filtroIntervencion.value !== "") { //Prevencion ante modificaciones en el html, esperemos sea util
+        equiposFiltrados.sort((a, b) => {
             const fA = convertirFechaAEntero(a.ultimaIntervencion || a.fecha)
             const fB = convertirFechaAEntero(b.ultimaIntervencion || b.fecha)
-            return filtroIntervencion.value === "reciente" ? fB - fA : fA - fB
+            return filtroIntervencion.value === "reciente" ? fB - fA : fA - fB //Dependiendo del valor del filtro, compara el valor A con el valor B, ya que, si el resultado da positivo o negativo, el orden se invierte
         })
     }
 
     let activos = 0
     let inactivos = 0
-    const labelsG = []
-    const dataG = []
+    const columnas = []
+    const datos = []
 
-    filtrados.forEach(eq => {
-        const idReal = eq.codigo || eq.id
-        const ubic = encontrarUbicacion(idReal)
-        const incs = calcularIncidencias(idReal)
-        const esActivo = eq.activo === true || String(eq.activo).toLowerCase() === "activo" || String(eq.activo).toLowerCase() === "true" || String(eq.estado).toLowerCase() === "activo"
+    equiposFiltrados.forEach(eq => {
+        const equipoID = eq.id
+        const ubicacionPC = encontrarUbicacion(equipoID)
+        const incidencias = calcularIncidencias(equipoID)
+        const esActivo = eq.activo
 
-        esActivo ? activos++ : inactivos++
-        labelsG.push("PC-" + idReal)
-        dataG.push(incs)
+        esActivo ? activos++ : inactivos++ //Dependiendo del booleano, aumenta el valor de uno o del otro
+        columnas.push("PC-" + equipoID)
+        datos.push(incidencias)
 
         const tr = document.createElement("tr")
 
         const tdCodigo = document.createElement("td")
-        tdCodigo.appendChild(document.createTextNode(idReal))
+        tdCodigo.innerText = equipoID
 
         const tdEstado = document.createElement("td")
-        tdEstado.appendChild(document.createTextNode(esActivo ? "Activo" : "Inactivo"))
+        tdEstado.innerText = esActivo ? "Activo" : "Inactivo"
 
         const tdTipoAsignacion = document.createElement("td")
         let textoAsignacion = "Sin asignar"
-        if (ubic.modo === "prestamo") {
-            textoAsignacion = ubic.prestado ? "Prestado" : "Disponible"
-        } else if (ubic.modo === "salon") {
+        if (ubicacionPC.modo === "prestamo") {
+            textoAsignacion = ubicacionPC.prestado ? "Prestado" : "Disponible"
+        } else if (ubicacionPC.modo === "ubicacionSalon") {
             textoAsignacion = "En salón"
         }
-        tdTipoAsignacion.appendChild(document.createTextNode(textoAsignacion))
+        tdTipoAsignacion.innerText = textoAsignacion //Para no modificar tantas veces el innerText, se asigna una vez que el valor final este decidido
 
         const tdDetalleUbicacion = document.createElement("td")
-        const textoDetalle = ubic.modo === "salon" ? `${ubic.nombre} - Banco ${ubic.posicion}` : "N/A"
-        tdDetalleUbicacion.appendChild(document.createTextNode(textoDetalle))
+        const textoDetalle = ubicacionPC.modo === "ubicacionSalon" ? `${ubicacionPC.nombre} - Posición ${ubicacionPC.posicion}` : "N/A" //Si el equipo no esta asignado, no tiene posicion, por lo que es N/A
+        tdDetalleUbicacion.innerText = textoDetalle
 
         const tdFecha = document.createElement("td")
-        tdFecha.appendChild(document.createTextNode(eq.ultimaIntervencion || eq.fecha || "Sin registros"))
+        tdFecha.innerText = eq.ultimaIntervencion || "Sin registros"
 
         const tdIncidencias = document.createElement("td")
-        tdIncidencias.appendChild(document.createTextNode(incs))
+        tdIncidencias.innerText = incidencias
 
         tr.appendChild(tdCodigo)
         tr.appendChild(tdEstado)
@@ -218,14 +208,14 @@ const procesarYRenderizar = () => {
         cuerpoTabla.appendChild(tr)
     })
 
-    renderizarGraficas(activos, inactivos, labelsG, dataG)
+    renderizarGraficas(activos, inactivos, columnas, datos)
 }
 
 // EVENTOS
-    poblarFiltroUbicaciones()
-    procesarYRenderizar()
-    
-    filtroUbicacion.addEventListener("change", procesarYRenderizar)
-    filtroEstado.addEventListener("change", procesarYRenderizar)
-    filtroIncidencias.addEventListener("change", procesarYRenderizar)
-    filtroIntervencion.addEventListener("change", procesarYRenderizar)
+filtroUbicacion.addEventListener("change", procesarYRenderizar)
+filtroEstado.addEventListener("change", procesarYRenderizar)
+filtroIncidencias.addEventListener("change", procesarYRenderizar)
+filtroIntervencion.addEventListener("change", procesarYRenderizar)
+
+poblarFiltroUbicaciones()
+procesarYRenderizar()

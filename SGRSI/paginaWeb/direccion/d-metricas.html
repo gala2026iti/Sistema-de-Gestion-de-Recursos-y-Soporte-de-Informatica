@@ -18,8 +18,8 @@
     <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
-                <button class="btn-menu" id="btn-menu">☰</button>
-                <button class="btn-cerrar" id="btn-cerrar">✖</button>
+                <button class="btn-menu" id="btnMenu">☰</button>
+                <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeDirector.html">Dashboard</a></li>
@@ -38,19 +38,19 @@
             <article class="col-12 col-md-4">
                 <div class="card p-3 shadow-sm border-0 bg-white">
                     <span class="text-muted small fw-bold">Total Equipos</span>
-                    <h3 class="display-6 fw-bold text-primary m-0" id="metric-total-equipos">0</h3>
+                    <h3 class="display-6 fw-bold text-primary m-0" id="cantTotalEquipos">0</h3>
                 </div>
             </article>
             <article class="col-12 col-md-4">
                 <div class="card p-3 shadow-sm border-0 bg-white">
                     <span class="text-muted small fw-bold">Equipos con Fallas Activas</span>
-                    <h3 class="display-6 fw-bold text-warning m-0" id="metric-equipos-fallas">0</h3>
+                    <h3 class="display-6 fw-bold text-warning m-0" id="cantEquiposFallados">0</h3>
                 </div>
             </article>
             <article class="col-12 col-md-4">
                 <div class="card p-3 shadow-sm border-0 bg-white">
                     <span class="text-muted small fw-bold">Último Incidente</span>
-                    <h3 class="fs-5 fw-bold text-secondary m-0" id="metric-ultimo-incidente">N/A</h3>
+                    <h3 class="fs-5 fw-bold text-secondary m-0" id="fechaUltimoIncidente">N/A</h3>
                 </div>
             </article>
         </section>
@@ -70,7 +70,7 @@
                                     <th scope="col">Fallas Registradas</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-ranking-fallas"></tbody>
+                            <tbody id="tablaFallas"></tbody>
                         </table>
                     </div>
                 </div>
@@ -79,12 +79,12 @@
             <article class="col-12 col-md-4 d-flex flex-column gap-4">
                 <div class="card p-3 shadow-sm border-0 bg-white flex-fill">
                     <span class="text-muted small fw-bold">Equipo Más Problemático</span>
-                    <h4 class="fw-bold text-dark mt-2" id="top-equipo-id">Ninguno</h4>
-                    <span class="text-muted small">Cantidad: <strong id="top-equipo-cantidad">0</strong></span>
+                    <h4 class="fw-bold text-dark mt-2" id="equipoMasFallado">Ninguno</h4>
+                    <span class="text-muted small">Cantidad: <strong id="cantEquipoMasFallado">0</strong></span>
                 </div>
                 <div class="card p-3 shadow-sm border-0 bg-white flex-fill">
                     <span class="text-muted small fw-bold">Incidencias Graves / Críticas</span>
-                    <h3 class="text-danger fw-bold display-6 mt-2" id="contador-vandalismo">0</h3>
+                    <h3 class="text-danger fw-bold display-6 mt-2" id="cantIncidencias">0</h3>
                 </div>
             </article>
         </section>
@@ -93,7 +93,7 @@
             <article class="col-12">
                 <div class="card shadow-sm border-0 bg-white">
                     <header class="card-header fw-semibold bg-primary text-white py-3 rounded-top">
-                        Personal y Usuarios Activos en el Sistema
+                        Usuarios registrados en el Sistema
                     </header>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover align-middle m-0">
@@ -105,7 +105,7 @@
                                     <th scope="col" class="pe-4 py-3 text-center">Estado</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabla-usuarios-activos">
+                            <tbody id="tablaUsuarios">
                                 </tbody>
                         </table>
                     </div>
@@ -118,7 +118,7 @@
         <span>Copyright 2026 - SGRSI | Instituto Tecnológico de Informática</span>
     </footer>
 
-    <script src="../../assets/js/btn-menu-celular.js"></script>
+    <script src="../../assets/js/btnMenuCelular.js"></script>
     <script src="../../assets/js/verificarSesion.js"></script>
     <script src="../../assets/js/cerrarSesion.js"></script>
     <script src="../../assets/js/metricasDirector.js" defer></script>

@@ -1,101 +1,65 @@
 // VARIABLES
-const contenedorGeneral = document.getElementById("contenedor-historial")
+const contenedorGeneral = document.getElementById("contenedorHistorial")
 
 // FUNCIONES
 const cargarHistorial = () => {
-    const historial = localStorage.getItem("registrosPrestamos")
-    if (historial === null || historial === undefined || historial === "") {
-        return []
-    } else {
-        return JSON.parse(historial)
-    }
+    const historial = localStorage.getItem("registroPrestamos") //Obtenemos los prestamos del sistema
+    if (historial === null || historial === undefined || historial === "") return [] //Verificamos que el contenido sea "valido"
+    return JSON.parse(historial) //Lo pasamos a JSON
 }
 
-const encontrarNombre = (cedula) => {
-    if (!cedula || cedula === "Desconocido") {
-        return "Desconocido"
-    }
+const actualizarVentana = () => {
 
-    const usuarios = localStorage.getItem("usuarios")
-    if (usuarios === null || usuarios === undefined || usuarios === "") {
-        return "Desconocido"
-    } else {
-        const usuariosJSON = JSON.parse(usuarios)
-        const usuarioFiltrado = usuariosJSON.find(u => String(u.usuario) === String(cedula))
-        
-        if (usuarioFiltrado) {
-            return usuarioFiltrado.nombre
-        } else {
-            return "Usuario no registrado "
-        }
-    }
-}
+    let listaDiaria = document.createElement("ul")
+    listaDiaria.classList = "historial-lista mt-2 mb-3"
 
-const mostrarHistorial = () => {
-    contenedorGeneral.innerHTML = ""
-    const historial = cargarHistorial()
-    let ultimaFecha
-    let listaDiaria
+    const historialPrestamos = cargarHistorial()
+    let fechaGrupo = ""
 
-    historial.forEach(registro => {
-        const equipoInvolucrado = registro.idDispositivo
-        const personaPrestada = registro.afectado
-        const nombrePersonaPrestada = registro.nombreAfectado
-        const registradorID = registro.responsable
+    historialPrestamos.forEach(e => {
+        let fechaGrupoHistorial = e.fecha
 
-        const registradorNombre = encontrarNombre(registradorID)
+        if (!(fechaGrupo === fechaGrupoHistorial)) {
+            fechaGrupo = fechaGrupoHistorial
 
-        if (ultimaFecha !== registro.fecha) {
-            ultimaFecha = registro.fecha
 
-            const fecha = document.createElement("span")
-            fecha.innerHTML = `Intervenciones el ${ultimaFecha}`
-            fecha.classList.add("fw-bold")
+            const indicadorFecha = document.createElement("span")
+            indicadorFecha.innerText = `Intervenciones el ${fechaGrupoHistorial}`
+            indicadorFecha.classList = "fw-bold"
+
+            contenedorGeneral.appendChild(indicadorFecha)
 
             listaDiaria = document.createElement("ul")
-            listaDiaria.className = "historial-lista mt-2 mb-3"
+            listaDiaria.classList = "historial-lista mt-2 mb-3"
 
-            contenedorGeneral.appendChild(fecha)
+
+            contenedorGeneral.appendChild(indicadorFecha)
             contenedorGeneral.appendChild(listaDiaria)
+
         }
 
-        const campo = document.createElement("li")
-        campo.className = "historial-contenido d-flex justify-content-between align-items-center"
+        const registro = document.createElement("li")
+        registro.classList = "historial-contenido d-flex justify-content-between align-items-center"
 
         const contenedor = document.createElement("div")
-        contenedor.classList.add("d-flex", "flex-column")
+        contenedor.classList = "d-flex flex-column"
 
-        const mensajePrestamo = document.createElement("span")
-        mensajePrestamo.classList.add("fw-bold")
+        const detalleCaso = document.createElement("span")
+        detalleCaso.classList = "fw-bold"
+        detalleCaso.innerText = e.detalleOperador
 
-        if (registro.caso === "prestamo") {
-            mensajePrestamo.innerHTML = `Se presto el equipo <span class="text-primary">${equipoInvolucrado}</span> a <span class="text-primary">${nombrePersonaPrestada} (${personaPrestada})</span>`
-        } else if (registro.caso === "devolucion") {
-            mensajePrestamo.innerHTML = `Se finalizo el prestamo del equipo <span class="text-primary">${equipoInvolucrado}</span> de <span class="text-primary">${nombrePersonaPrestada} (${personaPrestada})</span>`
-        }
+        const tipoCaso = document.createElement("span")
+        tipoCaso.classList = "text.muted"
+        tipoCaso.innerText = e.descripcionAccion
 
-        const registrador = document.createElement("span")
-        registrador.classList.add("text-muted")
+        contenedor.appendChild(detalleCaso)
+        contenedor.appendChild(tipoCaso)
 
-        if (registro.caso === "prestamo") {
-            registrador.innerHTML = `${registradorNombre} (${registradorID}) registro el prestamo`
-        } else if (registro.caso === "devolucion") {
-            registrador.innerHTML = `${registradorNombre} (${registradorID}) registro la finalización del prestamo`
-        }
+        registro.appendChild(contenedor)
 
-        const badgeId = document.createElement("span")
-        badgeId.className = "badge bg-primary"
-        badgeId.textContent = `#${registro.id}`
+        listaDiaria.appendChild(registro)
 
-        contenedor.appendChild(mensajePrestamo)
-        contenedor.appendChild(registrador)
-        campo.appendChild(contenedor)
-        campo.appendChild(badgeId)
-        
-        if (listaDiaria) {
-            listaDiaria.appendChild(campo)
-        }
     })
 }
 
-mostrarHistorial()
+actualizarVentana() 

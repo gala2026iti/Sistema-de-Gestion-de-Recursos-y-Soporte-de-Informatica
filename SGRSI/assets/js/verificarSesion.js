@@ -14,7 +14,7 @@ const buscarUsuarioStorage = (cedula) => {
 
 const cierreSesion = (mensaje) => {
     alert(mensaje)
-    
+
     const urlActual = window.location.pathname
     let rutaSalida = "index.html"
 
@@ -29,7 +29,7 @@ const cierreSesion = (mensaje) => {
 const verificarAcceso = () => {
     const usuarioLocal = localStorage.getItem("usuario")
 
-    if (!usuarioLocal || usuarioLocal === "") {
+    if (usuarioLocal === null || usuarioLocal === undefined || usuarioLocal === "") {
         cierreSesion("Error: No hay usuario logueado")
         return ""
     }
@@ -37,7 +37,7 @@ const verificarAcceso = () => {
     const usuarioLocalJSON = JSON.parse(usuarioLocal)
     let usuarioReal
 
-    if (String(usuarioLocalJSON.usuario) === "12345678" && String(usuarioLocalJSON.clave) === "adminITI") {
+    if (usuarioLocalJSON.usuario === "12345678" && usuarioLocalJSON.clave === "adminITI") {
         usuarioReal = {
             usuario: "12345678",
             clave: "adminITI",
@@ -53,33 +53,33 @@ const verificarAcceso = () => {
             return ""
         }
 
-        if (String(usuarioReal.clave) !== String(usuarioLocalJSON.clave)) {
+        if (usuarioReal.clave !== usuarioLocalJSON.clave) {
             localStorage.setItem("usuario", "")
             cierreSesion("Error: Credenciales invalidas, se cerrara la sesion")
             return ""
         }
     }
 
-    const atributoPagina = document.body.getAttribute("data-rol-permitido")
+    const rolPagina = document.body.getAttribute("data-rol-permitido")
 
-    const rolesPermitidos = atributoPagina.split(" ")
+    const rolesPermitidos = rolPagina.split(" ")
 
     if (!rolesPermitidos.includes(usuarioReal.rol)) {
-        alert("No podes ingresar acá, vas a ser llevado a tu espacio.")
-        
+        alert("Error: Zona Restringida. No podes ingresar acá, vas a ser llevado al espacio designado por tu rol.")
+
         const urlActual = window.location.pathname
-        let prefijoRuta = ""
+        let volverAtras = ""
 
         if (urlActual.includes("administracion-tecnico") || urlActual.includes("direccion")) {
-            prefijoRuta = "../"
+            volverAtras = "../"
         }
 
         if (usuarioReal.rol === "administrador" || usuarioReal.rol === "tecnico") {
-            window.location.href = `${prefijoRuta}homeAdmin.html`
+            window.location.href = `${volverAtras}homeAdmin.html`
         } else if (usuarioReal.rol === "docente") {
-            window.location.href = `${prefijoRuta}homeDocente.html`
+            window.location.href = `${volverAtras}homeDocente.html`
         } else if (usuarioReal.rol === "direccion") {
-            window.location.href = `${prefijoRuta}homeDirector.html`
+            window.location.href = `${volverAtras}homeDirector.html`
         } else {
             cierreSesion("Error: Rol no reconocido por el sistema")
         }

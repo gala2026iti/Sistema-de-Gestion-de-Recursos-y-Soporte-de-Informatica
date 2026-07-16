@@ -1,3 +1,4 @@
+// VARIABLES
 const form = document.getElementById('formInicio')
 
 // FUNCIONES
@@ -30,19 +31,21 @@ form.addEventListener("submit", function (e) {
         rol: ""
     }
 
-    //debug de administrador
+    // Debug de administrador
     if (inputCedula === "12345678" && inputClave === "adminITI") {
         usuarioLocal.rol = "administrador"
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
         window.location.href = "homeAdmin.html"
     } else {
+
+        //Logueo normal
         if (usuarioExistente(inputCedula)) {
             const usuarioLogueado = obtenerUsuario(inputCedula)
 
             if (usuarioLogueado.clave === inputClave) {
-                
+
                 if (usuarioLogueado.activo) {
-                    
+
                     usuarioLocal.rol = usuarioLogueado.rol
                     localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 
@@ -54,13 +57,13 @@ form.addEventListener("submit", function (e) {
                         window.location.href = "homeDirector.html"
                     }
                 } else {
-                    alert("Usuario no disponible")
+                    alert("Error: Usuario no disponible")
                 }
             } else {
-                alert("Usuario o Contraseña incorrectos")
+                alert("Error: Usuario o Contraseña incorrectos")
             }
         } else {
-            alert("Usuario o Contraseña incorrectos")
+            alert("Error: Usuario o Contraseña incorrectos")
         }
     }
 })
