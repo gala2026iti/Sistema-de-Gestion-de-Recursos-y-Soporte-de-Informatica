@@ -3,7 +3,7 @@ const contenedorGeneral = document.getElementById("contenedorHistorial")
 
 // FUNCIONES
 const cargarHistorial = () => {
-    const historial = localStorage.getItem("registroPrestamos") //Obtenemos los prestamos del sistema
+    const historial = localStorage.getItem("registroUsuarios") //Obtenemos los usuarios del sistema
     if (historial === null || historial === undefined || historial === "") return [] //Verificamos que el contenido sea "valido"
     return JSON.parse(historial) //Lo pasamos a JSON
 }
@@ -22,10 +22,10 @@ const actualizarVentana = () => {
     let listaDiaria = document.createElement("ul")
     listaDiaria.classList = "historial-lista mt-2 mb-3"
 
-    const historialPrestamos = cargarHistorial()
+    const historialCambios = cargarHistorial()
     let fechaGrupo = ""
 
-    historialPrestamos.forEach(e => {
+    historialCambios.forEach(e => {
         let fechaGrupoHistorial = e.fecha
 
         if (!(fechaGrupo === fechaGrupoHistorial)) {
@@ -55,14 +55,25 @@ const actualizarVentana = () => {
 
         const textoAsunto = document.createElement("span")
         textoAsunto.classList = "fw-bold"
-        let mensaje
-        if(e.modificacion === "prestamo"){
-        mensaje = `El usuario ${e.ciPrestador} (${buscarNombre(e.ciPrestador)}) registró un prestamo del equipo (${e.idEquipo}) a ${e.nombrePrestado} (${e.ciPrestado}).`
-        } else if (e.modificacion === "devolucion"){
-        mensaje = `El usuario ${e.ciPrestador} (${buscarNombre(e.ciPrestador)}) finalizó el prestamo del equipo (${e.idEquipo}) a ${e.nombrePrestado} (${e.ciPrestado}).`
+
+        let cambioRealizado
+        switch (e.modificacion) {
+            case "modificacion":
+                cambioRealizado = `El usuario ${e.ciActor} (${buscarNombre(e.ciActor)}) Modifico los datos del usuario ${e.ciModificado} (${buscarNombre(e.ciModificado)}).`
+                break;
+            case "activacion":
+                cambioRealizado = `El usuario ${e.ciActor} (${buscarNombre(e.ciActor)}) Activo la cuenta del usuario ${e.ciModificado} (${buscarNombre(e.ciModificado)}).`
+                break;
+            case "desactivacion":
+                cambioRealizado = `El usuario ${e.ciActor} (${buscarNombre(e.ciActor)}) Desactivo la cuenta del usuario ${e.ciModificado} (${buscarNombre(e.ciModificado)}).`
+                break;
+            case "creacion":
+                cambioRealizado = `El usuario ${e.ciActor} (${buscarNombre(e.ciActor)}) Creó la cuenta del usuario ${e.ciModificado} (${buscarNombre(e.ciModificado)}).`
+                break;
 
         }
-        textoAsunto.innerText = mensaje
+
+        textoAsunto.innerText = cambioRealizado
 
         const textoMensaje = document.createElement("span")
         textoMensaje.classList = "text.muted"

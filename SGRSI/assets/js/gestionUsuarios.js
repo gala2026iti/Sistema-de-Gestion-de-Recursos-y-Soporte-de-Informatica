@@ -44,6 +44,21 @@ const actualizarUsuarios = (usuarios) => {
     actualizarTabla()
 }
 
+const registrarHistorialUsuarios = (ciActor, ciModificado, modificacion) => {
+    const datos = localStorage.getItem("registroUsuarios")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: new Date().toLocaleDateString('es-ES'),
+        hora: new Date().toLocaleTimeString('es-ES'),
+        ciActor: ciActor,
+        ciModificado: ciModificado,
+        modificacion: modificacion
+    })
+    localStorage.setItem("registroUsuarios", JSON.stringify(historial))
+}
+
 const modificarUsuario = (usuarioModificado) => {
     const usuarios = cargarUsuarios()
 
@@ -95,6 +110,7 @@ const guardarUsuario = (usuario) => {
     actualizarUsuarios(usuarios)
 
     alert("Usuario registrado con exito")
+    registrarHistorialUsuarios(usuarioLocalJSON.usuario, usuario.usuario, "creacion")
     modalUsuario.classList.replace("d-flex", "d-none")
     limpiarCampos()
 }
@@ -172,6 +188,7 @@ const actualizarTabla = () => {
                     if (confirm("¿Estás seguro de que deseas desactivar este usuario?")) {
                         if (confirm("ESTE USUARIO DEJARÁ DE SER ACCESIBLE, ¿QUERÉS CONTINUAR?")) {
                             desactivarUsuario(u.usuario)
+                            registrarHistorialUsuarios(usuarioLocalJSON.usuario, u.usuario, "desactivacion")
                         }
                     }
                 })
@@ -183,6 +200,7 @@ const actualizarTabla = () => {
                 btnActivar.addEventListener("click", () => {
                     if (confirm("¿Estás seguro de que querés activar nuevamente este usuario?")) {
                         activarUsuario(u.usuario)
+                        registrarHistorialUsuarios(usuarioLocalJSON.usuario, u.usuario, "activacion")
                     }
                 })
                 accionesFila.appendChild(btnActivar)
@@ -218,6 +236,7 @@ formulario.addEventListener("submit", function (e) {
 
     if (modoEdicion) {
         modificarUsuario(usuario)
+        registrarHistorialUsuarios(usuarioLocalJSON.usuario, usuario.usuario, "modificacion")
     } else {
         if (usuarioExistente(usuario.usuario)) {
             alert("Error: El usuario ya existe")

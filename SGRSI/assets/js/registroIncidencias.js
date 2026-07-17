@@ -183,29 +183,34 @@ const abrirFormularioModal = (pcId) => {
     campoIncidencia.classList.add("d-flex")
 }
 
+const buscarNombre = (cedulaUsuario) => {
+    let usuarios = localStorage.getItem("usuarios")
+    if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
+    else usuarios = JSON.parse(usuarios)
+
+    const usuarioEncontrado = usuarios.find(u => u.usuario === cedulaUsuario)
+    return usuarioEncontrado ? usuarioEncontrado.nombre : "N/A"
+}
+
 const cerrarFormularioModal = () => {
     campoIncidencia.classList.remove("d-flex")
     campoIncidencia.classList.add("oculto")
     pcActualId = null
 }
 
-const registrarEnHistorialSistema = (descripcion, detalle) => {
-    const datosHistorial = localStorage.getItem("registroTickets")
-    let listaHistorial = []
+const registrarHistorial = (asunto, detalle, idEquipo) => {
+    const datos = localStorage.getItem("registroTickets")
+    let historial = datos ? JSON.parse(datos) : []
 
-    if (datosHistorial !== null && datosHistorial !== undefined && datosHistorial !== "") {
-        listaHistorial = JSON.parse(datosHistorial)
-    }
-
-    const nuevoRegistro = {
-        id: listaHistorial.length + 1,
+    historial.push({
+        id: historial.length + 1,
         fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: descripcion,
-        detalleOperador: detalle
-    }
-
-    listaHistorial.push(nuevoRegistro)
-    localStorage.setItem("registroTickets", JSON.stringify(listaHistorial))
+        hora: new Date().toLocaleTimeString('es-ES'),
+        asuntoTicket: asunto,
+        detalleTicket: detalle,
+        equipoInvolucrado: idEquipo
+    })
+    localStorage.setItem("registroTickets", JSON.stringify(historial))
 }
 
 cargarSalones()
@@ -299,10 +304,10 @@ formularioSalon.addEventListener("submit", (e) => {
 
                     listaTickets.push(nuevoTicket)
 
-                    const descripcionHistorial = info.asunto
-                    const detalleHistorial = `El docente ${docenteId} registro una incidencia sobre la PC: ${pcId} del ${textoSalon}`
+                    const asuntoHistorial = info.asunto
+                    const detalleHistorial = `El docente ${docenteId} (${buscarNombre(idUsuarioActual)}) registró una incidencia sobre la PC: ${pcId} del ${textoSalon}`
 
-                    registrarEnHistorialSistema(descripcionHistorial, detalleHistorial)
+                    registrarHistorial(asuntoHistorial, detalleHistorial, pcId)
                 })
 
                 localStorage.setItem("tickets", JSON.stringify(listaTickets))

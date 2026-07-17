@@ -67,18 +67,19 @@ const mostrarHistorial = () => {
 
         const spanDescripcion = document.createElement("span")
         spanDescripcion.className = "fw-bold text-dark"
-        spanDescripcion.innerText = registro.descripcionAccion
+        spanDescripcion.innerText = registro.asuntoTicket
 
         const detalles = document.createElement("span")
         detalles.className = "text-muted small"
-        detalles.innerText = registro.detalleOperador
+        detalles.innerText = registro.detalleTicket
 
         columna.appendChild(spanDescripcion)
         columna.appendChild(detalles)
 
         const spanFechaRegistro = document.createElement("span")
         spanFechaRegistro.className = "text-muted small"
-        spanFechaRegistro.innerText = registro.fechaCreacion
+        spanFechaRegistro.innerText = registro.hora
+        
 
         li.appendChild(columna)
         li.appendChild(spanFechaRegistro)

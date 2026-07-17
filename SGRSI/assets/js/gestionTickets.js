@@ -50,15 +50,16 @@ const guardarTickets = (lista) => {
     localStorage.setItem("tickets", JSON.stringify(lista))
 }
 
-const registrarEnHistorialGeneral = (asunto, detalle, idEquipo) => {
+const registrarHistorial = (asunto, detalle, idEquipo) => {
     const datos = localStorage.getItem("registroTickets")
     let historial = datos ? JSON.parse(datos) : []
 
     historial.push({
         id: historial.length + 1,
         fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: asunto,
-        detalleOperador: detalle,
+        hora: new Date().toLocaleTimeString('es-ES'),
+        asuntoTicket: asunto,
+        detalleTicket: detalle,
         equipoInvolucrado: idEquipo
     })
     localStorage.setItem("registroTickets", JSON.stringify(historial))
@@ -141,7 +142,7 @@ const mostrarInfoTicket = () => {
 
         const spanTiempo = document.createElement("span")
         spanTiempo.className = "text-muted small"
-        spanTiempo.innerText = `el ${com.fecha}`
+        spanTiempo.innerText = `${com.fecha}`
 
         divHeader.appendChild(h3User)
         divHeader.appendChild(spanTiempo)
@@ -228,7 +229,7 @@ if (btnAutoasignar) {
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`, ticket.equipoId)
+            registrarHistorial(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`, ticket.equipoId)
 
             alert("Te has asignado exitosamente al ticket.")
         }
@@ -251,7 +252,7 @@ if (formControlTicket) {
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.equipoId)
+            registrarHistorial(ticket.asunto, `${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.equipoId)
             alert("Cambios guardados con éxito.")
         }
     })
@@ -279,7 +280,7 @@ if (btnFinalizarTicket) {
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} finalizó el ticket. Resolución: ${justificacionLimpia}`, ticket.equipoId)
+            registrarHistorial(ticket.asunto, `${idUsuarioActual} finalizó el ticket. Solución: "${justificacionLimpia}".`, ticket.equipoId)
             alert("Ticket finalizado y cerrado con éxito.")
         }
     })

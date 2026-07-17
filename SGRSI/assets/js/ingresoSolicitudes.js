@@ -19,6 +19,22 @@ const guardarSolicitud = (solicitud) => {
     formulario.reset()
 }
 
+const registrarHistorial = (ciUsuario, modificacion, idSolicitud, asunto) => {
+    const datos = localStorage.getItem("registroSolicitudes")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        idSolicitud: idSolicitud,
+        asunto: asunto,
+        modificacion: modificacion,
+        usuario: ciUsuario,
+        fecha: new Date().toLocaleDateString('es-ES'),
+        hora: new Date().toLocaleTimeString('es-ES')
+    })
+    localStorage.setItem("registroSolicitudes", JSON.stringify(historial))
+}
+
 const fechaValida = (fechaInput) => {
     const fechaSeleccionada = new Date(fechaInput)
     const hoy = new Date()
@@ -35,7 +51,7 @@ formulario.addEventListener("submit", function (e) {
     const entradaFecha = document.getElementById("fecha")
 
     const usuario = localStorage.getItem('usuario')
-    const usuarioJSON = JSON.parse(usuario)
+    const usuarioLocalJSON = JSON.parse(usuario)
 
     const solicitudes = cargarSolicitudes()
     const nuevoId = solicitudes.length + 1
@@ -49,12 +65,14 @@ formulario.addEventListener("submit", function (e) {
         asunto: entradaAsunto.value.trim(),
         descripcion: entradaDescripcion.value.trim(),
         fecha: fechaFormateada,
-        creador: usuarioJSON.cedula,
+        creador: usuarioLocalJSON.usuario,
         finalizada: false
     }
 
     if (fechaValida(entradaFecha.value)) {
         guardarSolicitud(solicitud)
+        registrarHistorial(usuarioLocalJSON.usuario, "creacion", solicitud.id, solicitud.asunto)
+
     } else {
         alert("Error: La fecha y hora deben ser posteriores al momento actual")
     }

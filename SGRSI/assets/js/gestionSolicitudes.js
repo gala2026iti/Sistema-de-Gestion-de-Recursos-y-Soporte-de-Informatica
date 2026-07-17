@@ -2,6 +2,9 @@
 const cuerpoTabla = document.querySelector("#tablaSolicitudes tbody")
 const filtroEstado = document.getElementById("filtroEstado")
 
+const usuarioLocal = localStorage.getItem("usuario")
+const usuarioLocalJSON = JSON.parse(usuarioLocal)
+
 // FUNCIONES
 const obtenerSolicitudes = () => {
     const solicitudesLocales = localStorage.getItem("solicitudes")
@@ -22,6 +25,22 @@ const finalizarSolicitud = (id) => {
         solicitud.finalizada = true
         guardarSolicitudes(solicitudes)
     }
+}
+
+const registrarHistorial = (ciUsuario, modificacion, idSolicitud, asunto) => {
+    const datos = localStorage.getItem("registroSolicitudes")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        idSolicitud: idSolicitud,
+        asunto: asunto,
+        modificacion: modificacion,
+        usuario: ciUsuario,
+        fecha: new Date().toLocaleDateString('es-ES'),
+        hora: new Date().toLocaleTimeString('es-ES')
+    })
+    localStorage.setItem("registroSolicitudes", JSON.stringify(historial))
 }
 
 const actualizarTabla = () => {
@@ -64,6 +83,7 @@ const actualizarTabla = () => {
             btnFinalizar.addEventListener("click", () => {
                 if (confirm("¿Estás seguro de que querés finalizar esta solicitud? Esta acción va a registrar el trabajo como completado y no se puede deshacer.")) {
                     finalizarSolicitud(s.id)
+                    registrarHistorial(usuarioLocalJSON.usuario, "finalizacion", s.id, s.asunto)
                 }
             })
             accionesFila.appendChild(btnFinalizar)

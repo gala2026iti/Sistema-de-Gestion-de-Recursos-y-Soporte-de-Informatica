@@ -3,7 +3,7 @@ const contenedorGeneral = document.getElementById("contenedorHistorial")
 
 // FUNCIONES
 const cargarHistorial = () => {
-    const historial = localStorage.getItem("registroPrestamos") //Obtenemos los prestamos del sistema
+    const historial = localStorage.getItem("registroSolicitudes")
     if (historial === null || historial === undefined || historial === "") return [] //Verificamos que el contenido sea "valido"
     return JSON.parse(historial) //Lo pasamos a JSON
 }
@@ -31,7 +31,6 @@ const actualizarVentana = () => {
         if (!(fechaGrupo === fechaGrupoHistorial)) {
             fechaGrupo = fechaGrupoHistorial
 
-
             const indicadorFecha = document.createElement("span")
             indicadorFecha.innerText = `Intervenciones el ${fechaGrupoHistorial}`
             indicadorFecha.classList = "fw-bold"
@@ -55,12 +54,15 @@ const actualizarVentana = () => {
 
         const textoAsunto = document.createElement("span")
         textoAsunto.classList = "fw-bold"
-        let mensaje
-        if(e.modificacion === "prestamo"){
-        mensaje = `El usuario ${e.ciPrestador} (${buscarNombre(e.ciPrestador)}) registró un prestamo del equipo (${e.idEquipo}) a ${e.nombrePrestado} (${e.ciPrestado}).`
-        } else if (e.modificacion === "devolucion"){
-        mensaje = `El usuario ${e.ciPrestador} (${buscarNombre(e.ciPrestador)}) finalizó el prestamo del equipo (${e.idEquipo}) a ${e.nombrePrestado} (${e.ciPrestado}).`
 
+        let mensaje
+        switch (e.modificacion) {
+            case "creacion":
+                mensaje = `El docente ${e.usuario} (${buscarNombre(e.usuario)}) Registró una nueva solicitud.\nID: ${e.idSolicitud}, Asunto: "${e.asunto}".`
+                break;
+            case "finalizacion":
+                mensaje = `El usuario ${e.usuario} (${buscarNombre(e.usuario)}) Finalizó una solicitud.\nID: ${e.idSolicitud}, Asunto: "${e.asunto}".`
+                break;
         }
         textoAsunto.innerText = mensaje
 

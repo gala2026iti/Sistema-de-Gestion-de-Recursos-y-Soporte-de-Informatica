@@ -7,8 +7,9 @@ const cuerpoTabla = document.querySelector("#tablaPrestamos tbody")
 
 const obtenerCedulaLocal = () => {
     const usuario = localStorage.getItem("usuario")
-    if (usuario === null || usuario === undefined || usuario === "") return "Desconocido"
-    return usuario.usuario
+    if (usuario === null || usuario === undefined || usuario === "") return "N/A"
+    const usuarioLocalJSON = JSON.parse(usuario) 
+    return usuarioLocalJSON.usuario
 
 }
 
@@ -45,18 +46,19 @@ const guardarPrestamo = (prestamo) => {
     localStorage.setItem("prestamos", JSON.stringify(lista))
 }
 
-const registrarAccion = (tipoAccion, operador, cedula, nombre, idEquipo) => {
+const registrarHistorial = (modificacion, ciPrestador, ciPrestado, nombrePrestado, idEquipo) => {
     const historial = localStorage.getItem("registroPrestamos")
     const lista = historial ? JSON.parse(historial) : []
 
-    let tipoAccionDetalle = `El operador ${operador} realizó un préstamo al usuario ${nombre} (C.I: ${cedula}) del equipo con ID: ${idEquipo}`
-    if (tipoAccion === "devolucion") tipoAccionDetalle = `El operador ${operador} finalizo el préstamo del usuario ${nombre} (C.I: ${cedula}) al equipo con ID: ${idEquipo}`
-
     const nuevaAccion = {
         id: lista.length + 1,
+        ciPrestador: ciPrestador,
+        ciPrestado: ciPrestado,
+        nombrePrestado: nombrePrestado,
+        modificacion: modificacion,
+        idEquipo: idEquipo,
         fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: `Registro de ${tipoAccion}`,
-        detalleOperador: tipoAccionDetalle
+        hora: new Date().toLocaleTimeString('es-ES')
     }
 
     lista.push(nuevaAccion)
@@ -129,7 +131,8 @@ const opcionesDispositivos = () => {
     seleccionDefault.innerText = "Seleccione un dispositivo"
     opciones.appendChild(seleccionDefault)
 
-    const equipos = cargarEspacios()
+    let equipos = cargarEspacios()
+    if(!equipos) equipos = []
     equipos.forEach(eq => {
         if (equipoPrestable(eq.id)) {
             const idReal = eq.id
@@ -153,11 +156,11 @@ const actualizarTabla = () => {
             const tdId = document.createElement("td")
             tdId.innerText = p.id
 
-            const tdPrestador = document.createElement("td")
-            tdPrestador.innerText = p.cedulaPrestador
+            const tdciPrestador = document.createElement("td")
+            tdciPrestador.innerText = p.ciPrestador
 
             const tdCedula = document.createElement("td")
-            tdCedula.innerText = p.cedulaPrestado
+            tdCedula.innerText = p.ciPrestado
 
             const tdNombre = document.createElement("td")
             tdNombre.innerText = p.nombrePrestado
@@ -185,14 +188,14 @@ const actualizarTabla = () => {
 
                     const todos = cargarPrestamos()
                     const index = todos.findIndex(t => t.id === p.id)
-                    const cedulaOperador = obtenerCedulaLocal() || "N/A"
+                    const ciPrestador = obtenerCedulaLocal()
 
 
                     if (index !== -1) {
                         todos[index].devuelto = true
                         localStorage.setItem("prestamos", JSON.stringify(todos))
                         modificarPrestamoEquipo(p.idEquipo, false)
-                        registrarAccion("devolucion", cedulaOperador, p.cedulaPrestado, p.nombrePrestado, p.idEquipo)
+                        registrarHistorial("devolucion", ciPrestador, p.ciPrestado, p.nombrePrestado, p.idEquipo)
 
                         actualizarTabla()
                     }
@@ -201,7 +204,7 @@ const actualizarTabla = () => {
             }
 
             tr.appendChild(tdId)
-            tr.appendChild(tdPrestador)
+            tr.appendChild(tdciPrestador)
             tr.appendChild(tdCedula)
             tr.appendChild(tdNombre)
             tr.appendChild(tdEquipo)
@@ -235,7 +238,7 @@ if (formulario) {
     formulario.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const inputCedulaPrestado = document.getElementById("cedulaPrestado")
+        const inputciPrestado = document.getElementById("ciPrestado")
         const inputNombrePrestado = document.getElementById("nombrePrestado")
         const inputEquipoElegido = document.getElementById("listaDispositivos")
         const inputFechaDevolucion = document.getElementById("final")
@@ -259,23 +262,23 @@ if (formulario) {
             return contador
         }
 
-        const cedulaOperador = obtenerCedulaLocal() || "N/A"
+        const ciPrestador = obtenerCedulaLocal() || "N/A"
 
         const prestamo = {
             id: contadorID(),
-            cedulaPrestado: inputCedulaPrestado.value.trim(),
+            ciPrestado: inputciPrestado.value.trim(),
             nombrePrestado: inputNombrePrestado.value.trim(),
             idEquipo: inputEquipoElegido.value,
-            cedulaPrestador: cedulaOperador,
+            ciPrestador: ciPrestador,
             fechaInicio: new Date().toISOString(),
             fechaDevolucion: inputFechaDevolucion.value,
             devuelto: false,
             entregaAtrasada: false
         }
 
-        if (usuarioValido(prestamo.cedulaPrestado)) {
+        if (usuarioValido(prestamo.ciPrestado)) {
             guardarPrestamo(prestamo)
-            registrarAccion("prestamo", cedulaOperador, prestamo.cedulaPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
+            registrarHistorial("prestamo", ciPrestador, prestamo.ciPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
 
             alert("Préstamo registrado con éxito.")
             modificarPrestamoEquipo(prestamo.idEquipo, true)
