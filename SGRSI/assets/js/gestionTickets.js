@@ -219,7 +219,6 @@ if (btnAutoasignar) {
                 return
             }
 
-            //Se limpian los valores nulos del array de colaboradores para evitar errores
             ticket.colaboradores = (ticket.colaboradores || []).filter(col => col !== null && col !== undefined)
 
             const yaEstaAsignado = ticket.colaboradores.some(col => String(col) === String(idUsuarioActual))
@@ -249,11 +248,24 @@ if (formControlTicket) {
 
         if (ticket) {
             if (ticket.estado.toLowerCase() === "resuelto") return
-            const usuarioLogueado = obtenerUsuarioFirmado()
-            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
 
-            if (selectEstado) ticket.estado = selectEstado.value
-            if (selectGravedad) ticket.gravedad = selectGravedad.value
+        const estadosValidos = ["pendiente", "en proceso"]
+        const gravedadesValidas = ["ligera", "media", "grave"]
+
+    if (!estadosValidos.includes(selectEstado.value)) {
+        alert("Estado inválido.")
+        return
+    }
+
+    if (!gravedadesValidas.includes(selectGravedad.value)) {
+        alert("Gravedad inválida.")
+        return
+    }
+    const usuarioLogueado = obtenerUsuarioFirmado()
+    const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
+
+    ticket.estado = selectEstado.value
+    ticket.gravedad = selectGravedad.value
 
             guardarTickets(lista)
             mostrarInfoTicket()

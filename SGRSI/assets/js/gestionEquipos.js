@@ -92,7 +92,34 @@ const cargarEquipos = () => {
 const guardarEquipos = (lista) => {
     localStorage.setItem("equipos", JSON.stringify(lista))
 }
+const validarDatosEquipo = (codigo, ubicacion, posicion) => {
+    if (codigo === "") {
+        return "El código del equipo es obligatorio."
+    }
+    const formatoID = /^[A-Za-z0-9]+$/
 
+    if (!formatoID.test(codigo)) {
+        return "El código del equipo solo puede contener letras y números."
+    }
+    if (codigo.length < 3 || codigo.length > 15) {
+        return "El código del equipo debe tener entre 3 y 15 caracteres."
+    }
+    if (ubicacion === "") {
+        return "Debe seleccionar una ubicación."
+    }
+    if (
+        ubicacion !== "ninguna" &&
+        ubicacion !== "prestamo"
+    ) {
+        if (isNaN(posicion)) {
+            return "Debe ingresar una posición válida."
+        }
+        if (posicion <= 0) {
+            return "La posición debe ser mayor a cero."
+        }
+    }
+    return null
+}
 const cargarTickets = () => {
     const tickets = localStorage.getItem("tickets")
     if (tickets === null || tickets === undefined || tickets === "") return []
@@ -506,6 +533,16 @@ if (formulario) {
         const codigo = inputIdPC ? inputIdPC.value.trim() : ""
         const lugarVal = selectUbicacion ? selectUbicacion.value : ""
         const posicionVal = inputPosicionPC ? parseInt(inputPosicionPC.value) : ""
+
+        const errorValidacion = validarDatosEquipo(
+        codigo,
+        lugarVal,
+        posicionVal
+    )
+if (errorValidacion !== null) {
+    alert("Error: " + errorValidacion)
+    return
+}
 
         if (codigo === "" || lugarVal === "") {
             alert("Error: Complete todos los campos requeridos del formulario.")

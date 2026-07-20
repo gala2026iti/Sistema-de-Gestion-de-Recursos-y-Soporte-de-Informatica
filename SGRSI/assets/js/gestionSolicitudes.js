@@ -27,7 +27,7 @@ const obtenerFecha = (dato) => {
 const guardarSolicitudes = (solicitudes) => {
     localStorage.setItem("solicitudes", JSON.stringify(solicitudes))
     actualizarTabla()
-}
+} 
 
 const finalizarSolicitud = (id) => {
     const solicitudes = obtenerSolicitudes()

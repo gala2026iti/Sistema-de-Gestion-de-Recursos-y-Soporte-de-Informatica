@@ -28,6 +28,18 @@ const hayAdmins = () => {
 
 }
 
+const validarInicioSesion = (usuario) => {
+
+    if (!/^\d{8}$/.test(usuario.usuario)) {
+        alert("La cédula debe contener exactamente 8 números.")
+        return false }
+
+    if (usuario.clave.trim() === "") {
+        alert("Debe ingresar una contraseña.")
+        return false }
+    return true
+}
+
 // EVENTOS
 form.addEventListener("submit", function (e) {
     e.preventDefault()
@@ -40,6 +52,10 @@ form.addEventListener("submit", function (e) {
         clave: inputClave,
         rol: ""
     }
+
+    if (!validarInicioSesion(usuarioLocal)) {
+    return
+}
 
     // Debug de administrador
     if (inputCedula === "12345678" && inputClave === "adminITI" && !hayAdmins()) {

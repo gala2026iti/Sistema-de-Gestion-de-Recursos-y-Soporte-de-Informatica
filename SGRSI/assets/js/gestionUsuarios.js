@@ -35,7 +35,7 @@ const obtenerFecha = (dato) => {
     const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
     const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
-    if(dato === "fecha"){
+    if (dato === "fecha") {
         return formatoFecha
     } else {
         return formatoHora
@@ -93,6 +93,33 @@ const modificarUsuario = (usuarioModificado) => {
 }
 
 const verificarRol = (rol) => rol === "tecnico" || rol === "administrador" || rol === "docente" || rol === "direccion"
+
+const validarFormulario = (usuario) => {
+    if (!/^\d{8}$/.test(usuario.usuario)) {
+     alert("La cédula debe contener exactamente 8 números.")
+     return false }
+
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,30}$/.test(usuario.nombre)) {
+        alert("El nombre solo puede contener letras y espacios.")
+        return false }
+
+    if (usuario.correo.length > 50) {
+        alert("El correo supera el máximo de caracteres.")
+        return false }
+
+    if (!/^[^\s@]+@[^\s@]+\.com$/.test(usuario.correo)) {
+        alert("Ingrese un correo válido terminado en .com")
+        return false   }
+
+    if (usuario.clave.length < 8) {
+        alert("La contraseña debe tener al menos 8 caracteres.")
+        return false  }
+
+    if (!verificarRol(usuario.rol)) {
+        alert("Rol inválido.")
+        return false }
+return true
+}
 
 const desactivarUsuario = (cedula) => {
     const usuarios = cargarUsuarios()
@@ -246,6 +273,10 @@ formulario.addEventListener("submit", function (e) {
         activo: true
     }
 
+    if (!validarFormulario(usuario)) {
+    return
+    }
+    
     if (modoEdicion) {
         modificarUsuario(usuario)
         registrarHistorialUsuarios(usuarioLocalJSON.usuario, usuario.usuario, "modificacion")

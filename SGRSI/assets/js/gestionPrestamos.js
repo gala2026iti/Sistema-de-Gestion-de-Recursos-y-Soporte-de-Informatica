@@ -257,6 +257,35 @@ if (btnCancelarPrestamo) {
     })
 }
 
+const validarCedula = (cedula) => {
+    cedula = cedula.trim()
+    const formato = /^[0-9]{8}$/
+
+    if (!formato.test(cedula)) {
+        return false
+    }
+    return true
+}
+const validarNombre = (nombre) => {
+    nombre = nombre.trim()
+
+    const formato = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]{3,}$/
+
+    return formato.test(nombre)
+}
+const validarEquipo = (idEquipo) => {
+    if (idEquipo === "" || idEquipo === null || idEquipo === undefined) {
+        return false
+    }
+
+    return true
+}
+const validarFecha = (fecha) => {
+    const fechaIngresada = new Date(fecha)
+    const fechaActual = new Date()
+
+    return fechaIngresada > fechaActual
+}
 if (formulario) {
     formulario.addEventListener("submit", (e) => {
         e.preventDefault()
@@ -266,13 +295,23 @@ if (formulario) {
         const inputEquipoElegido = document.getElementById("listaDispositivos")
         const inputFechaDevolucion = document.getElementById("final")
 
-        const fechaSeleccionada = new Date(inputFechaDevolucion.value)
-        const fechaActual = new Date()
+        if (!validarCedula(inputciPrestado.value)) {
+        alert("Error: La cédula debe contener exactamente 8 números.")
+        return
+    }
+if (!validarNombre(inputNombrePrestado.value)) {
+    alert("Error: El nombre solo puede contener letras y tener un mínimo de caracteres.")
+    return
+}
+if (!validarEquipo(inputEquipoElegido.value)) {
+    alert("Error: Debe seleccionar un dispositivo.")
+    return
+}
+if (!validarFecha(inputFechaDevolucion.value)) {
+    alert("Error: La fecha de devolución debe ser posterior a la fecha actual.")
+    return
+}
 
-        if (fechaSeleccionada <= fechaActual) {
-            alert("Error: La fecha de devolución debe ser posterior a la fecha y hora actual.")
-            return
-        }
 
         const contadorID = () => {
             let prestamos = cargarPrestamos()
@@ -304,7 +343,7 @@ if (formulario) {
             entregaAtrasada: false
         }
 
-        if (usuarioValido(prestamo.ciPrestado)) {
+        if (validarCedula(prestamo.ciPrestado)) {
             guardarPrestamo(prestamo)
             registrarHistorial("prestamo", ciPrestador, prestamo.ciPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
 

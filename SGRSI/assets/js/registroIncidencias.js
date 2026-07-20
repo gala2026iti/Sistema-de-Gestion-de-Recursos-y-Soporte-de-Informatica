@@ -235,22 +235,56 @@ btnAceptar.addEventListener("click", () => {
 
     const gravedadRadio = campoIncidencia.querySelector('input[name="gravedad"]:checked')
 
-    if (tipo === "" || asunto === "" || persona === "" || descripcion === "" || !gravedadRadio) {
-        alert("Error: Complete todos los campos del formulario de incidencias")
-
-    } else {
-
-        incidenciasTemporales[pcActualId] = {
-            tipo: tipo,
-            asunto: asunto,
-            persona: persona,
-            gravedad: gravedadRadio.value,
-            descripcion: descripcion
-        }
-
-        cerrarFormularioModal()
-    }
+    if (!validarIncidencia(tipo, asunto, persona, descripcion, gravedadRadio)) {
+    return
+    }   
 })
+
+const validarTexto = (texto) => {
+    // Permite letras, números, espacios y algunos signos comunes
+    const expresion = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s.,()-]+$/
+return expresion.test(texto)
+}
+const validarPersona = (nombre) => {
+    // La persona debería ser un nombre, no números ni símbolos
+    const expresion = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/
+
+    return expresion.test(nombre)
+}
+const validarLongitud = (texto, minimo, maximo) => {
+    return texto.length >= minimo && texto.length <= maximo
+}
+const validarIncidencia = (tipo, asunto, persona, descripcion, gravedad) => {
+    if (tipo === "") {
+        alert("Debe seleccionar un tipo de incidencia")
+        return false
+    }
+    if (!validarLongitud(asunto, 5, 50)) {
+        alert("El asunto debe tener entre 5 y 50 caracteres")
+        return false
+    }
+    if (!validarTexto(asunto)) {
+        alert("El asunto contiene caracteres no permitidos")
+        return false
+    }
+    if (!validarPersona(persona)) {
+        alert("El nombre de la persona solo puede contener letras")
+        return false
+    }
+    if (!validarLongitud(descripcion, 10, 300)) {
+        alert("La descripción debe tener entre 10 y 300 caracteres")
+        return false
+    }
+    if (!validarTexto(descripcion)) {
+        alert("La descripción contiene caracteres no permitidos")
+        return false
+    }
+    if (!gravedad) {
+        alert("Debe seleccionar una gravedad")
+        return false
+    }
+    return true
+}
 
 btnCancelar.addEventListener("click", () => {
     if (pcActualId && incidenciasTemporales[pcActualId] === undefined) { //Verifica si el pc tiene incidencias registradas
