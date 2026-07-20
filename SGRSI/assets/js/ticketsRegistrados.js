@@ -13,6 +13,18 @@ const obtenerUsuarioLogueado = () => {
     return JSON.parse(usuarioSesion)
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const buscarNombre = (cedulaUsuario) => {
     let usuarios = localStorage.getItem("usuarios")
     if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
@@ -35,8 +47,8 @@ const registrarHistorial = (asunto, detalle, idEquipo) => {
 
     historial.push({
         id: historial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        hora: new Date().toLocaleTimeString('es-ES'),
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
         asuntoTicket: asunto,
         detalleTicket: detalle,
         equipoInvolucrado: idEquipo

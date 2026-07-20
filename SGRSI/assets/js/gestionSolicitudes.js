@@ -12,6 +12,18 @@ const obtenerSolicitudes = () => {
     return JSON.parse(solicitudesLocales)
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const guardarSolicitudes = (solicitudes) => {
     localStorage.setItem("solicitudes", JSON.stringify(solicitudes))
     actualizarTabla()
@@ -37,8 +49,8 @@ const registrarHistorial = (ciUsuario, modificacion, idSolicitud, asunto) => {
         asunto: asunto,
         modificacion: modificacion,
         usuario: ciUsuario,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        hora: new Date().toLocaleTimeString('es-ES')
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora")
     })
     localStorage.setItem("registroSolicitudes", JSON.stringify(historial))
 }

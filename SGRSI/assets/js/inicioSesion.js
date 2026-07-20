@@ -18,6 +18,16 @@ const usuarioExistente = (cedula) => {
     return obtenerUsuario(cedula) !== undefined
 }
 
+const hayAdmins = () => {
+    const usuariosLocales = localStorage.getItem("usuarios")
+    const usuarios = JSON.parse(usuariosLocales) || []
+    
+
+    const hayAdmins = usuarios.some(u => u.rol === "administrador" && u.activo)
+    return hayAdmins
+
+}
+
 // EVENTOS
 form.addEventListener("submit", function (e) {
     e.preventDefault()
@@ -32,7 +42,7 @@ form.addEventListener("submit", function (e) {
     }
 
     // Debug de administrador
-    if (inputCedula === "12345678" && inputClave === "adminITI") {
+    if (inputCedula === "12345678" && inputClave === "adminITI" && !hayAdmins()) {
         usuarioLocal.rol = "administrador"
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
         window.location.href = "homeAdmin.html"

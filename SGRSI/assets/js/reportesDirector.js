@@ -23,7 +23,7 @@ const renderizarTablero = () => {
     todosLosTickets.forEach(ticket => {
         const estado = ticket.estado.toLowerCase() //Prevencion en caso de que el texto presente mayusculas
 
-        if (ticket.resuelto) {
+        if (ticket.estado === "resuelto") {
             ticketsCerrados.push(ticket)
         } else {
             const fila = document.createElement("tr")

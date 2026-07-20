@@ -57,8 +57,8 @@ const registrarHistorial = (modificacion, ciPrestador, ciPrestado, nombrePrestad
         nombrePrestado: nombrePrestado,
         modificacion: modificacion,
         idEquipo: idEquipo,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        hora: new Date().toLocaleTimeString('es-ES')
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora")
     }
 
     lista.push(nuevaAccion)
@@ -92,7 +92,7 @@ const modificarPrestamoEquipo = (idEq, booleano) => {
 
 }
 const usuarioValido = (cedula) => {
-    return (cedula.trim() >= 10000000 && cedula.trim() <= 99999999)
+    const cedulaValida = (cedula.trim() >= 10000000 && cedula.trim() <= 99999999) 
 }
 
 const equipoPrestable = (idEquipo) => {
@@ -144,6 +144,29 @@ const opcionesDispositivos = () => {
     })
 }
 
+const formatear = (tipo, valor) => {
+    if(tipo === "hora"){
+        const partes = valor.split(":")
+        return `${partes[0]}:${partes[1]}`
+    } else if (tipo === "fechaHora"){
+        const partes = valor.split("T")
+        const fecha = partes[0].split("-")
+        partes[0] = `${fecha[2]}/${fecha[1]}/${fecha[0]}`
+        return partes
+    }
+} 
+
+        const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
 
 const actualizarTabla = () => {
     cuerpoTabla.innerHTML = ""
@@ -169,10 +192,10 @@ const actualizarTabla = () => {
             tdEquipo.innerText = p.idEquipo
             ""
             const tdFechaI = document.createElement("td")
-            tdFechaI.innerText = new Date(p.fechaInicio).toLocaleDateString('es-ES')
+            tdFechaI.innerText = p.fechaInicio + ", " + p.horaInicio
 
             const tdFechaD = document.createElement("td")
-            tdFechaD.innerText = new Date(p.fechaDevolucion).toLocaleDateString('es-ES')
+            tdFechaD.innerText = p.fechaDevolucion + ", " + p.horaDevolucion
 
             const tdEstado = document.createElement("td")
             tdEstado.innerText = p.devuelto ? "Devuelto" : "Activo"
@@ -183,7 +206,7 @@ const actualizarTabla = () => {
                 btnDevolver.className = "btn btn-success btn-sm"
                 btnDevolver.innerText = "Devolver"
                 btnDevolver.addEventListener("click", () => {
-                    if (!confirm("¿Estas seguro de que deseas finalizar este préstamo?\nEsta opción no se puede deshacer"))
+                    if (!confirm("¿Estas seguro de que querés finalizar este préstamo?\nEsta opción no se puede deshacer"))
                         p.devuelto = true
 
                     const todos = cargarPrestamos()
@@ -262,6 +285,9 @@ if (formulario) {
             return contador
         }
 
+
+        const fechayHoraFormateadas = formatear("fechaHora", inputFechaDevolucion.value)
+
         const ciPrestador = obtenerCedulaLocal() || "N/A"
 
         const prestamo = {
@@ -270,8 +296,10 @@ if (formulario) {
             nombrePrestado: inputNombrePrestado.value.trim(),
             idEquipo: inputEquipoElegido.value,
             ciPrestador: ciPrestador,
-            fechaInicio: new Date().toISOString(),
-            fechaDevolucion: inputFechaDevolucion.value,
+            fechaInicio: obtenerFecha("fecha"),
+            horaInicio: obtenerFecha("hora"),
+            fechaDevolucion: fechayHoraFormateadas[0],
+            horaDevolucion: fechayHoraFormateadas[1],
             devuelto: false,
             entregaAtrasada: false
         }

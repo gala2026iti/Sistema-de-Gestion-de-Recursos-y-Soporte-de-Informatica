@@ -19,17 +19,17 @@ let incidenciasTemporales = {}
 let pcActualId = null
 
 // FUNCIONES
-const obtenerSalones = () => {
+const cargarSalones = () => {
     const datos = localStorage.getItem("salones")
     if (datos === null || datos === undefined || datos === "") return []
     return JSON.parse(datos)
 }
 
-const cargarSalones = () => {
+const cargarOpciones = () => {
     grupoLaboratorios.innerHTML = ""
     grupoTalleres.innerHTML = ""
 
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
 
     salones.forEach(salon => {
         const opcion = document.createElement("option")
@@ -57,7 +57,7 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
     const tipoSalon = partes[0]
     const idSalon = partes[1]
 
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
 
     const salonEncontrado = salones.find(s => String(s.id) === String(idSalon) && String(s.tipo) === String(tipoSalon)) //Para ver si es el salon correcto, deben coincidir el tipo y el id
 
@@ -192,28 +192,39 @@ const buscarNombre = (cedulaUsuario) => {
     return usuarioEncontrado ? usuarioEncontrado.nombre : "N/A"
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const cerrarFormularioModal = () => {
     campoIncidencia.classList.remove("d-flex")
     campoIncidencia.classList.add("oculto")
     pcActualId = null
 }
 
-const registrarHistorial = (asunto, detalle, idEquipo) => {
+const registrarHistorial = (asunto, detalle, idEquipo, idTicket) => {
     const datos = localStorage.getItem("registroTickets")
     let historial = datos ? JSON.parse(datos) : []
 
     historial.push({
         id: historial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        hora: new Date().toLocaleTimeString('es-ES'),
-        asuntoTicket: asunto,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
         detalleTicket: detalle,
-        equipoInvolucrado: idEquipo
+        idTicket: idTicket
     })
     localStorage.setItem("registroTickets", JSON.stringify(historial))
 }
 
-cargarSalones()
+cargarOpciones()
 
 // EVENTOS
 btnAceptar.addEventListener("click", () => {
@@ -263,7 +274,7 @@ formularioSalon.addEventListener("submit", (e) => {
         const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
         if (confirmacion) {
 
-            const llavesIncidencias = Object.keys(incidenciasTemporales) //Obtiene el array dentro del objeto {[]} --> []
+            const llavesIncidencias = Object.keys(incidenciasTemporales) 
 
             if (llavesIncidencias.length > 0) {
                 const datosTickets = localStorage.getItem("tickets")
@@ -276,8 +287,12 @@ formularioSalon.addEventListener("submit", (e) => {
                 let docenteId = "N/A"
                 if (usuarioSesion) {
                     const uObj = JSON.parse(usuarioSesion)
-                    docenteId = uObj.usuario || docenteId
+                    docenteId = uObj.usuario
                 }
+
+const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
                 const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
 
@@ -288,7 +303,8 @@ formularioSalon.addEventListener("submit", (e) => {
                     const nuevoTicket = {
                         id: contadorID,
                         docente: docenteId,
-                        fechaCreacion: new Date().toLocaleDateString('es-ES'),
+                        fechaCreacion: formatoFecha,
+                        horaCreacion: formatoHora,
                         salon: textoSalon,
                         equipoId: pcId,
                         tipo: info.tipo,
@@ -299,15 +315,15 @@ formularioSalon.addEventListener("submit", (e) => {
                         estado: "pendiente",
                         colaboradores: [],
                         comentarios: [],
-                        justificacion: "",
+                        justificacion: undefined
                     }
 
                     listaTickets.push(nuevoTicket)
 
                     const asuntoHistorial = info.asunto
-                    const detalleHistorial = `El docente ${docenteId} (${buscarNombre(idUsuarioActual)}) registró una incidencia sobre la PC: ${pcId} del ${textoSalon}`
+                    const detalleHistorial = `El docente ${nuevoTicket.docente} (${buscarNombre(nuevoTicket.docente)}) registró una incidencia sobre la PC: ${pcId} del ${textoSalon}`
 
-                    registrarHistorial(asuntoHistorial, detalleHistorial, pcId)
+                    registrarHistorial(asuntoHistorial, detalleHistorial, pcId, nuevoTicket.id)
                 })
 
                 localStorage.setItem("tickets", JSON.stringify(listaTickets))

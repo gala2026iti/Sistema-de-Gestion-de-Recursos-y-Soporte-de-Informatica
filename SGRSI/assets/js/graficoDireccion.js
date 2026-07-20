@@ -11,7 +11,7 @@ const filtroIntervencion = document.getElementById("filtroIntervencion")
 const cuerpoTabla = document.querySelector("#tablaEquipos tbody") //El # es para buscar por ID, para posteriormente agarrar su tbody hijo
 
 // FUNCIONES
-const obtenerSalones = () => {
+const cargarSalones = () => {
     const salones = localStorage.getItem("salones")
     if (salones === null || salones === undefined || salones === "") {
         return null
@@ -42,7 +42,7 @@ const calcularIncidencias = (idEquipo) => {
 }
 
 const encontrarUbicacion = (idEquipo) => {
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
     const buscado = idEquipo
 
     for (let s of salones) {
@@ -53,7 +53,7 @@ const encontrarUbicacion = (idEquipo) => {
                 if (equipo.id === buscado) {
                     if (s.tipo === "laboratorio") return { nombre: "Laboratorio " + s.id, posicion: j + 1, modo: "ubicacionSalon" }
                     if (s.tipo === "talleres") return { nombre: "Taller " + s.id, posicion: j + 1, modo: "ubicacionSalon" }
-                    if (s.tipo === "prestamo") return { nombre: "prestamo", posicion: 0, modo: "prestamo", prestado: item.prestado }
+                    if (s.tipo === "prestamo") return { nombre: "prestamo", posicion: 0, modo: "prestamo", prestado: s.prestado }
                 }
             }
         }
@@ -63,7 +63,7 @@ const encontrarUbicacion = (idEquipo) => {
 
 const poblarFiltroUbicaciones = () => {
 
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
     salones.forEach(s => {
         if (s.tipo === "laboratorio" || s.tipo === "talleres") { //Verifica que el tipo de salon es
             const opcion = document.createElement("option")

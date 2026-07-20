@@ -30,6 +30,18 @@ const cargarUsuarios = () => {
     }
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const usuarioExistente = (cedula) => {
     const usuarios = cargarUsuarios()
     return usuarios.some(usuario => usuario.usuario === cedula) //El comando some se usa para verificar si existe algun elemento en el array que coincida con la busqueda
@@ -50,8 +62,8 @@ const registrarHistorialUsuarios = (ciActor, ciModificado, modificacion) => {
 
     historial.push({
         id: historial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        hora: new Date().toLocaleTimeString('es-ES'),
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
         ciActor: ciActor,
         ciModificado: ciModificado,
         modificacion: modificacion
@@ -179,7 +191,7 @@ const actualizarTabla = () => {
         const accionesFila = document.createElement("td")
         accionesFila.appendChild(btnModificar)
 
-        if (u.usuario !== usuarioLocalJSON.cedula) { //Se asegura que el usuario que se quiere eliminar no sea de mismo usuario activo
+        if (String(u.usuario) !== String(usuarioLocalJSON.usuario)) { //Se asegura que el usuario que se quiere eliminar no sea de mismo usuario activo
             if (u.activo) {
                 const btnDesactivar = document.createElement("button")
                 btnDesactivar.innerText = "Desactivar"
