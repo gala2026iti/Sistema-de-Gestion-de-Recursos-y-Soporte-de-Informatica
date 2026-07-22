@@ -30,8 +30,6 @@ const btnGuardarComentario = document.getElementById("btnGuardarComentario")
 
 const tarjetaEscribirComentario = nuevoComentario ? nuevoComentario.closest(".card") : null
 
-const btnVolver = document.getElementById("btnVolver")
-
 // FUNCIONES
 const obtenerUsuarioFirmado = () => {
     const usuario = localStorage.getItem("usuario")
@@ -50,18 +48,30 @@ const guardarTickets = (lista) => {
     localStorage.setItem("tickets", JSON.stringify(lista))
 }
 
-const registrarEnHistorialGeneral = (asunto, detalle, idEquipo) => {
+const registrarHistorial = (detalle, idTicket) => {
     const datos = localStorage.getItem("registroTickets")
     let historial = datos ? JSON.parse(datos) : []
 
     historial.push({
         id: historial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: asunto,
-        detalleOperador: detalle,
-        equipoInvolucrado: idEquipo
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        detalleTicket: detalle,
+        idTicket: idTicket
     })
     localStorage.setItem("registroTickets", JSON.stringify(historial))
+}
+
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
 }
 
 const mostrarInfoTicket = () => {
@@ -141,7 +151,7 @@ const mostrarInfoTicket = () => {
 
         const spanTiempo = document.createElement("span")
         spanTiempo.className = "text-muted small"
-        spanTiempo.innerText = `el ${com.fecha}`
+        spanTiempo.innerText = `${com.fecha}`
 
         divHeader.appendChild(h3User)
         divHeader.appendChild(spanTiempo)
@@ -183,10 +193,6 @@ const mostrarInfoTicket = () => {
 
 //EVENTOS
 
-btnVolver.addEventListener("click", (e) => { //Si hay una página que puede ser ingresada desde multiples espacios, esta es una muy buena alternativa para volver mas facilmente
-    history.back()
-})
-
 mostrarInfoTicket()
 
 if (btnAutoasignar) {
@@ -213,7 +219,6 @@ if (btnAutoasignar) {
                 return
             }
 
-            //Se limpian los valores nulos del array de colaboradores para evitar errores
             ticket.colaboradores = (ticket.colaboradores || []).filter(col => col !== null && col !== undefined)
 
             const yaEstaAsignado = ticket.colaboradores.some(col => String(col) === String(idUsuarioActual))
@@ -228,7 +233,7 @@ if (btnAutoasignar) {
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} se unió como colaborador.`, ticket.equipoId)
+            registrarHistorial(`${idUsuarioActual} se unió como colaborador.`, ticket.id)
 
             alert("Te has asignado exitosamente al ticket.")
         }
@@ -243,15 +248,28 @@ if (formControlTicket) {
 
         if (ticket) {
             if (ticket.estado.toLowerCase() === "resuelto") return
-            const usuarioLogueado = obtenerUsuarioFirmado()
-            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
 
-            if (selectEstado) ticket.estado = selectEstado.value
-            if (selectGravedad) ticket.gravedad = selectGravedad.value
+        const estadosValidos = ["pendiente", "en proceso"]
+        const gravedadesValidas = ["ligera", "media", "grave"]
+
+    if (!estadosValidos.includes(selectEstado.value)) {
+        alert("Estado inválido.")
+        return
+    }
+
+    if (!gravedadesValidas.includes(selectGravedad.value)) {
+        alert("Gravedad inválida.")
+        return
+    }
+    const usuarioLogueado = obtenerUsuarioFirmado()
+    const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
+
+    ticket.estado = selectEstado.value
+    ticket.gravedad = selectGravedad.value
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.equipoId)
+            registrarHistorial(`${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.id)
             alert("Cambios guardados con éxito.")
         }
     })
@@ -279,9 +297,9 @@ if (btnFinalizarTicket) {
 
             guardarTickets(lista)
             mostrarInfoTicket()
-            registrarEnHistorialGeneral(ticket.asunto, `${idUsuarioActual} finalizó el ticket. Resolución: ${justificacionLimpia}`, ticket.equipoId)
+            registrarHistorial(`${idUsuarioActual} finalizó el ticket. Solución: "${justificacionLimpia}".`, ticket.id)
             alert("Ticket finalizado y cerrado con éxito.")
-        }
+        } 
     })
 }
 

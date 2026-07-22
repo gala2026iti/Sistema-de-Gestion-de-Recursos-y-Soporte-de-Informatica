@@ -26,6 +26,20 @@ const cierreSesion = (mensaje) => {
     window.location.href = rutaSalida
 }
 
+const hayAdmins = () => {
+    const usuariosLocales = localStorage.getItem("usuarios")
+    let usuarios
+    if (usuariosLocales === null || usuariosLocales === "" || usuariosLocales === undefined) {
+        let usuarios = []
+    } else {
+        let usuarios = JSON.parse(usuariosLocales)
+    }
+
+    const hayAdmins = usuarios.some(u => u.rol === "administrador" && u.activo)
+    return hayAdmins
+
+}
+
 const verificarAcceso = () => {
     const usuarioLocal = localStorage.getItem("usuario")
 
@@ -36,8 +50,8 @@ const verificarAcceso = () => {
 
     const usuarioLocalJSON = JSON.parse(usuarioLocal)
     let usuarioReal
-
-    if (usuarioLocalJSON.usuario === "12345678" && usuarioLocalJSON.clave === "adminITI") {
+ 
+    if (usuarioLocalJSON.usuario === "12345678" && usuarioLocalJSON.clave === "adminITI" && !hayAdmins()) {
         usuarioReal = {
             usuario: "12345678",
             clave: "adminITI",

@@ -13,6 +13,18 @@ const obtenerUsuarioLogueado = () => {
     return JSON.parse(usuarioSesion)
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const buscarNombre = (cedulaUsuario) => {
     let usuarios = localStorage.getItem("usuarios")
     if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
@@ -27,6 +39,21 @@ const cargarTicketsSistema = () => {
     if (tickets === null || tickets === undefined || tickets === "") return []
 
     return JSON.parse(tickets)
+}
+
+const registrarHistorial = (asunto, detalle, idEquipo) => {
+    const datos = localStorage.getItem("registroTickets")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        asuntoTicket: asunto,
+        detalleTicket: detalle,
+        equipoInvolucrado: idEquipo
+    })
+    localStorage.setItem("registroTickets", JSON.stringify(historial))
 }
 
 const actualizarTablaTickets = () => {
@@ -119,19 +146,19 @@ const actualizarTablaTickets = () => {
 
                         ticketEncontrado.colaboradores = ticketEncontrado.colaboradores.filter(u => String(u) !== String(idUsuarioActual))
 
-                        detalleHistorial = `${idUsuarioActual} (${buscarNombre(idUsuarioActual)}) se desvinculó del ticket (Estado actual: ${ticketEncontrado.estado.toUpperCase()})`
+                        detalleHistorial = `${idUsuarioActual} (${buscarNombre(idUsuarioActual)}) se desvinculó del ticket\nEstado actual: ${ticketEncontrado.estado.toUpperCase()}`
                         alert("Te desvinculaste de este ticket correctamente.")
 
                     } else {
                         ticketEncontrado.colaboradores.push(idUsuarioActual)
 
 
-                        detalleHistorial = `${idUsuarioActual} (${buscarNombre(idUsuarioActual)}) se asignó al ticket`
+                        detalleHistorial = `${idUsuarioActual} (${buscarNombre(idUsuarioActual)}) se unió como colaborador`
                         alert("Te asignaste al ticket con éxito.")
                     }
 
                     guardarTicketsSistema(ticketsTotales)
-                    registrarEnHistorialSistema(descripcionHistorial, detalleHistorial)
+                    registrarHistorial(descripcionHistorial, detalleHistorial, ticket.idEquipo)
                 }
             }
         })
@@ -160,27 +187,6 @@ const actualizarTablaTickets = () => {
 const guardarTicketsSistema = (listaModificada) => {
     localStorage.setItem("tickets", JSON.stringify(listaModificada))
     actualizarTablaTickets()
-}
-
-const registrarEnHistorialSistema = (descripcion, detalle) => {
-    const datosHistorial = localStorage.getItem("registroTickets")
-    let listaHistorial = []
-
-    if (datosHistorial === null || datosHistorial === undefined || datosHistorial === "") {
-        listaHistorial = []
-    } else {
-        listaHistorial = JSON.parse(datosHistorial)
-    }
-
-    const nuevoRegistro = {
-        id: listaHistorial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'), //Es para que adopte el formato de dd/mm/aaaa
-        descripcionAccion: descripcion,
-        detalleOperador: detalle
-    }
-
-    listaHistorial.push(nuevoRegistro)
-    localStorage.setItem("registroTickets", JSON.stringify(listaHistorial))
 }
 
 const mapearFechaParaOrdenar = (stringFecha) => {

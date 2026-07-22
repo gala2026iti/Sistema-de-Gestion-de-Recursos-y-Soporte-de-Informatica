@@ -35,6 +35,14 @@ const inputPosicionPC = document.getElementById("posicionPC")
 
 const linksFiltroUbicacion = document.querySelectorAll(".filtro-ubicacion-directa")
 
+const obtenerCedulaLocal = () => {
+    const usuario = localStorage.getItem("usuario")
+    if (usuario === null || usuario === undefined || usuario === "") return "N/A"
+    const usuarioLocalJSON = JSON.parse(usuario) 
+    return usuarioLocalJSON.usuario
+
+}
+
 // FUNCIONES
 const cargarSalones = () => {
     const salones = localStorage.getItem("salones")
@@ -45,6 +53,7 @@ const cargarSalones = () => {
 const guardarSalones = (lista) => {
     localStorage.setItem("salones", JSON.stringify(lista))
 }
+
 
 const eliminarSalon = (salon) => {
     const salonesViejos = cargarSalones()
@@ -67,7 +76,6 @@ const recibirIDlibre = (tipoSalon) => {
     })
 
     let idLibre = 1
-    console.log(salonesFiltrados)
     while (salonesFiltrados.some(s => s.id === idLibre)) {
         idLibre++ //Si el id está ocupado, se suma 1 y se vuelve a validar
     }
@@ -84,7 +92,34 @@ const cargarEquipos = () => {
 const guardarEquipos = (lista) => {
     localStorage.setItem("equipos", JSON.stringify(lista))
 }
+const validarDatosEquipo = (codigo, ubicacion, posicion) => {
+    if (codigo === "") {
+        return "El código del equipo es obligatorio."
+    }
+    const formatoID = /^[A-Za-z0-9]+$/
 
+    if (!formatoID.test(codigo)) {
+        return "El código del equipo solo puede contener letras y números."
+    }
+    if (codigo.length < 3 || codigo.length > 15) {
+        return "El código del equipo debe tener entre 3 y 15 caracteres."
+    }
+    if (ubicacion === "") {
+        return "Debe seleccionar una ubicación."
+    }
+    if (
+        ubicacion !== "ninguna" &&
+        ubicacion !== "prestamo"
+    ) {
+        if (isNaN(posicion)) {
+            return "Debe ingresar una posición válida."
+        }
+        if (posicion <= 0) {
+            return "La posición debe ser mayor a cero."
+        }
+    }
+    return null
+}
 const cargarTickets = () => {
     const tickets = localStorage.getItem("tickets")
     if (tickets === null || tickets === undefined || tickets === "") return []
@@ -100,6 +135,48 @@ const totalFallasEquipo = (idEquipo) => {
         const ticketLimpio = idTicket.trim().toLowerCase()
         return ticketLimpio === idLimpio
     }).length
+}
+
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
+const registrarHistorialEquipos = (idEquipo, detalle) => {
+    const datos = localStorage.getItem("registroEquipos")
+    let historial = datos ? JSON.parse(datos) : []
+
+ 
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        detalleEquipo: detalle,
+        idEquipo: idEquipo
+    })
+    localStorage.setItem("registroEquipos", JSON.stringify(historial))
+}
+
+const registrarHistorialSalones = (salon, modificacion) => {
+    const datos = localStorage.getItem("registroSalones")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        modificacion: modificacion,
+        salonAfectado: salon
+    })
+    localStorage.setItem("registroEquipos", JSON.stringify(historial))
 }
 
 const encontrarUbicacion = (idEquipo) => {
@@ -119,7 +196,16 @@ const encontrarUbicacion = (idEquipo) => {
             }
         }
     }
-    return { nombre: "ninguna", posicion: 0, modo: "ninguna" }
+    return { nombre: "Ningun lado", posicion: 0, modo: "ninguna" }
+} 
+
+const buscarNombre = (cedulaUsuario) => {
+    let usuarios = localStorage.getItem("usuarios")
+    if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
+    else usuarios = JSON.parse(usuarios)
+
+    const usuarioEncontrado = usuarios.find(u => u.usuario === cedulaUsuario)
+    return usuarioEncontrado ? usuarioEncontrado.nombre : "N/A"
 }
 
 const transformarFechaAEntero = (fechaTexto) => {
@@ -167,22 +253,6 @@ const abrirModalParaEditar = (eq) => {
     if (modalEquipo) modalEquipo.classList.replace("d-none", "d-flex")
 }
 
-const ordenarSalones = () => {
-    const salones = cargarSalones()
-
-    const salonesLab = salones.filter(s => s.tipo === "laboratorio")
-    const salonesLabOrdenados = salonesLab.sort((a, b) => a.id - b.id)
-
-    const salonesTal = salones.filter(s => s.tipo === "taller")
-    const salonesTalOrdenados = salonesTal.sort((a, b) => a.id - b.id)
-
-    const salonesOrdenados = salonesLabOrdenados.concat(salonesTalOrdenados)
-
-    guardarSalones(salonesOrdenados)
-
-    //Fuente sobre concat: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
-}
-
 const actualizarDatosUbicaciones = () => {
 
     if (listaLaboratorios) listaLaboratorios.innerHTML = "" //Se vacian las listas para poder ingresar los mismos valores pero actualizados y organizados
@@ -211,6 +281,7 @@ const actualizarDatosUbicaciones = () => {
             })
 
 
+
             const btnBorrarSalon = document.createElement("button")
             btnBorrarSalon.innerText = "X"
             btnBorrarSalon.classList = "btn-cerrar-lateral" //Aunque el nombre no es el mas conveniente, funciona como boton de borrar, esta clase se tomo del boton X de ubicaciones
@@ -219,6 +290,8 @@ const actualizarDatosUbicaciones = () => {
             btnBorrarSalon.addEventListener("click", (e) => {
                 if (!confirm("¿Estas seguro de que querés eliminar este salón?\nTodos los equipos dentro del mismo serán desasginados.")) return
                 eliminarSalon(s) //Aunque este metodo solo se usa aca, se mantiene el atajo para mejor orden de código
+                registrarHistorialSalones(`${nombreSalon} ${s.id}`, "eliminacion")
+
 
                 if (filtroUbicacionActual === `${nombreSalon} ${s.id}`) filtroUbicacionActual = "todos"
                 actualizarDatosUbicaciones()
@@ -241,6 +314,22 @@ const actualizarDatosUbicaciones = () => {
     }
 }
 
+const ordenarSalones = () => {
+    const salones = cargarSalones()
+
+    const salonesLab = salones.filter(s => s.tipo === "laboratorio")
+    const salonesLabOrdenados = salonesLab.sort((a, b) => a.id - b.id)
+
+    const salonesTal = salones.filter(s => s.tipo === "taller")
+    const salonesTalOrdenados = salonesTal.sort((a, b) => a.id - b.id)
+
+    const salonesOrdenados = salonesLabOrdenados.concat(salonesTalOrdenados)
+
+    guardarSalones(salonesOrdenados)
+
+    //Fuente sobre concat: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
+}
+
 const desactivarEquipo = (idEquipo) => {
     if (!confirm(`¿Está seguro de desactivar el dispositivo #${idEquipo}?\nEl equipo se desasignará de donde sea que se encuentre.`)) return
 
@@ -251,6 +340,7 @@ const desactivarEquipo = (idEquipo) => {
     })
 
     guardarEquipos(listaEquipos)
+    registrarHistorialEquipos(idEquipo, `El usuario ${obtenerCedulaLocal()} (${buscarNombre(obtenerCedulaLocal())}) desactivo el equipo ${idEquipo}, removiendolo del ${encontrarUbicacion(idEquipo).nombre}.`)
 
     const salones = cargarSalones()
     salones.forEach(s => { //Este forEach se asegura de que en ningun salon quede rastro del equipo a borrar
@@ -277,7 +367,9 @@ const activarEquipo = (idEquipo) => {
     guardarEquipos(listaEquipos)
 
     actualizarTabla()
+    registrarHistorialEquipos(idEquipo, `El usuario ${obtenerCedulaLocal()} (${buscarNombre(obtenerCedulaLocal())}) activo el equipo ${idEquipo}.`)
     alert("Dispositivo activado correctamente.")
+
 }
 
 const agregarSalon = (tipo) => {
@@ -291,6 +383,7 @@ const agregarSalon = (tipo) => {
     }
     salones.push(nuevo)
     guardarSalones(salones)
+    registrarHistorialSalones(`${tipo === "laboratorio" ? "Laboratorrio" : "Taller" } ${nuevo.id}`, "creacion")
     alert(`Se ha creado el ${tipo === "laboratorio" ? "Laboratorio" : "Taller"} #${nuevo.id}`)
     ordenarSalones()
     actualizarDatosUbicaciones()
@@ -433,11 +526,23 @@ const actualizarTabla = () => {
 // EVENTOS
 if (formulario) {
     formulario.addEventListener("submit", (e) => {
+        let salonViejo = null
+
         e.preventDefault()
 
         const codigo = inputIdPC ? inputIdPC.value.trim() : ""
         const lugarVal = selectUbicacion ? selectUbicacion.value : ""
         const posicionVal = inputPosicionPC ? parseInt(inputPosicionPC.value) : ""
+
+        const errorValidacion = validarDatosEquipo(
+        codigo,
+        lugarVal,
+        posicionVal
+    )
+if (errorValidacion !== null) {
+    alert("Error: " + errorValidacion)
+    return
+}
 
         if (codigo === "" || lugarVal === "") {
             alert("Error: Complete todos los campos requeridos del formulario.")
@@ -460,7 +565,6 @@ if (formulario) {
             }
         }
 
-
         if (!modoEdicion) {
             const existe = listaEquipos.some(e => e.id === codigo) //El metodo some busca algun valor en el array que coincida con lo buscado
             if (existe) {
@@ -474,14 +578,17 @@ if (formulario) {
                 id: codigo,
                 activo: true,
                 ultimaIntervencion: new Date().toLocaleDateString('es-ES'),
-                fecha: new Date().toLocaleDateString('es-ES'), //Esta fecha es la fecha de creación, capaz el nombre no es muy explicativo
+                fecha: obtenerFecha("fecha"),
+                hora: obtenerFecha("hora"),
             }
 
             listaEquipos.push(nuevoEq)
         } else {
             const eq = listaEquipos.find(e => e.id === equipoEditando.id)
             if (eq) { //Si el equipo existe, reemplaza su fecha de última intervención
+                salonViejo = encontrarUbicacion(eq.id).nombre
                 eq.ultimaIntervencion = new Date().toLocaleDateString('es-ES')
+
             }
         }
 
@@ -507,6 +614,8 @@ if (formulario) {
             }
             pSalon.espacios.push({ id: codigo, prestado: false })
 
+
+
         } else if (lugarVal !== "ninguna") {
             const partes = lugarVal.split("-")
             const tipoS = partes[0]
@@ -520,7 +629,11 @@ if (formulario) {
         }
 
         guardarSalones(salones)
-
+        if(modoEdicion){
+            if(salonViejo !== encontrarUbicacion(codigo).nombre) registrarHistorialEquipos(codigo, `El usuario ${obtenerCedulaLocal()} (${buscarNombre(obtenerCedulaLocal())}) modificó la ubicación del equipo ${codigo}, el equipo se movió de ${salonViejo} a ${encontrarUbicacion(codigo).nombre}.`)
+        } else {
+            registrarHistorialEquipos(codigo, `El usuario ${obtenerCedulaLocal()} (${buscarNombre(obtenerCedulaLocal())}) registró el equipo ${codigo}, asignado a ${encontrarUbicacion(codigo).nombre}.`)
+        }
         modoEdicion = false
         equipoEditando = null
         formulario.reset()

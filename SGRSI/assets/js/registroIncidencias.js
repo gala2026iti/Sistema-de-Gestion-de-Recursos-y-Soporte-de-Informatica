@@ -19,17 +19,17 @@ let incidenciasTemporales = {}
 let pcActualId = null
 
 // FUNCIONES
-const obtenerSalones = () => {
+const cargarSalones = () => {
     const datos = localStorage.getItem("salones")
     if (datos === null || datos === undefined || datos === "") return []
     return JSON.parse(datos)
 }
 
-const cargarSalones = () => {
+const cargarOpciones = () => {
     grupoLaboratorios.innerHTML = ""
     grupoTalleres.innerHTML = ""
 
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
 
     salones.forEach(salon => {
         const opcion = document.createElement("option")
@@ -57,7 +57,7 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
     const tipoSalon = partes[0]
     const idSalon = partes[1]
 
-    const salones = obtenerSalones()
+    const salones = cargarSalones()
 
     const salonEncontrado = salones.find(s => String(s.id) === String(idSalon) && String(s.tipo) === String(tipoSalon)) //Para ver si es el salon correcto, deben coincidir el tipo y el id
 
@@ -183,32 +183,48 @@ const abrirFormularioModal = (pcId) => {
     campoIncidencia.classList.add("d-flex")
 }
 
+const buscarNombre = (cedulaUsuario) => {
+    let usuarios = localStorage.getItem("usuarios")
+    if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
+    else usuarios = JSON.parse(usuarios)
+
+    const usuarioEncontrado = usuarios.find(u => u.usuario === cedulaUsuario)
+    return usuarioEncontrado ? usuarioEncontrado.nombre : "N/A"
+}
+
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const cerrarFormularioModal = () => {
     campoIncidencia.classList.remove("d-flex")
     campoIncidencia.classList.add("oculto")
     pcActualId = null
 }
 
-const registrarEnHistorialSistema = (descripcion, detalle) => {
-    const datosHistorial = localStorage.getItem("registroTickets")
-    let listaHistorial = []
+const registrarHistorial = (asunto, detalle, idEquipo, idTicket) => {
+    const datos = localStorage.getItem("registroTickets")
+    let historial = datos ? JSON.parse(datos) : []
 
-    if (datosHistorial !== null && datosHistorial !== undefined && datosHistorial !== "") {
-        listaHistorial = JSON.parse(datosHistorial)
-    }
-
-    const nuevoRegistro = {
-        id: listaHistorial.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: descripcion,
-        detalleOperador: detalle
-    }
-
-    listaHistorial.push(nuevoRegistro)
-    localStorage.setItem("registroTickets", JSON.stringify(listaHistorial))
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        detalleTicket: detalle,
+        idTicket: idTicket
+    })
+    localStorage.setItem("registroTickets", JSON.stringify(historial))
 }
 
-cargarSalones()
+cargarOpciones()
 
 // EVENTOS
 btnAceptar.addEventListener("click", () => {
@@ -219,22 +235,56 @@ btnAceptar.addEventListener("click", () => {
 
     const gravedadRadio = campoIncidencia.querySelector('input[name="gravedad"]:checked')
 
-    if (tipo === "" || asunto === "" || persona === "" || descripcion === "" || !gravedadRadio) {
-        alert("Error: Complete todos los campos del formulario de incidencias")
-
-    } else {
-
-        incidenciasTemporales[pcActualId] = {
-            tipo: tipo,
-            asunto: asunto,
-            persona: persona,
-            gravedad: gravedadRadio.value,
-            descripcion: descripcion
-        }
-
-        cerrarFormularioModal()
-    }
+    if (!validarIncidencia(tipo, asunto, persona, descripcion, gravedadRadio)) {
+    return
+    }   
 })
+
+const validarTexto = (texto) => {
+    // Permite letras, números, espacios y algunos signos comunes
+    const expresion = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s.,()-]+$/
+return expresion.test(texto)
+}
+const validarPersona = (nombre) => {
+    // La persona debería ser un nombre, no números ni símbolos
+    const expresion = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/
+
+    return expresion.test(nombre)
+}
+const validarLongitud = (texto, minimo, maximo) => {
+    return texto.length >= minimo && texto.length <= maximo
+}
+const validarIncidencia = (tipo, asunto, persona, descripcion, gravedad) => {
+    if (tipo === "") {
+        alert("Debe seleccionar un tipo de incidencia")
+        return false
+    }
+    if (!validarLongitud(asunto, 5, 50)) {
+        alert("El asunto debe tener entre 5 y 50 caracteres")
+        return false
+    }
+    if (!validarTexto(asunto)) {
+        alert("El asunto contiene caracteres no permitidos")
+        return false
+    }
+    if (!validarPersona(persona)) {
+        alert("El nombre de la persona solo puede contener letras")
+        return false
+    }
+    if (!validarLongitud(descripcion, 10, 300)) {
+        alert("La descripción debe tener entre 10 y 300 caracteres")
+        return false
+    }
+    if (!validarTexto(descripcion)) {
+        alert("La descripción contiene caracteres no permitidos")
+        return false
+    }
+    if (!gravedad) {
+        alert("Debe seleccionar una gravedad")
+        return false
+    }
+    return true
+}
 
 btnCancelar.addEventListener("click", () => {
     if (pcActualId && incidenciasTemporales[pcActualId] === undefined) { //Verifica si el pc tiene incidencias registradas
@@ -258,7 +308,7 @@ formularioSalon.addEventListener("submit", (e) => {
         const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
         if (confirmacion) {
 
-            const llavesIncidencias = Object.keys(incidenciasTemporales) //Obtiene el array dentro del objeto {[]} --> []
+            const llavesIncidencias = Object.keys(incidenciasTemporales) 
 
             if (llavesIncidencias.length > 0) {
                 const datosTickets = localStorage.getItem("tickets")
@@ -271,8 +321,12 @@ formularioSalon.addEventListener("submit", (e) => {
                 let docenteId = "N/A"
                 if (usuarioSesion) {
                     const uObj = JSON.parse(usuarioSesion)
-                    docenteId = uObj.usuario || docenteId
+                    docenteId = uObj.usuario
                 }
+
+const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
                 const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
 
@@ -283,7 +337,8 @@ formularioSalon.addEventListener("submit", (e) => {
                     const nuevoTicket = {
                         id: contadorID,
                         docente: docenteId,
-                        fechaCreacion: new Date().toLocaleDateString('es-ES'),
+                        fechaCreacion: formatoFecha,
+                        horaCreacion: formatoHora,
                         salon: textoSalon,
                         equipoId: pcId,
                         tipo: info.tipo,
@@ -294,15 +349,15 @@ formularioSalon.addEventListener("submit", (e) => {
                         estado: "pendiente",
                         colaboradores: [],
                         comentarios: [],
-                        justificacion: "",
+                        justificacion: undefined
                     }
 
                     listaTickets.push(nuevoTicket)
 
-                    const descripcionHistorial = info.asunto
-                    const detalleHistorial = `El docente ${docenteId} registro una incidencia sobre la PC: ${pcId} del ${textoSalon}`
+                    const asuntoHistorial = info.asunto
+                    const detalleHistorial = `El docente ${nuevoTicket.docente} (${buscarNombre(nuevoTicket.docente)}) registró una incidencia sobre la PC: ${pcId} del ${textoSalon}`
 
-                    registrarEnHistorialSistema(descripcionHistorial, detalleHistorial)
+                    registrarHistorial(asuntoHistorial, detalleHistorial, pcId, nuevoTicket.id)
                 })
 
                 localStorage.setItem("tickets", JSON.stringify(listaTickets))

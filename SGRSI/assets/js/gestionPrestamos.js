@@ -7,8 +7,9 @@ const cuerpoTabla = document.querySelector("#tablaPrestamos tbody")
 
 const obtenerCedulaLocal = () => {
     const usuario = localStorage.getItem("usuario")
-    if (usuario === null || usuario === undefined || usuario === "") return "Desconocido"
-    return usuario.usuario
+    if (usuario === null || usuario === undefined || usuario === "") return "N/A"
+    const usuarioLocalJSON = JSON.parse(usuario) 
+    return usuarioLocalJSON.usuario
 
 }
 
@@ -45,18 +46,19 @@ const guardarPrestamo = (prestamo) => {
     localStorage.setItem("prestamos", JSON.stringify(lista))
 }
 
-const registrarAccion = (tipoAccion, operador, cedula, nombre, idEquipo) => {
+const registrarHistorial = (modificacion, ciPrestador, ciPrestado, nombrePrestado, idEquipo) => {
     const historial = localStorage.getItem("registroPrestamos")
     const lista = historial ? JSON.parse(historial) : []
 
-    let tipoAccionDetalle = `El operador ${operador} realizó un préstamo al usuario ${nombre} (C.I: ${cedula}) del equipo con ID: ${idEquipo}`
-    if (tipoAccion === "devolucion") tipoAccionDetalle = `El operador ${operador} finalizo el préstamo del usuario ${nombre} (C.I: ${cedula}) al equipo con ID: ${idEquipo}`
-
     const nuevaAccion = {
         id: lista.length + 1,
-        fecha: new Date().toLocaleDateString('es-ES'),
-        descripcionAccion: `Registro de ${tipoAccion}`,
-        detalleOperador: tipoAccionDetalle
+        ciPrestador: ciPrestador,
+        ciPrestado: ciPrestado,
+        nombrePrestado: nombrePrestado,
+        modificacion: modificacion,
+        idEquipo: idEquipo,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora")
     }
 
     lista.push(nuevaAccion)
@@ -90,7 +92,7 @@ const modificarPrestamoEquipo = (idEq, booleano) => {
 
 }
 const usuarioValido = (cedula) => {
-    return (cedula.trim() >= 10000000 && cedula.trim() <= 99999999)
+    const cedulaValida = (cedula.trim() >= 10000000 && cedula.trim() <= 99999999) 
 }
 
 const equipoPrestable = (idEquipo) => {
@@ -129,7 +131,8 @@ const opcionesDispositivos = () => {
     seleccionDefault.innerText = "Seleccione un dispositivo"
     opciones.appendChild(seleccionDefault)
 
-    const equipos = cargarEspacios()
+    let equipos = cargarEspacios()
+    if(!equipos) equipos = []
     equipos.forEach(eq => {
         if (equipoPrestable(eq.id)) {
             const idReal = eq.id
@@ -141,6 +144,29 @@ const opcionesDispositivos = () => {
     })
 }
 
+const formatear = (tipo, valor) => {
+    if(tipo === "hora"){
+        const partes = valor.split(":")
+        return `${partes[0]}:${partes[1]}`
+    } else if (tipo === "fechaHora"){
+        const partes = valor.split("T")
+        const fecha = partes[0].split("-")
+        partes[0] = `${fecha[2]}/${fecha[1]}/${fecha[0]}`
+        return partes
+    }
+} 
+
+        const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
 
 const actualizarTabla = () => {
     cuerpoTabla.innerHTML = ""
@@ -153,11 +179,11 @@ const actualizarTabla = () => {
             const tdId = document.createElement("td")
             tdId.innerText = p.id
 
-            const tdPrestador = document.createElement("td")
-            tdPrestador.innerText = p.cedulaPrestador
+            const tdciPrestador = document.createElement("td")
+            tdciPrestador.innerText = p.ciPrestador
 
             const tdCedula = document.createElement("td")
-            tdCedula.innerText = p.cedulaPrestado
+            tdCedula.innerText = p.ciPrestado
 
             const tdNombre = document.createElement("td")
             tdNombre.innerText = p.nombrePrestado
@@ -166,10 +192,10 @@ const actualizarTabla = () => {
             tdEquipo.innerText = p.idEquipo
             ""
             const tdFechaI = document.createElement("td")
-            tdFechaI.innerText = new Date(p.fechaInicio).toLocaleDateString('es-ES')
+            tdFechaI.innerText = p.fechaInicio + ", " + p.horaInicio
 
             const tdFechaD = document.createElement("td")
-            tdFechaD.innerText = new Date(p.fechaDevolucion).toLocaleDateString('es-ES')
+            tdFechaD.innerText = p.fechaDevolucion + ", " + p.horaDevolucion
 
             const tdEstado = document.createElement("td")
             tdEstado.innerText = p.devuelto ? "Devuelto" : "Activo"
@@ -180,19 +206,19 @@ const actualizarTabla = () => {
                 btnDevolver.className = "btn btn-success btn-sm"
                 btnDevolver.innerText = "Devolver"
                 btnDevolver.addEventListener("click", () => {
-                    if (!confirm("¿Estas seguro de que deseas finalizar este préstamo?\nEsta opción no se puede deshacer"))
+                    if (!confirm("¿Estas seguro de que querés finalizar este préstamo?\nEsta opción no se puede deshacer"))
                         p.devuelto = true
 
                     const todos = cargarPrestamos()
                     const index = todos.findIndex(t => t.id === p.id)
-                    const cedulaOperador = obtenerCedulaLocal() || "N/A"
+                    const ciPrestador = obtenerCedulaLocal()
 
 
                     if (index !== -1) {
                         todos[index].devuelto = true
                         localStorage.setItem("prestamos", JSON.stringify(todos))
                         modificarPrestamoEquipo(p.idEquipo, false)
-                        registrarAccion("devolucion", cedulaOperador, p.cedulaPrestado, p.nombrePrestado, p.idEquipo)
+                        registrarHistorial("devolucion", ciPrestador, p.ciPrestado, p.nombrePrestado, p.idEquipo)
 
                         actualizarTabla()
                     }
@@ -201,7 +227,7 @@ const actualizarTabla = () => {
             }
 
             tr.appendChild(tdId)
-            tr.appendChild(tdPrestador)
+            tr.appendChild(tdciPrestador)
             tr.appendChild(tdCedula)
             tr.appendChild(tdNombre)
             tr.appendChild(tdEquipo)
@@ -231,22 +257,61 @@ if (btnCancelarPrestamo) {
     })
 }
 
+const validarCedula = (cedula) => {
+    cedula = cedula.trim()
+    const formato = /^[0-9]{8}$/
+
+    if (!formato.test(cedula)) {
+        return false
+    }
+    return true
+}
+const validarNombre = (nombre) => {
+    nombre = nombre.trim()
+
+    const formato = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]{3,}$/
+
+    return formato.test(nombre)
+}
+const validarEquipo = (idEquipo) => {
+    if (idEquipo === "" || idEquipo === null || idEquipo === undefined) {
+        return false
+    }
+
+    return true
+}
+const validarFecha = (fecha) => {
+    const fechaIngresada = new Date(fecha)
+    const fechaActual = new Date()
+
+    return fechaIngresada > fechaActual
+}
 if (formulario) {
     formulario.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const inputCedulaPrestado = document.getElementById("cedulaPrestado")
+        const inputciPrestado = document.getElementById("ciPrestado")
         const inputNombrePrestado = document.getElementById("nombrePrestado")
         const inputEquipoElegido = document.getElementById("listaDispositivos")
         const inputFechaDevolucion = document.getElementById("final")
 
-        const fechaSeleccionada = new Date(inputFechaDevolucion.value)
-        const fechaActual = new Date()
+        if (!validarCedula(inputciPrestado.value)) {
+        alert("Error: La cédula debe contener exactamente 8 números.")
+        return
+    }
+if (!validarNombre(inputNombrePrestado.value)) {
+    alert("Error: El nombre solo puede contener letras y tener un mínimo de caracteres.")
+    return
+}
+if (!validarEquipo(inputEquipoElegido.value)) {
+    alert("Error: Debe seleccionar un dispositivo.")
+    return
+}
+if (!validarFecha(inputFechaDevolucion.value)) {
+    alert("Error: La fecha de devolución debe ser posterior a la fecha actual.")
+    return
+}
 
-        if (fechaSeleccionada <= fechaActual) {
-            alert("Error: La fecha de devolución debe ser posterior a la fecha y hora actual.")
-            return
-        }
 
         const contadorID = () => {
             let prestamos = cargarPrestamos()
@@ -259,23 +324,28 @@ if (formulario) {
             return contador
         }
 
-        const cedulaOperador = obtenerCedulaLocal() || "N/A"
+
+        const fechayHoraFormateadas = formatear("fechaHora", inputFechaDevolucion.value)
+
+        const ciPrestador = obtenerCedulaLocal() || "N/A"
 
         const prestamo = {
             id: contadorID(),
-            cedulaPrestado: inputCedulaPrestado.value.trim(),
+            ciPrestado: inputciPrestado.value.trim(),
             nombrePrestado: inputNombrePrestado.value.trim(),
             idEquipo: inputEquipoElegido.value,
-            cedulaPrestador: cedulaOperador,
-            fechaInicio: new Date().toISOString(),
-            fechaDevolucion: inputFechaDevolucion.value,
+            ciPrestador: ciPrestador,
+            fechaInicio: obtenerFecha("fecha"),
+            horaInicio: obtenerFecha("hora"),
+            fechaDevolucion: fechayHoraFormateadas[0],
+            horaDevolucion: fechayHoraFormateadas[1],
             devuelto: false,
             entregaAtrasada: false
         }
 
-        if (usuarioValido(prestamo.cedulaPrestado)) {
+        if (validarCedula(prestamo.ciPrestado)) {
             guardarPrestamo(prestamo)
-            registrarAccion("prestamo", cedulaOperador, prestamo.cedulaPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
+            registrarHistorial("prestamo", ciPrestador, prestamo.ciPrestado, prestamo.nombrePrestado, prestamo.idEquipo)
 
             alert("Préstamo registrado con éxito.")
             modificarPrestamoEquipo(prestamo.idEquipo, true)

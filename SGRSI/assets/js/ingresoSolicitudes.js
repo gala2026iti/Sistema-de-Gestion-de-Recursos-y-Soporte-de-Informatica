@@ -19,6 +19,33 @@ const guardarSolicitud = (solicitud) => {
     formulario.reset()
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
+const registrarHistorial = (ciUsuario, modificacion, idSolicitud, asunto) => {
+    const datos = localStorage.getItem("registroSolicitudes")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        idSolicitud: idSolicitud,
+        modificacion: modificacion,
+        usuario: ciUsuario,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora")
+    })
+    localStorage.setItem("registroSolicitudes", JSON.stringify(historial))
+}
+
 const fechaValida = (fechaInput) => {
     const fechaSeleccionada = new Date(fechaInput)
     const hoy = new Date()
@@ -35,26 +62,26 @@ formulario.addEventListener("submit", function (e) {
     const entradaFecha = document.getElementById("fecha")
 
     const usuario = localStorage.getItem('usuario')
-    const usuarioJSON = JSON.parse(usuario)
+    const usuarioLocalJSON = JSON.parse(usuario)
 
     const solicitudes = cargarSolicitudes()
     const nuevoId = solicitudes.length + 1
 
-    // Se establecen atributos para la adaptacion de la fecha a guardar
-    const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }
-    const fechaFormateada = new Date(entradaFecha.value).toLocaleDateString('es-ES', opcionesFecha)
 
     const solicitud = {
         id: nuevoId,
         asunto: entradaAsunto.value.trim(),
         descripcion: entradaDescripcion.value.trim(),
-        fecha: fechaFormateada,
-        creador: usuarioJSON.cedula,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        creador: usuarioLocalJSON.usuario,
         finalizada: false
     }
 
     if (fechaValida(entradaFecha.value)) {
         guardarSolicitud(solicitud)
+        registrarHistorial(usuarioLocalJSON.usuario, "creacion", solicitud.id, solicitud.asunto)
+
     } else {
         alert("Error: La fecha y hora deben ser posteriores al momento actual")
     }

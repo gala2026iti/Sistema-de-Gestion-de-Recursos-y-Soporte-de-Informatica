@@ -30,6 +30,18 @@ const cargarUsuarios = () => {
     }
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if (dato === "fecha") {
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
 const usuarioExistente = (cedula) => {
     const usuarios = cargarUsuarios()
     return usuarios.some(usuario => usuario.usuario === cedula) //El comando some se usa para verificar si existe algun elemento en el array que coincida con la busqueda
@@ -42,6 +54,21 @@ const limpiarCampos = () => {
 const actualizarUsuarios = (usuarios) => {
     localStorage.setItem("usuarios", JSON.stringify(usuarios))
     actualizarTabla()
+}
+
+const registrarHistorialUsuarios = (ciActor, ciModificado, modificacion) => {
+    const datos = localStorage.getItem("registroUsuarios")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        ciActor: ciActor,
+        ciModificado: ciModificado,
+        modificacion: modificacion
+    })
+    localStorage.setItem("registroUsuarios", JSON.stringify(historial))
 }
 
 const modificarUsuario = (usuarioModificado) => {
@@ -66,6 +93,33 @@ const modificarUsuario = (usuarioModificado) => {
 }
 
 const verificarRol = (rol) => rol === "tecnico" || rol === "administrador" || rol === "docente" || rol === "direccion"
+
+const validarFormulario = (usuario) => {
+    if (!/^\d{8}$/.test(usuario.usuario)) {
+     alert("La cédula debe contener exactamente 8 números.")
+     return false }
+
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,30}$/.test(usuario.nombre)) {
+        alert("El nombre solo puede contener letras y espacios.")
+        return false }
+
+    if (usuario.correo.length > 50) {
+        alert("El correo supera el máximo de caracteres.")
+        return false }
+
+    if (!/^[^\s@]+@[^\s@]+\.com$/.test(usuario.correo)) {
+        alert("Ingrese un correo válido terminado en .com")
+        return false   }
+
+    if (usuario.clave.length < 8) {
+        alert("La contraseña debe tener al menos 8 caracteres.")
+        return false  }
+
+    if (!verificarRol(usuario.rol)) {
+        alert("Rol inválido.")
+        return false }
+return true
+}
 
 const desactivarUsuario = (cedula) => {
     const usuarios = cargarUsuarios()
@@ -95,6 +149,7 @@ const guardarUsuario = (usuario) => {
     actualizarUsuarios(usuarios)
 
     alert("Usuario registrado con exito")
+    registrarHistorialUsuarios(usuarioLocalJSON.usuario, usuario.usuario, "creacion")
     modalUsuario.classList.replace("d-flex", "d-none")
     limpiarCampos()
 }
@@ -163,7 +218,7 @@ const actualizarTabla = () => {
         const accionesFila = document.createElement("td")
         accionesFila.appendChild(btnModificar)
 
-        if (u.usuario !== usuarioLocalJSON.cedula) { //Se asegura que el usuario que se quiere eliminar no sea de mismo usuario activo
+        if (String(u.usuario) !== String(usuarioLocalJSON.usuario)) { //Se asegura que el usuario que se quiere eliminar no sea de mismo usuario activo
             if (u.activo) {
                 const btnDesactivar = document.createElement("button")
                 btnDesactivar.innerText = "Desactivar"
@@ -172,6 +227,7 @@ const actualizarTabla = () => {
                     if (confirm("¿Estás seguro de que deseas desactivar este usuario?")) {
                         if (confirm("ESTE USUARIO DEJARÁ DE SER ACCESIBLE, ¿QUERÉS CONTINUAR?")) {
                             desactivarUsuario(u.usuario)
+                            registrarHistorialUsuarios(usuarioLocalJSON.usuario, u.usuario, "desactivacion")
                         }
                     }
                 })
@@ -183,6 +239,7 @@ const actualizarTabla = () => {
                 btnActivar.addEventListener("click", () => {
                     if (confirm("¿Estás seguro de que querés activar nuevamente este usuario?")) {
                         activarUsuario(u.usuario)
+                        registrarHistorialUsuarios(usuarioLocalJSON.usuario, u.usuario, "activacion")
                     }
                 })
                 accionesFila.appendChild(btnActivar)
@@ -216,8 +273,13 @@ formulario.addEventListener("submit", function (e) {
         activo: true
     }
 
+    if (!validarFormulario(usuario)) {
+    return
+    }
+    
     if (modoEdicion) {
         modificarUsuario(usuario)
+        registrarHistorialUsuarios(usuarioLocalJSON.usuario, usuario.usuario, "modificacion")
     } else {
         if (usuarioExistente(usuario.usuario)) {
             alert("Error: El usuario ya existe")

@@ -30,7 +30,7 @@ const obtenerPrestamista = (idEquipo) => {
     //Un equipo está prestado si figura en la lista y devuelto es false, los String son para evitar errors de tipado
     const prestamoEquipo = prestamos.find(p => String(p.idEquipo) === String(idEquipo) && p.devuelto === false)
     if (prestamoEquipo) {
-        return `${prestamoEquipo.nombrePrestado} (${prestamoEquipo.cedulaPrestado})`
+        return `${prestamoEquipo.nombrePrestado} (${prestamoEquipo.ciPrestado})`
     } else {
         return "No asignado"
     }
@@ -183,6 +183,7 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     const fechaActual = new Date()
     const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
     const ticketsGuardados = localStorage.getItem("tickets")
     const tickets = ticketsGuardados ? JSON.parse(ticketsGuardados) : []
@@ -199,10 +200,12 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
         gravedad: gravedadSeleccionada,
         descripcion: desc,
         fechaCreacion: formatoFecha,
+        horaCreacion: formatoHora,
         estado: "pendiente",
         salon: "prestamos",
         colaboradores: [],
-        comentarios: []
+        comentarios: [],
+        justificacion: undefined
     }
 
     tickets.push(nuevoTicket)
