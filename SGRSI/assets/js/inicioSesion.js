@@ -1,5 +1,8 @@
 // VARIABLES
+let booleanMostrarContra = false
 const form = document.getElementById('formInicio')
+const btnMostrarContra = document.getElementById("btnMostrarContra")
+const inputClave = document.getElementById("clave")
 
 // FUNCIONES
 const cargarUsuarios = () => {
@@ -8,6 +11,17 @@ const cargarUsuarios = () => {
         return []
     }
     return JSON.parse(datos)
+}
+
+const mostrarContra = () => {
+    booleanMostrarContra = !booleanMostrarContra
+    if (booleanMostrarContra) {
+        inputClave.type = "text"
+        btnMostrarContra.innerText = "Ocultar Contraseña"
+    } else {
+        inputClave.type = "password"
+        btnMostrarContra.innerText = "Mostrar Contraseña"
+    }
 }
 
 const obtenerUsuario = (cedula) => {
@@ -93,3 +107,5 @@ form.addEventListener("submit", function (e) {
         }
     }
 })
+
+btnMostrarContra.addEventListener("click", mostrarContra)
