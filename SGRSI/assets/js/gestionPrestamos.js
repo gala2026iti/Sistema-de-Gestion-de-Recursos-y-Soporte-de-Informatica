@@ -13,6 +13,21 @@ const obtenerCedulaLocal = () => {
 
 }
 
+const convertirDate = (fechaString) => {
+
+const partes = fechaString.split(", ")
+const fechaPart = partes[0].trim()
+const horaPart = partes[1].trim()
+
+const [dia, mes, anio] = fechaPart.split("/")
+
+const [hora, minutos] = horaPart.split(":")
+
+const fechaConvertida = new Date(anio, mes - 1, dia, hora, minutos) //Los meses arrancan desde el cero, por eso del -1
+
+return fechaConvertida
+}
+
 const cargarSalones = () => {
     const salones = localStorage.getItem("salones")
     if (salones === null || salones === undefined || salones === "") return []
@@ -79,7 +94,14 @@ const guardarSalonPrestamo = (salon) => {
 
 const modificarPrestamoEquipo = (idEq, booleano) => {
     const salones = cargarSalones()
-    const salonPrestamos = cargarSalones().find(s => s.tipo === "prestamo")
+    let salonPrestamos = cargarSalones().find(s => s.tipo === "prestamo")
+    if(!salonPrestamos){
+        salonPrestamos = {
+            id: 1,
+            tipo: "prestamo",
+            espacios: []
+        }
+    }
     const equiposPrestamo = salonPrestamos.espacios
     const equiposPrestamoModificados = []
     equiposPrestamo.forEach(e => {
@@ -91,6 +113,7 @@ const modificarPrestamoEquipo = (idEq, booleano) => {
     guardarSalonPrestamo(salonPrestamos)
 
 }
+
 const usuarioValido = (cedula) => {
     const cedulaValida = (cedula.trim() >= 10000000 && cedula.trim() <= 99999999) 
 }
@@ -120,6 +143,10 @@ const equipoPrestable = (idEquipo) => {
     }
 
     return true
+}
+
+const capitalizar = (palabra) => {
+  return palabra.charAt(0).toUpperCase() + palabra.slice(1)
 }
 
 const opcionesDispositivos = () => {
@@ -156,7 +183,7 @@ const formatear = (tipo, valor) => {
     }
 } 
 
-        const obtenerFecha = (dato) => {
+const obtenerFecha = (dato) => {
     const fechaActual = new Date()
     const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
     const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
@@ -186,7 +213,7 @@ const actualizarTabla = () => {
             tdCedula.innerText = p.ciPrestado
 
             const tdNombre = document.createElement("td")
-            tdNombre.innerText = p.nombrePrestado
+            tdNombre.innerText = capitalizar(p.nombrePrestado)
 
             const tdEquipo = document.createElement("td")
             tdEquipo.innerText = p.idEquipo
@@ -198,7 +225,10 @@ const actualizarTabla = () => {
             tdFechaD.innerText = p.fechaDevolucion + ", " + p.horaDevolucion
 
             const tdEstado = document.createElement("td")
-            tdEstado.innerText = p.devuelto ? "Devuelto" : "Activo"
+            tdEstado.innerText = p.entregaAtrasada ?  "Atrasado" : "Activo" 
+            if(tdEstado.innerText === "Atrasado") tdEstado.classList = "text-danger fw-bold"
+            else tdEstado.classList = "text-success fw-bold"
+
 
             const tdAcciones = document.createElement("td")
             if (!p.devuelto) {
@@ -266,6 +296,7 @@ const validarCedula = (cedula) => {
     }
     return true
 }
+
 const validarNombre = (nombre) => {
     nombre = nombre.trim()
 
@@ -273,6 +304,7 @@ const validarNombre = (nombre) => {
 
     return formato.test(nombre)
 }
+
 const validarEquipo = (idEquipo) => {
     if (idEquipo === "" || idEquipo === null || idEquipo === undefined) {
         return false
@@ -280,12 +312,34 @@ const validarEquipo = (idEquipo) => {
 
     return true
 }
+
 const validarFecha = (fecha) => {
     const fechaIngresada = new Date(fecha)
     const fechaActual = new Date()
 
     return fechaIngresada > fechaActual
 }
+
+const validarAtrasos = () => { 
+    const prestamos = cargarPrestamos()
+    const ahora = Date.now()
+
+    prestamos.forEach(p => {
+        // 1. Armamos el string uniendo la fecha y hora de devolución con una coma y espacio.
+        // Ejemplo de resultado: "31/12/2026, 13:32"
+        const formatoParaConvertir = `${p.fechaDevolucion}, ${p.horaDevolucion}`
+        
+        // 2. Usamos tu función para obtener el objeto Date y luego lo pasamos a milisegundos
+        const fechaLimite = convertirDate(formatoParaConvertir).getTime()
+        
+        // 3. Evaluamos: si NO está devuelto y la fecha límite es menor a la fecha actual, está atrasado
+        p.entregaAtrasada = !p.devuelto && (fechaLimite < ahora)
+    })
+
+    // 4. Guardamos en el localStorage
+    localStorage.setItem("prestamos", JSON.stringify(prestamos))
+}
+
 if (formulario) {
     formulario.addEventListener("submit", (e) => {
         e.preventDefault()
@@ -357,5 +411,7 @@ if (!validarFecha(inputFechaDevolucion.value)) {
         }
     })
 }
+
+validarAtrasos()
 
 actualizarTabla()

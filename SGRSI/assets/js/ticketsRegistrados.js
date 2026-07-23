@@ -41,6 +41,11 @@ const cargarTicketsSistema = () => {
     return JSON.parse(tickets)
 }
 
+
+const capitalizar = (palabra) => {
+  return palabra.charAt(0).toUpperCase() + palabra.slice(1)
+}
+
 const registrarHistorial = (asunto, detalle, idEquipo) => {
     const datos = localStorage.getItem("registroTickets")
     let historial = datos ? JSON.parse(datos) : []
@@ -100,7 +105,7 @@ const actualizarTablaTickets = () => {
         tdTipo.innerText = ticket.tipo
 
         const tdGravedad = document.createElement("td")
-        tdGravedad.innerText = ticket.gravedad
+        tdGravedad.innerText = capitalizar(ticket.gravedad) || "N/A"
         const gravedadLimpia = ticket.gravedad.toLowerCase()
         if (gravedadLimpia === "ligera") tdGravedad.className = "text-success fw-bold"
         else if (gravedadLimpia === "media") tdGravedad.className = "text-warning fw-bold"
@@ -108,7 +113,13 @@ const actualizarTablaTickets = () => {
 
         const tdEstado = document.createElement("td")
         const spanEstado = document.createElement("span")
-        spanEstado.innerText = ticket.estado
+        spanEstado.innerText = capitalizar(ticket.estado) || "N/A"
+
+        const estadoLimpio = ticket.estado.toLowerCase()
+        if (estadoLimpio === "resuelto") tdEstado.className = "text-success fw-bold"
+        else if (estadoLimpio === "en proceso") tdEstado.className = "text-warning fw-bold"
+        else if (estadoLimpio === "pendiente") tdEstado.className = "text-danger fw-bold"
+
         tdEstado.appendChild(spanEstado)
 
         const tdCreacion = document.createElement("td")

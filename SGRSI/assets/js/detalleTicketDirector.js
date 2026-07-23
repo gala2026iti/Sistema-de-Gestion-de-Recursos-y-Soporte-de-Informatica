@@ -25,6 +25,7 @@ const cargarTicketEspecifico = () => {
     return lista.find(t => String(t.id) === String(idBuscado)) //Por algun motivo, sin los String no funca el filtro y agarra todo
 }
 
+
 const rellenarCampos = () => {
     const ticket = cargarTicketEspecifico()
 
@@ -64,7 +65,7 @@ const rellenarCampos = () => {
     if (infoFecha) infoFecha.innerText = ticket.fechaCreacion || "N/A"
     if (infoSalon) infoSalon.innerText = ticket.salon || "General"
     if (infoPc) infoPc.innerText = ticket.equipoId || "N/A"
-    if (infoGravedad) infoGravedad.innerText = ticket.gravedad || "N/A".toUpperCase()
+    if (infoGravedad) infoGravedad.innerText = ticket.gravedad || "N/A"
     if (infoCategoria) infoCategoria.innerText = ticket.tipo || "N/A"
     if (infoDescripcion) infoDescripcion.innerText = ticket.descripcion || "Descripción no disponible."
     if (infoEncargados) {

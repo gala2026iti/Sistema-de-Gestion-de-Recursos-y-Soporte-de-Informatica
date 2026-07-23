@@ -9,15 +9,9 @@ const obtenerParametroUrl = (nombre) => {
     return urlParams.get(nombre)
 }
 
-const obtenerUsuarioLogueado = () => {
-    const sesion = localStorage.getItem("usuario")
-    if (sesion === null || sesion === undefined || sesion === "") return null
-    return JSON.parse(sesion)
-}
-
 const buscarNombre = (cedula) => {
     let usuarios = localStorage.getItem("usuarios")
-    if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
+    if (!usuarios) usuarios = []
     else usuarios = JSON.parse(usuarios)
 
     const usuarioEncontrado = usuarios.find(u => String(u.usuario) === String(cedula))
@@ -25,61 +19,38 @@ const buscarNombre = (cedula) => {
 }
 
 const mapearFecha = (stringFecha) => {
-    if (stringFecha === null || stringFecha === undefined || stringFecha === "") return 0
+    if (!stringFecha) return 0
     const partes = stringFecha.split("/")
     if (partes.length !== 3) return 0
     return parseInt(partes[2] + partes[1].padStart(2, "0") + partes[0].padStart(2, "0"))
 }
 
-const formatearFecha = (fechaHtml) => {
-    if (!fechaHtml) return ""
-    const partes = fechaHtml.split("-")
+const formatearFecha = (fecha) => {
+    if (!fecha) return "N/A"
+    const partes = fecha.split("-")
     if (partes.length !== 3) return ""
     return `${partes[2]}/${partes[1]}/${partes[0]}`
 }
 
-const cargarTipoRegistros = (tipo) => {
+const cargarRegistrosPorTipo = (tipo) => {
     let clave = ""
     switch (tipo) {
-        case "equipos":
-            clave = "registroEquipos"
-            break
-        case "prestamos":
-            clave = "registroPrestamos"
-            break
-        case "salones":
-            clave = "registroSalones"
-            break
-        case "solicitudes":
-            clave = "registroSolicitudes"
-            break
-        case "tickets":
-            clave = "registroTickets"
-            break
-        case "usuarios":
-            clave = "registroUsuarios"
-            break
+        case "equipos": clave = "registroEquipos"; break
+        case "prestamos": clave = "registroPrestamos"; break
+        case "salones": clave = "registroSalones"; break
+        case "solicitudes": clave = "registroSolicitudes"; break
+        case "tickets": clave = "registroTickets"; break
+        case "usuarios": clave = "registroUsuarios"; break
     }
 
     const datos = localStorage.getItem(clave)
-    if (datos === null || datos === undefined || datos === "") return []
+    if (!datos) return []
     return JSON.parse(datos)
 }
 
-const validarRol = (tipo, usuario) => {
-    if (!usuario) return false
-    const rol = usuario.rol ? usuario.rol.toLowerCase() : ""
+const adaptarVentana = (tipo) => {
+    if (!tituloHistorial || !descripcionHistorial) return
 
-    switch (tipo) {
-        case "prestamos":
-        case "equipos":
-            return rol === "administrador" || rol === "tecnico"
-        default:
-            return rol === "administrador"
-    }
-}
-
-const prepararTitulos = (tipo) => {
     switch (tipo) {
         case "equipos":
             tituloHistorial.innerText = "Historial de Equipos"
@@ -108,201 +79,152 @@ const prepararTitulos = (tipo) => {
     }
 }
 
-const cargarDatos = (tipo, registro) => {
+const obtenerMensajeRegistro = (tipo, registro) => {
     switch (tipo) {
         case "equipos":
-            return registro.detalleEquipo 
-        
+            return registro.detalleEquipo || `N/A`
+
         case "prestamos":
-            switch (registro.modificacion) {
-                case "prestamo":
-                    return `El usuario ${registro.ciPrestador} (${buscarNombre(registro.ciPrestador)}) registró un prestamo del equipo (${registro.idEquipo}) a ${registro.nombrePrestado} (${registro.ciPrestado}).`
-                case "devolucion":
-                    return `El usuario ${registro.ciPrestador} (${buscarNombre(registro.ciPrestador)}) finalizó el prestamo del equipo (${registro.idEquipo}) a ${registro.nombrePrestado} (${registro.ciPrestado}).`
+            if (registro.modificacion === "prestamo") {
+                return `El usuario ${registro.ciPrestador} (${buscarNombre(registro.ciPrestador)}) registró un préstamo del equipo (${registro.idEquipo}) a ${registro.nombrePrestado} (${registro.ciPrestado}).`
+            } else if (registro.modificacion === "devolucion") {
+                return `El usuario ${registro.ciPrestador} (${buscarNombre(registro.ciPrestador)}) finalizó el préstamo del equipo (${registro.idEquipo}) a ${registro.nombrePrestado} (${registro.ciPrestado}).`
             }
-            break
+            return "N/A"
 
         case "salones":
-            return registro.detalleSalon 
+            return registro.detalleSalon || `Modificación en salón ${registro.salonAfectado}`
 
         case "solicitudes":
-            switch (registro.modificacion) {
-                case "creacion":
-                    return `El docente ${registro.usuario} (${buscarNombre(registro.usuario)}) Registró una nueva solicitud.\nID: ${registro.idSolicitud}, Asunto: "${registro.asunto}".`
-                case "finalizacion":
-                    return `El usuario ${registro.usuario} (${buscarNombre(registro.usuario)}) Finalizó una solicitud.\nID: ${registro.idSolicitud}, Asunto: "${registro.asunto}".`
+            if (registro.modificacion === "creacion") {
+                return `El docente ${registro.usuario} (${buscarNombre(registro.usuario)}) registró una nueva solicitud: "${registro.asunto}".`
+            } else if (registro.modificacion === "finalizacion") {
+                return `El usuario ${registro.usuario} (${buscarNombre(registro.usuario)}) finalizó la solicitud: "${registro.asunto}".`
             }
-            break
+            return "N/A"
 
         case "tickets":
+            if (registro.asuntoTicket) return registro.asuntoTicket
             let tickets = localStorage.getItem("tickets")
-            if (tickets === null || tickets === undefined || tickets === "") tickets = []
-            else tickets = JSON.parse(tickets)
+            tickets = tickets ? JSON.parse(tickets) : []
             const ticketEncontrado = tickets.find(t => String(t.id) === String(registro.idTicket))
-            return ticketEncontrado.asunto || "N/A"
+            return ticketEncontrado ? ticketEncontrado.asunto : "N/A"
 
         case "usuarios":
             switch (registro.modificacion) {
                 case "modificacion":
-                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) Modifico los datos del usuario ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
+                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) modificó los datos del usuario ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
                 case "activacion":
-                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) Activo la cuenta del usuario ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
+                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) activó la cuenta de ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
                 case "desactivacion":
-                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) Desactivo la cuenta del usuario ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
+                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) desactivó la cuenta de ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
                 case "creacion":
-                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) Creó la cuenta del usuario ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
+                    return `El usuario ${registro.ciActor} (${buscarNombre(registro.ciActor)}) creó la cuenta de ${registro.ciModificado} (${buscarNombre(registro.ciModificado)}).`
             }
-            break
+            return "N/A"
     }
 }
 
 const renderizarHistorialDinamico = () => {
+    if (!contenedorHistorial) return
     contenedorHistorial.innerHTML = ""
-    
-    const tipoHistorialUrl = obtenerParametroUrl("tipo")
-    if (!tipoHistorialUrl) return
 
-    const usuarioActual = obtenerUsuarioLogueado()
-    if (!validarRol(tipoHistorialUrl, usuarioActual)) {
-        alert("Error: Rol no correspondiente a la acción deseada. Redireccionando.")
+    let tipoHistorialUrl = obtenerParametroUrl("tipo")
+    const equipoIdFiltroUrl = obtenerParametroUrl("equipoId")
+
+    if (equipoIdFiltroUrl) {
+        tipoHistorialUrl = "tickets"
+    } else if (!tipoHistorialUrl) {
+        alert("Error: parámetros en URL faltantes, regresando...")
         history.back()
-        return
     }
 
-    prepararTitulos(tipoHistorialUrl)
+    adaptarVentana(tipoHistorialUrl)
 
-    let listaRegistros = cargarTipoRegistros(tipoHistorialUrl)
-
+    let registros = cargarRegistrosPorTipo(tipoHistorialUrl)
     let registrosFiltrados = []
-    
-    switch (tipoHistorialUrl) {
-        case "salones":
-            const registrosEquiposRaiz = cargarTipoRegistros("equipos")
-            registrosEquiposRaiz.forEach(r => {
-                if (r.idEquipo === "todos" || (r.detalleEquipo && (r.detalleEquipo.includes("creó el") || r.detalleEquipo.includes("eliminó el")))) {
-                    let copiaRegistro = JSON.parse(JSON.stringify(r))
-                    copiaRegistro.detalleSalon = r.detalleEquipo
-                    copiaRegistro.salonAfectado = r.idEquipo
-                    registrosFiltrados.push(copiaRegistro)
-                }
-            })
-            listaRegistros.forEach(r => {
-                registrosFiltrados.push(r)
-            })
-            break
-        case "equipos":
-            listaRegistros.forEach(r => {
-                if (!(r.idEquipo === "todos" || (r.detalleEquipo && (r.detalleEquipo.includes("creó el") || r.detalleEquipo.includes("eliminó el"))))) {
-                    registrosFiltrados.push(r)
-                }
-            })
-            break
-        case "tickets":
-            const equipoIdFiltroUrl = obtenerParametroUrl("equipoId")
-            let ticketsBase = localStorage.getItem("tickets")
-            if (ticketsBase === null || ticketsBase === undefined || ticketsBase === "") ticketsBase = []
-            else ticketsBase = JSON.parse(ticketsBase)
-            listaRegistros.forEach(r => {
-                if (equipoIdFiltroUrl) {
-                    const ticketAsociado = ticketsBase.find(t => String(t.id) === String(r.idTicket))
-                    if (ticketAsociado && String(ticketAsociado.equipoInvolucrado).trim() === String(equipoIdFiltroUrl).trim()) {
-                        registrosFiltrados.push(r)
-                    }
-                } else {
-                    registrosFiltrados.push(r)
-                }
-            })
-            break
-        default:
-            listaRegistros.forEach(r => {
-                registrosFiltrados.push(r)
-            })
-            break
-    }
 
-    const fechaSeleccionadaHtml = filtroFechaInput.value
-    if (fechaSeleccionadaHtml) {
-        const fechaFormateadaFiltro = formatearFecha(fechaSeleccionadaHtml)
-        let auxiliarFiltro = []
-        registrosFiltrados.forEach(r => {
-            if (r.fecha === fechaFormateadaFiltro) {
-                auxiliarFiltro.push(r)
+    if (equipoIdFiltroUrl) {
+        registros.forEach(r => {
+            if (String(r.equipoInvolucrado) === String(equipoIdFiltroUrl)) {
+                registrosFiltrados.push(r)
             }
         })
-        registrosFiltrados = auxiliarFiltro
+
+        let registroTickets = localStorage.getItem("registroTickets")
+        let tickets = localStorage.getItem("tickets")
+
+        if (registroTickets && tickets) {
+            registroTickets = JSON.parse(registroTickets)
+            tickets = JSON.parse(tickets)
+
+            registroTickets.forEach(rt => {
+                const tAsociado = tickets.find(t => String(t.id) === String(rt.idTicket))
+                if (tAsociado && (String(tAsociado.equipoId) === String(equipoIdFiltroUrl) || String(tAsociado.equipoInvolucrado) === String(equipoIdFiltroUrl))) {
+                    registrosFiltrados.push(rt)
+                }
+            })
+        }
+    } else {
+        registrosFiltrados = [...registros]
+    }
+
+    if (filtroFechaInput && filtroFechaInput.value) {
+        const fechaFiltro = formatearFecha(filtroFechaInput.value)
+        registrosFiltrados = registrosFiltrados.filter(r => r.fecha === fechaFiltro)
     }
 
     registrosFiltrados.sort((a, b) => {
         const fechaB = mapearFecha(b.fecha)
         const fechaA = mapearFecha(a.fecha)
-        if (fechaB !== fechaA) {
-            return fechaB - fechaA
-        }
-        
-        const horaB = b.hora || "00:00:00"
-        const horaA = a.hora || "00:00:00"
-        return horaB.localeCompare(horaA)
+        if (fechaB !== fechaA) return fechaB - fechaA
+        return (b.hora || "00:00").localeCompare(a.hora || "00:00") //Si la fecha esta igual, se fija que hora es mayor que otra
     })
 
-    let fechaActualGrupo = ""
-    let listaActualUl = null
+    let fechaGrupo = ""
+    let ulActual = null
 
-    registrosFiltrados.forEach(registro => {
-        if (fechaActualGrupo !== registro.fecha) {
-            fechaActualGrupo = registro.fecha
+    registrosFiltrados.forEach(r => {
+        if (fechaGrupo !== r.fecha) {
+            fechaGrupo = r.fecha
 
             const spanFecha = document.createElement("span")
             spanFecha.className = "fw-bold d-block mt-3 text-secondary"
-            spanFecha.innerText = `Intervenciones del ${fechaActualGrupo}`
+            spanFecha.innerText = `Intervenciones del ${fechaGrupo}`
             contenedorHistorial.appendChild(spanFecha)
 
-            listaActualUl = document.createElement("ul")
-            listaActualUl.className = "historial-lista mt-2 mb-3 list-unstyled"
-            contenedorHistorial.appendChild(listaActualUl)
+            ulActual = document.createElement("ul")
+            ulActual.className = "historial-lista mt-2 mb-3 list-unstyled"
+            contenedorHistorial.appendChild(ulActual)
         }
 
         const li = document.createElement("li")
         li.className = "historial-contenido d-flex justify-content-between align-items-center p-3 mb-2 bg-light rounded shadow-sm"
 
-        const columna = document.createElement("div")
-        columna.className = "d-flex flex-column"
+        const colIzquierda = document.createElement("div")
+        colIzquierda.className = "d-flex flex-column"
 
-        const spanDescripcion = document.createElement("span")
-        spanDescripcion.className = "fw-bold text-dark"
-        
-        let textoPrincipal = cargarDatos(tipoHistorialUrl, registro)
-        if (tipoHistorialUrl === "tickets") {
-            let tickets = localStorage.getItem("tickets")
-            if (tickets === null || tickets === undefined || tickets === "") tickets = []
-            else tickets = JSON.parse(tickets)
-            const ticketEncontrado = tickets.find(t => String(t.id) === String(registro.idTicket))
-            if (ticketEncontrado && ticketEncontrado.salonInvolucrado) {
-                let salonLimpio = ticketEncontrado.salonInvolucrado
-                if (salonLimpio.includes(" ")) {
-                    salonLimpio = salonLimpio.replace(" ", "-")
-                }
-                textoPrincipal = `${textoPrincipal} (${salonLimpio})`
-            }
-        }
-        spanDescripcion.innerText = textoPrincipal
+        const spanTexto = document.createElement("span")
+        spanTexto.className = "fw-bold text-dark"
+        spanTexto.innerText = obtenerMensajeRegistro(tipoHistorialUrl, r)
+        colIzquierda.appendChild(spanTexto)
 
-        const detalles = document.createElement("span")
-        detalles.className = "text-muted small"
-        detalles.innerText = registro.detalleTicket || registro.hora || ""
-
-        columna.appendChild(spanDescripcion)
-        if (registro.detalleTicket) {
-            columna.appendChild(detalles)
+        const detalleTexto = r.detalleTicket || r.detalleEquipo
+        if (detalleTexto) {
+            const spanDetalle = document.createElement("span")
+            spanDetalle.className = "text-muted small"
+            spanDetalle.innerText = detalleTexto
+            colIzquierda.appendChild(spanDetalle)
         }
 
-        const spanHoraRegistro = document.createElement("span")
-        spanHoraRegistro.className = "text-muted small"
-        spanHoraRegistro.innerText = registro.hora || ""
+        const spanHora = document.createElement("span")
+        spanHora.className = "text-muted small ms-3 fw-semibold"
+        spanHora.innerText = r.hora || ""
 
-        li.appendChild(columna)
-        li.appendChild(spanHoraRegistro)
+        li.appendChild(colIzquierda)
+        li.appendChild(spanHora)
 
-        listaActualUl.appendChild(li)
+        ulActual.appendChild(li)
     })
 
     if (registrosFiltrados.length === 0) {
@@ -313,10 +235,12 @@ const renderizarHistorialDinamico = () => {
     }
 }
 
-filtroFechaInput.addEventListener("change", renderizarHistorialDinamico)
+if (filtroFechaInput) {
+    filtroFechaInput.addEventListener("change", renderizarHistorialDinamico)
+}
 
-btnVolverHistorial.addEventListener("click", (e) => {
-    history.back()
-})
+if (btnVolverHistorial) {
+    btnVolverHistorial.addEventListener("click", () => history.back())
+}
 
 renderizarHistorialDinamico()

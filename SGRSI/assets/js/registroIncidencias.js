@@ -86,7 +86,7 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
 
         const nombrePC = document.createElement("h4")
         nombrePC.className = "h5 mb-0 fw-bold text-secondary"
-        nombrePC.innerText = `PC: ${pcId}`
+        nombrePC.innerText = `PC: ${indice+1} (ID: ${pcId})`
 
 
         headerDiv.appendChild(nombrePC)
@@ -238,6 +238,16 @@ btnAceptar.addEventListener("click", () => {
     if (!validarIncidencia(tipo, asunto, persona, descripcion, gravedadRadio)) {
     return
     }   
+
+            incidenciasTemporales[pcActualId] = {
+            tipo: tipo,
+            asunto: asunto,
+            persona: persona,
+            gravedad: gravedadRadio.value,
+            descripcion: descripcion
+        }
+
+    cerrarFormularioModal()
 })
 
 const validarTexto = (texto) => {

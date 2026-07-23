@@ -497,7 +497,7 @@ const actualizarTabla = () => {
         btnVerIncidencias.className = "btn btn-danger btn-sm me-1 text-white"
         btnVerIncidencias.innerText = `Ver Incidencias`
         btnVerIncidencias.addEventListener("click", () => {
-            window.location.href = `historialTickets.html?equipoId=${idReal}`
+            window.location.href = `historialGeneral.html?equipoId=${idReal}`
         })
         tdAcciones.appendChild(btnVerIncidencias)
 
