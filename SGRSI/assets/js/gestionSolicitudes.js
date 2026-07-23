@@ -70,6 +70,20 @@ const actualizarTabla = () => {
         }
     }
 
+            if (solicitudesFiltradas.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 9 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Solicitudes."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+
+    } else {
+
     solicitudesFiltradas.forEach(s => {
         const fila = document.createElement("tr")
 
@@ -113,6 +127,7 @@ const actualizarTabla = () => {
         fila.appendChild(accionesFila)
         cuerpoTabla.appendChild(fila)
     })
+}
 }
 
 // EVENTOS

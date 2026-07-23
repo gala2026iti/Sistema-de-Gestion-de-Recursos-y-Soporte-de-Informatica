@@ -19,6 +19,33 @@ const cargarPrestamos = () => {
     return JSON.parse(prestamos)
 }
 
+const obtenerFecha = (dato) => {
+    const fechaActual = new Date()
+    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+
+    if(dato === "fecha"){
+        return formatoFecha
+    } else {
+        return formatoHora
+    }
+}
+
+
+const registrarHistorial = (detalle, idTicket) => {
+    const datos = localStorage.getItem("registroTickets")
+    let historial = datos ? JSON.parse(datos) : []
+
+    historial.push({
+        id: historial.length + 1,
+        fecha: obtenerFecha("fecha"),
+        hora: obtenerFecha("hora"),
+        detalleTicket: detalle,
+        idTicket: idTicket
+    })
+    localStorage.setItem("registroTickets", JSON.stringify(historial))
+}
+
 const cargarEquipos = () => {
     const equipos = localStorage.getItem("equipos")
     if (equipos === null || equipos === "" || equipos === undefined) return []
@@ -55,6 +82,15 @@ const tieneTicketsActivos = (idEquipo) => {
     )
 }
 
+const buscarNombre = (cedulaUsuario) => {
+    let usuarios = localStorage.getItem("usuarios")
+    if (usuarios === null || usuarios === undefined || usuarios === "") usuarios = []
+    else usuarios = JSON.parse(usuarios)
+
+    const usuarioEncontrado = usuarios.find(u => u.usuario === cedulaUsuario)
+    return usuarioEncontrado ? usuarioEncontrado.nombre : "N/A"
+}
+
 const actualizarTabla = () => {
     cuerpoTabla.innerHTML = ""
     if (equipoSeleccionado) equipoSeleccionado.innerHTML = ""
@@ -64,9 +100,22 @@ const actualizarTabla = () => {
     const listaEquipos = salonPrestamo ? salonPrestamo.espacios : []
 
     const todosLosEquipos = cargarEquipos()
-    if (!listaEquipos) return
-    listaEquipos.forEach(eq => {
 
+        if (listaEquipos.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 9 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Equipos de Préstamo."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+
+    } else {
+
+    listaEquipos.forEach(eq => {
         const infoGlobalEquipo = todosLosEquipos.find(e => String(e.id) === String(eq.id))
         const esActivo = infoGlobalEquipo.activo
 
@@ -103,7 +152,7 @@ const actualizarTabla = () => {
         btnVerIncidencias.className = "btn btn-warning btn-sm"
         btnVerIncidencias.innerText = "Ver Incidencias"
         btnVerIncidencias.addEventListener("click", () => {
-            window.location.href = `historialTickets.html?equipoId=${eq.id}`
+            window.location.href = `historialGeneral.html?equipoId=${eq.id}`
         })
         tdAcciones.appendChild(btnVerIncidencias)
 
@@ -130,6 +179,8 @@ const actualizarTabla = () => {
         equipoSeleccionado.appendChild(opt)
     }
 }
+}
+
 
 const abrirModalIncidencia = () => {
     actualizarTabla()
@@ -156,8 +207,6 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     const todosLosEquipos = cargarEquipos()
     const equipoValidar = todosLosEquipos.find(e => String(e.id) === String(idPC))
-
-    //Por si no funcan los filtros para equipos no disponibles, se hace otra verificación
 
     if (equipoValidar && !equipoValidar.activo) {
         alert("Error: El equipo seleccionado se encuentra desactivado.")
@@ -190,7 +239,6 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     let proximoId = (tickets.length || 0) + 1
 
-    //Por motivos de compatibilidad, el ticket es igual al presentado en gestionTickets
     const nuevoTicket = {
         id: proximoId,
         equipoId: idPC,
@@ -210,6 +258,11 @@ formIncidenciaIndividual.addEventListener("submit", (e) => {
 
     tickets.push(nuevoTicket)
     localStorage.setItem("tickets", JSON.stringify(tickets))
+
+    const detalleHistorial = `El asistente ${nuevoTicket.docente} (${buscarNombre(nuevoTicket.docente)}) registró una incidencia sobre la PC: ${nuevoTicket.equipoId}`
+
+    registrarHistorial(detalleHistorial, nuevoTicket.id)
+    
 
     alert(`Ticket #${proximoId} registrado con éxito.`)
     cerrarModalIncidencia()

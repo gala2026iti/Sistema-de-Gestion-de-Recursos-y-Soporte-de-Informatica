@@ -58,6 +58,21 @@ const actualizarPagina = () => {
     }
 
     tablaRankingFallas.innerHTML = ""
+
+        if (listaOrdenadaEquipos.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 3 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Equipos."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        tablaRankingFallas.appendChild(filaSinResultados)
+
+    } else {
+
     listaOrdenadaEquipos.forEach(item => {
         const fila = document.createElement("tr")
 
@@ -79,8 +94,9 @@ const actualizarPagina = () => {
         fila.appendChild(celdaSalon)
         fila.appendChild(celdaBadge)
         tablaRankingFallas.appendChild(fila)
+    
     })
-
+    }
 
     const totalCriticos = tickets.filter(t => {
         const grav = t.gravedad.toLowerCase()

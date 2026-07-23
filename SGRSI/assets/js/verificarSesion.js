@@ -28,16 +28,12 @@ const cierreSesion = (mensaje) => {
 
 const hayAdmins = () => {
     const usuariosLocales = localStorage.getItem("usuarios")
-    let usuarios
-    if (usuariosLocales === null || usuariosLocales === "" || usuariosLocales === undefined) {
-        let usuarios = []
-    } else {
-        let usuarios = JSON.parse(usuariosLocales)
-    }
+    if (!usuariosLocales) return false
 
-    const hayAdmins = usuarios.some(u => u.rol === "administrador" && u.activo)
-    return hayAdmins
+    const usuarios = JSON.parse(usuariosLocales)
+    if (!Array.isArray(usuarios)) return false
 
+    return usuarios.some(u => u.rol === "administrador" && u.activo)
 }
 
 const verificarAcceso = () => {
