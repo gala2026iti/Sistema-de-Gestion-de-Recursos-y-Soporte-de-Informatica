@@ -199,8 +199,22 @@ const actualizarTabla = () => {
     cuerpoTabla.innerHTML = ""
     const lista = cargarPrestamos()
 
-    lista.forEach(p => {
-        if (!p.devuelto) {
+    const listaFiltrados = lista.filter(p => !p.devuelto)
+
+        if (listaFiltrados.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 9 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Préstamos activos."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+    } else {
+
+    listaFiltrados.forEach(p => {
             const tr = document.createElement("tr")
 
             const tdId = document.createElement("td")
@@ -267,9 +281,9 @@ const actualizarTabla = () => {
             tr.appendChild(tdAcciones)
 
             cuerpoTabla.appendChild(tr)
-        }
+        
     })
-
+    }
 }
 
 //EVENTOS

@@ -179,6 +179,20 @@ const actualizarTabla = () => {
         usuariosFiltrados = usuariosFiltrados.filter(u => u.activo === (filtroEstado.value === "activo"))
     }
 
+        if (usuariosFiltrados.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 6 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Usuarios."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+
+    } else {
+
     usuariosFiltrados.forEach(u => {
         const fila = document.createElement("tr")
 
@@ -254,6 +268,7 @@ const actualizarTabla = () => {
         fila.appendChild(accionesFila)
         cuerpoTabla.appendChild(fila)
     })
+}
 }
 
 // EVENTOS

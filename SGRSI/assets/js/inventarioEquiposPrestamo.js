@@ -100,9 +100,22 @@ const actualizarTabla = () => {
     const listaEquipos = salonPrestamo ? salonPrestamo.espacios : []
 
     const todosLosEquipos = cargarEquipos()
-    if (!listaEquipos) return
-    listaEquipos.forEach(eq => {
 
+        if (listaEquipos.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 9 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Equipos de Préstamo."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+
+    } else {
+
+    listaEquipos.forEach(eq => {
         const infoGlobalEquipo = todosLosEquipos.find(e => String(e.id) === String(eq.id))
         const esActivo = infoGlobalEquipo.activo
 
@@ -166,6 +179,8 @@ const actualizarTabla = () => {
         equipoSeleccionado.appendChild(opt)
     }
 }
+}
+
 
 const abrirModalIncidencia = () => {
     actualizarTabla()

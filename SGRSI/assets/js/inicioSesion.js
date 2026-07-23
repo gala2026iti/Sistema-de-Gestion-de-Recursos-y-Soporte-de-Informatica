@@ -31,15 +31,14 @@ const obtenerUsuario = (cedula) => {
 const usuarioExistente = (cedula) => {
     return obtenerUsuario(cedula) !== undefined
 }
-
 const hayAdmins = () => {
     const usuariosLocales = localStorage.getItem("usuarios")
-    const usuarios = JSON.parse(usuariosLocales) || []
-    
+    if (!usuariosLocales) return false
 
-    const hayAdmins = usuarios.some(u => u.rol === "administrador" && u.activo)
-    return hayAdmins
+    const usuarios = JSON.parse(usuariosLocales)
+    if (!Array.isArray(usuarios)) return false
 
+    return usuarios.some(u => u.rol === "administrador" && u.activo)
 }
 
 const validarInicioSesion = (usuario) => {

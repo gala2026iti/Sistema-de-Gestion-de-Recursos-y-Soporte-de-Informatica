@@ -426,6 +426,20 @@ const actualizarTabla = () => {
         })
     }
 
+            if (filtrados.length === 0) {
+        const filaSinResultados = document.createElement("tr")
+        const celdaSinResultados = document.createElement("td")
+
+        celdaSinResultados.colSpan = 9 // colSpan es para que ocupe todas las columnas, porque sino queda solo en la primera y se ve re gagá
+
+        celdaSinResultados.className = "text-center py-4 text-muted bg-light fw-semibold"
+        celdaSinResultados.innerText = "No se encontraron Equipos."
+
+        filaSinResultados.appendChild(celdaSinResultados)
+        cuerpoTabla.appendChild(filaSinResultados)
+
+    } else {
+
     if (filtroIncidencias && filtroIncidencias.value !== "") {
         filtrados.sort((a, b) => {
             const incA = totalFallasEquipo(a.id)
@@ -441,6 +455,7 @@ const actualizarTabla = () => {
             return filtroIntervencion.value === "reciente" ? fB - fA : fA - fB
         })
     }
+
 
     filtrados.forEach(eq => {
         const idReal = eq.id
@@ -521,6 +536,7 @@ const actualizarTabla = () => {
 
         cuerpoTabla.appendChild(tr)
     })
+    }
 }
 
 // EVENTOS
