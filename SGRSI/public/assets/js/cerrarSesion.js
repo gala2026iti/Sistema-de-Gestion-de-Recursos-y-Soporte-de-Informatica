@@ -1,4 +1,7 @@
 //VARIABLES
+
+/* ---Descartado por el momento
+
 const btnSalir = document.getElementById("cerrarSesion")
 
 // EVENTOS
@@ -15,5 +18,4 @@ btnSalir.addEventListener("click", function (e) {
 
     localStorage.setItem("usuario", "")
     window.location.href = rutaSalida
-})
-
+})*/

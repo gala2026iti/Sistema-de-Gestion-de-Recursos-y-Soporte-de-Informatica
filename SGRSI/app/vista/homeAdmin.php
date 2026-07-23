@@ -21,7 +21,7 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                    <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
             
@@ -53,7 +53,7 @@
 
   <main class="container-fluid px-0 py-3">
     <a href="administracion-tecnico/historialGeneral.html?tipo=tickets" class="btn btn-primary ms-3">Historial de tickets</a>
-    <h2 class="centro mt-3 text-primary">Tickets notificados</h2>
+    <h2 class="centro mt-3 text-primary">Tickets Registrados</h2>
     <span class="centro mb-4">A continuación se muestran los tickets</span>
 
     <section class="filtros">

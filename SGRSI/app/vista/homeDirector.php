@@ -19,14 +19,14 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
+            <ul class="nav-opciones-sistema">
+                    <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="direccion/d-estadoEquipos.html">Estado de equipos</a></li>
                 <li class="desplegable"><a href="direccion/d-reportes.html">Reportes y estadisticas</a></li>
                 <li><a href="direccion/d-metricas.html">Metricas del sistema</a></li>
-            </ul>
-            <ul class="nav-opciones-sistema">
-                <li><a id="cerrarSesion">Cerrar Sesion</a></li>
             </ul>
         </section>
     </nav>

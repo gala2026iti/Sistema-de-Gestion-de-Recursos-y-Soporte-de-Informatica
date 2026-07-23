@@ -1,8 +1,25 @@
 // VARIABLES
-let booleanMostrarContra = false
-const form = document.getElementById('formInicio')
-const btnMostrarContra = document.getElementById("btnMostrarContra")
+
+let booleanMostrarClave = false
+const btnMostrarClave = document.getElementById("btnMostrarClave")
 const inputClave = document.getElementById("clave")
+
+const mostrarClave = () => {
+    booleanMostrarClave = !booleanMostrarClave
+    if (booleanMostrarClave) {
+        inputClave.type = "text"
+        btnMostrarClave.innerText = "Ocultar Contraseña"
+    } else {
+        inputClave.type = "password"
+        btnMostrarClave.innerText = "Mostrar Contraseña"
+    }
+}
+
+btnMostrarClave.addEventListener("click", mostrarClave)
+
+/* ---Descartado por el momento
+
+const form = document.getElementById('formInicio')
 
 // FUNCIONES
 const cargarUsuarios = () => {
@@ -11,17 +28,6 @@ const cargarUsuarios = () => {
         return []
     }
     return JSON.parse(datos)
-}
-
-const mostrarContra = () => {
-    booleanMostrarContra = !booleanMostrarContra
-    if (booleanMostrarContra) {
-        inputClave.type = "text"
-        btnMostrarContra.innerText = "Ocultar Contraseña"
-    } else {
-        inputClave.type = "password"
-        btnMostrarContra.innerText = "Mostrar Contraseña"
-    }
 }
 
 const obtenerUsuario = (cedula) => {
@@ -74,7 +80,7 @@ form.addEventListener("submit", function (e) {
     if (inputCedula === "12345678" && inputClave === "adminITI" && !hayAdmins()) {
         usuarioLocal.rol = "administrador"
         localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
-        window.location.href = "homeAdmin.html"
+        window.location.href = "homeAdmin.php"
     } else {
 
         //Logueo normal
@@ -89,11 +95,11 @@ form.addEventListener("submit", function (e) {
                     localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
 
                     if (usuarioLogueado.rol === "administrador" || usuarioLogueado.rol === "tecnico") {
-                        window.location.href = "homeAdmin.html"
+                        window.location.href = "homeAdmin.php"
                     } else if (usuarioLogueado.rol === "docente") {
-                        window.location.href = "homeDocente.html"
+                        window.location.href = "homeDocente.php"
                     } else if (usuarioLogueado.rol === "direccion") {
-                        window.location.href = "homeDirector.html"
+                        window.location.href = "homeDirector.php"
                     }
                 } else {
                     alert("Error: Usuario no disponible")
@@ -107,4 +113,4 @@ form.addEventListener("submit", function (e) {
     }
 })
 
-btnMostrarContra.addEventListener("click", mostrarContra)
+btnMostrarContra.addEventListener("click", mostrarContra)*/

@@ -21,7 +21,7 @@
         
         <section class="Tarjeta-login card p-4 shadow border-0 w-100">
 
-            <form id="formInicio" method="get">
+            <form id="formInicio" action="../../app/controlador/procesarLogin.php" method="post">
                 <fieldset class="border-0 p-0 m-0">
                     <span class="d-block h4 fw-bold mb-4 texto-azul-dark">Inicio de sesión</span>
                     
@@ -33,14 +33,15 @@
                             inputmode="numeric" maxlength="8" required>
                     </div>
                     
-                    <div class="mb-4 text-start">
                         <label for="clave" class="form-label fw-semibold texto-azul-dark">Contraseña</label>
-                        <input type="password" id="clave" name="clave" class="form-control form-control-lg" autocomplete="current-password" required>
-                        <button class="btn btn-outline-secondary" type="button" id="btnMostrarContra">Mostrar Contraseña</button>
-                    </div>
+                        <div class="input-group">
+                            <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese contraseña" required>
+                            <button class="btn btn-outline-secondary" type="button" id="btnMostrarClave">Mostrar Contraseña</button>
+                        </div>
+
                 </fieldset>
 
-                <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-dark fs-5">Iniciar Sesión</button>
+                <button type="submit" class="btn btn-warning w-100 py-2 mt-5 fw-bold text-dark fs-5">Iniciar Sesión</button>
             </form>
         </section>
     </main>

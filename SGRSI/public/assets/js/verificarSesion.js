@@ -1,4 +1,7 @@
 // FUNCIONES
+
+/* ---Descartado por el momento
+
 const obtenerUsuariosLocal = () => {
     const datos = localStorage.getItem('usuarios')
     if (datos === null || datos === undefined || datos === "") {
@@ -85,15 +88,15 @@ const verificarAcceso = () => {
         }
 
         if (usuarioReal.rol === "administrador" || usuarioReal.rol === "tecnico") {
-            window.location.href = `${volverAtras}homeAdmin.html`
+            window.location.href = `${volverAtras}homeAdmin.php`
         } else if (usuarioReal.rol === "docente") {
-            window.location.href = `${volverAtras}homeDocente.html`
+            window.location.href = `${volverAtras}homeDocente.php`
         } else if (usuarioReal.rol === "direccion") {
-            window.location.href = `${volverAtras}homeDirector.html`
+            window.location.href = `${volverAtras}homeDirector.php`
         } else {
             cierreSesion("Error: Rol no reconocido por el sistema")
         }
     }
 }
 
-verificarAcceso()
+verificarAcceso()*/
