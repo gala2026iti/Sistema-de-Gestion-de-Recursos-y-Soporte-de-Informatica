@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/global.css">
-    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/index.css">
 </head>
 
 <body>
+  
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
+        <img class="imagen img-fluid" src="assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <main class="d-flex flex-column justify-content-center align-items-center my-5 px-3">
@@ -21,7 +22,7 @@
         
         <section class="Tarjeta-login card p-4 shadow border-0 w-100">
 
-            <form id="formInicio" method="get">
+            <form action="procesarLogin.php" method="post">
                 <fieldset class="border-0 p-0 m-0">
                     <span class="d-block h4 fw-bold mb-4 texto-azul-dark">Inicio de sesión</span>
                     
@@ -52,7 +53,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-    <script src="../assets/js/inicioSesion.js"></script>
 </body>
 
 </html>

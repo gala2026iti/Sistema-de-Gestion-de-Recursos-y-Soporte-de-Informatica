@@ -152,7 +152,7 @@ const actualizarTabla = () => {
         btnVerIncidencias.className = "btn btn-warning btn-sm"
         btnVerIncidencias.innerText = "Ver Incidencias"
         btnVerIncidencias.addEventListener("click", () => {
-            window.location.href = `historialGeneral.html?equipoId=${eq.id}`
+            window.location.href = `historialGeneral.php?equipoId=${eq.id}`
         })
         tdAcciones.appendChild(btnVerIncidencias)
 

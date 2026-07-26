@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Dirección - SGRSI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/global.css">
 </head>
 
 <body data-rol-permitido="direccion">
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
+        <img class="imagen img-fluid" src="assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <nav class="navbarSGRSI">
@@ -21,12 +21,12 @@
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
             </section>
             <ul class="nav-menu">
-                <li class="desplegable"><a href="direccion/d-estadoEquipos.html">Estado de equipos</a></li>
-                <li class="desplegable"><a href="direccion/d-reportes.html">Reportes y estadisticas</a></li>
-                <li><a href="direccion/d-metricas.html">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../paginaWeb/direccion/d-estadoEquipos.html">Estado de equipos</a></li>
+                <li class="desplegable"><a href="../paginaWeb/direccion/d-reportes.html">Reportes y estadisticas</a></li>
+                <li><a href="../paginaWeb/direccion/d-metricas.html">Metricas del sistema</a></li>
             </ul>
             <ul class="nav-opciones-sistema">
-                <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+                <li><a href="cerrarSesion.php">Cerrar Sesion</a></li>
             </ul>
         </section>
     </nav>
@@ -90,10 +90,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../assets/js/btnMenuCelular.js"></script>
-    <script src="../assets/js/verificarSesion.js"></script>
-    <script src="../assets/js/cerrarSesion.js"></script>
-    <script src="../assets/js/dashboardDirector.js"></script>
+    <script src="assets/js/btnMenuCelular.js"></script>
+    <script src="assets/js/dashboardDirector.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

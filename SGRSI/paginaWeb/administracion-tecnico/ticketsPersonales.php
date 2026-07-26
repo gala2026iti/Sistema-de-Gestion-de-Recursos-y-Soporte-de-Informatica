@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tickets Personales - Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/global.css">
-  <link rel="stylesheet" href="../../assets/css/administracion-tecnico/ticketsPersonales.css">
+  <link rel="stylesheet" href="../../public/assets/css/global.css">
+  <link rel="stylesheet" href="../../public/assets/css/administracion-tecnico/ticketsPersonales.css">
 </head>
 
 <body data-rol-permitido="administrador tecnico">
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+    <img class="imagen img-fluid" src="../../public/assets/img/logo_iti.png" alt="Logo">
   </header>
 
   <nav class="navbarSGRSI">
@@ -21,7 +21,7 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                    <li><a id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../public/cerrarSesion.php">Cerrar Sesion</a></li>
                 </ul>
             </section>
             
@@ -29,17 +29,18 @@
                 <li class="desplegable">
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
-                        <li><a href="../homeAdmin.html">Tickets registrados</a></li>
+                        <li><a href="../../public/homeAdmin.php">Tickets registrados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
+                        <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
                     </ul>
                 </li>
-                <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
+                <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+<?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
@@ -47,6 +48,7 @@
                         <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
+<?php endif; ?>
             </ul>
         </section>
     </nav>
@@ -94,12 +96,10 @@
     <span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span>
   </footer>
 
-  <script src="../../assets/js/btnMenuCelular.js"></script>
-  <script src="../../assets/js/cerrarSesion.js"></script>
+  <script src="../../public/assets/js/btnMenuCelular.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../../assets/js/verificarSesion.js"></script>
-  <script src="../../assets/js/ticketsPersonales.js"></script>
-      <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
+  <script src="../../public/assets/js/ticketsPersonales.js"></script>
+      
 
 </body>
  
