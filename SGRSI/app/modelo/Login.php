@@ -3,7 +3,6 @@
 class Login {
     private ConsultaUsuario $consultaUsuario;
 
-    //Constructor parametrizado
     public function __construct(ConsultaUsuario $consultaUsuario) {
         $this->consultaUsuario = $consultaUsuario;
     }
@@ -15,11 +14,11 @@ class Login {
             return null;
         }
 
-        if (!$usuario->estaActivo()) {
+        if (!($usuario->estaActivo())) {
             return null;
         }
 
-        if ( !password_verify($clave, $usuario->getClaveHash() ) ){
+        if ( !password_verify($clave, $usuario->getClave() ) ){
             return null;
         }
 
