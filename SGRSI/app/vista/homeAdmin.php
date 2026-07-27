@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tickets registrados</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/administracion-tecnico/ticketsRegistrados.css">
+  <link rel="stylesheet" href="../../../../public/assets/css/global.css">
+  <link rel="stylesheet" href="../../public/assets/css/administracion-tecnico/ticketsRegistrados.css">
+
 </head>
 
 <body data-rol-permitido="administrador tecnico">

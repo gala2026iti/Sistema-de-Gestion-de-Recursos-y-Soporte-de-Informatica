@@ -16,16 +16,16 @@
         <img class="imagen img-fluid" src="../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
-  <nav class="navbarSGRSI">
+    <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
-                <button class="btn-cerrar-lateral" id="btnCerrar" >X</button>
+                <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
                     <li><a href="../../public/cerrarSesion.php">Cerrar Sesion</a></li>
                 </ul>
             </section>
-            
+
             <ul class="nav-menu">
                 <li class="desplegable">
                     <a href="#">Gestión de tickets 🡻 </a>
@@ -42,12 +42,15 @@
                     </ul>
                 </li>
                 <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
+                        
                     </ul>
                 </li>
+                <?php endif; ?>
             </ul>
         </section>
     </nav>
@@ -75,7 +78,8 @@
                 <ul>
                     <li><a href="#" class="filtro-ubicacion-directa" salones-ubicacion="prestamo">Dispositivos para
                             prestar</a></li>
-                    <li><a href="#" class="filtro-ubicacion-directa" salones-ubicacion="todos">Todos los Dispositivos</a>
+                    <li><a href="#" class="filtro-ubicacion-directa" salones-ubicacion="todos">Todos los
+                            Dispositivos</a>
                     </li>
                 </ul>
             </div>
@@ -120,9 +124,11 @@
         </section>
 
         <section class="w-100 d-flex px-3 mt-4">
-            <a href="historialGeneral.php?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial de Equipos</a>
-            <a href="historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial de Salones</a>
-            <button id="btnRegistrarEquipo" class="btn btn-success ms-auto"type="button">Registrar PC</button>
+            <a href="historialGeneral.php?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+                de Equipos</a>
+            <a href="historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+                de Salones</a>
+            <button id="btnRegistrarEquipo" class="btn btn-success ms-auto" type="button">Registrar PC</button>
         </section>
 
         <div id="modalEquipo"
@@ -169,7 +175,7 @@
     <footer><span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span></footer>
     <script src="../../public/assets/js/btnMenuCelular.js"></script>
     <script src="../../public/assets/js/gestionEquipos.js" defer></script>
-        
+
 
 </body>
 

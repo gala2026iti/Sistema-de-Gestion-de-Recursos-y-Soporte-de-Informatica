@@ -41,12 +41,14 @@
                     </ul>
                 </li>
                 <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+               <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
+<?php endif; ?>
             </ul>
         </section>
     </nav>
