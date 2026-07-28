@@ -3,8 +3,8 @@
 /**
  * @brief Gestiona el registro de nuevos usuarios.
  *
- * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
- * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Registra los datos del usuario, su correo y los roles seleccionados
+ * dentro de una transacción.
  */
 class AltaUsuario
 {
@@ -14,7 +14,7 @@ class AltaUsuario
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para registrar usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -23,20 +23,19 @@ class AltaUsuario
         $this->conexion = $conexion;
     }
 
-    /**
+     /**
      * @brief Registra un nuevo usuario y sus roles.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
+     * Utiliza una transacción para registrar el usuario, su correo y sus roles.
      *
      * @param string $cedula Cédula de identidad del usuario.
      * @param string $nombre Nombre del usuario.
      * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
+     * @param string $claveHash Hash de la contraseña.
      * @param array $roles Roles que tendrá el usuario.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarUsuario(
         string $cedula,

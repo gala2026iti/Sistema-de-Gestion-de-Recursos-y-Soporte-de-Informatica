@@ -5,8 +5,7 @@ require_once __DIR__ . "/../Usuario.php";
 /**
  * @brief Gestiona las consultas relacionadas con los usuarios.
  *
- * Consulta la información de los usuarios y determina sus roles
- * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Permite buscar usuarios y obtener listados filtrados por rol y estado.
  */
 class CargarUsuarios
 {
@@ -16,7 +15,7 @@ class CargarUsuarios
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso a datos de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -28,10 +27,7 @@ class CargarUsuarios
     /**
      * @brief Busca un usuario por su cédula.
      *
-     * Obtiene los datos necesarios para la autenticación y determina
-     * los roles administrador, técnico y docente del usuario.
-     *
-     * @param string $cedula Cédula del usuario sin puntos ni guiones.
+     * @param string $cedula Cédula del usuario.
      *
      * @return Usuario|null Usuario encontrado; null si no existe.
      */
@@ -74,16 +70,14 @@ class CargarUsuarios
         );
     }
 
-    /**
-     * @brief Obtiene los usuarios registrados aplicando filtros opcionales.
-     *
-     * Permite filtrar los usuarios por rol y estado.
-     *
-     * @param string $rol Rol por el cual filtrar.
-     * @param string $estado Estado por el cual filtrar.
-     *
-     * @return array Lista de usuarios encontrados.
-     */
+/**
+ * @brief Obtiene los usuarios registrados aplicando filtros opcionales.
+ *
+ * @param string $rol Rol por el cual filtrar.
+ * @param string $estado Estado por el cual filtrar.
+ *
+ * @return array Lista de usuarios encontrados.
+ */
 public function listarUsuarios(string $rol = "", string $estado = ""): array
     {
         $sql ="

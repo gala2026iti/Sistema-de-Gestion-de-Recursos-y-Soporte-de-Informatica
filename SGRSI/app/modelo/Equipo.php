@@ -1,50 +1,50 @@
 <?php
 
 /**
- * @brief Representa un usuario del sistema.
+ * @brief Representa un equipo tecnológico del sistema.
  *
- * Contiene los datos necesarios para identificar al usuario,
- * validar su acceso y determinar los roles que posee.
+ * Almacena su identificador, fecha y hora de creación, última intervención
+ * y estado de actividad.
  */
 class Equipo
 {
     /**
-     * @brief Cédula de identidad del usuario.
+     * @brief Identificador del equipo.
      */
     private string $id;
 
     /**
-     * @brief Hash de la contraseña del usuario.
+     * @brief Fecha de creación del equipo.
      */
     private string $fechaCreacion;
 
     /**
-     * @brief Indica si el usuario está activo en el sistema.
+     * @brief Hora de creación del equipo.
      */
     private string $horaCreacion;
 
     /**
-     * @brief Indica si posee el rol administrador.
+     * @brief Fecha de la última intervención del equipo.
      */
     private string $ultimaIntervencion;
 
 
     /**
-     * @brief Indica si posee el rol administrador.
+     * @brief Estado de actividad del equipo.
      */
     private string $activo;
 
 
     /**
-     * @brief Construye un objeto Usuario.
+     * @brief Construye un objeto Equipo.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $claveHash Hash de la contraseña.
-     * @param bool $sesionActiva Indica si el usuario está activo.
-     * @param bool $administrador Indica si posee el rol administrador.
-     * @param bool $tecnico Indica si posee el rol técnico.
-     * @param bool $docente Indica si posee el rol docente.
+     * @param string $id Identificador del equipo.
+     * @param string $fechaCreacion Fecha de creación del equipo.
+     * @param string $horaCreacion Hora de creación del equipo.
+     * @param string $ultimaIntervencion Fecha de la última intervención.
+     * @param string $activo Estado de actividad del equipo.
      */
+
     public function __construct(
         string $id,
         string $fechaCreacion,
@@ -60,9 +60,9 @@ class Equipo
     }
 
     /**
-     * @brief Obtiene la cédula del usuario.
+     * @brief Obtiene el identificador del equipo.
      *
-     * @return string Cédula del usuario.
+     * @return string Identificador del equipo.
      */
     public function getId(): string
     {
@@ -70,9 +70,9 @@ class Equipo
     }
 
     /**
-     * @brief Obtiene el hash de la contraseña.
+     * @brief Obtiene la fecha de creación del equipo.
      *
-     * @return string Hash de la contraseña.
+     * @return string Fecha de creación.
      */
     public function getFechaCreacion(): string
     {
@@ -80,9 +80,9 @@ class Equipo
     }
 
     /**
-     * @brief Comprueba si el usuario está activo.
+     * @brief Obtiene la hora de creación del equipo.
      *
-     * @return string true si está activo; false en caso contrario.
+     * @return string Hora de creación.
      */
     public function getHoraCreacion(): string
     {
@@ -90,15 +90,21 @@ class Equipo
     }
 
     /**
-     * @brief Comprueba si el usuario está activo.
+     * @brief Obtiene la fecha de la última intervención.
      *
-     * @return string true si está activo; false en caso contrario.
+     * @return string Fecha de la última intervención.
      */
     public function getUltimaIntervencion(): string
     {
         return $this->ultimaIntervencion;
     }
 
+        /**
+     * @brief Comprueba si el equipo está activo.
+     *
+     * @return bool true si está activo;
+     *              false en caso contrario.
+     */
     public function estaActivo(): bool
     {
         return $this->activo;

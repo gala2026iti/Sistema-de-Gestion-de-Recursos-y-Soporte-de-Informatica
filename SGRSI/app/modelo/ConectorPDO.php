@@ -3,21 +3,20 @@
 /**
  * @brief Gestiona la conexión con la base de datos mediante PDO.
  *
- * Esta clase se encarga de establecer y cerrar la conexión
- * con la base de datos MySQL utilizada por el sistema.
+ * Establece y cierra la conexión con la base de datos MySQL del sistema.
  */
 class ConectorPDO
 {
     /**
-     * @brief Nombre o dirección del servidor de la base de datos.
+     * @brief Servidor de la base de datos.
      */
     private string $servername;
     /**
-     * @brief Usuario utilizado para conectarse a la base de datos.
+     * @brief Usuario de la base de datos.
      */
     private string $username;
     /**
-     * @brief Contraseña utilizada para conectarse a la base de datos.
+     * @brief Contraseña del usuario de la base de datos.
      */
     
     private string $password;
@@ -28,17 +27,14 @@ class ConectorPDO
     private string $dbname;
 
     /**
-     * @brief Conexión PDO actualmente establecida.
-     *
-     * Puede ser null cuando todavía no se ha establecido
-     * una conexión o cuando esta fue cerrada.
+     * @brief Conexión con la base de datos.
      */
     private ?PDO $conexion;
 
     /**
      * @brief Construye un objeto ConectorPDO.
      *
-     * @param string $servername Servidor donde se encuentra MySQL.
+     * @param string $servername Servidor donde se encuentra la base de datos.
      * @param string $username Usuario de la base de datos.
      * @param string $password Contraseña del usuario de la base de datos.
      * @param string $dbname Nombre de la base de datos.
@@ -59,9 +55,7 @@ class ConectorPDO
     /**
      * @brief Establece una conexión con la base de datos.
      *
-     * Crea una instancia de PDO utilizando los datos proporcionados
-     * en el constructor y configura PDO para trabajar con excepciones
-     * ante errores de SQL.
+     * Crea una instancia de PDO y configura el manejo de errores mediante excepciones.
      *
      * @return PDO|null Conexión establecida o null si ocurre un error.
      */
@@ -89,9 +83,6 @@ class ConectorPDO
 
     /**
      * @brief Cierra la conexión con la base de datos.
-     *
-     * Libera la referencia al objeto PDO, provocando que la conexión
-     * sea cerrada cuando ya no existan otras referencias a ella.
      */
     public function desconectar(): void
     {

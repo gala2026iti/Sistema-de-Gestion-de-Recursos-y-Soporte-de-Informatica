@@ -1,20 +1,40 @@
 <?php
 
 /**
- * @brief Gestiona la modificación de los datos de los usuarios.
+ * @brief Gestiona la modificación de usuarios.
  *
- * Permite actualizar los datos principales, la contraseña y los
- * roles asociados a un usuario.
+ * Actualiza los datos principales, el correo, la contraseña opcional
+ * y los roles asociados al usuario.
  */
 class ModificarDatosUsuario
 {
+    /**
+     * @brief Conexión con la base de datos.
+     */
     private PDO $conexion;
-
+    /**
+     * @brief Construye el acceso a datos.
+     *
+     * @param PDO $conexion Conexión PDO con la base de datos.
+     */
     public function __construct(PDO $conexion)
     {
         $this->conexion = $conexion;
     }
-
+    /**
+     * @brief Modifica los datos y roles de un usuario.
+     *
+     * Actualiza los datos dentro de una transacción y reemplaza las asociaciones de roles.
+     *
+     * @param string $cedula Cédula del usuario.
+     * @param string $nombre Nuevo nombre del usuario.
+     * @param string $correo Nuevo correo del usuario.
+     * @param array $roles Roles que tendrá el usuario.
+     * @param string|null $claveHash Nuevo hash de contraseña o null para conservar la actual.
+     *
+     * @return bool true si la modificación se realizó correctamente;
+     *              false si ocurrió un error.
+     */
     public function modificarUsuario(
         string $cedula,
         string $nombre,

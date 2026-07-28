@@ -3,8 +3,7 @@
 /**
  * @brief Gestiona el estado de los usuarios.
  *
- * Permite activar o desactivar usuarios mediante el campo
- * activo de la tabla USUARIO.
+ * Permite activar o desactivar usuarios mediante el campo activo.
  */
 class EstadoDatosUsuario
 {
@@ -14,7 +13,7 @@ class EstadoDatosUsuario
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para modificar el estado de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -26,13 +25,10 @@ class EstadoDatosUsuario
     /**
      * @brief Cambia el estado de un usuario.
      *
-     * Actualiza el campo activo de la tabla USUARIO para activar
-     * o desactivar al usuario sin modificar sus roles.
-     *
-     * @param string $cedula Cédula del usuario cuyo estado se modificará.
+     * @param string $cedula Cédula del usuario.
      * @param bool $activo Nuevo estado del usuario.
      *
-     * @return bool true si el usuario fue actualizado correctamente;
+     * @return bool true si el usuario fue actualizado;
      *              false si ocurrió un error.
      */
     public function cambiarEstadoUsuario(string $cedula, bool $activo): bool

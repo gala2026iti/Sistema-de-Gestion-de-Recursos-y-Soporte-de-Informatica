@@ -1,62 +1,63 @@
 <?php
 
 /**
- * @brief Representa un usuario del sistema.
+ * @brief Representa una solicitud del sistema.
  *
- * Contiene los datos necesarios para identificar al usuario,
- * validar su acceso y determinar los roles que posee.
+ * Almacena los datos de la solicitud y la información del docente asociado.
  */
 class Solicitud
 {
     /**
-     * @brief Cédula de identidad del usuario.
+     * @brief Identificador de la solicitud.
      */
     private string $id;
 
     /**
-     * @brief Hash de la contraseña del usuario.
+     * @brief Asunto de la solicitud.
      */
     private string $asunto;
 
     /**
-     * @brief Indica si el usuario está activo en el sistema.
+     * @brief Descripción de la solicitud.
      */
     private string $descripcion;
 
     /**
-     * @brief Indica si posee el rol administrador.
+     * @brief Fecha límite de la solicitud.
      */
     private string $fechaLimite;
 
     /**
-     * @brief Indica si posee el rol técnico.
+     * @brief Hora límite de la solicitud.
      */
     private string $horaLimite;
 
-        /**
-     * @brief Indica si posee el rol técnico.
+    /**
+     * @brief Indica si la solicitud está finalizada.
      */
     private bool $finalizada;
 
     /**
-     * @brief Indica si posee el rol docente.
+     * @brief Cédula del docente asociado a la solicitud.
      */
     private string $ciDocente;
 
-      /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Nombre del docente asociado a la solicitud.
      */
     private string $nombre;
 
     /**
-     * @brief Construye un objeto Usuario.
+     * @brief Construye un objeto Solicitud.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $claveHash Hash de la contraseña.
-     * @param bool $sesionActiva Indica si el usuario está activo.
-     * @param bool $administrador Indica si posee el rol administrador.
-     * @param bool $tecnico Indica si posee el rol técnico.
-     * @param bool $docente Indica si posee el rol docente.
+     * @param string $id Identificador de la solicitud.
+     * @param string $asunto Asunto de la solicitud.
+     * @param string $descripcion Descripción de la solicitud.
+     * @param string $fechaLimite Fecha límite de la solicitud.
+     * @param string $horaLimite Hora límite de la solicitud.
+     * @param bool $finalizada Indica si la solicitud está finalizada.
+     * @param string $ciDocente Cédula del docente asociado.
+     * @param string $nombre Nombre del docente asociado.
      */
     public function __construct(
         string $id,
@@ -79,9 +80,9 @@ class Solicitud
     }
 
     /**
-     * @brief Obtiene la cédula del usuario.
+     * @brief Obtiene el identificador de la solicitud.
      *
-     * @return string Cédula del usuario.
+     * @return string Identificador de la solicitud.
      */
     public function getID(): string
     {
@@ -89,9 +90,9 @@ class Solicitud
     }
 
     /**
-     * @brief Obtiene el hash de la contraseña.
+     * @brief Obtiene el asunto de la solicitud.
      *
-     * @return string Hash de la contraseña.
+     * @return string Asunto de la solicitud.
      */
     public function getAsunto(): string
     {
@@ -109,9 +110,10 @@ class Solicitud
     }
 
     /**
-     * @brief Comprueba si el usuario está activo.
+     * @brief Comprueba si la solicitud está finalizada.
      *
-     * @return bool true si está activo; false en caso contrario.
+     * @return bool true si está finalizada;
+     *              false en caso contrario.
      */
 
     public function estaFinalizada(): bool
@@ -120,9 +122,9 @@ class Solicitud
     }
 
     /**
-     * @brief Comprueba si el usuario tiene una sesión activa.
+     * @brief Obtiene la fecha límite de la solicitud.
      *
-     * @return bool true si está activo; false en caso contrario.
+     * @return string Fecha límite de la solicitud.
      */
     public function getFechaLimite(): string
     {
@@ -140,9 +142,9 @@ class Solicitud
     }
 
     /**
-     * @brief Comprueba si el usuario es administrador.
+     * @brief Obtiene la cédula del docente asociado.
      *
-     * @return bool true si posee el rol administrador.
+     * @return string Cédula del docente.
      */
     public function getCiDocente(): string
     {
@@ -150,9 +152,9 @@ class Solicitud
     }
 
     /**
-     * @brief Comprueba si el usuario es técnico.
+     * @brief Obtiene el nombre del docente asociado.
      *
-     * @return bool true si posee el rol técnico.
+     * @return string Nombre del docente.
      */
     public function getNombre(): string
     {

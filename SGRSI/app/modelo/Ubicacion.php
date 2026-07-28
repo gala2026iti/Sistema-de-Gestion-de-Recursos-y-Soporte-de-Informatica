@@ -1,33 +1,29 @@
 <?php
 
 /**
- * @brief Representa un usuario del sistema.
+ * @brief Representa una ubicación del sistema.
  *
- * Contiene los datos necesarios para identificar al usuario,
- * validar su acceso y determinar los roles que posee.
+ * Almacena el identificador y el tipo de la ubicación.
  */
 class Ubicacion
 {
     /**
-     * @brief Cédula de identidad del usuario.
+     * @brief Identificador de la ubicación.
      */
     private string $id;
 
     /**
-     * @brief Hash de la contraseña del usuario.
+     * @brief Tipo de la ubicación.
      */
     private string $tipo;
 
-    /**
-     * @brief Construye un objeto Usuario.
+      /**
+     * @brief Construye un objeto Ubicacion.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $claveHash Hash de la contraseña.
-     * @param bool $sesionActiva Indica si el usuario está activo.
-     * @param bool $administrador Indica si posee el rol administrador.
-     * @param bool $tecnico Indica si posee el rol técnico.
-     * @param bool $docente Indica si posee el rol docente.
+     * @param string $id Identificador de la ubicación.
+     * @param string $tipo Tipo de ubicación.
      */
+
     public function __construct(
         string $id,
         string $tipo
@@ -37,30 +33,22 @@ class Ubicacion
     }
 
     /**
-     * @brief Obtiene la cédula del usuario.
+     * @brief Obtiene el identificador de la ubicación.
      *
-     * @return string Cédula del usuario.
-        $this->fechaCreacion = $fechaCreacion;
-        $this->horaCreacion = $horaCreacion;
-        $this->ultimaIntervencion = $ultimaIntervencion;
-        $this->activo = $activo;
-    }
-
-    /**
-     * @brief Obtiene la cédula del usuario.
-     *
-     * @return string Cédula del usuario.
+     * @return string Identificador de la ubicación.
      */
+
     public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @brief Obtiene el hash de la contraseña.
+     * @brief Obtiene el tipo de ubicación.
      *
-     * @return string Hash de la contraseña.
+     * @return string Tipo de ubicación.
      */
+    
     public function getTipo(): string
     {
         return $this->tipo;

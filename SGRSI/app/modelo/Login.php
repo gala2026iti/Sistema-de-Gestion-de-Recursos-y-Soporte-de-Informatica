@@ -4,9 +4,7 @@ require_once __DIR__ . "/usuarios/CargarUsuarios.php";
 /**
  * @brief Gestiona la autenticación de los usuarios.
  *
- * Utiliza CargarUsuarios para obtener los datos del usuario
- * y verifica que se encuentre activo y que la contraseña ingresada
- * coincida con el hash almacenado en la base de datos.
+ * Consulta los datos del usuario y verifica su estado y contraseña.
  */
 class Login
 {
@@ -18,8 +16,7 @@ class Login
     /**
      * @brief Construye un objeto Login.
      *
-     * @param CargarUsuarios $accesoDatosUsuario
-     *        Objeto utilizado para consultar los usuarios en la base de datos.
+     * @param CargarUsuarios $accesoDatosUsuario Objeto utilizado para consultar usuarios.
      */
     public function __construct(CargarUsuarios $accesoDatosUsuario)
     {
@@ -29,17 +26,11 @@ class Login
     /**
      * @brief Autentica a un usuario mediante su cédula y contraseña.
      *
-     * Primero busca al usuario en la base de datos. Si existe,
-     * comprueba que se encuentre activo y posteriormente verifica
-     * la contraseña utilizando el hash almacenado.
-     *
      * @param string $cedula Cédula del usuario.
-     * @param string $clave Contraseña ingresada por el usuario.
+     * @param string $clave Contraseña ingresada.
      *
-     * @return Usuario|null
-     *         Devuelve el objeto Usuario si la autenticación es correcta.
-     *         Devuelve null si el usuario no existe, está inactivo
-     *         o la contraseña es incorrecta.
+     * @return Usuario|null Usuario autenticado si las credenciales son válidas;
+     *              null si no existe, está inactivo o la contraseña es incorrecta.
      */
     public function autenticar(string $cedula, string $clave): ?Usuario
     {

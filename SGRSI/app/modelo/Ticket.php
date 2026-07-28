@@ -1,92 +1,92 @@
 <?php
 
 /**
- * @brief Representa un usuario del sistema.
+ * @brief Representa un ticket del sistema.
  *
- * Contiene los datos necesarios para identificar al usuario,
- * validar su acceso y determinar los roles que posee.
+ * Almacena sus datos principales y la información relacionada con el docente,
+ * equipo y ubicación asociados.
  */
 class Ticket
 {
-    /**
-     * @brief Cédula de identidad del usuario.
+     /**
+     * @brief Identificador del ticket.
      */
     private string $id;
 
     /**
-     * @brief Hash de la contraseña del usuario.
+     * @brief Tipo del ticket.
      */
     private string $tipo;
 
-    /**
-     * @brief Indica si el usuario está activo en el sistema.
+     /**
+     * @brief Asunto del ticket.
      */
     private string $asunto;
 
     /**
-     * @brief Indica si posee el rol administrador.
+     * @brief Descripción del ticket.
      */
     private string $descripcion;
 
     /**
-     * @brief Indica si posee el rol técnico.
+     * @brief Nivel de gravedad del ticket.
      */
     private string $gravedad;
 
     /**
-     * @brief Indica si posee el rol docente.
+     * @brief Estado actual del ticket.
      */
     private string $estado;
 
-        /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Fecha de creación del ticket.
      */
     private string $fechaCreacion;
 
-        /**
-     * @brief Indica si posee el rol docente.
+   /**
+     * @brief Hora de creación del ticket.
      */
     private string $horaCreacion;
 
-        /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Justificación asociada al ticket.
      */
     private string $justificación;
 
-        /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Cédula del docente asociado al ticket.
      */
     private string $ciDocente;
 
-        /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Nombre del docente asociado al ticket.
      */
     private string $nombreDocente;
 
-        /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Identificador del equipo asociado al ticket.
      */
     private string $idEquipo;
 
-            /**
-         * @brief Indica si posee el rol docente.
-         */
-        private string $idUbicacion;
+    /**
+    * @brief Identificador de la ubicación asociada al ticket.
+    */
+    private string $idUbicacion;
 
-                /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Tipo de la ubicación asociada al ticket.
      */
     private string $tipoUbicacion;
 
-            /**
-     * @brief Indica si posee el rol docente.
+    /**
+     * @brief Justificación asociada al ticket.
      */
     private string $justificacion;
 
     /**
-     * @brief Construye un objeto Usuario.
+     * @brief Construye un objeto Ticket.
      *
-     * @param string $id Cédula de identidad del usuario.
+     * @param string $id Identificador del ticket.
      * @param string $tipo Tipo de ticket.
      * @param string $asunto Asunto del ticket.
      * @param string $descripcion Descripción del ticket.
@@ -97,8 +97,9 @@ class Ticket
      * @param string $justificacion Justificación del ticket.
      * @param string $ciDocente Cédula del docente asociado.
      * @param string $nombreDocente Nombre del docente asociado.
-     * @param string $idEquipo ID del equipo asociado.
-     * @param string $idUbicacion ID de la ubicación asociada.
+     * @param string $idEquipo Identificador del equipo asociado.
+     * @param string $idUbicacion Identificador de la ubicación asociada.
+     * @param string $tipoUbicacion Tipo de la ubicación asociada.
      */
     public function __construct(
         string $id,
@@ -133,129 +134,129 @@ class Ticket
     }
 
     /**
-     * @brief Obtiene la cédula del usuario.
+     * @brief Obtiene el identificador del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Identificador del ticket.
      */
     public function getID(): string
     {
         return $this->id;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el tipo del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Tipo del ticket.
      */
     public function getTipo(): string
     {
         return $this->tipo;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el asunto del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Asunto del ticket.
      */
     public function getAsunto(): string
     {
         return $this->asunto;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la descripción del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Descripción del ticket.
      */
     public function getDescripcion(): string
     {
         return $this->descripcion;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la gravedad del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Gravedad del ticket.
      */
     public function getGravedad(): string
     {
         return $this->gravedad;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el estado del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Estado del ticket.
      */
     public function getEstado(): string
     {
         return $this->estado;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la fecha de creación del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Fecha de creación.
      */
     public function getFechaCreacion(): string
     {
         return $this->fechaCreacion;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la hora de creación del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Hora de creación.
      */
     public function getHoraCreacion(): string
     {
         return $this->horaCreacion;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la justificación del ticket.
      *
-     * @return string Cédula del usuario.
+     * @return string Justificación del ticket.
      */
     public function getJustificacion(): string
     {
         return $this->justificacion;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene la cédula del docente asociado.
      *
-     * @return string Cédula del usuario.
+     * @return string Cédula del docente.
      */
     public function getCiDocente(): string
     {
         return $this->ciDocente;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el nombre del docente asociado.
      *
-     * @return string Cédula del usuario.
+     * @return string Nombre del docente.
      */
     public function getNombreDocente(): string
     {
         return $this->nombreDocente;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el identificador del equipo asociado.
      *
-     * @return string Cédula del usuario.
+     * @return string Identificador del equipo.
      */
     public function getIdEquipo(): string
     {
         return $this->idEquipo;
     }
 
-        /**
-     * @brief Obtiene la cédula del usuario.
+    /**
+     * @brief Obtiene el tipo de ubicación asociado.
      *
-     * @return string Cédula del usuario.
+     * @return string Tipo de ubicación.
      */
     public function getTipoUbicacion(): string
     {

@@ -1,0 +1,140 @@
+ebf5ac6 fix: Correcciones en Controlador y Modelo de Tickets, además, se modifico la normalización de Prestamo y correspondientes a Ubicacion.
+42513c7 feat: Controlador de Recursos Creado, aclaración: faltan corregir doxygen correspondientes a cada archivo.
+f396bb8 resolves #35: Cambios de estilizado y arreglos a hrefs
+6afac21 adiciones minimas
+5a00a42 Controlador de Solicitudes Creado
+5916270 Implementación de Modelos y Controladores de Solicitud
+8bf1ccb Avances en adaptación a PHP, nuevas consultas SQL integradas, ampliación del MVC, aunque nada integrado aun, faltan corregir doxygens
+81037a0 Reorganización de archivos, creación de consultas SQL restantes, y renombrado de archivos
+cc2931a feat, fix: Corrección de sentencias SQL, Correcciones en Mensajes de error en inicio de sesión e implementación de nuevas sentencias SQL
+790975a fix: Corrección de sentencias SQL de Usuarios
+767f486 fix: Corrección de Mergeo de ramas paz->marin
+822c9ba feat: Agregado el soporte a variables de entorno
+c45ed79 fix: Corrección de sentencias SQL
+29df7c2 docs: se agrega los archivos de las consultas en DQL
+e76b112 feat: se añade la seguridad de tokens y el doxygen
+ebcf128 docs: Implementación de Teórico correspondiente a Normalización.
+5194598 archivos no pusheados
+cea6269 fix & feat: se traduce el js de gestion de usuario a php, en donde ahora el sistema de gestion de usuario es funcional, habilitando el registro, modificacion y activar o desactivar a los usuarios
+7ce0bce fix: al cerrar sesion no te deja navegar por ninguna pagina de administracion
+0183975 fix: reorganizacion del sistema de login
+b4b96a5 fix: se arregla la representacion del atributo correo en la base de datos, en donde ahora pasa a ser otra tabla con clave foranea de usuario
+73e67a5 feat: creacion de boceto de la base de datos
+c433b2b fix: se corrige el error en donde la carpeta baseDeDatos se encontraba en SGRSI
+b6987bd fix: se añade el id de las claves primarias en donde antes no estaban
+f0d71ef feat: implementacion de la base de datos y vinculacion con el sistema de inicio de sesion
+a320ff6 feat: implementacion de mysql en el sistema de inicio de sesion
+655aab4 actualizar rama
+942e17f se restaura la rama guerra
+0c43aba fix: mas cambios de php y estructura de archivos
+a49b90b feature: se implementaron cambios en la estructura y se modificatorn los html a php
+345ec66 Vaciar contenido de la rama
+9604468 Actualizacion de html
+ea35a95 actualizacion de rama
+e0149f2 feat: Introducción a sistema de archivos PHP, por el momento solo se hizo funcional el sistema de Inició de sesión y restricciones de acceso, pero se espera que se continue con el avance de esta integración. En el archivo procesarLogin.php se dejan lineas de comentario explicando los comandos usados en ese archivo correspondiente.
+02d6c9e N/A
+25fa3cb N/A
+c750598 1.3.0: feat, fixed: Se implementarion cambios de estructura drasticos para la adaptacion al uso de php y el eso de mvc como arquitectura de software. El codigo todavia contiene errores en el logueo no implementados
+4cca6bc Merge branch 'beta' into paz
+ef24800 fix: resuelto problemas minimos de la barra de navegación
+05c6b8e feat: v1.2.4 Se implementan campos para las tablas que indican que la tabla no tiene contenido correspondiente para mostrar.
+afa38f3 fix, feat: resolves #28. v1.2.3: En esta versión, al estar ubicado en una parte del sistema correspondiente a la barra de navegación, su opción correspondiente no aparecerá en la misma. Además, se implementan mínimas correcciones con respecto al mostrado de texto, implementando adaptación de texto a Mayúsculas y minúsculas. Además, de prueba se implementa un campo en las tablas cuando se quiera indicar que en las mismas no hay información. Se corrigieron inconsistencias leves correspondientes a redirección y manejo de registros.
+0586e25 Merge branch 'beta' into marin
+3e95ecc Merge branch 'beta' into paz
+f1d69d2 fix: Resolucion de conflictos.
+3a9f1b8 feat: resolves #19 se añade la opcion de mostrar contraseña en el inicio de sesion
+11df7e4 fix: v1.2.2. Corrección en la barra de navegación de la página de historiales, ahora funcionan las redirecciones.
+0b3f4b5 v1.2.1. resolves #27 Implementacion de validacion de datos en javascript
+6c04563 fix, feat. v1.2.0. closes #25, #26. Se modifica el sistema de registros, incluyendo un guardado mas amplio de los cambios e interracciones dentro del sistema por los distintos usuarios, permitiendo seguir con facilidad las acciones correspondientes. Además, se implementa una modificación crucial en el usuario debug, el mismo unicamente esta habilitado para configuración inicial del sistema, y solo será accesible cuando no haya un usuario administrador registrado dentro del sistema. Con respecto a la cronología, se modifico el sistema de fechas, optando por un formato universal y incluyendo el parametro de hora como adicional que proporciona más detalles. Los formatos son: fecha:DD/MM/AAAA, y hora:HH:MM.
+fde0ab0 fix, feat: closes #25, #26. v1.1.2: Se implementan correcciones en el sistema de tickets, donde en vez de guardar la información como comentarios, se guardan los datos relevantes de los distintos historiales y, dependiendo de los casos y las banderas, se escribe información correspondiente en las páginas. Además, se añadieron nuevos registros (o historiales), tales como: Historial de Cambios (Usuarios), Historial de Solicitudes, y Modificaciones leves en Historial de Préstamos e Historial de Tickets. Ahora se muestran cédulas y nombres de usuarios registrados, para ayudar a la identificación de los mismos.
+c53999c Merge branch 'beta' into paz
+9682794 v1.1.1: feat, fix: Resolves #21, #22, #23, #24. Esta versión del sistema contiene correcciones y cambios mínimos con respecto a funcionalidades ya existentes.
+f76dd54 Beta v1.1.0: feat, fix: Resolves #13, #14, #15, #16, #17, #20. Esta versión del sistema incluye correcciones drásticas dentro del sistema SGRSI, entre ellas, corrección masiva de archivos .js y .html, donde se mejora la prevención ante falta de arrchivos, se corrigieron errores graves con respecto a la versión anterior, se reconstruyeron y corrigieron bastantes areas del sistema, como el sistema de Incidencias, Tickets, Prestamos, etc. Además, se incluyeron mejoras en funcionalidades, como alertas o mensajes de error, mejoras en la gestión de salones y una navegación más correspondiente al usario. Con respecto al backend, se hizo una reestructuración de cada js. existente y de los .html requeridos, donde se modificaron las variables con el fin de hacerlas mas faciles de comprender y de diferenciar de las clases de estilos, y se crearon y modificaron los métodos existentes con el objetivo de eliminar código redundante y confuso, mejorando su comprensión para los desarrolladores.
+d7748b1 fixes: cambios minimos al inicio de sesion en CSS
+6ce5c91 SemVer 1.0.0
+ce16a23 Merge branch 'beta' feat: Mergeo a beta, correción leve de JS y CSS.
+a7f2a97 Correcciones de incidencias
+1e26563 fix: Correccion de padding
+7f24620 Correcciones leves con respecto a variable duplicada en btn-menu,  los d-flex y d-none estaban invertidos, por lo que el formulario no se ocultaba.
+ee784c4 fix: se resolvio el conflicto de btn para celular en donde antes se hizo push a la version pasada
+d4ee482 feat & fix: se adapta la navegacion de paz al sistema actual
+405e1ee fix: se adapta los cambios de navegacion de paz que con anterioridad se habrian perdido
+68f34cb Merge branch 'marin' into beta fix: Resolución de mergeo
+ec45012 fix: Corrección minima de funcionalidades
+4a2f062 N/A
+6891310 N/A
+9750733 fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
+ad96e00 fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
+dfe910d paso las graficas a metricas
+163382e fix, feat: Continuación del Issue #11: Se realizan correcciones en funcionalidad, como por ejemplo, cambiar el sistema de almacenamiento de laboratorios y equipos, asimismo, corrgiendo los cambios en cada interfaz correspondiente. Se corrigieron inconsistencias con el sitema de solicitudes y se incorporo el sistema de incidencias. Las interfaces docente, administrador, y tecnico ya estan completas, este último ahora compartiendo páginas con admin, debiendo implementar funcionalidades extra para evitar conflictos con información o accesos no correspondidos.
+78732bd feat: Continuación del Issue #11. Implementación de sistema de ingreso y gestión de solicitudes.
+66005f9 fix: se solucionan los errores relacionados a la barra de navegacion en administrador,tecnico y docente. en donde algunas paginas tenian opciones que llevaban a paginas que no tenian que ver con la opcion seleccionada, y otras paginas tenian el cerrar sesion duplicados. tambien se le agrego nuevamente la navegacion a la pagina de solicitudes del docente, en donde con anterioridad se borraron
+9904d94 N/A
+62adb6d Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+735a67d Merge branch 'marin' into beta fix, feat: Implementación de nuevas funciones con respecto al inicio de sesión y correcciones de la nav-bar, por mas detalles, ir al commit 7adf06e en la rama marin.
+7adf06e fix, feat: Continuando el Issue #11, #12, Implementación de verificación de usuarios en el sistema, con el fin de no permitir el paso no correspondido a demás roles. Se mejora el sistema de ingreso de usuario debug y de usuarios normales, además de corregir nuevamente la nav-bar.
+dd65f59 N/A
+c88e40c N/A
+a4b0e4c Merge branch 'marin' into beta fix: Resolución de conflitos correspondiente a inicio de sesión
+7322fa0 fix: Arreglo del inicio de sesión debug
+ab2f5e6 N/A
+0ee79a3 Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+7f0b683 Merge branch 'marin' into beta fix: Solución de mergeo
+60fa018 fix: Resolución de conflcitos no finalizados
+2ebdeea N/A
+a25edff Merge branch 'marin' into beta fix: #Resolves 12. Paz implementa mejoras en la barra de navegación, aparte de eso, se implementan mas avances con respecto al sistema de usuarios dentro del DOM, para mas detalle revisar commit personal en rama correspondiente.
+f5381f2 fixes, feat: Resolves #12. Con respecto al Issue 12, se implementa nuevamente la nueva barra de navegación hecha por Paz, queda pendiente de revisión. Con respecto al Issue #11, se realizan minimas correcciones en el apartado de inicio de sesión.
+37f4af1 N/A
+4ef54fd Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+bf4384c N/A
+d4a907c fix: Resolución de conflictos: se vació el repositorio, reemplazando su contenido con una copia de seguridad reciente. Un mergeo previo con la rama 'marin' mezcló, movió y modificó archivos de manera critica en la rama, pero en teoría ya estan los conflictos resueltos.
+4856d67 fix: Intento de resolución de conflictos, continuacion: se suben los últimos cambios actualizados para no perderlos por cambio de rama
+a506d62 fix: Intento de resolución de conflictos, reparación de rama beta corrompida
+a167bd4 fix: Resolución de merge a beta. Continuación del Issue #11, Aumento en el desarrollo del DOM, ahora el mismo contempla mas áreas que antes. Para mas detalles revisar commits en mi rama correspondiente.
+0b670b0 fix, feat: Continuación del Issue #11. Corrección de funcionalidades co respecto a .js ya existentes, se amplió el funcionamiento del DOM, mejorando el sistea de almacenamiento local para manejar mas casos, las zonas incluidas son: Usuarios, Equipos + Salones, Prestamos + Historial, Inicio de Sesión.
+ca6ceb5 fixed: arreglos continuos al navbar
+57f0ff9 fixed: arreglos al navbar
+9e3e698 push generico
+cb2bf04 fix: Resolves #3. Se realizan correcciones con respecto a duplicado de información en la documentación correspondiente.
+65881b6 fixed: se solucionaron problemas del navbar
+ce51a27 N/A
+eb924e4 N/A
+17ca71a feat:se agregan las interfaces de historiales mas el ingreso mediante botones o IDs de las PCs, tambien el ingreso a detalles de tickets mediante el asunto de los mismos
+a5533c5 Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta fix: Corrección de conflictos debido a merge.
+f841c7c fix, feat: Avance del Issue #11, se implementan las funcionalidades del DOM principales, gestión de usuarios, equipos y laboratorios, creando js. correspondientes al caso. Este trabajo involucro fusión de archivos, resolución de conflictos, modificación en nombres y eliminación de archivos obsoletos.
+dfe9ede fixed: cambios minimos a la estructuracion de direccion y css
+433a6ab N/A
+fee49ad feat: Avances manejo general del DOM
+8375319 style: Se le agrega un estilo a los nuevos formularios de registros de pc, usuarios y prestamos, ademas de borrar clases reduntantes que tenian el mismo contenido a pasar a ser solo una clase que es formulariopopup
+55fdc6e resolves #10 se implementan modales y graficas para direccion
+31cc8ef feat: Se agrega el html de detalle de tickets para administracion y tecnico
+2d189d4 fix: eliminacion de la opcion de navegacion de administrador denminada ´Gestion de NULL´ y eliminacion de htmls sin uso
+0b3e7b0 style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
+b2cac4e style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
+34ce880 style: arreglada la forma de identificar a las PC en la interfaz de dirección
+5fc3f13 mismo commit 2
+898477f Merge branch 'beta' into paz
+ec3555f Hecha la parte de dirección
+f4d68df se arreglan conflictos
+f42959a N/A
+40afe19 feat & style: se añade una navegacion secundaria entre laboratorios,talleres, dispositivos de prestamos y inventario tecnologico
+5ec90ef resolves #7 cambia la redireccion a formularios por la aparicion de estos
+35fabfb N/A
+c0e8695 Merge branch 'marin' into beta fix: Se implentan modificaciones correspodientes al sistema de roles, mencionado detalladamente en el Issue #6.
+3b48f74 fixes: Resolve #6. Se implementan mejoras con respecto al funcionamiento de los roles, eliminando la función de eliminar botones de un mismo inicio, siendo esto reemplazado por una interfaz de inicio distinta para cada rol correspondiente. Se realizaron modificaciones en los js para modificar las redirecciones y eliminar residuos de viejas funcionalidades. Se movieron los archivos home de sus carpetas de rol designado, por lo que tocó modificarlos para que la ruta hacia sus distintos recursos relacionados funcionara correctamente.
+c715718 resolves #5 se implementaron formularios modal en la pagina formulariohtml y se elimino la condicionalidad con css
+da53768 style: implementacion del framework bootstrap a la pagina SGRSI, como resultado se eliminaron css que eran redundantes debido a que sus funcionalidades se podian cubrir con las clases de bootstrap
+364fe60 stylë: cambios visuales.
+c4fe6f1 feat: comienzo de la interfaz de direccion
+523c4e7 fix: Corrección de nombres de variables en javascript. Se realizaron correcciones minimas con respecto al nombre de los botones.
+b78dbd7 fix: Resolve #4. Se implementa la capacidad a la pagina de filtrar las opciones mostradas por usuario mediante el uso de archivos js., permitiendo que los distintos usuarios solo puedan acceder a sus opciones designadas. Asimismo, en el inicio de sesión se implementan usuarios de prueba para poder probar los distintos roles del sistema, incluyendo mensaje generico de información incorrecta, esto para mantener una mayor seguridad a la hora de manejar tal información sensible. Para realizar las acciones previas se hizo uso de nuevos identificadores para las etiquetas correspondientes en html. ¡ACLARACIÓN!: ¡¡¡ESTO ES ÚNICAMENTE MANEJO DE DOM BASICO, AÚN NO HAY FUNCIONALIDADES VERADERAS, VALIDACIONES O RESTRICCIONES AVANZADAS.!!!
+0410080 fix: Eliminación de archivos innecesarios/duplicados de rama personal. Al no ser borrador o implementación personal, no hay razón para mantenerlo en rama personal.
+e568703 feat: Se realiza copia de la pagina principal, esto para poder manipular y/o crear nuevos archivos con mas facilidad sin arriesgar la integridad de las demás ramas.
+a2c58b3 refactor: Se corrige la estructura semantica del nav resolves #1
+acbf9b4 feat: Implementación de carpeta contenedora de documentos correspondientes al sistema y renombrado de archivos según camelCase.
+332a6cd feat: incorporar primera versión de las interfaces del SGRSI
+63f7ca7 Rename Formato de Git to Formato de Git.md
+83afc50 Create Formato de Git
+30b2aa9 Update README.md
+1ba488a Update README.md
+cdafb3d Create README.md

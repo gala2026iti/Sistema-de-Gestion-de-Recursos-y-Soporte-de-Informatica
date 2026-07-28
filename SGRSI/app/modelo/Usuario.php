@@ -3,8 +3,8 @@
 /**
  * @brief Representa un usuario del sistema.
  *
- * Contiene los datos necesarios para identificar al usuario,
- * validar su acceso y determinar los roles que posee.
+ * Contiene los datos necesarios para identificarlo, validar su acceso
+ * y determinar los roles que posee.
  */
 class Usuario
 {

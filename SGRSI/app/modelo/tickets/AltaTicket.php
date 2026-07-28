@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el registro de nuevos usuarios.
+ * @brief Gestiona el registro de nuevos tickets.
  *
- * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
- * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Inserta los datos principales de un ticket en la base de datos.
  */
 class AltaTicket
 {
@@ -14,7 +13,7 @@ class AltaTicket
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para registrar usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,19 +23,19 @@ class AltaTicket
     }
 
     /**
-     * @brief Registra un nuevo usuario y sus roles.
+     * @brief Registra un nuevo ticket.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
-     *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
-     * @param array $roles Roles que tendrá el usuario.
+     * @param string $id Identificador del ticket.
+     * @param string $tipo Tipo del ticket.
+     * @param string $asunto Asunto del ticket.
+     * @param string $descripcion Descripción del ticket.
+     * @param string $gravedad Gravedad del ticket.
+     * @param string $estado Estado inicial del ticket.
+     * @param string $fechaCreacion Fecha de creación.
+     * @param string $horaCreacion Hora de creación.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarTicket(
         string $id,
