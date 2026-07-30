@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de Ticket (Dirección) - SGRSI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../../public/assets/css/global.css">
 </head>
 
-<body data-rol-permitido="direccion">
+<body>
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+        <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <nav class="navbarSGRSI">
@@ -19,9 +19,9 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-            <ul class="nav-opciones-sistema">
-                <li><a href="../cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-            </ul>
+                <ul class="nav-opciones-sistema">
+                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                </ul>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeDirector.php">Dashboard</a></li>
@@ -37,7 +37,7 @@
             <div>
                 <h2 class="text-start mb-2 text-primary" id="tituloTicket">Cargando Asunto...</h2>
                 <div class="d-flex flex-wrap align-items-center gap-2 text-muted small" id="contenedorAsunto">
-                    </div>
+                </div>
             </div>
             <a href="d-reportes.html" class="btn btn-secondary fw-bold px-4">Volver a Reportes</a>
         </section>
@@ -95,10 +95,10 @@
         <span>Copyright 2026 - SGRSI | Instituto tecnológico de Informática</span>
     </footer>
 
-    <script src="../../assets/js/btnMenuCelular.js"></script>
-    <script src="../../assets/js/verificarSesion.js"></script>
-    <script src="../../assets/js/cerrarSesion.js"></script>
-    <script src="../../assets/js/detalleTicketDirector.js" defer></script>
+    <script src="../../../public/assets/js/btnMenuCelular.js"></script>
+    <script src="../../../public/assets/js/verificarSesion.js"></script>
+    <script src="../../../public/assets/js/cerrarSesion.js"></script>
+    <script src="../../../public/assets/js/detalleTicketDirector.js" defer></script>
 </body>
 
 </html>

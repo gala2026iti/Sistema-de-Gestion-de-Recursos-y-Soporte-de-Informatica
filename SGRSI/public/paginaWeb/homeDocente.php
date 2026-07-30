@@ -7,7 +7,7 @@ if (!isset($_SESSION["cedula"])) {
     exit;
 }
 
-if ( !isset($_SESSION["rol"]) || $_SESSION["rol"] !== "docente") {
+if ( !isset($_SESSION["docente"]) || $_SESSION["docente"] !== true) {
     header("Location: index.php");
     exit;
 }

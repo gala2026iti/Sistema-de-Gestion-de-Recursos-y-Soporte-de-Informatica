@@ -29,26 +29,25 @@ session_start();
 session_regenerate_id(true);
 
 $_SESSION["cedula"] = $usuario->getCedula();
-$_SESSION["rol"] = $usuario->getRol();
+$_SESSION["nombre"] = $usuario->getNombre();
+$_SESSION["correo"] = $usuario->getCorreo();
+$_SESSION["admin"] = $usuario->getAdmin();
+$_SESSION["tecnico"] = $usuario->getTecnico();
+$_SESSION["docente"] = $usuario->getDocente();
 
 //Comprueba que rol tiene asignado
-if (isset($_SESSION["rol"]) && $_SESSION["rol"] === "docente") { 
+if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) { 
+    header("Location: ../../public/paginaWeb/homeAdmin.php");
+    exit;
+}
+
+if (isset($_SESSION["tecnico"]) && $_SESSION["tecnico"] === true) { 
+    header("Location: ../../public/paginaWeb/homeTecnico.php");
+    exit;
+}
+
+if (isset($_SESSION["docente"]) && $_SESSION["docente"] === true) { 
     header("Location: ../../public/paginaWeb/homeDocente.php");
-    exit;
-}
-
-if (isset($_SESSION["rol"]) && $_SESSION["rol"] === "tecnico") { 
-    header("Location: ../../public/paginaWeb/homeAdmin.php");
-    exit;
-}
-
-if (isset($_SESSION["rol"]) && $_SESSION["rol"] === "admin") {
-    header("Location: ../../public/paginaWeb/homeAdmin.php");
-    exit;
-}
-
-if (isset($_SESSION["rol"]) && $_SESSION["rol"] === "direccion") { 
-    header("Location: ../../public/paginaWeb/homeDirector.php");
     exit;
 }
 

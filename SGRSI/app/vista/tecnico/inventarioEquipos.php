@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inventario de Equipos - Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../../public/assets/css/global.css">
 </head>
 
-<body data-rol-permitido="administrador tecnico">
+<body>
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+    <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
   </header>
 
   <nav class="navbarSGRSI">
@@ -20,7 +20,7 @@
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
         <ul class="nav-opciones-sistema">
-                    <li><a href="../cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
         </ul>
       </section>
 
@@ -39,13 +39,6 @@
           </ul>
         </li>
         <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-        <li class="desplegable-padding" id="opcionesAdmin">
-          <a href="#">⚙ Administracion y control 🡻</a>
-          <ul class="desplegable-menu">
-            <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
-            <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-          </ul>
-        </li>
       </ul>
     </section>
   </nav>
@@ -102,13 +95,11 @@
         </select>
 
         <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
-        <input type="text" id="asunto" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa"
-          required="">
+        <input type="text" id="asunto" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa" required="">
 
         <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso de la
           PC</label>
-        <input type="text" id="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez"
-          required="">
+        <input type="text" id="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez" required="">
 
         <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la incidencia</label>
         <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">
@@ -143,12 +134,12 @@
     <span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span>
   </footer>
 
-  <script src="../../assets/js/btnMenuCelular.js"></script>
-  <script src="../../assets/js/inventarioEquiposPrestamo.js"></script>
+  <script src="../../../public/assets/js/btnMenuCelular.js"></script>
+  <script src="../../../public/assets/js/inventarioEquiposPrestamo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../../assets/js/verificarSesion.js"></script>
-  <script src="../../assets/js/cerrarSesion.js"></script>
-  <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
+  <script src="../../../public/assets/js/verificarSesion.js"></script>
+  <script src="../../../public/assets/js/cerrarSesion.js"></script>
+  <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
 
 </body>
 

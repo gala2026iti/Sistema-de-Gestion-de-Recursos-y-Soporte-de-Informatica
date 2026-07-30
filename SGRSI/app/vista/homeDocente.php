@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../assets/css/formulariospopup.css">
 </head>
 
-<body data-rol-permitido="docente">
+<body>
     <header class="d-flex justify-content-center align-items-center py-4">
         <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
     </header>

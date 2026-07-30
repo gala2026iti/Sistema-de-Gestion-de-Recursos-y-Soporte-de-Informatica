@@ -6,42 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
+    <link rel="stylesheet" href="../../../public/assets/css/global.css">
+    <link rel="stylesheet" href="../../../public/assets/css/formulariospopup.css">
 </head>
 
-<body data-rol-permitido="administrador">
+<body>
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+        <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
-   <nav class="navbarSGRSI">
+    <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                    <li><a href="../cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
-            
+
             <ul class="nav-menu">
-                <li class="desplegable">
-                    <a href="#">Gestión de tickets 🡻 </a>
-                    <ul class="desplegable-menu">
-                        <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-                        <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Gestion de prestamos 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
-                    </ul>
-                </li>
-                <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-                <li class="desplegable-padding" id="opcionesAdmin">
+                <li class="desplegable-padding">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
@@ -53,7 +38,7 @@
 
 
     <main class="container-fluid px-0 py-3">
-                <a href="historialGeneral.html?tipo=usuarios" class="btn btn-primary mx-3">Historial de cambios</a>
+        <a href="historialGeneral.html?tipo=usuarios" class="btn btn-primary mx-3">Historial de cambios</a>
         <h2 class="centro mt-3 text-warning">Gestion de usuarios</h2>
         <span class="centro mb-4">A continuacion se muestran los usuarios registrados en el sistema</span>
 
@@ -94,24 +79,30 @@
             </button>
         </section>
 
-        <div id="modalUsuario" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
-        <div class="modal-contenido w-100 p-4 bg-white rounded shadow">
+        <div id="modalUsuario"
+            class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
+            <div class="modal-contenido w-100 p-4 bg-white rounded shadow">
                 <form class="form" id="formUsuario">
                     <h2 class="text-primary border-bottom pb-2">Registro de usuario</h2>
                     <fieldset>
                         <label for="usuario" class="form-label">Usuario / Cédula:</label>
-                        <input type="text" inputmode="numeric" id="usuario" class="form-control" placeholder="ej: 12345678" minlength="8" maxlength="8" required>
-                        
+                        <input type="text" inputmode="numeric" id="usuario" class="form-control"
+                            placeholder="ej: 12345678" minlength="8" maxlength="8" required>
+
                         <label for="nombre" class="form-label mt-3">Nombre completo</label>
-                        <input type="text" id="nombre" class="form-control" placeholder="ej: Javier Martinez" required pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
-                        
+                        <input type="text" id="nombre" class="form-control" placeholder="ej: Javier Martinez" required
+                            pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" maxlength="30">
+
                         <label for="correo" class="form-label mt-3">Correo electronico</label>
-                        <input type="text" id="correo" class="form-control" placeholder="ej: javierM1998@gmail.com" required maxlength="50" autocomplete="email" pattern=".*\.com$">
-                        
+                        <input type="text" id="correo" class="form-control" placeholder="ej: javierM1998@gmail.com"
+                            required maxlength="50" autocomplete="email" pattern=".*\.com$">
+
                         <label for="clave" class="form-label mt-3">Contraseña</label>
                         <div class="input-group">
-                            <input type="password" id="clave" class="form-control" placeholder="Ingrese contraseña" required>
-                            <button class="btn btn-outline-secondary" type="button" id="btnMostrarClave">Mostrar Contraseña</button>
+                            <input type="password" id="clave" class="form-control" placeholder="Ingrese contraseña"
+                                required>
+                            <button class="btn btn-outline-secondary" type="button" id="btnMostrarClave">Mostrar
+                                Contraseña</button>
                         </div>
 
                         <label for="rol" class="form-label mt-3">Rol del Sistema</label>
@@ -134,12 +125,12 @@
     </main>
 
     <footer><span>Copyright 2026 - DGTEP | Instituto tecnologico de Informática</span></footer>
-    <script src="../../assets/js/btnMenuCelular.js"></script>
+    <script src="../../../public/assets/js/btnMenuCelular.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/gestionUsuarios.js"></script>
-      <script src="../../assets/js/cerrarSesion.js"></script>
-        <script src="../../assets/js/verificarSesion.js"></script>
-            <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
+    <script src="../../../public/assets/js/gestionUsuarios.js"></script>
+    <script src="../../../public/assets/js/cerrarSesion.js"></script>
+    <script src="../../../public/assets/js/verificarSesion.js"></script>
+    <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
 
 
 </body>

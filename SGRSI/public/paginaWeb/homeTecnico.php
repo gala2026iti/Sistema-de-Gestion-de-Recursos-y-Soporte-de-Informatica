@@ -7,11 +7,11 @@ if (!isset($_SESSION["cedula"])) {
     exit;
 }
 
-if ( !isset($_SESSION["rol"]) || $_SESSION["rol"] !== "direccion") {
+if ( !isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
     header("Location: index.php");
     exit;
 }
 
-require_once __DIR__ . "/../../app/vista/homeDirector.php";
+require_once __DIR__ . "/../../app/vista/homeTecnico.php";
 
 ?>

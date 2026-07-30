@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 
-<body data-rol-permitido="administrador tecnico">
+<body>
     <header class="d-flex justify-content-center align-items-center py-4">
         <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
     </header>
@@ -20,7 +20,7 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                    <li><a href="../cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
 
@@ -40,13 +40,6 @@
                     </ul>
                 </li>
                 <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
-                <li class="desplegable-padding" id="opcionesAdmin">
-                    <a href="#">⚙ Administracion y control 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
-                        <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-                    </ul>
-                </li>
             </ul>
         </section>
     </nav>
@@ -141,11 +134,11 @@
         <span>Copyright 2026 - SGRSI | Instituto tecnológico de Informática</span>
     </footer>
 
-    <script src="../../assets/js/btnMenuCelular.js"></script>
-    <script src="../../assets/js/verificarSesion.js"></script>
-    <script src="../../assets/js/cerrarSesion.js"></script>
-    <script src="../../assets/js/gestionTickets.js"></script>
-    <script src="../../assets/js/ocultarAdminDeTecnico.js"></script>
+    <script src="../../../public/assets/js/btnMenuCelular.js"></script>
+    <script src="../../../public/assets/js/verificarSesion.js"></script>
+    <script src="../../../public/assets/js/cerrarSesion.js"></script>
+    <script src="../../../public/assets/js/gestionTickets.js"></script>
+    <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
 </body>
 
 </html>
