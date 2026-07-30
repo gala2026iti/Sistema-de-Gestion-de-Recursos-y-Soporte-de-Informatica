@@ -22,7 +22,7 @@
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
         <ul class="nav-opciones-sistema">
-                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+          <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
         </ul>
       </section>
 
@@ -30,15 +30,15 @@
         <li class="desplegable">
           <a href="#">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
-            <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-            <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
+            <li><a href="../homeTecnico.php">Tickets registrados</a></li>
+            <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
           </ul>
         </li>
         <li class="desplegable-padding">
           <a href="#">Gestion de prestamos 🡻</a>
           <ul class="desplegable-menu">
-            <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-            <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
+            <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
+            <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
           </ul>
         </li>
       </ul>
@@ -46,7 +46,7 @@
   </nav>
 
   <main class="container-fluid px-0 py-3">
-    <a href="historialGeneral.html?tipo=solicitudes" class="btn btn-primary mx-3">Historial de solicitudes</a>
+    <a href="historialGeneral.php?tipo=solicitudes" class="btn btn-primary mx-3">Historial de solicitudes</a>
     <h2 class="centro mt-3 text-primary">Solicitudes registradas</h2>
     <span class="centro mb-4">A continuación se muestran las solicitudes del personal docente</span>
     <section class="filtros">

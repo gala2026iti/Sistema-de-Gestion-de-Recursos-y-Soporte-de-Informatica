@@ -20,7 +20,7 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
 
@@ -29,17 +29,17 @@
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
                         <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-                        <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
+                        <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="tablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
+                        <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
                     </ul>
                 </li>
-                <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
+                <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
             </ul>
         </section>
     </nav>

@@ -30,23 +30,23 @@
         <li class="desplegable">
           <a href="#">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
-            <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-            <li><a href="ticketsPersonales.html">Tickets asignados</a></li>
+            <li><a href="../homeTecnico.php">Tickets registrados</a></li>
+            <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
           </ul>
         </li>
         <li class="desplegable">
           <a href="#">Gestion de prestamos 🡻</a>
           <ul class="desplegable-menu">
-            <li><a href="inventarioEquipos.html">Inventario de equipos</a></li>
+            <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
           </ul>
         </li>
-        <li><a href="gestionSolicitudes.html">Gestion de solicitudes</a></li>
+        <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
       </ul>
     </section>
   </nav>
 
   <main class="container-fluid px-0 py-3">
-    <a href="historialGeneral.html?tipo=prestamos" class="btn btn-primary mx-3">Historial de prestamos</a>
+    <a href="historialGeneral.php?tipo=prestamos" class="btn btn-primary mx-3">Historial de prestamos</a>
     <h2 class="centro mt-3 text-primary">Tabla de prestamos</h2>
     <span class="centro mb-4">A continuacion se muestran los prestamos activos de equipos</span>
 

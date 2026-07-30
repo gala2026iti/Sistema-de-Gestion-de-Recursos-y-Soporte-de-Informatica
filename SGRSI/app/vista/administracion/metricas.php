@@ -25,9 +25,18 @@
             </ul>
             </section>
             <ul class="nav-menu">
-                <li class="desplegable"><a href="../homeDirector.php">Dashboard</a></li>
-                <li class="desplegable"><a href="d-estadoEquipos.html">Estado de equipos</a></li>
-                <li class="desplegable"><a href="d-reportes.html">Reportes y estadisticas</a></li>
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+            </ul>
+            <ul class="nav-menu">
+                <li class="desplegable-padding" id="opcionesAdmin">
+                    <a href="#">⚙ Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+                    </ul>
+                </li>
             </ul>
         </section>
     </nav>

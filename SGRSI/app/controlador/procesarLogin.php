@@ -4,9 +4,13 @@ require_once __DIR__ . "/../modelo/Usuario.php";
 require_once __DIR__ . "/../modelo/ConsultaUsuario.php";
 require_once __DIR__ . "/../modelo/Login.php";
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 //Comprueba que el formulario haya sido enviado mediante POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: index.php");
+    header("Location: ../../public/paginaWeb/index.php");
     exit;
 }
 
@@ -41,13 +45,14 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
     exit;
 }
 
-if (isset($_SESSION["tecnico"]) && $_SESSION["tecnico"] === true) { 
-    header("Location: ../../public/paginaWeb/homeTecnico.php");
-    exit;
-}
 
 if (isset($_SESSION["docente"]) && $_SESSION["docente"] === true) { 
     header("Location: ../../public/paginaWeb/homeDocente.php");
+    exit;
+}
+
+if (isset($_SESSION["tecnico"]) && $_SESSION["tecnico"] === true) { 
+    header("Location: ../../public/paginaWeb/homeTecnico.php");
     exit;
 }
 
