@@ -26,7 +26,7 @@
             </ul>
             </section>
             <ul class="nav-menu">
-                <li><a href="pagsolicitudes.html" id="btnServicios">Solicitud de servicios</a></li>
+                <li><a href="Docente/pagsolicitudes.php" id="btnServicios">Solicitud de servicios</a></li>
             </ul>
         </section>
     </nav>

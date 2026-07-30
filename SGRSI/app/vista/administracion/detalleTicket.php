@@ -20,14 +20,23 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
             <ul class="nav-menu">
-                <li class="desplegable"><a href="../homeDirector.php">Dashboard</a></li>
-                <li class="desplegable"><a href="d-estadoEquipos.html">Estado de equipos</a></li>
-                <li class="desplegable"><a href="d-reportes.html">Reportes y estadisticas</a></li>
-                <li><a href="d-metricas.html">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="metricas.php">Metricas del sistema</a></li>
+            </ul>
+            <ul class="nav-menu">
+                <li class="desplegable-padding" id="opcionesAdmin">
+                    <a href="#">⚙ Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+                    </ul>
+                </li>
             </ul>
         </section>
     </nav>
@@ -39,7 +48,7 @@
                 <div class="d-flex flex-wrap align-items-center gap-2 text-muted small" id="contenedorAsunto">
                 </div>
             </div>
-            <a href="d-reportes.html" class="btn btn-secondary fw-bold px-4">Volver a Reportes</a>
+            <a href="d-reportes.php" class="btn btn-secondary fw-bold px-4">Volver a Reportes</a>
         </section>
 
         <section class="bg-light p-4 rounded-3 border mb-5">

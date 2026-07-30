@@ -29,30 +29,23 @@
                 <li class="desplegable">
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
-                        <li><a href="administracion-tecnico/ticketsPersonales.html">Tickets asignados</a></li>
+                        <li><a href="tecnico/ticketsPersonales.php">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="administracion-tecnico/tablaPrestamos.html">Tabla de prestamos</a></li>
-                        <li><a href="administracion-tecnico/inventarioEquipos.html">Inventario de equipos</a></li>
+                        <li><a href="tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
+                        <li><a href="tecnico/inventarioEquipos.php">Inventario de equipos</a></li>
                     </ul>
                 </li>
-                <li><a href="administracion-tecnico/gestionSolicitudes.html">Gestion de solicitudes</a></li>
-                <li class="desplegable-padding" id="opcionesAdmin">
-                    <a href="#">⚙ Administracion y control 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="administracion-tecnico/gestionUsuarios.html">Gestion de usuarios</a></li>
-                        <li><a href="administracion-tecnico/gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
-                    </ul>
-                </li>
+                <li><a href="tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
             </ul>
         </section>
     </nav>
 
   <main class="container-fluid px-0 py-3">
-    <a href="administracion-tecnico/historialGeneral.html?tipo=tickets" class="btn btn-primary ms-3">Historial de tickets</a>
+    <a href="administracion-tecnico/historialGeneral.php?tipo=tickets" class="btn btn-primary ms-3">Historial de tickets</a>
     <h2 class="centro mt-3 text-primary">Tickets Registrados</h2>
     <span class="centro mb-4">A continuación se muestran los tickets</span>
 

@@ -24,12 +24,17 @@
                     <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
-
+            <ul class="nav-menu">
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="metricas.php">Metricas del sistema</a></li>
+            </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="gestionInventarioTecnologico.html">Gestion de inventario de equipos</a></li>
+                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
             </ul>
@@ -38,7 +43,7 @@
 
 
     <main class="container-fluid px-0 py-3">
-        <a href="historialGeneral.html?tipo=usuarios" class="btn btn-primary mx-3">Historial de cambios</a>
+        <a href="historialGeneral.php?tipo=usuarios" class="btn btn-primary mx-3">Historial de cambios</a>
         <h2 class="centro mt-3 text-warning">Gestion de usuarios</h2>
         <span class="centro mb-4">A continuacion se muestran los usuarios registrados en el sistema</span>
 

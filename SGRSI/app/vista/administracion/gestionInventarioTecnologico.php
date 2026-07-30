@@ -22,15 +22,20 @@
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
                 </ul>
             </section>
-
+            <ul class="nav-menu">
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="metricas.php">Metricas del sistema</a></li>
+            </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">⚙ Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="gestionUsuarios.html">Gestion de usuarios</a></li>
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
                     </ul>
                 </li>
             </ul>
@@ -106,9 +111,9 @@
         </section>
 
         <section class="w-100 d-flex px-3 mt-4">
-            <a href="historialGeneral.html?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+            <a href="historialGeneral.php?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
                 de Equipos</a>
-            <a href="historialGeneral.html?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+            <a href="historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
                 de Salones</a>
             <button id="btnRegistrarEquipo" class="btn btn-success ms-auto" type="button">Registrar PC</button>
         </section>
