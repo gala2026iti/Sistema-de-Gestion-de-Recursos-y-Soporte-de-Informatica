@@ -1,0 +1,18 @@
+.ticket-link {
+    color: rgb(15, 15, 160);
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.ticket-link:hover {
+    text-decoration: underline;
+}
+
+table a {
+    color: aliceblue;
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background-color: #dfe5f1;
+}
