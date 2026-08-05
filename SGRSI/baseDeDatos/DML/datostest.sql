@@ -11,7 +11,10 @@ INSERT INTO ROL (ci, rol) VALUES
 ('22222222', 'docente'),
 ('33333333', 'tecnico'),
 ('44444444', 'administrador'),
-('44444444', 'tecnico');
+('44444444', 'tecnico'),
+('55555555', 'docente')
+;
+
 
 INSERT INTO ADMINISTRADOR (ci) VALUES ('11111111'), ('44444444');
 INSERT INTO DOCENTE (ci) VALUES ('22222222');
