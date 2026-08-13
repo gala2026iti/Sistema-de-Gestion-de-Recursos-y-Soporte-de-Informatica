@@ -1,15 +1,17 @@
 <?php
 session_start();
 
-// 1. Impedir acceso sin sesión iniciada
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 if (!isset($_SESSION["cedula"])) {
     header("Location: index.php?error=sin_sesion");
     exit();
 }
 
-// 2. Impedir que un usuario que NO sea admin acceda a administración
-if (!isset($_SESSION["cedula"]) || empty($_SESSION["administrador"])) {
-    header("Location: index.php?error=" . urlencode("Acceso no autorizado al panel de administración."));
+if (!isset($_SESSION["administrador"]) || $_SESSION["administrador"] !== true) {
+    header("Location: index.php?error=no_autorizado");
     exit();
 }
 

@@ -55,11 +55,11 @@ $_SESSION["docente"]       = $usuario->esDocente();
 
 // Redireccionar según el rol activado
 if ($_SESSION["administrador"]) {
-    header("Location: ../vista/homeAdmin.php");
+    header("Location: ../../public/paginaWeb/homeAdmin.php");
 } elseif ($_SESSION["tecnico"]) {
-    header("Location: ../vista/homeTecnico.php");
+    header("Location: ../../public/paginaWeb/homeTecnico.php");
 } elseif ($_SESSION["docente"]) {
-    header("Location: ../vista/homeDocente.php");
+    header("Location: ../../public/paginaWeb/homeDocente.php");
 }
 
 exit;
