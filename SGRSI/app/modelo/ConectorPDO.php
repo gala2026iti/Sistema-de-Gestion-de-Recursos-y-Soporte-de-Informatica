@@ -1,29 +1,49 @@
 <?php
-class ConectorPDO {
-    private static ?PDO $conexion = null;
+// app/modelo/ConectorPDO.php
 
-    public static function getConexion(): PDO {
-        if (self::$conexion === null) {
-            $host = '127.0.0.1';
-            $port = '3306';
-            $db   = 'sgrsi';
-            $user = 'root';
-            $pass = '';
-            $charset = 'utf8mb4';
+class ConectorPDO
+{
+    private string $servername;
+    private string $username;
+    private string $password;
+    private string $dbname;
+    private ?PDO $conexion;
 
-            $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
+    /**
+     * El constructor recibe los datos del servidor y la base de datos
+     */
+    public function __construct(string $servername, string $username, string $password, string $dbname) {
+        $this->servername = $servername;
+        $this->username   = $username;
+        $this->password   = $password;
+        $this->dbname     = $dbname;
+        $this->conexion   = null;
+    }
 
-            try {
-                self::$conexion = new PDO($dsn, $user, $pass, $options);
-            } catch (\PDOException $e) {
-                throw new \PDOException("Error de conexión PDO: " . $e->getMessage(), (int)$e->getCode());
-            }
+    /**
+     * Crea la instancia PDO y establece la conexión con MySQL
+     */
+    public function establecerConexion(): ?PDO {
+        try {
+            $this->conexion = new PDO(
+                "mysql:host=$this->servername;dbname=$this->dbname;charset=utf8mb4", 
+                $this->username, 
+                $this->password
+            );
+            
+            // Configurar el modo de error de PDO a Excepción para capturar fallos SQL
+            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo "Error al conectar con la base de datos: " . $e->getMessage();
         }
-        return self::$conexion;
+        
+        return $this->conexion;
+    }
+
+    /**
+     * Cierra la conexión liberando la variable PDO
+     */
+    public function desconectar(): void {
+        $this->conexion = null;
     }
 }

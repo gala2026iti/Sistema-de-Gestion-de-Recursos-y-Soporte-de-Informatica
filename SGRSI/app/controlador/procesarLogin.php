@@ -1,61 +1,65 @@
 <?php
+// app/controlador/procesarLogin.php
 
-require_once __DIR__ . "/../modelo/ConectorPDO.php";
-require_once __DIR__ . "/../modelo/AccesoDatosUsuario.php";
-require_once __DIR__ . "/../modelo/Usuario.php";
-require_once __DIR__ . "/../modelo/Login.php";
+require_once __DIR__ . "/../../config/config.php";
 
+require_once RUTA_MODELO . "/ConectorPDO.php";
+require_once RUTA_MODELO . "/AccesoDatosUsuario.php";
+require_once RUTA_MODELO . "/Usuario.php";
+require_once RUTA_MODELO . "/Login.php";
+
+// Comprueba que el formulario haya sido enviado mediante POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../../public/paginaWeb/index.php");
-    exit();
+    $mensaje = "Acceso Denegado: Petición incorrecta";
+    header("Location: ../vista/index.php?error=" . urlencode($mensaje));
+    exit;
 }
 
-$cedulaInput = $_POST["cedula"] ?? "";
-$claveInput  = $_POST["clave"] ?? "";
+// Recupera las credenciales del formulario
+$cedula = trim($_POST["cedula"] ?? "");
+$clave  = $_POST["clave"] ?? "";
 
-$login = new Login($cedulaInput, $claveInput);
-$accesoDatos = new AccesoDatosUsuario();
-$usuario = $accesoDatos->buscarUsuarioPorCedula($login->getCedula());
+// Conexión mediante la clase ConectorPDO
+$conectorPDO = new ConectorPDO("127.0.0.1:3306", "root", "", "sgrsi");
+$conexion = $conectorPDO->establecerConexion();
 
-// 1. Validar Credenciales
-if ($usuario === null || !$login->esClaveValida($usuario)) {
-    header("Location: ../../public/paginaWeb/index.php?error=credenciales");
-    exit();
+if ($conexion === null) {
+    $mensaje = "Acceso Denegado: Problemas con la conexión.";
+    header("Location: ../vista/index.php?error=" . urlencode($mensaje));
+    exit;
 }
 
-// 2. Validar Estado
-if (!$usuario->estaActivo()) {
-    header("Location: ../../public/paginaWeb/index.php?error=inactivo");
-    exit();
+// Proceso de Autenticación
+$accesoDatosUsuario = new AccesoDatosUsuario($conexion);
+$login = new Login($accesoDatosUsuario);
+$usuario = $login->autenticar($cedula, $clave);
+
+// Desconexión limpia de PDO
+$conectorPDO->desconectar();
+
+// Si las credenciales son incorrectas o no existe el usuario
+if ($usuario === null) {
+    $mensaje = "Acceso Denegado: La cédula o la contraseña son incorrectas o la sesión ya está activa.";
+    header("Location: ../vista/index.php?error=" . urlencode($mensaje));
+    exit;
 }
 
-// 3. Validar Roles
-if (!$usuario->getAdmin() && !$usuario->getTecnico() && !$usuario->getDocente()) {
-    header("Location: ../../public/paginaWeb/index.php?error=sin_roles");
-    exit();
-}
-
-// Iniciar sesión
+// Iniciar Sesión en PHP
 session_start();
 session_regenerate_id(true);
 
-$_SESSION["cedula"]  = $usuario->getCedula();
-$_SESSION["nombre"]  = $usuario->getNombre();
-$_SESSION["admin"]   = $usuario->getAdmin();
-$_SESSION["tecnico"] = $usuario->getTecnico();
-$_SESSION["docente"] = $usuario->getDocente();
+$_SESSION["cedula"]        = $usuario->getCedula();
+$_SESSION["administrador"] = $usuario->esAdministrador();
+$_SESSION["tecnico"]       = $usuario->esTecnico();
+$_SESSION["docente"]       = $usuario->esDocente();
 
-// Redirección según Roles
-if ($_SESSION["admin"] && $_SESSION["tecnico"]) {
-    header("Location: ../../public/paginaWeb/homeAdmin.php");
-    exit();
-} elseif ($_SESSION["admin"]) {
-    header("Location: ../../public/paginaWeb/homeAdmin.php");
-    exit();
+// Redireccionar según el rol activado
+if ($_SESSION["administrador"]) {
+    header("Location: ../vista/homeAdmin.php");
 } elseif ($_SESSION["tecnico"]) {
-    header("Location: ../../public/paginaWeb/homeTecnico.php");
-    exit();
+    header("Location: ../vista/homeTecnico.php");
 } elseif ($_SESSION["docente"]) {
-    header("Location: ../../public/paginaWeb/homeDocente.php");
-    exit();
+    header("Location: ../vista/homeDocente.php");
 }
+
+exit;

@@ -8,8 +8,8 @@ if (!isset($_SESSION["cedula"])) {
 }
 
 // 2. Impedir que un usuario que NO sea admin acceda a administración
-if (!isset($_SESSION["admin"]) || $_SESSION["admin"] !== true) {
-    header("Location: index.php?error=no_autorizado");
+if (!isset($_SESSION["cedula"]) || empty($_SESSION["administrador"])) {
+    header("Location: index.php?error=" . urlencode("Acceso no autorizado al panel de administración."));
     exit();
 }
 

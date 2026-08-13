@@ -1,58 +1,62 @@
 <?php
+// app/modelo/Usuario.php
 
 class Usuario {
     private string $cedula;
-    private string $nombre;
-    private string $correo;
     private string $claveHash;
-    private bool $admin;
+    private bool $sesionActiva;
+    private bool $administrador;
     private bool $tecnico;
     private bool $docente;
-    private bool $activo;
 
-    public function __construct(string $cedula, string $nombre, string $correo, string $claveHash, bool $admin, bool $tecnico, bool $docente, bool $activo) {
-        $this->cedula = $cedula;
-        $this->nombre = $nombre;
-        $this->correo = $correo;
-        $this->claveHash = $claveHash;
-        $this->admin = $admin;
-        $this->tecnico = $tecnico;
-        $this->docente = $docente;
-        $this->activo = $activo;
+    /**
+     * Constructor parametrizado con las propiedades del usuario
+     */
+    public function __construct(
+        string $cedula,
+        string $claveHash,
+        bool $sesionActiva,
+        bool $administrador,
+        bool $tecnico,
+        bool $docente
+    ) {
+        $this->cedula        = $cedula;
+        $this->claveHash    = $claveHash;
+        $this->sesionActiva  = $sesionActiva;
+        $this->administrador = $administrador;
+        $this->tecnico       = $tecnico;
+        $this->docente       = $docente;
     }
 
-    public function getCedula(): string {
-        return $this->cedula;
+    // --- GETTERS ---
+    public function getCedula(): string { 
+        return $this->cedula; 
     }
 
-    public function getNombre(): string {
-        return $this->nombre;
+    public function getClaveHash(): string { 
+        return $this->claveHash; 
     }
 
-    public function getCorreo(): string {
-        return $this->correo;
+    // Devuelve si el usuario está activo/habilitado en el sistema
+    public function estaActivo(): bool { 
+        return $this->sesionActiva; 
     }
 
-    public function getClaveHash(): string {
-        return $this->claveHash;
+    // Alias compatible con la plantilla del docente
+    public function tieneSesionActiva(): bool { 
+        return $this->sesionActiva; 
     }
 
-    public function getAdmin(): bool {
-        return $this->admin;
+    // Roles del SGRSI
+    public function esAdministrador(): bool { 
+        return $this->administrador; 
     }
 
-    public function getTecnico(): bool {
-        return $this->tecnico;
+    public function esTecnico(): bool { 
+        return $this->tecnico; 
     }
 
-    public function getDocente(): bool {
-        return $this->docente;
+    public function esDocente(): bool { 
+        return $this->docente; 
     }
-
-    public function estaActivo(): bool {
-        return $this->activo;
-    }
-
 }
-
-?>

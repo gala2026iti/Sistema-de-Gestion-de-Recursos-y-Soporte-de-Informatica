@@ -1,44 +1,124 @@
 <?php
-require_once __DIR__ . "/ConectorPDO.php";
+// app/modelo/AccesoDatosUsuario.php
+
 require_once __DIR__ . "/Usuario.php";
 
+/**
+ * Clase DAO que gestiona las consultas de usuarios en la base de datos SGRSI
+ */
 class AccesoDatosUsuario {
-    private PDO $db;
+    private PDO $conexion;
 
-    public function __construct(?PDO $db = null) {
-        $this->db = $db ?? ConectorPDO::getConexion();
+    /**
+     * Constructor parametrizado que recibe una conexión activa a la BD
+     */
+    public function __construct(PDO $conexion) {
+        $this->conexion = $conexion;
     }
 
-    public function buscarUsuarioPorCedula(string $cedula): ?Usuario {
-        // 1. Buscar datos principales del usuario por cédula
-        $sqlUsuario = "SELECT ci, nombre, correo, clave, activo FROM USUARIO WHERE ci = :cedula";
-        $stmt = $this->db->prepare($sqlUsuario);
-        $stmt->execute([':cedula' => $cedula]);
-        $datosUser = $stmt->fetch();
+    /**
+     * Busca un usuario por su CI y determina sus roles mediante LEFT JOIN
+     */
+    public function buscarUsuario(string $cedula): ?Usuario {
+        $sql = "
+            SELECT
+                u.ci AS cedula,
+                u.clave AS claveHash,
+                u.activo AS sesionActiva,
 
-        if (!$datosUser) {
-            return null; // Devuelve null si no existe
+                CASE
+                    WHEN a.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS administrador,
+
+                CASE
+                    WHEN t.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS tecnico,
+
+                CASE
+                    WHEN d.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS docente
+
+            FROM USUARIO AS u
+
+            LEFT JOIN ADMINISTRADOR AS a
+                ON a.ci = u.ci
+
+            LEFT JOIN TECNICO AS t
+                ON t.ci = u.ci
+
+            LEFT JOIN DOCENTE AS d
+                ON d.ci = u.ci
+
+            WHERE u.ci = :cedula
+        ";
+
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute(["cedula" => $cedula]);
+
+        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        // Desconectar el objeto PDOStatement
+        $consulta = null;
+
+        if ($usuario === false) {
+            return null;
         }
 
-        // 2. Recuperar todos los roles asociados al usuario
-        $sqlRoles = "SELECT rol FROM ROL WHERE ci = :cedula";
-        $stmtRoles = $this->db->prepare($sqlRoles);
-        $stmtRoles->execute([':cedula' => $cedula]);
-        $rolesRows = $stmtRoles->fetchAll(PDO::FETCH_COLUMN);
-
-        $isAdmin   = in_array('administrador', $rolesRows);
-        $isTecnico = in_array('tecnico', $rolesRows);
-        $isDocente = in_array('docente', $rolesRows);
-
         return new Usuario(
-            $datosUser['ci'],
-            $datosUser['nombre'],
-            $datosUser['correo'],
-            $datosUser['clave'],
-            $isAdmin,
-            $isTecnico,
-            $isDocente,
-            (bool)$datosUser['activo']
+            $usuario["cedula"],
+            $usuario["claveHash"],
+            (bool) $usuario["sesionActiva"],
+            (bool) $usuario["administrador"],
+            (bool) $usuario["tecnico"],
+            (bool) $usuario["docente"]
         );
+    }
+
+    /**
+     * Devuelve el listado completo de usuarios
+     */
+    public function listarUsuarios(): array {
+        $sql = "
+            SELECT
+                u.ci AS cedula,
+                u.nombre,
+                u.correo,
+                u.activo AS sesionActiva,
+
+                CASE
+                    WHEN a.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS administrador,
+
+                CASE
+                    WHEN t.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS tecnico,
+
+                CASE
+                    WHEN d.ci IS NOT NULL THEN TRUE
+                    ELSE FALSE
+                END AS docente
+
+            FROM USUARIO AS u
+
+            LEFT JOIN ADMINISTRADOR AS a
+                ON a.ci = u.ci
+
+            LEFT JOIN TECNICO AS t
+                ON t.ci = u.ci
+
+            LEFT JOIN DOCENTE AS d
+                ON d.ci = u.ci
+        ";
+
+        $consulta = $this->conexion->query($sql);
+        $usuarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $consulta = null;
+
+        return $usuarios;
     }
 }
