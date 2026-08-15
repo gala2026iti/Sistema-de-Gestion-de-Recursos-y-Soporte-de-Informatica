@@ -12,15 +12,14 @@ class ConectorPDO
      * @brief Nombre o dirección del servidor de la base de datos.
      */
     private string $servername;
-
     /**
      * @brief Usuario utilizado para conectarse a la base de datos.
      */
     private string $username;
-
     /**
      * @brief Contraseña utilizada para conectarse a la base de datos.
      */
+    
     private string $password;
 
     /**

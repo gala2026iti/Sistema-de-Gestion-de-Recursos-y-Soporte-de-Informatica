@@ -1,53 +1,100 @@
-
 USE sgrsi;
 
 /*
-    Espacio donde se documentan las consultas SQL utilizadas en la aplicación.
+    ============================================================================
+    DOCUMENTACIÓN DE CONSULTAS DQL (Data Query Language) - SGRSI
+    ============================================================================
+    Ubicación en el proyecto: app/modelo/AccesoDatosUsuario.php
     
-    Nota: Las consultas contienen valores fijos de prueba (ej: '44444444'). 
-    En PHP, estos valores son reemplazados dinámicamente por marcadores 
-    de parámetros (:cedula) utilizando PDO prepared statements.
+    Nota: Las consultas se presentan con valores de prueba (ej: '11111111').
+    En PHP (PDO), el valor literal se reemplaza dinámicamente utilizando 
+    consultas preparadas con marcadores de parámetros (:cedula).
 */
 
 -- ============================================================================
--- 1. CONSULTAS UTILIZADAS EN AccesoDatosUsuario.php
+-- 1. CONSULTA DE AUTENTICACIÓN / BÚSQUEDA DE USUARIO POR CÉDULA
 -- ============================================================================
 
-/* Consulta 1.1: Obtiene los datos principales del usuario para el inicio de sesión.
-    Se ejecuta al buscar un usuario por su cédula en AccesoDatosUsuario::buscarUsuarioPorCedula().
-    En PHP, '44444444' se reemplaza por el marcador :cedula.
+/* Consulta 1.1: Búsqueda individual de usuario y determinación de roles.
+   Se ejecuta en AccesoDatosUsuario::buscarUsuario(string $cedula).
+   
+   Técnica del Docente:
+   - Realiza un LEFT JOIN con las subclases de roles (ADMINISTRADOR, TECNICO, DOCENTE).
+   - Evalúa si el usuario pertenece a cada rol mediante la expresión CASE WHEN.
+   - Retorna en una sola tupla el estado de la cuenta, clave hash y los tres roles.
 */
-SELECT ci, nombre, correo, clave, activo 
-FROM USUARIO 
-WHERE ci = '44444444';
+SELECT
+    u.cedula,
+    u.claveHash,
+    u.sesionActiva,
 
+    CASE
+        WHEN a.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS administrador,
 
-/* Consulta 1.2: Obtiene el listado de roles asociados a la cédula consultada.
-    Se ejecuta inmediatamente después de la consulta 1.1 para verificar los permisos del usuario.
-    En PHP, '44444444' se reemplaza por el marcador :cedula.
-*/
-SELECT rol 
-FROM ROL 
-WHERE ci = '44444444';
+    CASE
+        WHEN t.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS tecnico,
+
+    CASE
+        WHEN d.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS docente
+
+FROM USUARIO AS u
+
+LEFT JOIN ADMINISTRADOR AS a
+    ON a.cedula = u.cedula
+
+LEFT JOIN TECNICO AS t
+    ON t.cedula = u.cedula
+
+LEFT JOIN DOCENTE AS d
+    ON d.cedula = u.cedula
+
+WHERE u.cedula = '11111111';
 
 
 -- ============================================================================
--- 2. CONSULTA UNIFICADA ALTERNATIVA (OPTIMIZADA CON JOIN Y GROUP_CONCAT)
+-- 2. CONSULTA DE LISTADO GENERAL DE USUARIOS
 -- ============================================================================
 
-/* Consulta 2.1: Consulta optimizada en una sola transacción.
-    Combina los datos del usuario y concatena sus roles asociados ('administrador,tecnico')
-    utilizando LEFT JOIN y GROUP_CONCAT.
-    En PHP, '44444444' se reemplaza por el marcador :cedula.
+/* Consulta 2.1: Obtiene todos los usuarios del sistema proyectando sus roles.
+   Se ejecuta en AccesoDatosUsuario::listarUsuarios().
+   
+   Utiliza el mismo principio de LEFT JOIN + CASE WHEN para armar la tabla 
+   de administración en el frontend.
 */
-SELECT 
-    U.ci, 
-    U.nombre, 
-    U.correo, 
-    U.clave, 
-    U.activo, 
-    GROUP_CONCAT(R.rol) AS roles
-FROM USUARIO U
-LEFT JOIN ROL R ON U.ci = R.ci
-WHERE U.ci = '44444444'
-GROUP BY U.ci;
+SELECT
+    u.cedula,
+    u.nombre,
+    u.correo,
+    u.sesionActiva,
+
+    CASE
+        WHEN a.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS administrador,
+
+    CASE
+        WHEN t.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS tecnico,
+
+    CASE
+        WHEN d.cedula IS NOT NULL THEN TRUE
+        ELSE FALSE
+    END AS docente
+
+FROM USUARIO AS u
+
+LEFT JOIN ADMINISTRADOR AS a
+    ON a.cedula = u.cedula
+
+LEFT JOIN TECNICO AS t
+    ON t.cedula = u.cedula
+
+LEFT JOIN DOCENTE AS d
+    ON d.cedula = u.cedula;
