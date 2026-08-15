@@ -1,4 +1,4 @@
 <?php
-define("DOCETNE","docente");
+define("DOCENTE","docente");
 define("ADMINISTRADOR","administrador");
 define("TECNICO","tecnico");

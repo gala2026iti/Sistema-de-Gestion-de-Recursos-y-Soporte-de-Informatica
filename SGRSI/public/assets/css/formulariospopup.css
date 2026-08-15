@@ -1,15 +1,20 @@
-.oculto {
-    display: none !important;
-}
-
-.modal-incidencia {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
 .modal-contenido {
+    width: 100%;
     max-width: 40rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.form-estado-usuario {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+@media (max-width: 576px) {
+
+    .modal-contenido {
+        max-height: 92vh;
+    }
+
 }
