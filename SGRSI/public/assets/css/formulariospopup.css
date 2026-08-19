@@ -3,7 +3,13 @@
     max-width: 40rem;
     max-height: 90vh;
     overflow-y: auto;
+    border: 0;
 }
+
+.modal-contenido::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
 .form-estado-usuario {
     display: inline;
     margin: 0;

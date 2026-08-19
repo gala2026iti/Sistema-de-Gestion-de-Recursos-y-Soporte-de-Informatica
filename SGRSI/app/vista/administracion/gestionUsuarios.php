@@ -91,7 +91,7 @@
             A continuacion se muestran los usuarios registrados en el sistema
         </span>
         <section class="filtros">
-            <article method="GET" action="gestionUsuarios.php">
+            <form method="GET" action="gestionUsuarios.php">
                 <label for="rol">Rol:</label>
 
                 <select id="rol" name="rol">
@@ -112,7 +112,7 @@
                 <button type="submit" class="btn btn-primary">
                     Filtrar
                 </button>
-            </article>
+            </form>
         </section>
 
         <section class="table-responsive w-100 m-0">
@@ -174,17 +174,22 @@
                                     <?php if ($usuario["activo"]): ?>
                                         <form method="POST" action="../../../app/controlador/procesarEstadoUsuario.php"
                                             class="d-inline form-estado-usuario">
+                                            <input type="hidden" name="csrfToken"
+                                                value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+
                                             <input type="hidden" name="cedula" value="<?= htmlspecialchars($usuario["cedula"]) ?>">
                                             <input type="hidden" name="accion" value="desactivar">
                                             <button type="submit" class="btn btn-danger ms-1">
                                                 Desactivar
                                             </button>
                                         </form>
-                                        
+
                                     <?php else: ?>
 
                                         <form method="POST" action="../../../app/controlador/procesarEstadoUsuario.php"
                                             class="d-inline form-estado-usuario">
+                                            <input type="hidden" name="csrfToken"
+                                                value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
 
                                             <input type="hidden" name="cedula" value="<?= htmlspecialchars($usuario["cedula"]) ?>">
                                             <input type="hidden" name="accion" value="activar">
@@ -207,11 +212,12 @@
             </button>
         </section>
 
-        <section id="modalUsuario"
-            class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center bg-dark bg-opacity-50 p-3 z-3">
+        <dialog id="dialogRegistrarUsuario" class="modal-contenido rounded shadow p-4">
 
-            <form class="modal-contenido bg-white rounded shadow p-4" id="formUsuario" method="POST"
-                action="../../../app/controlador/procesarAltaUsuario.php">
+            <form id="formUsuario" method="POST" action="../../../app/controlador/procesarAltaUsuario.php">
+                <input type="hidden" name="csrfToken"
+                    value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+
                 <h2 class="text-primary border-bottom pb-2 mb-4">
                     Registro de usuario
                 </h2>
@@ -278,12 +284,14 @@
                     Cancelar
                 </button>
             </form>
-        </section>
+        </dialog>
 
-        <section id="modalModificarUsuario"
-            class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center bg-dark bg-opacity-50 p-3 z-3">
-            <form class="modal-contenido bg-white rounded shadow p-4" id="formModificarUsuario" method="POST"
+        <dialog id="dialogModificarUsuario" class="modal-contenido rounded shadow p-4">
+            <form id="formModificarUsuario" method="POST"
                 action="../../../app/controlador/procesarModificarUsuario.php">
+                <input type="hidden" name="csrfToken"
+                    value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+
                 <h2 class="text-primary border-bottom pb-2 mb-4">
                     Modificar usuario
                 </h2>
@@ -339,7 +347,7 @@
                         </label>
                         <input class="form-check-input" type="checkbox" id="modificarRolAdministrador" name="roles[]"
                             value="administrador">
-
+                    </div>
                 </fieldset>
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     <button type="submit" class="btn btn-success">
@@ -350,7 +358,7 @@
                     </button>
                 </div>
             </form>
-        </section>
+        </dialog>
     </main>
     <footer>
         <span>

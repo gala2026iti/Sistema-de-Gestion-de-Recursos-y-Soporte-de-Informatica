@@ -1,17 +1,18 @@
 <?php
 
+/**
+ * @file cargarGestionUsuarios.php
+ *
+ * @brief Carga los usuarios para la página de gestión.
+ *
+ * Obtiene los filtros enviados mediante GET, consulta los usuarios
+ * correspondientes y carga la vista de gestión de usuarios.
+ */
+
 require_once __DIR__ . "/../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/AccesoDatosUsuario.php";
-
-/**
- * @brief Carga los usuarios para la página de gestión de usuarios.
- *
- * Recupera los filtros enviados mediante GET, obtiene los usuarios
- * correspondientes desde el modelo y finalmente carga la vista
- * de gestión de usuarios.
- */
 
 $rol = strtolower(trim($_GET["rol"] ?? ""));
 $estado = strtolower(trim($_GET["estado"] ?? ""));
@@ -26,19 +27,16 @@ $conectorPDO = new ConectorPDO(
 $conexion = $conectorPDO->establecerConexion();
 
 if ($conexion === null) {
-
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
         "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
-
     exit();
 }
 
 $accesoDatosUsuario = new AccesoDatosUsuario($conexion);
-
 $usuarios = $accesoDatosUsuario->listarUsuarios($rol, $estado);
 
 $conectorPDO->desconectar();

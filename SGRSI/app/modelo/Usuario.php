@@ -5,10 +5,6 @@
  *
  * Contiene los datos necesarios para identificar al usuario,
  * validar su acceso y determinar los roles que posee.
- *
- * Un usuario puede pertenecer a uno o varios roles simultáneamente.
- * Los roles se determinan mediante las tablas ADMINISTRADOR,
- * TECNICO y DOCENTE de la base de datos.
  */
 class Usuario
 {
@@ -28,17 +24,17 @@ class Usuario
     private bool $sesionActiva;
 
     /**
-     * @brief Indica si el usuario pertenece al rol administrador.
+     * @brief Indica si posee el rol administrador.
      */
     private bool $administrador;
 
     /**
-     * @brief Indica si el usuario pertenece al rol técnico.
+     * @brief Indica si posee el rol técnico.
      */
     private bool $tecnico;
 
     /**
-     * @brief Indica si el usuario pertenece al rol docente.
+     * @brief Indica si posee el rol docente.
      */
     private bool $docente;
 
@@ -91,7 +87,7 @@ class Usuario
     /**
      * @brief Comprueba si el usuario está activo.
      *
-     * @return bool true si está activo, false en caso contrario.
+     * @return bool true si está activo; false en caso contrario.
      */
     public function estaActivo(): bool
     {
@@ -101,10 +97,7 @@ class Usuario
     /**
      * @brief Comprueba si el usuario tiene una sesión activa.
      *
-     * Mantiene compatibilidad con la estructura utilizada
-     * en la plantilla proporcionada por el docente.
-     *
-     * @return bool true si está activo, false en caso contrario.
+     * @return bool true si está activo; false en caso contrario.
      */
     public function tieneSesionActiva(): bool
     {

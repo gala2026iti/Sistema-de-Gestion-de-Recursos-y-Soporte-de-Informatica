@@ -3,9 +3,8 @@
 /**
  * @brief Gestiona el registro de nuevos usuarios.
  *
- * Se encarga de insertar un usuario en la tabla USUARIO y de asociarlo
- * con uno o varios roles mediante las tablas ADMINISTRADOR, TECNICO
- * y DOCENTE.
+ * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
+ * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
  */
 class AltaDatosUsuario
 {
@@ -15,7 +14,7 @@ class AltaDatosUsuario
     private PDO $conexion;
 
     /**
-     * @brief Construye un objeto AltaDatosUsuario.
+     * @brief Construye el acceso para registrar usuarios.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -27,11 +26,8 @@ class AltaDatosUsuario
     /**
      * @brief Registra un nuevo usuario y sus roles.
      *
-     * Utiliza una transacción para garantizar que el usuario y todos
-     * sus roles sean registrados correctamente.
-     *
-     * Si ocurre un error durante el proceso, se deshacen todas las
-     * inserciones realizadas.
+     * Utiliza una transacción para garantizar que el usuario y sus
+     * roles se registren como una única operación.
      *
      * @param string $cedula Cédula de identidad del usuario.
      * @param string $nombre Nombre del usuario.
@@ -49,20 +45,15 @@ class AltaDatosUsuario
         string $claveHash,
         array $roles
     ): bool {
-
         try {
-
             $this->conexion->beginTransaction();
 
             $sqlUsuario = "
-                INSERT INTO USUARIO
-                    (ci, nombre, correo, clave, activo)
-                VALUES
-                    (:cedula, :nombre, :correo, :clave, TRUE)
+                INSERT INTO USUARIO (ci, nombre, correo, clave, activo)
+                VALUES (:cedula, :nombre, :correo, :clave, TRUE)
             ";
 
             $consultaUsuario = $this->conexion->prepare($sqlUsuario);
-
             $consultaUsuario->execute([
                 "cedula" => $cedula,
                 "nombre" => $nombre,
@@ -71,67 +62,47 @@ class AltaDatosUsuario
             ]);
 
             /*
-             * Un usuario puede pertenecer a varios roles,
-             * por lo que se procesa cada rol seleccionado.
+             * Se registra al usuario en cada uno
+             * de los roles seleccionados.
              */
             foreach ($roles as $rol) {
-
                 switch (strtolower($rol)) {
-
                     case "administrador":
-
-                        $sqlAdministrador = "
+                        $sqlRol = "
                             INSERT INTO ADMINISTRADOR (ci)
                             VALUES (:cedula)
                         ";
-
-                        $consultaRol =
-                            $this->conexion->prepare($sqlAdministrador);
-
                         break;
 
                     case "tecnico":
-
-                        $sqlTecnico = "
+                        $sqlRol = "
                             INSERT INTO TECNICO (ci)
                             VALUES (:cedula)
                         ";
-
-                        $consultaRol =
-                            $this->conexion->prepare($sqlTecnico);
-
                         break;
 
                     case "docente":
-
-                        $sqlDocente = "
+                        $sqlRol = "
                             INSERT INTO DOCENTE (ci)
                             VALUES (:cedula)
                         ";
-
-                        $consultaRol =
-                            $this->conexion->prepare($sqlDocente);
-
                         break;
 
                     default:
-
                         $this->conexion->rollBack();
-
                         return false;
                 }
 
+                $consultaRol = $this->conexion->prepare($sqlRol);
                 $consultaRol->execute([
                     "cedula" => $cedula
                 ]);
             }
 
             $this->conexion->commit();
-
             return true;
 
         } catch (PDOException $error) {
-
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }

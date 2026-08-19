@@ -1,120 +1,87 @@
 const formulario = document.getElementById("formUsuario");
-const modalUsuario = document.getElementById("modalUsuario");
-
+const dialogRegistrarUsuario = document.getElementById("dialogRegistrarUsuario");
 const registrarUsuario = document.getElementById("btnRegistrarUsuario");
 const cancelarUsuario = document.getElementById("btnCancelarUsuario");
-
 const btnMostrarClave = document.getElementById("btnMostrarClave");
 const inputClave = document.getElementById("clave");
 const inputConfirmarClave = document.getElementById("confirmarClave");
 
-const modalModificarUsuario =
-    document.getElementById("modalModificarUsuario");
-const formularioModificarUsuario =
-    document.getElementById("formModificarUsuario");
-const btnCancelarModificarUsuario =
-    document.getElementById("btnCancelarModificarUsuario");
-const modificarCedula =
-    document.getElementById("modificarCedula");
-const modificarNombre =
-    document.getElementById("modificarNombre");
-const modificarCorreo =
-    document.getElementById("modificarCorreo");
-const modificarRolDocente =
-    document.getElementById("modificarRolDocente");
-const modificarRolTecnico =
-    document.getElementById("modificarRolTecnico");
-const modificarRolAdministrador =
-    document.getElementById("modificarRolAdministrador");
-const botonesModificar =
-    document.querySelectorAll(".btnModificarUsuario");
-const modificarClave =
-    document.getElementById("modificarClave");
-const modificarConfirmarClave =
-    document.getElementById("modificarConfirmarClave");
+const dialogModificarUsuario = document.getElementById("dialogModificarUsuario");
+const formularioModificarUsuario = document.getElementById("formModificarUsuario");
+const btnCancelarModificarUsuario = document.getElementById("btnCancelarModificarUsuario");
+const modificarCedula = document.getElementById("modificarCedula");
+const modificarNombre = document.getElementById("modificarNombre");
+const modificarCorreo = document.getElementById("modificarCorreo");
+const modificarRolDocente = document.getElementById("modificarRolDocente");
+const modificarRolTecnico = document.getElementById("modificarRolTecnico");
+const modificarRolAdministrador = document.getElementById("modificarRolAdministrador");
+const modificarClave = document.getElementById("modificarClave");
+const modificarConfirmarClave = document.getElementById("modificarConfirmarClave");
+const btnMostrarClaveModificar = document.getElementById("btnMostrarClaveModificar");
+const botonesModificar = document.querySelectorAll(".btnModificarUsuario");
 
-
+/*
+ * Abre y cierra el diálogo de registro.
+ */
 registrarUsuario.addEventListener("click", () => {
-    modalUsuario.classList.replace("d-none", "d-flex");
+    dialogRegistrarUsuario.showModal();
 });
 
 cancelarUsuario.addEventListener("click", () => {
     formulario.reset();
-    modalUsuario.classList.replace("d-flex", "d-none");
+    inputClave.type = "password";
+    inputConfirmarClave.type = "password";
+    btnMostrarClave.innerText = "Mostrar contraseña";
+    dialogRegistrarUsuario.close();
 });
 
-let mostrarClave = false;
+/*
+ * Muestra u oculta las contraseñas del registro.
+ */
 btnMostrarClave.addEventListener("click", () => {
+    const mostrar = inputClave.type === "password";
 
-    mostrarClave = !mostrarClave;
-
-    inputClave.type = mostrarClave ? "text" : "password";
-    inputConfirmarClave.type = mostrarClave ? "text" : "password";
-
-    btnMostrarClave.innerText = mostrarClave
-        ? "Ocultar contraseña"
-        : "Mostrar contraseña";
+    inputClave.type = mostrar ? "text" : "password";
+    inputConfirmarClave.type = mostrar ? "text" : "password";
+    btnMostrarClave.innerText = mostrar ? "Ocultar contraseña" : "Mostrar contraseña";
 });
 
+/*
+ * Carga los datos del usuario y abre
+ * el diálogo de modificación.
+ */
 botonesModificar.forEach((boton) => {
-
     boton.addEventListener("click", () => {
-
-        console.log("Cédula:", boton.dataset.cedula);
-        console.log("Administrador:", boton.dataset.administrador);
-        console.log("Técnico:", boton.dataset.tecnico);
-        console.log("Docente:", boton.dataset.docente);
-
         modificarCedula.value = boton.dataset.cedula;
         modificarNombre.value = boton.dataset.nombre;
         modificarCorreo.value = boton.dataset.correo;
 
-        modificarRolAdministrador.checked =
-            boton.dataset.administrador === "1";
+        modificarRolAdministrador.checked = boton.dataset.administrador === "1";
+        modificarRolTecnico.checked = boton.dataset.tecnico === "1";
+        modificarRolDocente.checked = boton.dataset.docente === "1";
 
-        modificarRolTecnico.checked =
-            boton.dataset.tecnico === "1";
-
-        modificarRolDocente.checked =
-            boton.dataset.docente === "1";
-
-        modalModificarUsuario.classList.replace(
-            "d-none",
-            "d-flex"
-        );
-
+        dialogModificarUsuario.showModal();
     });
-
 });
 
+/*
+ * Cierra el diálogo de modificación.
+ */
 btnCancelarModificarUsuario.addEventListener("click", () => {
-
     formularioModificarUsuario.reset();
-
-    modalModificarUsuario.classList.replace(
-        "d-flex",
-        "d-none"
-    );
-
+    modificarClave.type = "password";
+    modificarConfirmarClave.type = "password";
+    btnMostrarClaveModificar.innerText = "Mostrar contraseña";
+    dialogModificarUsuario.close();
 });
 
-const btnMostrarClaveModificar =
-    document.getElementById("btnMostrarClaveModificar");
-
-let mostrarClaveModificar = false;
-
+/*
+ * Muestra u oculta las contraseñas de modificación.
+ */
 btnMostrarClaveModificar.addEventListener("click", () => {
+    const mostrar = modificarClave.type === "password";
 
-    mostrarClaveModificar = !mostrarClaveModificar;
-
-    modificarClave.type =
-        mostrarClaveModificar ? "text" : "password";
-
-    modificarConfirmarClave.type =
-        mostrarClaveModificar ? "text" : "password";
-
-    btnMostrarClaveModificar.innerText =
-        mostrarClaveModificar
-            ? "Ocultar contraseña"
-            : "Mostrar contraseña";
+    modificarClave.type = mostrar ? "text" : "password";
+    modificarConfirmarClave.type = mostrar ? "text" : "password";
+    btnMostrarClaveModificar.innerText = mostrar ? "Ocultar contraseña" : "Mostrar contraseña";
 });
