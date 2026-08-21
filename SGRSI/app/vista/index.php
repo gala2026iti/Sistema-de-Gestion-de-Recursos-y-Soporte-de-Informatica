@@ -42,7 +42,14 @@
                 </fieldset>
 
                 <button type="submit" class="btn btn-warning w-100 py-2 mt-5 fw-bold text-dark fs-5">Iniciar Sesión</button>
+            
             </form>
+                <?php if (isset($_GET["error"])): ?>
+                    <span class="alert alert-danger">
+                        <?= htmlspecialchars($_GET["error"]) ?>
+                    </span>
+                <?php endif; ?>
+
         </section>
     </main>
 

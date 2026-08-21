@@ -24,6 +24,17 @@ if (!isset($_SESSION["administrador"]) || $_SESSION["administrador"] !== true) {
     exit();
 }
 
+if (!isset($_SESSION["csrfToken"])) {
+    /**
+     * Si el usuario no posee los permisos de acceso correctos por falta
+     * de un token, devuelve el estado 403 que es forbidden.
+     * 
+     * Estados HTTP: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status#client_error_responses
+     */
+    http_response_code(403);
+    exit("Solicitud Rechazada..." . $_SESSION["csrfToken"]);
+}
+
 /*
  * Cargar el controlador.
  */

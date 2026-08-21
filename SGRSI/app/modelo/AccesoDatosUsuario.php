@@ -84,18 +84,19 @@ class AccesoDatosUsuario
      *
      * @return array Lista de usuarios encontrados.
      */
-    public function listarUsuarios(string $rol = "", string $estado = ""): array
+public function listarUsuarios(string $rol = "", string $estado = ""): array
     {
-        $sql = "
+        $sql ="
             SELECT
                 u.ci AS cedula,
                 u.nombre,
-                u.correo,
+                c.correo,
                 u.activo,
                 CASE WHEN a.ci IS NOT NULL THEN TRUE ELSE FALSE END AS administrador,
                 CASE WHEN t.ci IS NOT NULL THEN TRUE ELSE FALSE END AS tecnico,
                 CASE WHEN d.ci IS NOT NULL THEN TRUE ELSE FALSE END AS docente
             FROM USUARIO AS u
+            LEFT JOIN CORREO AS c ON c.ci = u.ci
             LEFT JOIN ADMINISTRADOR AS a ON a.ci = u.ci
             LEFT JOIN TECNICO AS t ON t.ci = u.ci
             LEFT JOIN DOCENTE AS d ON d.ci = u.ci
@@ -106,10 +107,10 @@ class AccesoDatosUsuario
 
         if ($estado === "activo") {
             $condiciones[] = "u.activo = :activo";
-            $parametros["activo"] = true;
+            $parametros["activo"] = 1;
         } elseif ($estado === "inactivo") {
             $condiciones[] = "u.activo = :activo";
-            $parametros["activo"] = false;
+            $parametros["activo"] = 0;
         }
 
         if ($rol === "administrador") {
