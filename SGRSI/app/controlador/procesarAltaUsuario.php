@@ -180,10 +180,11 @@ foreach ($roles as $rol) {
 $claveHash = password_hash($clave, PASSWORD_DEFAULT);
 
 $conectorPDO = new ConectorPDO(
-    "127.0.0.1:3306",
-    "root",
-    "",
-    "sgrsi"
+    $_ENV['DB_HOST'] . ":" . 
+    $_ENV['DB_PUERTO'], 
+    $_ENV['DB_USUARIO'], 
+    $_ENV['DB_CLAVE'], 
+    $_ENV['DB_NOMBRE']
 );
 
 $conexion = $conectorPDO->establecerConexion();
