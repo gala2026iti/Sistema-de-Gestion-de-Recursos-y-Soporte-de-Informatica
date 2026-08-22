@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/AccesoDatosUsuario.php";
+require_once RUTA_MODELO . "/usuarios/CargarUsuarios.php";
 require_once RUTA_MODELO . "/Login.php";
 
 /**

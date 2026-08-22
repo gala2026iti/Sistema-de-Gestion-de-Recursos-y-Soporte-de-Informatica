@@ -189,7 +189,7 @@
                                         Modificar
                                     </button>
                                     <?php if ($usuario["activo"]): ?>
-                                        <form method="POST" action="../../../app/controlador/procesarEstadoUsuario.php"
+                                        <form method="POST" action="../../../app/controlador/usuarios/procesarEstadoUsuario.php"
                                             class="d-inline form-estado-usuario">
                                             <input type="hidden" name="csrfToken"
                                                 value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
@@ -203,7 +203,7 @@
 
                                     <?php else: ?>
 
-                                        <form method="POST" action="../../../app/controlador/procesarEstadoUsuario.php"
+                                        <form method="POST" action="../../../app/controlador/usuarios/procesarEstadoUsuario.php"
                                             class="d-inline form-estado-usuario">
                                             <input type="hidden" name="csrfToken"
                                                 value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
@@ -231,7 +231,7 @@
 
         <dialog id="dialogRegistrarUsuario" class="modal-contenido rounded shadow p-4">
 
-            <form id="formUsuario" method="POST" action="../../../app/controlador/procesarAltaUsuario.php">
+            <form id="formUsuario" method="POST" action="../../../app/controlador/usuarios/procesarAltaUsuario.php">
                 <input type="hidden" name="csrfToken"
                     value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
 
@@ -305,7 +305,7 @@
 
         <dialog id="dialogModificarUsuario" class="modal-contenido rounded shadow p-4">
             <form id="formModificarUsuario" method="POST"
-                action="../../../app/controlador/procesarModificarUsuario.php">
+                action="../../../app/controlador/usuarios/procesarModificarUsuario.php">
                 <input type="hidden" name="csrfToken"
                     value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
 

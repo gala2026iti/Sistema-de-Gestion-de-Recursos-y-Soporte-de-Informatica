@@ -1,3 +1,3 @@
-UPDATE USUARIO
-SET activo = :activo
-WHERE ci = :cedula;
+UPDATE SOLICITUD
+SET finalizada = :activo
+WHERE id = :idSolicitud;

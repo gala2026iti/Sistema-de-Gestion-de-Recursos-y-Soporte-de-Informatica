@@ -38,6 +38,6 @@ if (!isset($_SESSION["csrfToken"])) {
 /*
  * Cargar el controlador.
  */
-require_once RUTA_CONTROLADOR . "/cargarGestionUsuarios.php";
+require_once RUTA_CONTROLADOR . "/usuarios/procesarCargarUsuarios.php";
 
 ?>

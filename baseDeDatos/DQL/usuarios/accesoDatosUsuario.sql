@@ -1,5 +1,5 @@
 /*
-    Consultas utilizadas por AccesoDatosUsuario.php.
+    Consultas utilizadas por CargarUsuarios.php.
 
     Los valores indicados mediante :parametro son reemplazados
     desde PHP utilizando consultas preparadas con PDO.

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file cargarGestionUsuarios.php
+ * @file procesarCargarUsuarios.php
  *
  * @brief Carga los usuarios para la página de gestión.
  *
@@ -12,7 +12,7 @@
 require_once __DIR__ . "/../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/AccesoDatosUsuario.php";
+require_once RUTA_MODELO . "/usuarios/CargarUsuarios.php";
 
 $rol = strtolower(trim($_GET["rol"] ?? ""));
 $estado = strtolower(trim($_GET["estado"] ?? ""));

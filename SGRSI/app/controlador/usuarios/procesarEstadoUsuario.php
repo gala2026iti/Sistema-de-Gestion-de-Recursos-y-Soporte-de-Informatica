@@ -12,7 +12,7 @@
 require_once __DIR__ . "/../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/EstadoDatosUsuario.php";
+require_once RUTA_MODELO . "/usuarios/EstadoDatosUsuario.php";
 
 session_start();
 
@@ -46,10 +46,6 @@ if (!($_SESSION["administrador"] ?? false)) {
     exit();
 }
 
-/*
- * Comprobamos que la solicitud incluya
- * el token CSRF de la sesión.
- */
 $csrfToken = $_POST["csrfToken"] ?? "";
 
 if (
@@ -79,10 +75,6 @@ if ($cedula === "" || $accion === "") {
     exit();
 }
 
-/*
- * Convertimos la acción recibida al valor
- * booleano utilizado por el modelo.
- */
 if ($accion === "activar") {
     $activo = true;
 } elseif ($accion === "desactivar") {

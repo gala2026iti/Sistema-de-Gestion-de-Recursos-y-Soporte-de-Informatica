@@ -12,7 +12,7 @@
 require_once __DIR__ . "/../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/AltaUsuario.php";
+require_once RUTA_MODELO . "/usuarios/AltaUsuario.php";
 
 session_start();
 
@@ -46,10 +46,6 @@ if (!($_SESSION["administrador"] ?? false)) {
     exit();
 }
 
-/*
- * Comprobamos que la solicitud incluya
- * el token CSRF de la sesión.
- */
 $csrfToken = $_POST["csrfToken"] ?? "";
 
 if (
@@ -109,7 +105,7 @@ if (
     exit();
 }
 
-if (!preg_match("/^[1-9][0-9]{7}$/", $cedula)) {
+if ($cedula < 10000000 || $cedula > 99999999) {
     $mensaje = "La cédula debe contener exactamente 8 dígitos.";
 
     header(
@@ -173,10 +169,6 @@ foreach ($roles as $rol) {
     }
 }
 
-/*
- * La contraseña se almacena mediante un hash
- * y nunca como texto plano.
- */
 $claveHash = password_hash($clave, PASSWORD_DEFAULT);
 
 $conectorPDO = new ConectorPDO(

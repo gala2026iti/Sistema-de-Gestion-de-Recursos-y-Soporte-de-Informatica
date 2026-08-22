@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/AccesoDatosUsuario.php";
+require_once __DIR__ . "/usuarios/CargarUsuarios.php";
 
 /**
  * @brief Gestiona la autenticación de los usuarios.
