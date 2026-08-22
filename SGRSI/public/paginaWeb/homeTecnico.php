@@ -24,7 +24,7 @@ header("Pragma: no-cache");
  */
 if (!isset($_SESSION["cedula"])) {
 
-    header("Location: index.php?error=sin_sesion");
+    header("Location: index.php?error=Acceso Denegado: Sesión no iniciada");
 
     exit();
 }
@@ -35,7 +35,7 @@ if (!isset($_SESSION["cedula"])) {
  */
 if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
 
-    header("Location: index.php?error=no_autorizado");
+    header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
 
     exit();
 }

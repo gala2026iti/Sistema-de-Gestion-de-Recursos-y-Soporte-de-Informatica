@@ -71,7 +71,6 @@
     <script src="../../../public/assets/js/btnMenuCelular.js"></script>
     <script src="../../../public/assets/js/verificarSesion.js"></script>
     <script src="../../../public/assets/js/cerrarSesion.js"></script>
-    <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
     <script src="../../../public/assets/js/historialGeneral.js"></script>
 </body>
 

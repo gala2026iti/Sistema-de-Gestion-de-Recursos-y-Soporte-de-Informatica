@@ -57,7 +57,7 @@ if (
     !is_string($csrfToken) ||
     !hash_equals($_SESSION["csrfToken"], $csrfToken)
 ) {
-    $mensaje = "Solicitud rechazada: token de seguridad inválido.";
+    $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
         "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="

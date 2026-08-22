@@ -46,7 +46,7 @@ class EstadoDatosUsuario
         try {
             $consulta = $this->conexion->prepare($sql);
             $consulta->execute([
-                "activo" => $activo,
+                "activo" => $activo ? 1 : 0, /* Esta cosita de 1:0 es porque activo se formatea a '""', por lo que se hace una comparación para que si se guarde como bool, ya que es lo que la base de datos quiere */
                 "cedula" => $cedula
             ]);
 

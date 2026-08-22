@@ -92,6 +92,19 @@
         <span class="centro mb-4">
             A continuacion se muestran los usuarios registrados en el sistema
         </span>
+
+<?php if (isset($_GET["resultado"])): ?>
+    <span class="alert alert-success d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["resultado"]) ?>
+    </span>
+<?php endif; ?>
+
+<?php if (isset($_GET["error"])): ?>
+    <span class="alert alert-danger d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["error"]) ?>
+    </span>
+<?php endif; ?>
+
         <section class="filtros">
             <form method="GET" action="gestionUsuarios.php">
                 <label for="rol">Rol:</label>
@@ -116,6 +129,8 @@
                 </button>
             </form>
         </section>
+
+                
 
         <section class="table-responsive w-100 m-0">
             <table class="tabla-contenedor m-0" id="tablaUsuarios">
@@ -373,7 +388,8 @@
     <script src="../../../public/assets/js/gestionUsuarios.js"></script>
     <script src="../../../public/assets/js/cerrarSesion.js"></script>
     <script src="../../../public/assets/js/verificarSesion.js"></script>
-    <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
+
+    <script src="../../../public/assets/js/verificarFormularioUsuario.js"> </script>
 </body>
 
 </html>

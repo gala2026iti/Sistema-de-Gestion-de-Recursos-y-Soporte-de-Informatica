@@ -48,7 +48,7 @@ WHERE u.ci = :cedula;
 SELECT
     u.ci AS cedula,
     u.nombre,
-    u.correo, /* CORREGIR */
+    u.correo,
     u.activo,
 
     CASE

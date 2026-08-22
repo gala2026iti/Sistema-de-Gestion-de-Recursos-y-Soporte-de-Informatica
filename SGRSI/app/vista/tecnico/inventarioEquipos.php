@@ -139,7 +139,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/assets/js/verificarSesion.js"></script>
   <script src="../../../public/assets/js/cerrarSesion.js"></script>
-  <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
 
 </body>
 

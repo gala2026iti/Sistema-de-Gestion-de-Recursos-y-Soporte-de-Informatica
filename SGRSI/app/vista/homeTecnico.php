@@ -104,7 +104,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/verificarSesion.js"></script>
   <script src="../assets/js/ticketsRegistrados.js"></script>
-  <script src="../assets/js/ocultarAdminDeTecnico.js"></script>
 </body>
 
 </html>

@@ -49,16 +49,26 @@ class AltaDatosUsuario
             $this->conexion->beginTransaction();
 
             $sqlUsuario = "
-                INSERT INTO USUARIO (ci, nombre, correo, clave, activo)
-                VALUES (:cedula, :nombre, :correo, :clave, TRUE)
+                INSERT INTO USUARIO (ci, nombre, clave, activo)
+                VALUES (:cedula, :nombre, :clave, TRUE)
+            ";
+
+            $sqlCorreo = "
+                INSERT INTO CORREO (ci, correo)
+                VALUES (:cedula, :correo)
             ";
 
             $consultaUsuario = $this->conexion->prepare($sqlUsuario);
             $consultaUsuario->execute([
                 "cedula" => $cedula,
                 "nombre" => $nombre,
-                "correo" => $correo,
                 "clave" => $claveHash
+            ]);
+
+            $consultaCorreo = $this->conexion->prepare($sqlCorreo);
+            $consultaCorreo->execute([
+                "cedula" => $cedula,
+                "correo" => $correo,
             ]);
 
             /*

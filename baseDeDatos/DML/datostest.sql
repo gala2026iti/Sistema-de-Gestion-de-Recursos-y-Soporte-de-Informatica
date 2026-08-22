@@ -4,14 +4,6 @@ INSERT INTO USUARIO (ci, nombre, clave, activo) VALUES
 ('33333333', 'Tecnico Puro', '$2y$12$ki0bVkt8cnZuR4v6aJvhhelaeQc1/4fec2txUcuG1Ybr4cvnhg2sS', 1),
 ('44444444', 'Leandro', '$2y$12$ki0bVkt8cnZuR4v6aJvhhelaeQc1/4fec2txUcuG1Ybr4cvnhg2sS', 1);
 
-INSERT INTO ROL (ci, rol) VALUES
-('11111111', 'administrador'),
-('22222222', 'docente'),
-('33333333', 'tecnico'),
-('44444444', 'administrador'),
-('44444444', 'tecnico')
-;
-
 INSERT INTO CORREO (ci, correo) VALUES
 ('11111111', 'admin@sgrsi.edu.uy'),
 ('22222222', 'docente@sgrsi.edu.uy'),

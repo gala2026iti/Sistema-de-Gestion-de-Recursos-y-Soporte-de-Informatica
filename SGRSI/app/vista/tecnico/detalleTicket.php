@@ -138,7 +138,6 @@
     <script src="../../../public/assets/js/verificarSesion.js"></script>
     <script src="../../../public/assets/js/cerrarSesion.js"></script>
     <script src="../../../public/assets/js/gestionTickets.js"></script>
-    <script src="../../../public/assets/js/ocultarAdminDeTecnico.js"></script>
 </body>
 
 </html>
