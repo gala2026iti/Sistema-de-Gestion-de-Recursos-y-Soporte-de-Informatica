@@ -48,7 +48,7 @@ if ($conexion === null) {
     exit;
 }
 
-$accesoDatosUsuario = new AccesoDatosUsuario($conexion);
+$accesoDatosUsuario = new CargarUsuarios($conexion);
 $login = new Login($accesoDatosUsuario);
 $usuario = $login->autenticar($cedula, $clave);
 
@@ -64,10 +64,6 @@ if ($usuario === null) {
     exit;
 }
 
-/*
- * Iniciamos una nueva sesión y regeneramos su identificador
- * antes de almacenar los datos del usuario.
- */
 session_start();
 session_regenerate_id(true);
 

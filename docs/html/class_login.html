@@ -117,14 +117,14 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_login.ht
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Métodos públicos</h2></td></tr>
-<tr class="memitem:a86938313aacd3f9e82b793fb2b64102c" id="r_a86938313aacd3f9e82b793fb2b64102c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a86938313aacd3f9e82b793fb2b64102c">__construct</a> (<a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a> $accesoDatosUsuario)</td></tr>
+<tr class="memitem:a86938313aacd3f9e82b793fb2b64102c" id="r_a86938313aacd3f9e82b793fb2b64102c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a86938313aacd3f9e82b793fb2b64102c">__construct</a> (<a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a> $accesoDatosUsuario)</td></tr>
 <tr class="memdesc:a86938313aacd3f9e82b793fb2b64102c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construye un objeto <a class="el" href="class_login.html" title="Gestiona la autenticación de los usuarios.">Login</a>.  <br /></td></tr>
 <tr class="memitem:a9f1155449482487e3fe1e13d8659ad8c" id="r_a9f1155449482487e3fe1e13d8659ad8c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a9f1155449482487e3fe1e13d8659ad8c">autenticar</a> (string $cedula, string $clave)</td></tr>
 <tr class="memdesc:a9f1155449482487e3fe1e13d8659ad8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Autentica a un usuario mediante su cédula y contraseña.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descripción detallada</h2>
 <div class="textblock"><p>Gestiona la autenticación de los usuarios. </p>
-<p>Utiliza <a class="el" href="class_acceso_datos_usuario.html" title="Gestiona las consultas relacionadas con los usuarios.">AccesoDatosUsuario</a> para obtener los datos del usuario y verifica que se encuentre activo y que la contraseña ingresada coincida con el hash almacenado en la base de datos. </p>
+<p>Utiliza <a class="el" href="class_acceso_datos_usuario.html" title="Gestiona las consultas relacionadas con los usuarios.">CargarUsuarios</a> para obtener los datos del usuario y verifica que se encuentre activo y que la contraseña ingresada coincida con el hash almacenado en la base de datos. </p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentación de constructores y destructores</h2>
 <a id="a86938313aacd3f9e82b793fb2b64102c" name="a86938313aacd3f9e82b793fb2b64102c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86938313aacd3f9e82b793fb2b64102c">&#9670;&#160;</a></span>__construct()</h2>
@@ -135,7 +135,7 @@ Métodos públicos</h2></td></tr>
         <tr>
           <td class="memname">Login::__construct </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a></td>          <td class="paramname"><span class="paramname"><em>$accesoDatosUsuario</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a></td>          <td class="paramname"><span class="paramname"><em>$accesoDatosUsuario</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -144,7 +144,7 @@ Métodos públicos</h2></td></tr>
 <p>Construye un objeto <a class="el" href="class_login.html" title="Gestiona la autenticación de los usuarios.">Login</a>. </p>
 <dl class="params"><dt>Parámetros</dt><dd>
   <table class="params">
-    <tr><td class="paramtype"><a class="el" href="class_acceso_datos_usuario.html" title="Gestiona las consultas relacionadas con los usuarios.">AccesoDatosUsuario</a></td><td class="paramname">$accesoDatosUsuario</td><td>Objeto utilizado para consultar los usuarios en la base de datos. </td></tr>
+    <tr><td class="paramtype"><a class="el" href="class_acceso_datos_usuario.html" title="Gestiona las consultas relacionadas con los usuarios.">CargarUsuarios</a></td><td class="paramname">$accesoDatosUsuario</td><td>Objeto utilizado para consultar los usuarios en la base de datos. </td></tr>
   </table>
   </dd>
 </dl>

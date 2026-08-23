@@ -128,7 +128,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a7007a6aa1d5b7d3b387d77aa3e39bdda" id="r_a7007a6aa1d5b7d3b387d77aa3e39bdda"><td class="memItemLeft"><a class="el" href="gestion_usuarios_8php.html#affff01e058332013dfafe3ee1a857a0c">foreach</a>($roles as $rol)&#160;</td><td class="memItemRight"><a class="el" href="#a7007a6aa1d5b7d3b387d77aa3e39bdda">$claveHash</a> = password_hash($clave, PASSWORD_DEFAULT)</td></tr>
 <tr class="memitem:adecbd788367c785d74b2222c5aa12d4e" id="r_adecbd788367c785d74b2222c5aa12d4e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#adecbd788367c785d74b2222c5aa12d4e">$conectorPDO</a></td></tr>
 <tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
-<tr class="memitem:aad483e30e6de6ca87f1b034773e54111" id="r_aad483e30e6de6ca87f1b034773e54111"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#aad483e30e6de6ca87f1b034773e54111">$altaDatosUsuario</a> = new <a class="el" href="class_alta_datos_usuario.html">AltaDatosUsuario</a>($conexion)</td></tr>
+<tr class="memitem:aad483e30e6de6ca87f1b034773e54111" id="r_aad483e30e6de6ca87f1b034773e54111"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#aad483e30e6de6ca87f1b034773e54111">$AltaUsuario</a> = new <a class="el" href="class_alta_datos_usuario.html">AltaUsuario</a>($conexion)</td></tr>
 <tr class="memitem:a06face0ef35c41554d8f4fe115363f58" id="r_a06face0ef35c41554d8f4fe115363f58"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a06face0ef35c41554d8f4fe115363f58">$resultado</a></td></tr>
 <tr class="memitem:a12be2568c6783d195ce118168423003e" id="r_a12be2568c6783d195ce118168423003e"><td class="memItemLeft">if(! $resultado)&#160;</td><td class="memItemRight"><a class="el" href="#a12be2568c6783d195ce118168423003e">$mensaje</a> = &quot;Usuario registrado correctamente.&quot;</td></tr>
 </table>
@@ -137,13 +137,13 @@ Variables</h2></td></tr>
 <p>Valida los datos recibidos mediante POST, genera el hash de la contraseña y solicita al modelo el registro del usuario y sus roles. </p>
 </div><a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Documentación de variables</h2>
 <a id="aad483e30e6de6ca87f1b034773e54111" name="aad483e30e6de6ca87f1b034773e54111"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad483e30e6de6ca87f1b034773e54111">&#9670;&#160;</a></span>$altaDatosUsuario</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aad483e30e6de6ca87f1b034773e54111">&#9670;&#160;</a></span>$AltaUsuario</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">if ( $conexion===null) $altaDatosUsuario = new <a class="el" href="class_alta_datos_usuario.html">AltaDatosUsuario</a>($conexion)</td>
+          <td class="memname">if ( $conexion===null) $AltaUsuario = new <a class="el" href="class_alta_datos_usuario.html">AltaUsuario</a>($conexion)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -308,7 +308,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Valor inicial:</b><div class="fragment"><div class="line">           = <a class="code hl_variable" href="#aad483e30e6de6ca87f1b034773e54111">$altaDatosUsuario</a>-&gt;registrarUsuario(</div>
+<b>Valor inicial:</b><div class="fragment"><div class="line">           = <a class="code hl_variable" href="#aad483e30e6de6ca87f1b034773e54111">$AltaUsuario</a>-&gt;registrarUsuario(</div>
 <div class="line">    <a class="code hl_variable" href="#ab4b398e0a71495998794046902bdc0e9">$cedula</a>,</div>
 <div class="line">    <a class="code hl_variable" href="#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">$nombre</a>,</div>
 <div class="line">    <a class="code hl_variable" href="#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">$correo</a>,</div>
@@ -319,7 +319,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="aprocesar_alta_usuario_8php_html_a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f"><div class="ttname"><a href="#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">$correo</a></div><div class="ttdeci">$correo</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:71</div></div>
 <div class="ttc" id="aprocesar_alta_usuario_8php_html_a7007a6aa1d5b7d3b387d77aa3e39bdda"><div class="ttname"><a href="#a7007a6aa1d5b7d3b387d77aa3e39bdda">$claveHash</a></div><div class="ttdeci">foreach($roles as $rol) $claveHash</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:180</div></div>
 <div class="ttc" id="aprocesar_alta_usuario_8php_html_aaa7b9d1ce32c1d2e32f7ad3e0b59aac2"><div class="ttname"><a href="#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">$nombre</a></div><div class="ttdeci">$nombre</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:70</div></div>
-<div class="ttc" id="aprocesar_alta_usuario_8php_html_aad483e30e6de6ca87f1b034773e54111"><div class="ttname"><a href="#aad483e30e6de6ca87f1b034773e54111">$altaDatosUsuario</a></div><div class="ttdeci">if($conexion===null) $altaDatosUsuario</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:201</div></div>
+<div class="ttc" id="aprocesar_alta_usuario_8php_html_aad483e30e6de6ca87f1b034773e54111"><div class="ttname"><a href="#aad483e30e6de6ca87f1b034773e54111">$AltaUsuario</a></div><div class="ttdeci">if($conexion===null) $AltaUsuario</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:201</div></div>
 <div class="ttc" id="aprocesar_alta_usuario_8php_html_ab4b398e0a71495998794046902bdc0e9"><div class="ttname"><a href="#ab4b398e0a71495998794046902bdc0e9">$cedula</a></div><div class="ttdeci">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken)) $cedula</div><div class="ttdef"><b>Definición</b> procesarAltaUsuario.php:69</div></div>
 </div><!-- fragment -->
 </div>

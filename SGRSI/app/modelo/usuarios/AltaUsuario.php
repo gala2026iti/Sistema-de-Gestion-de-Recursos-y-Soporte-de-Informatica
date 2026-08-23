@@ -6,7 +6,7 @@
  * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
  * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
  */
-class AltaDatosUsuario
+class AltaUsuario
 {
     /**
      * @brief Conexión con la base de datos.

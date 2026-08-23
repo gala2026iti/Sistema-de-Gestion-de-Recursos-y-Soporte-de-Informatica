@@ -9,7 +9,7 @@
  * correspondientes y carga la vista de gestión de usuarios.
  */
 
-require_once __DIR__ . "/../../config/config.php";
+require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/usuarios/CargarUsuarios.php";
@@ -37,7 +37,7 @@ if ($conexion === null) {
     exit();
 }
 
-$accesoDatosUsuario = new AccesoDatosUsuario($conexion);
+$accesoDatosUsuario = new CargarUsuarios($conexion);
 $usuarios = $accesoDatosUsuario->listarUsuarios($rol, $estado);
 
 $conectorPDO->desconectar();

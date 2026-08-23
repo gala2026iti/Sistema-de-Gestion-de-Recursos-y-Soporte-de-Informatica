@@ -1,6 +1,6 @@
 var procesar_alta_usuario_8php =
 [
-    [ "$altaDatosUsuario", "procesar_alta_usuario_8php.html#aad483e30e6de6ca87f1b034773e54111", null ],
+    [ "$AltaUsuario", "procesar_alta_usuario_8php.html#aad483e30e6de6ca87f1b034773e54111", null ],
     [ "$cedula", "procesar_alta_usuario_8php.html#ab4b398e0a71495998794046902bdc0e9", null ],
     [ "$clave", "procesar_alta_usuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef", null ],
     [ "$claveHash", "procesar_alta_usuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda", null ],

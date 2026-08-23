@@ -4,7 +4,7 @@ require_once __DIR__ . "/usuarios/CargarUsuarios.php";
 /**
  * @brief Gestiona la autenticación de los usuarios.
  *
- * Utiliza AccesoDatosUsuario para obtener los datos del usuario
+ * Utiliza CargarUsuarios para obtener los datos del usuario
  * y verifica que se encuentre activo y que la contraseña ingresada
  * coincida con el hash almacenado en la base de datos.
  */
@@ -13,15 +13,15 @@ class Login
     /**
      * @brief Acceso a los datos de los usuarios.
      */
-    private AccesoDatosUsuario $accesoDatosUsuario;
+    private CargarUsuarios $accesoDatosUsuario;
 
     /**
      * @brief Construye un objeto Login.
      *
-     * @param AccesoDatosUsuario $accesoDatosUsuario
+     * @param CargarUsuarios $accesoDatosUsuario
      *        Objeto utilizado para consultar los usuarios en la base de datos.
      */
-    public function __construct(AccesoDatosUsuario $accesoDatosUsuario)
+    public function __construct(CargarUsuarios $accesoDatosUsuario)
     {
         $this->accesoDatosUsuario = $accesoDatosUsuario;
     }

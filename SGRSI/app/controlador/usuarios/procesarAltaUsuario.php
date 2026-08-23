@@ -9,7 +9,7 @@
  * contraseña y solicita al modelo el registro del usuario y sus roles.
  */
 
-require_once __DIR__ . "/../../config/config.php";
+require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/usuarios/AltaUsuario.php";
@@ -191,9 +191,9 @@ if ($conexion === null) {
     exit();
 }
 
-$altaDatosUsuario = new AltaDatosUsuario($conexion);
+$AltaUsuario = new AltaUsuario($conexion);
 
-$resultado = $altaDatosUsuario->registrarUsuario(
+$resultado = $AltaUsuario->registrarUsuario(
     $cedula,
     $nombre,
     $correo,

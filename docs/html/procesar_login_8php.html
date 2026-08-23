@@ -121,7 +121,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a9afec6c1b8bfe5b785eac455dbcb9eef" id="r_a9afec6c1b8bfe5b785eac455dbcb9eef"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a9afec6c1b8bfe5b785eac455dbcb9eef">$clave</a> = $_POST[&quot;clave&quot;] ?? &quot;&quot;</td></tr>
 <tr class="memitem:adecbd788367c785d74b2222c5aa12d4e" id="r_adecbd788367c785d74b2222c5aa12d4e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#adecbd788367c785d74b2222c5aa12d4e">$conectorPDO</a></td></tr>
 <tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
-<tr class="memitem:a618a60de70a992165b342d34f10ee6fd" id="r_a618a60de70a992165b342d34f10ee6fd"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#a618a60de70a992165b342d34f10ee6fd">$accesoDatosUsuario</a> = new <a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a>($conexion)</td></tr>
+<tr class="memitem:a618a60de70a992165b342d34f10ee6fd" id="r_a618a60de70a992165b342d34f10ee6fd"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#a618a60de70a992165b342d34f10ee6fd">$accesoDatosUsuario</a> = new <a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a>($conexion)</td></tr>
 <tr class="memitem:afc31993e855f9631572adfedcfe6f34b" id="r_afc31993e855f9631572adfedcfe6f34b"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#afc31993e855f9631572adfedcfe6f34b">$login</a> = new <a class="el" href="class_login.html">Login</a>($accesoDatosUsuario)</td></tr>
 <tr class="memitem:a559c8003f481610caf373b85cc607fb6" id="r_a559c8003f481610caf373b85cc607fb6"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a559c8003f481610caf373b85cc607fb6">$usuario</a> = $login-&gt;autenticar($cedula, $clave)</td></tr>
 <tr class="memitem:ad4b29a79a2cfb790e4d9f9dd38b61a2b" id="r_ad4b29a79a2cfb790e4d9f9dd38b61a2b"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ad4b29a79a2cfb790e4d9f9dd38b61a2b">$_SESSION</a> [&quot;csrfToken&quot;] = bin2hex(random_bytes(32))</td></tr>
@@ -212,7 +212,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">if ( $conexion===null) $accesoDatosUsuario = new <a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a>($conexion)</td>
+          <td class="memname">if ( $conexion===null) $accesoDatosUsuario = new <a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a>($conexion)</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -121,7 +121,7 @@ Variables</h2></td></tr>
 <tr class="memitem:add65399d2cbedf45a9f2299cf9555539" id="r_add65399d2cbedf45a9f2299cf9555539"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#add65399d2cbedf45a9f2299cf9555539">$estado</a> = strtolower(trim($_GET[&quot;estado&quot;] ?? &quot;&quot;))</td></tr>
 <tr class="memitem:adecbd788367c785d74b2222c5aa12d4e" id="r_adecbd788367c785d74b2222c5aa12d4e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#adecbd788367c785d74b2222c5aa12d4e">$conectorPDO</a></td></tr>
 <tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
-<tr class="memitem:a618a60de70a992165b342d34f10ee6fd" id="r_a618a60de70a992165b342d34f10ee6fd"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#a618a60de70a992165b342d34f10ee6fd">$accesoDatosUsuario</a> = new <a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a>($conexion)</td></tr>
+<tr class="memitem:a618a60de70a992165b342d34f10ee6fd" id="r_a618a60de70a992165b342d34f10ee6fd"><td class="memItemLeft">if($conexion===null)&#160;</td><td class="memItemRight"><a class="el" href="#a618a60de70a992165b342d34f10ee6fd">$accesoDatosUsuario</a> = new <a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a>($conexion)</td></tr>
 <tr class="memitem:afba4f3b049abbbbcf8229ca2095fef33" id="r_afba4f3b049abbbbcf8229ca2095fef33"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#afba4f3b049abbbbcf8229ca2095fef33">$usuarios</a> = $accesoDatosUsuario-&gt;listarUsuarios($rol, $estado)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descripción detallada</h2>
@@ -135,7 +135,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">if ( $conexion===null) $accesoDatosUsuario = new <a class="el" href="class_acceso_datos_usuario.html">AccesoDatosUsuario</a>($conexion)</td>
+          <td class="memname">if ( $conexion===null) $accesoDatosUsuario = new <a class="el" href="class_acceso_datos_usuario.html">CargarUsuarios</a>($conexion)</td>
         </tr>
       </table>
 </div><div class="memdoc">

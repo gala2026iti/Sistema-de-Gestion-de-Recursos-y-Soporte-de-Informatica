@@ -9,7 +9,7 @@
  * la actualización de los datos, contraseña y roles del usuario.
  */
 
-require_once __DIR__ . "/../../config/config.php";
+require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/usuarios/ModificarDatosUsuario.php";
@@ -222,7 +222,7 @@ if (!$resultado) {
     $mensaje = "No se pudo modificar el usuario. La cédula o el correo pueden estar registrados.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -231,7 +231,7 @@ if (!$resultado) {
 $mensaje = "Usuario modificado correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?resultado="
+    "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?resultado="
     . urlencode($mensaje)
 );
 

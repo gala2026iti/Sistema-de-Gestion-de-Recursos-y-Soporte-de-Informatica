@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/Usuario.php";
+require_once __DIR__ . "/../Usuario.php";
 
 /**
  * @brief Gestiona las consultas relacionadas con los usuarios.
@@ -8,7 +8,7 @@ require_once __DIR__ . "/Usuario.php";
  * Consulta la información de los usuarios y determina sus roles
  * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
  */
-class AccesoDatosUsuario
+class CargarUsuarios
 {
     /**
      * @brief Conexión con la base de datos.
