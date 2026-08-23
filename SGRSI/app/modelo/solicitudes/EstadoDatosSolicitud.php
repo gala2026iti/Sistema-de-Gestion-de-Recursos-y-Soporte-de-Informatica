@@ -6,7 +6,7 @@
  * Permite activar o desactivar usuarios mediante el campo
  * activo de la tabla USUARIO.
  */
-class ModificarUbicacionEquipo
+class EstadoDatosSolicitud
 {
     /**
      * @brief Conexión con la base de datos.
@@ -35,18 +35,25 @@ class ModificarUbicacionEquipo
      * @return bool true si el usuario fue actualizado correctamente;
      *              false si ocurrió un error.
      */
-
-    public function modificarUbicacionEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion): void
+    public function cambiarEstadoSolicitud(string $idSolicitud, bool $finalizada): bool
     {
         $sql = "
-        UPDATE equipo_reside_ubicacion SET idUbicacion = :idUbicacion, tipoUbicacion = :tipoUbicacion WHERE idEquipo = :idEquipo
+            UPDATE SOLICITUD
+            SET finalizada = :finalizada
+            WHERE id = :idSolicitud
         ";
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute([
-            "idEquipo" => $idEquipo,
-            "idUbicacion" => $idUbicacion,
-            "tipoUbicacion" => $tipoUbicacion
-        ]);
-    }
 
+        try {
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->execute([
+                "finalizada" => $finalizada,
+                "idSolicitud" => $idSolicitud
+            ]);
+
+            return $consulta->rowCount() > 0;
+
+        } catch (PDOException $error) {
+            return false;
+        }
+    }
 }
