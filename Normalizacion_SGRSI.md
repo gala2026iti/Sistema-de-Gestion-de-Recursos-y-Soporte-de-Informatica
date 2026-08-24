@@ -85,7 +85,7 @@ Este documento contiene la transformación y proceso de normalización de las en
 
 ### Entidad PRESTAMO
 #### Pasaje a tablas
-`PRESTAMO (id, nombrePrestado, ciPrestado, fechaInicio, horaInicio, fechaFin, horaFin, devuelto, entregaAtrasada)`
+`PRESTAMO (id, nombrePrestado, ciPrestado, fechaFin, horaFin, devuelto)`
 
 #### 1FN
 > Pertenece a 1FN debido a que no hay atributos multivaluados ni compuestos, es decir, son atómicos.
@@ -93,12 +93,9 @@ Este documento contiene la transformación y proceso de normalización de las en
 #### 2FN
 - `{id} ➙ {nombrePrestado}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
 - `{id} ➙ {ciPrestado}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
-- `{id} ➙ {fechaInicio}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
-- `{id} ➙ {horaInicio}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
 - `{id} ➙ {fechaFin}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
 - `{id} ➙ {horaFin}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
 - `{id} ➙ {devuelto}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
-- `{id} ➙ {entregaAtrasada}`: Presenta DFT, ya que, sin la clave primaria, el atributo no puede ser identificado.
 
 > Pertenece a 2FN debido a que está en 1FN y todos los atributos tienen una dependencia funcional total con respecto a la clave primaria.
 
@@ -106,7 +103,7 @@ Este documento contiene la transformación y proceso de normalización de las en
 > Pertenece a 3FN, esto debido a que está en 2FN y ningún atributo presenta una dependencia funcional transitiva con respecto a la clave primaria.
 
 #### Resultado
-`PRESTAMO (id, nombrePrestado, ciPrestado, fechaInicio, horaInicio, fechaFin, horaFin, devuelto, entregaAtrasada)`
+`PRESTAMO (id, nombrePrestado, ciPrestado, fechaFin, horaFin, devuelto)`
 
 ---
 
@@ -251,7 +248,7 @@ Pertenece a 1FN, 2FN y 3FN.
 
 ### Relación `administrador_controla_ubicacion`
 #### Pasaje a tablas / Resultado
-`administrador_controla_ubicacion (id, ciAdministrador, idUbicacion, fecha, hora, tipoInteraccion)`
+`administrador_controla_ubicacion (id, ciAdministrador, idUbicacion, tipoUbicacion, fecha, hora, tipoInteraccion)`
 - `ciAdministrador` es FK de `ADMINISTRADOR`
 - `idUbicacion` es FK de `UBICACION`
 
@@ -262,14 +259,15 @@ Pertenece a 1FN, 2FN y 3FN.
 `equipo_reside_ubicacion (idEquipo, idUbicacion)`
 - `idEquipo` es FK de `EQUIPO`
 - `idUbicacion` es FK de `UBICACION`
+- `posicion`
 
 ---
 
 ### Relación `equipo_ubicacion_genera_ticket`
 #### Pasaje a tablas / Resultado
-`equipo_ubicacion_genera_ticket (idEquipo, idUbicacion, idTicket)`
+`equipo_ubicacion_genera_ticket (idEquipo, idUbicacion, tipoUbicacion, idTicket)`
 - `idEquipo` es FK de `EQUIPO`
-- `idUbicacion` es FK de `UBICACION`
+- `idUbicacion, tipoUbicacion` es FK de `UBICACION (id, tipo)`
 - `idTicket` es FK de `TICKET`
 
 ---
@@ -309,17 +307,47 @@ Pertenece a 1FN, 2FN y 3FN.
 ## 3. Restricciones No Estructurales
 
 - El atributo `finalizada` de `SOLICITUD` puede tener alguno de los siguientes valores: `"true"`, `"false"`.
-- El atributo `tipo` de `SOLICITUD` puede tener alguno de los siguientes valores: `"asistencia"`, `"reunion"`, `"administracion"`.
+- El atributo `rol` de `ROL` puede tener alguno de los siguientes valores: `"docente"`, `"tecnico"`, `"administrador"`.
 - El atributo `devuelto` de `PRESTAMO` puede tener alguno de los siguientes valores: `"true"`, `"false"`.
-- El atributo `entregaAtrasada` de `PRESTAMO` puede tener alguno de los siguientes valores: `"true"`, `"false"`.
 - El atributo `activo` de `USUARIO` puede tener alguno de los siguientes valores: `"true"`, `"false"`.
 - El atributo `activo` de `EQUIPO` puede tener alguno de los siguientes valores: `"true"`, `"false"`.
 - El atributo `tipo` de `UBICACION` puede tener alguno de los siguientes valores: `"laboratorio"`, `"taller"`.
-- El atributo `tipo` de `TICKET` puede tener alguno de los siguientes valores: `"equipo"`, `"ubicacion"`, `"red"`.
+- El atributo `tipo` de `TICKET` puede tener alguno de los siguientes valores: `"hardware"`, `"software"`, `"red"`.
 - El atributo `estado` de `TICKET` puede tener alguno de los siguientes valores: `"pendiente"`, `"en proceso"`, `"resuelto"`.
-- El atributo `gravedad` de `TICKET` puede tener alguno de los siguientes valores: `"baja"`, `"media"`, `"alta"`.
+- El atributo `gravedad` de `TICKET` puede tener alguno de los siguientes valores: `"ligera"`, `"media"`, `"grave"`.
+
 - El atributo `tipoInteraccion` de `tramita` puede tener alguno de los siguientes valores: `"prestamo"`, `"devolucion"`.
-- El atributo `tipoInteraccion` de `maneja` puede tener alguno de los siguientes valores: `"creacion"`, `"modificacion"`.
+- El atributo `tipoInteraccion` de `maneja` puede tener alguno de los siguientes valores: `"creacion"`, `"activacion"`, `"modificacion"`.
 - El atributo `tipoInteraccion` de `controla` puede tener alguno de los siguientes valores: `"creacion"`, `"eliminacion"`.
-- El atributo `tipoInteraccion` de `gestiona` puede tener alguno de los siguientes valores: `"creacion"`, `"modificacion"`, `"resolucion"`.
-- El atributo `tipoInteraccion` de `modifica` puede tener alguno de los siguientes valores: `"creacion"`, `"modificacion"`, `"desactivacion"`.
+- El atributo `tipoInteraccion` de `gestiona` puede tener alguno de los siguientes valores: `"creacion"`, `"modificacion"`, `"finalizacion"`, `"comentario"`.
+- El atributo `tipoInteraccion` de `modifica` puede tener alguno de los siguientes valores: `"creacion"`, `"modificacion"`, `"activacion"`, `"desactivacion"`.
+
+- El atributo `ci` de `ROL` es FK de la entidad `USUARIO` en `USUARIO.ci`.
+- El atributo `ci` de `DOCENTE` es FK de la entidad `USUARIO` en `USUARIO.ci`.
+- El atributo `ci` de `ADMINISTRADOR` es FK de la entidad `USUARIO` en `USUARIO.ci`.
+- El atributo `ci` de `TECNICO` es FK de la entidad `USUARIO` en `USUARIO.ci`.
+- El atributo `idTicket` de `COLABORADOR` es FK de la entidad `TICKET` en `TICKET.id`.
+- El atributo `ciTecnico` de `COLABORADOR` es FK de la entidad `TECNICO` en `TECNICO.ci`.
+- El atributo `ciDocente` de `ingresa` es FK de la entidad `DOCENTE` en `DOCENTE.ci`.
+- El atributo `idSolicitud` de `ingresa` es FK de la entidad `SOLICITUD` en `SOLICITUD.id`.
+- El atributo `ciTecnico` de `finaliza` es FK de la entidad `TECNICO` en `TECNICO.ci`.
+- El atributo `idSolicitud` de `finaliza` es FK de la entidad `SOLICITUD` en `SOLICITUD.id`.
+- El atributo `ciTecnico` de `tramita` es FK de la entidad `TECNICO` en `TECNICO.ci`.
+- El atributo `idPrestamo` de `tramita` es FK de la entidad `PRESTAMO` en `PRESTAMO.id`.
+- El atributo `idPrestamo` de `corresponde` es FK de la entidad `PRESTAMO` en `PRESTAMO.id`.
+- El atributo `idEquipo` de `corresponde` es FK de la entidad `EQUIPO` en `EQUIPO.id`.
+- El atributo `ciAdministrador` de `maneja` es FK de la entidad `ADMINISTRADOR` en `ADMINISTRADOR.ci`.
+- El atributo `idEquipo` de `maneja` es FK de la entidad `EQUIPO` en `EQUIPO.id`.
+- El atributo `ciAdministrador` de `controla` es FK de la entidad `ADMINISTRADOR` en `ADMINISTRADOR.ci`.
+- El atributo `tipoUbicacion` de `controla` es FK de la entidad `UBICACION` en `UBICACION.tipo`.
+- El atributo `idUbicacion` de `controla` es FK de la entidad `UBICACION` en `UBICACION.id`.
+- El atributo `idEquipo` de `reside` es FK de la entidad `EQUIPO` en `EQUIPO.id`.
+- El atributo `idUbicacion` de `reside` es FK de la entidad `UBICACION` en `UBICACION.id`.
+- El atributo `idEquipo` de `genera` es FK de la entidad `EQUIPO` en `EQUIPO.id`.
+- El atributo `idUbicacion` de `genera` es FK de la entidad `UBICACION` en `UBICACION.id`.
+- El atributo `tipoUbicacion` de `genera` es FK de la entidad `UBICACION` en `UBICACION.tipo`.
+- El atributo `idTicket` de `genera` es FK de la entidad `TICKET` en `TICKET.id`.
+- El atributo `ciDocente` de `reporta` es FK de la entidad `DOCENTE` en `DOCENTE.ci`.
+- El atributo `idTicket` de `reporta` es FK de la entidad `TICKET` en `TICKET.id`.
+- El atributo `ciTecnico` de `gestiona` es FK de la entidad `TECNICO` en `TECNICO.ci`.
+- El atributo `idTicket` de `gestiona` es FK de la entidad `TICKET` en `TICKET.id`.

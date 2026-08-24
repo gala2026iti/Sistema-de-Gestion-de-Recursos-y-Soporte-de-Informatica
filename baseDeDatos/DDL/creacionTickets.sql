@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS TICKET (
     asunto VARCHAR(150) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     gravedad VARCHAR(20) NOT NULL,
-    estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente',
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
     fechaCreacion DATE NOT NULL,
     horaCreacion TIME NOT NULL,
     justificacion VARCHAR(255) NULL,
@@ -40,13 +40,14 @@ CREATE TABLE IF NOT EXISTS docente_reporta_ticket (
 CREATE TABLE IF NOT EXISTS equipo_ubicacion_genera_ticket (
     idEquipo INT NOT NULL,
     idUbicacion INT NOT NULL,
+    tipoUbicacion INT NOT NULL,
     idTicket INT NOT NULL,
     CONSTRAINT pk_eugt PRIMARY KEY (idEquipo, idUbicacion, idTicket),
     CONSTRAINT fk_eugt_equipo FOREIGN KEY (idEquipo) 
         REFERENCES EQUIPO (id) 
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_eugt_ubicacion FOREIGN KEY (idUbicacion) 
-        REFERENCES UBICACION (id) 
+    CONSTRAINT fk_eugt_ubicacion FOREIGN KEY (idUbicacion, tipoUbicacion) 
+        REFERENCES UBICACION (id, tipo) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_eugt_ticket FOREIGN KEY (idTicket) 
         REFERENCES TICKET (id) 

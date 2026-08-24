@@ -11,7 +11,8 @@ SELECT
     drt.ciDocente,
     u_doc.nombre AS nombreDocente,
     eugt.idEquipo,
-    eugt.idUbicacion
+    eugt.idUbicacion,
+    eugt.tipoUbicacion
 FROM TICKET AS t
 LEFT JOIN docente_reporta_ticket AS drt ON drt.idTicket = t.id
 LEFT JOIN USUARIO AS u_doc ON u_doc.ci = drt.ciDocente

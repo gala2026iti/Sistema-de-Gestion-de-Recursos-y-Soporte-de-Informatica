@@ -1,4 +1,3 @@
 UPDATE PRESTAMO
-SET devuelto = :devuelto, entregaAtrasada =
-IF(fechaFin < CURRENT_DATE(), TRUE, FALSE)
+SET devuelto = :devuelto
 WHERE id = :idPrestamo;

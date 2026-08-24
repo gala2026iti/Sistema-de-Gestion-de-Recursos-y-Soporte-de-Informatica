@@ -1,5 +1,5 @@
-INSERT INTO PRESTAMO (id, nombrePrestado, ciPrestado, fechaInicio, horaInicio, fechaFin, horaFin, devuelto, entregaAtrasada)
-VALUES (:idPrestamo, :nombrePrestado, :ciPrestado, :fechaInicio, :horaInicio, :fechaFin, :horaFin, FALSE, FALSE);
+INSERT INTO PRESTAMO (id, nombrePrestado, ciPrestado, fechaFin, horaFin, devuelto)
+VALUES (:idPrestamo, :nombrePrestado, :ciPrestado, :fechaFin, :horaFin, FALSE);
 
 INSERT INTO tecnico_tramita_prestamo (id, ciTecnico, idPrestamo, fecha, hora, tipoInteraccion)
 VALUES (:id, :ciTecnico, :idPrestamo, :fecha, :hora, :tipoInteraccion)

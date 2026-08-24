@@ -3,12 +3,9 @@ CREATE TABLE IF NOT EXISTS PRESTAMO (
     id INT AUTO_INCREMENT NOT NULL,
     nombrePrestado VARCHAR(100) NOT NULL,
     ciPrestado CHAR(8) NOT NULL,
-    fechaInicio DATE NOT NULL,
-    horaInicio TIME NOT NULL,
     fechaFin DATE NOT NULL,
     horaFin TIME NOT NULL,
-    devuelto BOOLEAN NOT NULL DEFAULT FALSE,
-    entregaAtrasada BOOLEAN NOT NULL DEFAULT FALSE,
+    devuelto BOOLEAN NOT NULL DEFAULT FALSE
     CONSTRAINT pk_prestamo PRIMARY KEY (id)
 );
 CREATE TABLE IF NOT EXISTS tecnico_tramita_prestamo (

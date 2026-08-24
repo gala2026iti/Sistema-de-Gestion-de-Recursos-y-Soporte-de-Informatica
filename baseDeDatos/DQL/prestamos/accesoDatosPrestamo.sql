@@ -4,12 +4,9 @@ SELECT
     p.id,
     p.nombrePrestado,
     p.ciPrestado,
-    p.fechaInicio,
-    p.horaInicio,
     p.fechaFin,
     p.horaFin,
     p.devuelto, 
-    p.entregaAtrasada,
     ttp.ciTecnico,
     pce.idEquipo,
     u.nombre AS nombreTecnico
@@ -24,5 +21,7 @@ ON ttp.idPrestamo = p.id
 
 INNER JOIN USUARIO AS u
 ON u.ci = ttp.ciTecnico
+
+WHERE p.devuelto = FALSE
 
 ORDER BY p.id
