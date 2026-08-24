@@ -12,7 +12,7 @@
 require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/solicitudes/EstadoDatosSolicitud.php";
+require_once RUTA_MODELO . "/recursos/EstadoDatosEquipo.php";
 
 session_start();
 
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -36,7 +36,7 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["tecnico"] ?? false)) {
+if (!($_SESSION["administrador"] ?? false)) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
@@ -56,32 +56,34 @@ if (
     $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$idSolicitud = trim($_POST["idSolicitud"] ?? "");
-$accion = strtolower(trim($_POST["finalizar"] ?? ""));
+$idEquipo = trim($_POST["idEquipo"] ?? "");
+$accion = strtolower(trim($_POST["accion"] ?? ""));
 
-if ($idSolicitud === "" || $accion === "") {
+if ($idEquipo === "" || $accion === "") {
     $mensaje = "No se recibieron los datos necesarios.";
 
     header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-if ($accion === "finalizar") {
-    $finalizada = true;
+if ($accion === "activar") {
+    $activo = true;
+} elseif ($accion === "desactivar") {
+    $activo = false;
 } else {
     $mensaje = "La acción solicitada no es válida.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -101,39 +103,38 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$estadoDatosSolicitud = new EstadoDatosSolicitud($conexion);
+$estadoDatosEquipo = new EstadoDatosEquipo($conexion);
 
-$resultado = $estadoDatosSolicitud->cambiarEstadoSolicitud(
-    $idSolicitud,
-    $finalizada
+$resultado = $estadoDatosEquipo->cambiarEstadoEquipo(
+    $idEquipo,
+    $activo
 );
 
 $conectorPDO->desconectar();
 
 if (!$resultado) {
-    $mensaje = "No se pudo modificar el estado de la solicitud.";
+    $mensaje = "No se pudo modificar el estado del equipo.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$mensaje = $finalizada
-    ? "Solicitud finalizada correctamente."
-    : "Solicitud no finalizada correctamente.";
+$mensaje = $activo
+    ? "Equipo activado correctamente."
+    : "Equipo desactivado correctamente.";
 
 header(
-    "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?resultado="
+    "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?resultado="
     . urlencode($mensaje)
 );
-
 
 exit();

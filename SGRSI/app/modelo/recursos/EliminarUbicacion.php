@@ -36,7 +36,7 @@ class EliminarUbicacion
      *              false si ocurrió un error.
      */
 
-    private function eliminarEquiposDelSalon(string $id, string $tipo): void
+    private function eliminarEquiposDeUbicacion(string $id, string $tipo): void
     {
         $sql = "
         DELETE FROM equipo_reside_ubicacion WHERE idUbicacion = :id AND tipoUbicacion = :tipo
@@ -48,9 +48,9 @@ class EliminarUbicacion
         ]);
     }
 
-    public function eliminarSalon(string $id, string $tipo): bool
+    public function eliminarUbicacion(string $id, string $tipo): bool
     {
-        $this->eliminarEquiposDelSalon($id, $tipo);
+        $this->eliminarEquiposDeUbicacion($id, $tipo);
 
         $sql = "
             DELETE FROM UBICACION WHERE id = :id AND tipo = :tipo
