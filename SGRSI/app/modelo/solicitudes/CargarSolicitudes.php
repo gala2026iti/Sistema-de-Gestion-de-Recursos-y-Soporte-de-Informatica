@@ -60,7 +60,7 @@ public function listarSolicitudes(string $estado = ""): array  //Opciones: pendi
             s.horaLimite,
             s.finalizada,
             dis.ciDocente,
-            u.ci
+            u.nombre
 
             FROM SOLICITUD AS s
 
