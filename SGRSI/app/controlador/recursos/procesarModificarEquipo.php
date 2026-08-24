@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarModificarUsuario.php
+ * @file procesarModificarEquipo.php
  *
- * @brief Procesa la modificación de usuarios.
+ * @brief Procesa la modificación de la ubicación de un equipo.
  *
- * Valida los datos recibidos mediante POST y solicita al modelo
- * la actualización de los datos, contraseña y roles del usuario.
+ * Valida los datos recibidos y solicita al modelo actualizar la ubicación asociada.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

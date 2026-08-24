@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarCargarUsuarios.php
+ * @file procesarCargarUbicaciones.php
  *
- * @brief Carga los usuarios para la página de gestión.
+ * @brief Carga las ubicaciones registradas.
  *
- * Obtiene los filtros enviados mediante GET, consulta los usuarios
- * correspondientes y carga la vista de gestión de usuarios.
+ * Consulta las ubicaciones mediante el modelo y carga la vista correspondiente.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

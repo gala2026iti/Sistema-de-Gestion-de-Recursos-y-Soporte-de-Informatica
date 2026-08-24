@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el registro de nuevos equipos.
+ * @brief Gestiona el registro de nuevas ubicaciones.
  *
- * Inserta equipos en la tabla EQUIPO y los asocia con uno o varios
- * datos mediante las tablas administrador_maneja_equipo, equipo_ubicacion_genera_ticket, equipo_reside_ubicacion, entre otros.
+ * Inserta una ubicación con su identificador y tipo.
  */
 class AltaUbicacion
 {
@@ -14,7 +13,7 @@ class AltaUbicacion
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para registrar usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,19 +23,13 @@ class AltaUbicacion
     }
 
     /**
-     * @brief Registra un nuevo usuario y sus roles.
+     * @brief Registra una nueva ubicación.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
-     *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
-     * @param boolean $roles Roles que tendrá el usuario.
+     * @param string $id Identificador de la ubicación.
+     * @param string $tipo Tipo de ubicación.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarUbicacion(
         string $id,

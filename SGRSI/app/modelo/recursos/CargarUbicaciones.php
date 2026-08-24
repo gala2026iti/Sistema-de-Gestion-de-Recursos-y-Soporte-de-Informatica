@@ -3,10 +3,9 @@
 require_once __DIR__ . "/../Ubicacion.php";
 
 /**
- * @brief Gestiona las consultas relacionadas con los usuarios.
+ * @brief Gestiona las consultas relacionadas con las ubicaciones.
  *
- * Consulta la información de los usuarios y determina sus roles
- * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Permite obtener las ubicaciones registradas en el sistema.
  */
 class CargarUbicaciones
 {
@@ -16,7 +15,7 @@ class CargarUbicaciones
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso a datos de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -25,16 +24,11 @@ class CargarUbicaciones
         $this->conexion = $conexion;
     }
 
-    /**
-     * @brief Busca un usuario por su cédula.
-     *
-     * Obtiene los datos necesarios para la autenticación y determina
-     * los roles administrador, técnico y docente del usuario.
-     *
-     * @param string $cedula Cédula del usuario sin puntos ni guiones.
-     *
-     * @return Ubicacion|null Usuario encontrado; null si no existe.
-     */
+ /**
+ * @brief Obtiene las ubicaciones registradas.
+ *
+ * @return array Lista de ubicaciones encontradas.
+ */
 public function listarUbicaciones(): array
     {
         $sql = "

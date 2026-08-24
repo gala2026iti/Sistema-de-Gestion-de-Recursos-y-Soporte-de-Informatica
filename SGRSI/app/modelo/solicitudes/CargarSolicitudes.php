@@ -5,7 +5,7 @@ require_once __DIR__ . "/../Solicitud.php";
 /**
  * @brief Gestiona las consultas relacionadas con las solicitudes.
  *
- * Consulta la información de las solicitudes y proporciona métodos para su gestión.
+ * Permite obtener solicitudes y filtrarlas por su estado de finalización.
  */
 class CargarSolicitudes
 {
@@ -14,12 +14,10 @@ class CargarSolicitudes
      */
     private PDO $conexion;
 
-    /**
- * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
- */
+
 
     /**
-     * @brief Construye el acceso a datos de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -28,27 +26,13 @@ class CargarSolicitudes
         $this->conexion = $conexion;
     }
 
-    /**
-     * @brief Busca un usuario por su cédula.
-     *
-     * Obtiene los datos necesarios para la autenticación y determina
-     * los roles administrador, técnico y docente del usuario.
-     *
-     * @param string $cedula Cédula del usuario sin puntos ni guiones.
-     *
-     * @return Solicitud|null Usuario encontrado; null si no existe.
-     */
-
-    /**
-     * @brief Obtiene los usuarios registrados aplicando filtros opcionales.
-     *
-     * Permite filtrar los usuarios por rol y estado.
-     *
-     * @param string $rol Rol por el cual filtrar.
-     * @param string $estado Estado por el cual filtrar.
-     *
-     * @return array Lista de usuarios encontrados.
-     */
+/**
+ * @brief Obtiene las solicitudes registradas.
+ *
+ * @param string $estado Estado por el cual filtrar: pendiente o finalizado.
+ *
+ * @return array Lista de solicitudes encontradas.
+ */
 public function listarSolicitudes(string $estado = ""): array  //Opciones: pendiente, finalizada
     {
         $sql ="

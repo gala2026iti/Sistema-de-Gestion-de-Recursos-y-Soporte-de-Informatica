@@ -3,8 +3,7 @@
 /**
  * @brief Gestiona el registro de nuevos equipos.
  *
- * Inserta equipos en la tabla EQUIPO y los asocia con uno o varios
- * datos mediante las tablas administrador_maneja_equipo, equipo_ubicacion_genera_ticket, equipo_reside_ubicacion, entre otros.
+ * Registra el equipo y su ubicación asociada dentro de una transacción.
  */
 class AltaEquipo
 {
@@ -14,7 +13,7 @@ class AltaEquipo
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para registrar usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,19 +23,21 @@ class AltaEquipo
     }
 
     /**
-     * @brief Registra un nuevo usuario y sus roles.
+     * @brief Registra un nuevo equipo y su ubicación.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
+     * Utiliza una transacción para registrar el equipo y su relación con la ubicación.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
-     * @param boolean $roles Roles que tendrá el usuario.
+     * @param string $idEquipo Identificador del equipo.
+     * @param string $fechaCreacion Fecha de creación.
+     * @param string $horaCreacion Hora de creación.
+     * @param string $ultimaIntervencion Última intervención registrada.
+     * @param bool $activo Estado inicial del equipo.
+     * @param string $idUbicacion Identificador de la ubicación.
+     * @param string $tipoUbicacion Tipo de ubicación.
+     * @param string $posicion Posición del equipo en la ubicación.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarEquipo(
         string $idEquipo,

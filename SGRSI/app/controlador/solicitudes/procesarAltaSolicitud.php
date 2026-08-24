@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarAltaUsuario.php
+ * @file procesarAltaSolicitud.php
  *
- * @brief Procesa el registro de nuevos usuarios.
+ * @brief Procesa el registro de nuevas solicitudes.
  *
- * Valida los datos recibidos mediante POST, genera el hash de la
- * contraseña y solicita al modelo el registro del usuario y sus roles.
+ * Valida los datos recibidos y solicita al modelo el registro de la solicitud.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

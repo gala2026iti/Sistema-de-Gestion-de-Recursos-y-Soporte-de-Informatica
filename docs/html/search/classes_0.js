@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['accesodatosusuario_0',['CargarUsuarios',['../class_acceso_datos_usuario.html',1,'']]],
-  ['AltaUsuario_1',['AltaUsuario',['../class_alta_datos_usuario.html',1,'']]]
+  ['altaequipo_0',['AltaEquipo',['../classAltaEquipo.html',1,'']]],
+  ['altaprestamo_1',['AltaPrestamo',['../classAltaPrestamo.html',1,'']]],
+  ['altasolicitud_2',['AltaSolicitud',['../classAltaSolicitud.html',1,'']]],
+  ['altaticket_3',['AltaTicket',['../classAltaTicket.html',1,'']]],
+  ['altaubicacion_4',['AltaUbicacion',['../classAltaUbicacion.html',1,'']]],
+  ['altausuario_5',['AltaUsuario',['../classAltaUsuario.html',1,'']]]
 ];

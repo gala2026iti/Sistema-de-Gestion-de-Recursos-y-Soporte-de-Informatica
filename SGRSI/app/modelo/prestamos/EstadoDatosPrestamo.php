@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el estado de los usuarios.
+ * @brief Gestiona el estado de los préstamos.
  *
- * Permite activar o desactivar usuarios mediante el campo
- * activo de la tabla USUARIO.
+ * Permite actualizar si un préstamo fue devuelto.
  */
 class EstadoDatosPrestamo
 {
@@ -14,7 +13,7 @@ class EstadoDatosPrestamo
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para modificar el estado de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,15 +23,12 @@ class EstadoDatosPrestamo
     }
 
     /**
-     * @brief Cambia el estado de un usuario.
+     * @brief Cambia el estado de devolución de un préstamo.
      *
-     * Actualiza el campo activo de la tabla USUARIO para activar
-     * o desactivar al usuario sin modificar sus roles.
+     * @param string $idPrestamo Identificador del préstamo.
+     * @param bool $devuelto Nuevo estado de devolución.
      *
-     * @param string $cedula Cédula del usuario cuyo estado se modificará.
-     * @param bool $activo Nuevo estado del usuario.
-     *
-     * @return bool true si el usuario fue actualizado correctamente;
+     * @return bool true si el préstamo fue actualizado;
      *              false si ocurrió un error.
      */
     public function cambiarEstadoPrestamo(string $idPrestamo, bool $devuelto): bool

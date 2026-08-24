@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarCargarUsuarios.php
+ * @file procesarCargarEquipos.php
  *
- * @brief Carga los usuarios para la página de gestión.
+ * @brief Carga los equipos para su gestión.
  *
- * Obtiene los filtros enviados mediante GET, consulta los usuarios
- * correspondientes y carga la vista de gestión de usuarios.
+ * Obtiene los filtros enviados mediante GET, consulta los equipos y carga la vista correspondiente.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

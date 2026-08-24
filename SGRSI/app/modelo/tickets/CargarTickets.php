@@ -3,10 +3,9 @@
 require_once __DIR__ . "/../Ticket.php";
 
 /**
- * @brief Gestiona las consultas relacionadas con los usuarios.
+ * @brief Gestiona las consultas relacionadas con los tickets.
  *
- * Consulta la información de los usuarios y determina sus roles
- * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Permite buscar un ticket por su identificador y obtener listados con filtros.
  */
 class CargarTickets
 {
@@ -15,8 +14,8 @@ class CargarTickets
      */
     private PDO $conexion;
 
-    /**
-     * @brief Construye el acceso a datos de usuarios.
+   /**
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -26,14 +25,11 @@ class CargarTickets
     }
 
     /**
-     * @brief Busca un usuario por su cédula.
+     * @brief Busca un ticket por su identificador.
      *
-     * Obtiene los datos necesarios para la autenticación y determina
-     * los roles administrador, técnico y docente del usuario.
+     * @param string $id Identificador del ticket.
      *
-     * @param string $cedula Cédula del usuario sin puntos ni guiones.
-     *
-     * @return Ticket|null Usuario encontrado; null si no existe.
+     * @return Ticket|null Ticket encontrado; null si no existe.
      */
     public function buscarTicket(string $id): ?Ticket
     {
@@ -91,16 +87,16 @@ class CargarTickets
         );
     }
 
-    /**
-     * @brief Obtiene los usuarios registrados aplicando filtros opcionales.
-     *
-     * Permite filtrar los usuarios por rol y estado.
-     *
-     * @param string $rol Rol por el cual filtrar.
-     * @param string $estado Estado por el cual filtrar.
-     *
-     * @return array Lista de usuarios encontrados.
-     */
+/**
+ * @brief Obtiene un listado aplicando filtros opcionales.
+ *
+ * @param string $tiempo Criterio de orden temporal.
+ * @param string $gravedad Gravedad por la cual filtrar.
+ * @param string $clasificacion Clasificación por la cual filtrar.
+ * @param string $estado Estado por el cual filtrar.
+ *
+ * @return array Lista de registros obtenidos.
+ */
 public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = ""): array
     {
         $sql ="

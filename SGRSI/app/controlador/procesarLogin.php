@@ -11,8 +11,8 @@ require_once RUTA_MODELO . "/Login.php";
  *
  * @brief Procesa el inicio de sesión del usuario.
  *
- * Recibe las credenciales mediante POST, autentica al usuario,
- * crea la sesión y lo redirige según los roles que posee.
+ * Recibe las credenciales, autentica al usuario, crea la sesión y lo redirige
+ * según los roles que posee.
  */
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {

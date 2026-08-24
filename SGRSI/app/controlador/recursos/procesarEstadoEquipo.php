@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarEstadoUsuario.php
+ * @file procesarEstadoEquipo.php
  *
- * @brief Procesa la activación o desactivación de usuarios.
+ * @brief Procesa la activación o desactivación de equipos.
  *
- * Recibe mediante POST la cédula y la acción solicitada, valida
- * la petición y solicita al modelo actualizar el estado del usuario.
+ * Valida la solicitud y solicita al modelo actualizar el estado del equipo.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

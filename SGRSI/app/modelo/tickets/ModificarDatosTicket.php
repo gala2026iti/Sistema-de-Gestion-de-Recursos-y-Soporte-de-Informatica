@@ -1,20 +1,33 @@
 <?php
 
 /**
- * @brief Gestiona la modificación de los datos de los usuarios.
+ * @brief Gestiona la asignación de técnicos a tickets.
  *
- * Permite actualizar los datos principales, la contraseña y los
- * roles asociados a un usuario.
+ * Permite asociar o desasociar al técnico de la sesión con un ticket.
  */
 class ModificarDatosTicket
 {
+        /**
+     * @brief Conexión con la base de datos.
+     */
     private PDO $conexion;
-
+   /**
+     * @brief Construye el acceso a datos.
+     *
+     * @param PDO $conexion Conexión PDO con la base de datos.
+     */
     public function __construct(PDO $conexion)
     {
         $this->conexion = $conexion;
     }
-
+    /**
+     * @brief Asocia al técnico de la sesión con un ticket.
+     *
+     * @param string $idTicket Identificador del ticket.
+     *
+     * @return bool true si la asignación se realizó correctamente;
+     *              false si ocurrió un error.
+     */
     public function asignarme(
         string $idTicket
     ): bool {
@@ -46,7 +59,14 @@ class ModificarDatosTicket
             return false;
         }
     }
-
+        /**
+         * @brief Desasocia al técnico de la sesión de un ticket.
+         *
+         * @param string $idTicket Identificador del ticket.
+         *
+         * @return bool true si la desasignación se realizó correctamente;
+         *              false si ocurrió un error.
+         */
         public function desasignarme(
         string $idTicket
     ): bool {

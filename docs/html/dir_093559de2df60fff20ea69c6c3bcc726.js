@@ -1,8 +1,8 @@
 var dir_093559de2df60fff20ea69c6c3bcc726 =
 [
-    [ "procesarCargarUsuarios.php", "cargar_gestion_usuarios_8php.html", "cargar_gestion_usuarios_8php" ],
-    [ "procesarAltaUsuario.php", "procesar_alta_usuario_8php.html", "procesar_alta_usuario_8php" ],
-    [ "procesarEstadoUsuario.php", "procesar_estado_usuario_8php.html", "procesar_estado_usuario_8php" ],
-    [ "procesarLogin.php", "procesar_login_8php.html", "procesar_login_8php" ],
-    [ "procesarModificarUsuario.php", "procesar_modificar_usuario_8php.html", "procesar_modificar_usuario_8php" ]
+    [ "recursos", "dir_bdcfd03805bf6e755725e0d3a49cbed6.html", "dir_bdcfd03805bf6e755725e0d3a49cbed6" ],
+    [ "solicitudes", "dir_525f324c3ffc03cbbdb89e8c12485a9a.html", "dir_525f324c3ffc03cbbdb89e8c12485a9a" ],
+    [ "tickets", "dir_04be72b19327f8579d1f6c1a3acc2978.html", "dir_04be72b19327f8579d1f6c1a3acc2978" ],
+    [ "usuarios", "dir_45090b42f77f52b80aeceaa7bcf0cf04.html", "dir_45090b42f77f52b80aeceaa7bcf0cf04" ],
+    [ "procesarLogin.php", "procesarLogin_8php.html", "procesarLogin_8php" ]
 ];

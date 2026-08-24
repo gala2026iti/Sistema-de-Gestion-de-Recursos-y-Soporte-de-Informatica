@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarCargarUsuarios.php
+ * @file procesarEstadoSolicitud.php
  *
- * @brief Carga los usuarios para la página de gestión.
+ * @brief Procesa cambios de estado de solicitudes.
  *
- * Obtiene los filtros enviados mediante GET, consulta los usuarios
- * correspondientes y carga la vista de gestión de usuarios.
+ * Valida la solicitud recibida y solicita al modelo actualizar su estado de finalización.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

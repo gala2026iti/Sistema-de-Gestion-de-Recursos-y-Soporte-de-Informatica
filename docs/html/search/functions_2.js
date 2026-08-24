@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['buscarusuario_0',['buscarUsuario',['../class_acceso_datos_usuario.html#ac52bf08faee951f6f3c8e8491f0bdd93',1,'CargarUsuarios']]]
+  ['buscarticket_0',['buscarTicket',['../classCargarTickets.html#a335cf34041d2925adf86c342b6855b0f',1,'CargarTickets']]],
+  ['buscarusuario_1',['buscarUsuario',['../classCargarUsuarios.html#a230a463f236e6a320cb91b35bcf8f02b',1,'CargarUsuarios']]]
 ];

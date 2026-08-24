@@ -3,16 +3,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.18.0"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SGRSI: Miembros de los archivos</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="codefolding.js"></script>
-<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -33,47 +33,23 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.18.0 -->
+<!-- Generado por Doxygen 1.9.8 -->
 <script type="text/javascript">
-let searchBox = new SearchBox("searchBox", "search/",'.html');
-</script>
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', codefold.init);
-</script>
-<script type="application/json" id="doxygen-config">
-{
-  "relPath": "",
-  "generateTreeView": true,
-  "searchEngine": true,
-  "serverBasedSearch": false,
-  "disableIndex": false,
-  "dynamicMenus": true,
-  "fullSidebar": false
-}
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
-<div id="main-nav-mobile">
-<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
-<label class="main-menu-btn" for="main-menu-state">
-<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
-<span id="searchBoxPos1"></span>
-</div>
-</div><!-- main-nav-mobile -->
-<div id="main-nav">
-  <ul class="sm sm-dox" id="main-menu">
-    <li id="searchBoxPos2">
-        <div id="MSearchBox" class="MSearchBoxInactive">
-        <span class="left">
-          <span id="MSearchSelect" class="search-icon"><span class="search-icon-dropdown"></span></span>
-          <input type="text" id="MSearchField" value="" placeholder="Buscar" accesskey="S"/>
-          </span><span class="right">
-            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
-          </span>
-        </div>
-    </li>
-  </ul>
-</div><!-- main-nav -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -81,16 +57,21 @@ document.addEventListener('DOMContentLoaded', codefold.init);
       <div id="nav-sync" class="sync"></div>
     </div>
   </div>
-  <div id="splitbar" class="ui-resizable-handle">
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
   </div>
 </div>
 <script type="text/javascript">
-document.addEventListener('DOMContentLoaded',() => { initNavTree('globals_vars.html','',''); });
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('globals_vars.html',''); initResizable(); });
+/* @license-end */
 </script>
-<div id="container">
 <div id="doc-content">
 <!-- window showing the filter options -->
-<div id="MSearchSelectWindow">
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -108,57 +89,91 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('globals_vars.h
 </div>
 
 <div class="contents">
-<div class="textblock">Lista de todas las variables con enlaces a los archivos a los que corresponden:</div><br/>
-<div class="qindex"><a class="qindex" href="#index_$">$</a><div class="alphasepar"></div><a class="qindex" href="#index_e">E</a><div class="alphasepar"></div><a class="qindex" href="#index_f">F</a></div>
+<div class="textblock">Lista de todas las variables con enlaces a los archivos a los que corresponden:</div>
 
-
-<h3 class="doxsection"><a id="index__24" name="index__24"></a>- $ -</h3><ul>
-<li>$_SESSION&#160;:&#160;<a class="el" href="procesar_login_8php.html#ad4b29a79a2cfb790e4d9f9dd38b61a2b">procesarLogin.php</a></li>
-<li>$accesoDatosUsuario&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#a618a60de70a992165b342d34f10ee6fd">procesarCargarUsuarios.php</a>, <a class="el" href="procesar_login_8php.html#a618a60de70a992165b342d34f10ee6fd">procesarLogin.php</a></li>
-<li>$accion&#160;:&#160;<a class="el" href="procesar_estado_usuario_8php.html#ab72ee2fc8baee210bbf369702d14040e">procesarEstadoUsuario.php</a></li>
-<li>$AltaUsuario&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#aad483e30e6de6ca87f1b034773e54111">procesarAltaUsuario.php</a></li>
-<li>$cedula&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_login_8php.html#a14891618f8ade9cd8976e6fd6485cbdb">procesarLogin.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarModificarUsuario.php</a></li>
-<li>$clave&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarAltaUsuario.php</a>, <a class="el" href="procesar_login_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarLogin.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarModificarUsuario.php</a></li>
-<li>$claveHash&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">procesarModificarUsuario.php</a></li>
-<li>$conectorPDO&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarUsuarios.php</a>, <a class="el" href="procesar_alta_usuario_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_login_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarLogin.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a05078d9a77197761f85e08d7d8eb701b">procesarModificarUsuario.php</a></li>
-<li>$conexion&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarUsuarios.php</a>, <a class="el" href="procesar_alta_usuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_login_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarLogin.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarModificarUsuario.php</a></li>
-<li>$confirmarClave&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#aaee93afe6cf50afeb1e4c1c9ebe34911">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#aaee93afe6cf50afeb1e4c1c9ebe34911">procesarModificarUsuario.php</a></li>
-<li>$correo&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">procesarModificarUsuario.php</a></li>
-<li>$csrfToken&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarModificarUsuario.php</a></li>
-<li>$estado&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarCargarUsuarios.php</a></li>
-<li>$estadoDatosUsuario&#160;:&#160;<a class="el" href="procesar_estado_usuario_8php.html#a5ff02a8eed13113bbf75f2ed15cd4f83">procesarEstadoUsuario.php</a></li>
-<li>$login&#160;:&#160;<a class="el" href="procesar_login_8php.html#afc31993e855f9631572adfedcfe6f34b">procesarLogin.php</a></li>
-<li>$mensaje&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#a12be2568c6783d195ce118168423003e">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a12be2568c6783d195ce118168423003e">procesarModificarUsuario.php</a></li>
-<li>$modificarDatosUsuario&#160;:&#160;<a class="el" href="procesar_modificar_usuario_8php.html#af137f87b14619b6ee428bae8be381a7f">procesarModificarUsuario.php</a></li>
-<li>$nombre&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">procesarModificarUsuario.php</a></li>
-<li>$resultado&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaUsuario.php</a>, <a class="el" href="procesar_estado_usuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarEstadoUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarModificarUsuario.php</a></li>
-<li>$rol&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#a1cdafeec659dcf28ee942a835f4dfa11">procesarCargarUsuarios.php</a></li>
-<li>$roles&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a24a565772e407805783bcc46deeafeb3">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a24a565772e407805783bcc46deeafeb3">procesarModificarUsuario.php</a></li>
-<li>$rolesTexto&#160;:&#160;<a class="el" href="gestion_usuarios_8php.html#a806d80f4a10d7c40ccee57619c118425">gestionUsuarios.php</a></li>
-<li>$rolesValidos&#160;:&#160;<a class="el" href="procesar_alta_usuario_8php.html#a50c65c0c96d0d1f4373f7113a693a0fd">procesarAltaUsuario.php</a>, <a class="el" href="procesar_modificar_usuario_8php.html#a6a6ca45d6f5243ee2691a313b8e717b3">procesarModificarUsuario.php</a></li>
-<li>$usuario&#160;:&#160;<a class="el" href="procesar_login_8php.html#a559c8003f481610caf373b85cc607fb6">procesarLogin.php</a></li>
-<li>$usuarios&#160;:&#160;<a class="el" href="cargar_gestion_usuarios_8php.html#afba4f3b049abbbbcf8229ca2095fef33">procesarCargarUsuarios.php</a></li>
+<h3><a id="index__24" name="index__24"></a>- $ -</h3><ul>
+<li>$_SESSION&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a3ea16fdddfbdfe6ee35c6c0fe30b4ed2">procesarLogin.php</a></li>
+<li>$accesoDatosEquipo&#160;:&#160;<a class="el" href="procesarCargarEquipos_8php.html#aa1a47e5b827184ef4661bd1941eb2e6d">procesarCargarEquipos.php</a></li>
+<li>$accesoDatosSolicitud&#160;:&#160;<a class="el" href="procesarCargarSolicitudes_8php.html#a8ea673085e4759f596674a7c75525dda">procesarCargarSolicitudes.php</a></li>
+<li>$accesoDatosTicket&#160;:&#160;<a class="el" href="procesarCargarTickets_8php.html#a521f1e5ff631dde137ffe32052ad2231">procesarCargarTickets.php</a></li>
+<li>$accesoDatosUbicacion&#160;:&#160;<a class="el" href="procesarCargarUbicaciones_8php.html#a98ae64f6fc74faeeb0d8e39c7f942eb9">procesarCargarUbicaciones.php</a></li>
+<li>$accesoDatosUsuario&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a618a60de70a992165b342d34f10ee6fd">procesarLogin.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#a618a60de70a992165b342d34f10ee6fd">procesarCargarUsuarios.php</a></li>
+<li>$accion&#160;:&#160;<a class="el" href="procesarEstadoSolicitud_8php.html#ab72ee2fc8baee210bbf369702d14040e">procesarEstadoSolicitud.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#ab72ee2fc8baee210bbf369702d14040e">procesarEstadoUsuario.php</a>, <a class="el" href="procesarModificarTicket_8php.html#ab72ee2fc8baee210bbf369702d14040e">procesarModificarTicket.php</a>, <a class="el" href="procesarEstadoEquipo_8php.html#ab72ee2fc8baee210bbf369702d14040e">procesarEstadoEquipo.php</a></li>
+<li>$ahora&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a282781e382c455dc296d2e739af3b83f">procesarAltaSolicitud.php</a></li>
+<li>$AltaEquipo&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a03ffc52062148a2c7a40526642744e28">procesarAltaEquipo.php</a></li>
+<li>$AltaSolicitud&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#af7d1069c4e61c6dca3d778d096d5595c">procesarAltaSolicitud.php</a></li>
+<li>$AltaTicket&#160;:&#160;<a class="el" href="procesarAltaTicket_8php.html#aed4411ed70583fe2ea53773a9a034b17">procesarAltaTicket.php</a></li>
+<li>$AltaUbicacion&#160;:&#160;<a class="el" href="procesarAltaUbicacion_8php.html#aaac47a7bac515ee6ff84d33864513ad1">procesarAltaUbicacion.php</a></li>
+<li>$AltaUsuario&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#a6050d57abe1ce12fde708fa2baad9739">procesarAltaUsuario.php</a></li>
+<li>$asunto&#160;:&#160;<a class="el" href="procesarAltaTicket_8php.html#a44dd887911699c05a3dc86c1bd1e0042">procesarAltaTicket.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a44dd887911699c05a3dc86c1bd1e0042">procesarAltaSolicitud.php</a></li>
+<li>$cedula&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a14891618f8ade9cd8976e6fd6485cbdb">procesarLogin.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarAltaUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarEstadoUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">procesarModificarUsuario.php</a></li>
+<li>$ciDocente&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a2f0736b3595fe5a1e364d41c772d9cfc">procesarAltaSolicitud.php</a></li>
+<li>$ciTecnico&#160;:&#160;<a class="el" href="procesarModificarTicket_8php.html#a72f6d30d3b93745330fee79b2ff40093">procesarModificarTicket.php</a></li>
+<li>$clasificacion&#160;:&#160;<a class="el" href="procesarCargarTickets_8php.html#ae81278d8ca07e245231aae1e5fb3b1e3">procesarCargarTickets.php</a></li>
+<li>$clave&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarLogin.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">procesarModificarUsuario.php</a></li>
+<li>$claveHash&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">procesarModificarUsuario.php</a></li>
+<li>$conectorPDO&#160;:&#160;<a class="el" href="procesarEstadoEquipo_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarEstadoEquipo.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a05078d9a77197761f85e08d7d8eb701b">procesarModificarUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarEstadoUsuario.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarUsuarios.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarTicket_8php.html#a6f23f80a04b58d1f00b2baa7aae9ff85">procesarModificarTicket.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#adc6eed4e0c74e2fff2c67492a51ee9d0">procesarEstadoTicket.php</a>, <a class="el" href="procesarCargarTickets_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarTickets.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a6e2f71c35db21375e2a2cdf8e1bfe24a">procesarAltaTicket.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarEstadoSolicitud.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a7c789add9d148c640a976a380eec31cb">procesarAltaSolicitud.php</a>, <a class="el" href="procesarCargarSolicitudes_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarSolicitudes.php</a>, <a class="el" href="procesarAltaEquipo_8php.html#aaaec0583108321e8244f142caf43895e">procesarAltaEquipo.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#a6b259b84377747c866396dce535e9c39">procesarAltaUbicacion.php</a>, <a class="el" href="procesarCargarEquipos_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarEquipos.php</a>, <a class="el" href="procesarCargarUbicaciones_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarCargarUbicaciones.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#a6b259b84377747c866396dce535e9c39">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarLogin_8php.html#adecbd788367c785d74b2222c5aa12d4e">procesarLogin.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a4d239eb54b354c354b71d88fcda90a3d">procesarModificarEquipo.php</a></li>
+<li>$conexion&#160;:&#160;<a class="el" href="procesarModificarUsuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarModificarUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEstadoUsuario.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarUsuarios.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarTicket_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarModificarTicket.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEstadoTicket.php</a>, <a class="el" href="procesarCargarTickets_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarTickets.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaTicket.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEstadoSolicitud.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaSolicitud.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarModificarEquipo.php</a>, <a class="el" href="procesarEstadoEquipo_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEstadoEquipo.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarCargarUbicaciones_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarUbicaciones.php</a>, <a class="el" href="procesarCargarEquipos_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarEquipos.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaUbicacion.php</a>, <a class="el" href="procesarAltaEquipo_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarAltaEquipo.php</a>, <a class="el" href="procesarLogin_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarLogin.php</a>, <a class="el" href="procesarCargarSolicitudes_8php.html#a881924afaecbe8ee5c0d26174a1e8081">procesarCargarSolicitudes.php</a></li>
+<li>$confirmarClave&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#aaee93afe6cf50afeb1e4c1c9ebe34911">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#aaee93afe6cf50afeb1e4c1c9ebe34911">procesarModificarUsuario.php</a></li>
+<li>$correo&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">procesarModificarUsuario.php</a></li>
+<li>$csrfToken&#160;:&#160;<a class="el" href="procesarModificarUsuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarModificarUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarEstadoUsuario.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarTicket_8php.html#ad97184430f99cad3bf31045d4ba80205">procesarModificarTicket.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#ad97184430f99cad3bf31045d4ba80205">procesarEstadoTicket.php</a>, <a class="el" href="procesarAltaTicket_8php.html#ad97184430f99cad3bf31045d4ba80205">procesarAltaTicket.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarAltaSolicitud.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarModificarEquipo.php</a>, <a class="el" href="procesarEstadoEquipo_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarEstadoEquipo.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarAltaUbicacion.php</a>, <a class="el" href="procesarAltaEquipo_8php.html#a8a42adb023565f51589e8bbc80b5e065">procesarAltaEquipo.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#ad97184430f99cad3bf31045d4ba80205">procesarEstadoSolicitud.php</a></li>
+<li>$descripcion&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#ac9d881319e71b2a6885427edcce8cd16">procesarAltaSolicitud.php</a>, <a class="el" href="procesarAltaTicket_8php.html#ac9d881319e71b2a6885427edcce8cd16">procesarAltaTicket.php</a></li>
+<li>$EliminarUbicacion&#160;:&#160;<a class="el" href="procesarEliminarUbicacion_8php.html#a1c372fee7b3d06046ed354547259b947">procesarEliminarUbicacion.php</a></li>
+<li>$equipos&#160;:&#160;<a class="el" href="procesarCargarEquipos_8php.html#a80c1a2995e948b0648fa4714d570a596">procesarCargarEquipos.php</a></li>
+<li>$estado&#160;:&#160;<a class="el" href="procesarCargarTickets_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarCargarTickets.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarCargarUsuarios.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarEstadoTicket.php</a>, <a class="el" href="procesarAltaTicket_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarAltaTicket.php</a>, <a class="el" href="procesarCargarSolicitudes_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarCargarSolicitudes.php</a>, <a class="el" href="procesarCargarEquipos_8php.html#add65399d2cbedf45a9f2299cf9555539">procesarCargarEquipos.php</a></li>
+<li>$estadoDatosEquipo&#160;:&#160;<a class="el" href="procesarEstadoEquipo_8php.html#a0d62382ccd09640bd714e5c7a211d46c">procesarEstadoEquipo.php</a></li>
+<li>$estadoDatosSolicitud&#160;:&#160;<a class="el" href="procesarEstadoSolicitud_8php.html#a8a671086099e80c72dad25d8650551a6">procesarEstadoSolicitud.php</a></li>
+<li>$estadoDatosTicket&#160;:&#160;<a class="el" href="procesarEstadoTicket_8php.html#a7bdc51d7cd397257cd13315aff5c9340">procesarEstadoTicket.php</a></li>
+<li>$estadoDatosUsuario&#160;:&#160;<a class="el" href="procesarEstadoUsuario_8php.html#a5ff02a8eed13113bbf75f2ed15cd4f83">procesarEstadoUsuario.php</a></li>
+<li>$fecha&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a9cdc3f8485a8f697cc1a94e01e815794">procesarAltaSolicitud.php</a></li>
+<li>$fechaCreacion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a30b059578046ad4a96cb10eaa03bd102">procesarAltaEquipo.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a30b059578046ad4a96cb10eaa03bd102">procesarAltaTicket.php</a></li>
+<li>$fechaIngresada&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a2ff85532507091710af60dfdb8186081">procesarAltaSolicitud.php</a></li>
+<li>$fechaLimite&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a82104c59cbcdfbd8a80666fe055aa18d">procesarAltaSolicitud.php</a></li>
+<li>$gravedad&#160;:&#160;<a class="el" href="procesarAltaTicket_8php.html#a0aa8b947d5e0ead1c8d3038922123963">procesarAltaTicket.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#a0aa8b947d5e0ead1c8d3038922123963">procesarEstadoTicket.php</a>, <a class="el" href="procesarCargarTickets_8php.html#a0aa8b947d5e0ead1c8d3038922123963">procesarCargarTickets.php</a></li>
+<li>$hora&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#a53d7d011255eafe8a37815fd36055cf3">procesarAltaSolicitud.php</a></li>
+<li>$horaCreacion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a8ebfbfa34d280d1fa65215d13f5c93eb">procesarAltaEquipo.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a8ebfbfa34d280d1fa65215d13f5c93eb">procesarAltaTicket.php</a></li>
+<li>$horaLimite&#160;:&#160;<a class="el" href="procesarAltaSolicitud_8php.html#ab1d0b08e86580191cd3a56e1405933bd">procesarAltaSolicitud.php</a></li>
+<li>$id&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#aff582d500545edf0dd6494cbc55680ca">procesarAltaEquipo.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#aff582d500545edf0dd6494cbc55680ca">procesarAltaUbicacion.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#aff582d500545edf0dd6494cbc55680ca">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#aff582d500545edf0dd6494cbc55680ca">procesarAltaSolicitud.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#aff582d500545edf0dd6494cbc55680ca">procesarEstadoTicket.php</a></li>
+<li>$idEquipo&#160;:&#160;<a class="el" href="procesarEstadoEquipo_8php.html#a9bc4e6e514fc2473729625a9a04ff350">procesarEstadoEquipo.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a9bc4e6e514fc2473729625a9a04ff350">procesarModificarEquipo.php</a></li>
+<li>$idSolicitud&#160;:&#160;<a class="el" href="procesarEstadoSolicitud_8php.html#a469a1062410a4139b31c598afc71c8b1">procesarEstadoSolicitud.php</a></li>
+<li>$idTicket&#160;:&#160;<a class="el" href="procesarAltaTicket_8php.html#a346dbf925b27e34a2695472a5aefe0ec">procesarAltaTicket.php</a>, <a class="el" href="procesarModificarTicket_8php.html#a346dbf925b27e34a2695472a5aefe0ec">procesarModificarTicket.php</a></li>
+<li>$idUbicacion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a1a675c6e517191338818caa488c0bbd4">procesarAltaEquipo.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a1a675c6e517191338818caa488c0bbd4">procesarModificarEquipo.php</a></li>
+<li>$justificacion&#160;:&#160;<a class="el" href="procesarAltaTicket_8php.html#a7e8f1027cdf8a1db5c726b94e269c331">procesarAltaTicket.php</a></li>
+<li>$login&#160;:&#160;<a class="el" href="procesarLogin_8php.html#afc31993e855f9631572adfedcfe6f34b">procesarLogin.php</a></li>
+<li>$mensaje&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaEquipo.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a12be2568c6783d195ce118168423003e">procesarModificarUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#a12be2568c6783d195ce118168423003e">procesarEstadoUsuario.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarTicket_8php.html#a12be2568c6783d195ce118168423003e">procesarModificarTicket.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaTicket.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaSolicitud.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a12be2568c6783d195ce118168423003e">procesarModificarEquipo.php</a>, <a class="el" href="procesarEstadoEquipo_8php.html#a12be2568c6783d195ce118168423003e">procesarEstadoEquipo.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#a12be2568c6783d195ce118168423003e">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#a12be2568c6783d195ce118168423003e">procesarAltaUbicacion.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#a12be2568c6783d195ce118168423003e">procesarEstadoSolicitud.php</a></li>
+<li>$modificarDatosTicket&#160;:&#160;<a class="el" href="procesarModificarTicket_8php.html#a5c4f24602058accf7574819dd24ce288">procesarModificarTicket.php</a></li>
+<li>$modificarDatosUsuario&#160;:&#160;<a class="el" href="procesarModificarUsuario_8php.html#af137f87b14619b6ee428bae8be381a7f">procesarModificarUsuario.php</a></li>
+<li>$modificarUbicacionEquipo&#160;:&#160;<a class="el" href="procesarModificarEquipo_8php.html#a5231de7a3d8d2a3b8657fed23826353a">procesarModificarEquipo.php</a></li>
+<li>$nombre&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">procesarModificarUsuario.php</a></li>
+<li>$posicion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a241652b3ae6b343c6ae6f7fbd7312d22">procesarAltaEquipo.php</a></li>
+<li>$resultado&#160;:&#160;<a class="el" href="procesarModificarUsuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarModificarUsuario.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarEstadoUsuario.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaUsuario.php</a>, <a class="el" href="procesarAltaTicket_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaTicket.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarEstadoSolicitud.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarModificarEquipo.php</a>, <a class="el" href="procesarEstadoEquipo_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarEstadoEquipo.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarAltaUbicacion_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaUbicacion.php</a>, <a class="el" href="procesarAltaEquipo_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaEquipo.php</a>, <a class="el" href="procesarAltaSolicitud_8php.html#a06face0ef35c41554d8f4fe115363f58">procesarAltaSolicitud.php</a></li>
+<li>$rol&#160;:&#160;<a class="el" href="procesarCargarEquipos_8php.html#a1cdafeec659dcf28ee942a835f4dfa11">procesarCargarEquipos.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#a1cdafeec659dcf28ee942a835f4dfa11">procesarCargarUsuarios.php</a></li>
+<li>$roles&#160;:&#160;<a class="el" href="procesarAltaUsuario_8php.html#a24a565772e407805783bcc46deeafeb3">procesarAltaUsuario.php</a>, <a class="el" href="procesarModificarUsuario_8php.html#a24a565772e407805783bcc46deeafeb3">procesarModificarUsuario.php</a></li>
+<li>$rolesTexto&#160;:&#160;<a class="el" href="gestionUsuarios_8php.html#a07ffbd8e1c8204f744dbfa38453fc27c">gestionUsuarios.php</a></li>
+<li>$rolesValidos&#160;:&#160;<a class="el" href="procesarModificarUsuario_8php.html#a6a6ca45d6f5243ee2691a313b8e717b3">procesarModificarUsuario.php</a>, <a class="el" href="procesarAltaUsuario_8php.html#a6f8547b31d08bdd28a7f7a645d8a4eba">procesarAltaUsuario.php</a></li>
+<li>$solicitudes&#160;:&#160;<a class="el" href="procesarCargarSolicitudes_8php.html#aeedbb69ae7df8db13989a7ce0b68a42d">procesarCargarSolicitudes.php</a></li>
+<li>$tiempo&#160;:&#160;<a class="el" href="procesarCargarTickets_8php.html#a0cdbaf27d9788d1b3054105453b87473">procesarCargarTickets.php</a></li>
+<li>$tipo&#160;:&#160;<a class="el" href="procesarAltaUbicacion_8php.html#ac11f126d3206dd09c3b7db0a6d99543b">procesarAltaUbicacion.php</a>, <a class="el" href="procesarEliminarUbicacion_8php.html#ac11f126d3206dd09c3b7db0a6d99543b">procesarEliminarUbicacion.php</a>, <a class="el" href="procesarAltaTicket_8php.html#ac11f126d3206dd09c3b7db0a6d99543b">procesarAltaTicket.php</a></li>
+<li>$tipoUbicacion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a16b22412cf320166b2152cbe2b77056e">procesarAltaEquipo.php</a>, <a class="el" href="procesarModificarEquipo_8php.html#a16b22412cf320166b2152cbe2b77056e">procesarModificarEquipo.php</a></li>
+<li>$ubicaciones&#160;:&#160;<a class="el" href="procesarCargarUbicaciones_8php.html#ab560df5656d57dea3fda225bd593d77d">procesarCargarUbicaciones.php</a></li>
+<li>$ultimaIntervencion&#160;:&#160;<a class="el" href="procesarAltaEquipo_8php.html#a2c9d51e5c68dd0b077bc3c58a618ba38">procesarAltaEquipo.php</a></li>
+<li>$usuario&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a559c8003f481610caf373b85cc607fb6">procesarLogin.php</a></li>
+<li>$usuarios&#160;:&#160;<a class="el" href="procesarCargarTickets_8php.html#afba4f3b049abbbbcf8229ca2095fef33">procesarCargarTickets.php</a>, <a class="el" href="procesarCargarUsuarios_8php.html#afba4f3b049abbbbcf8229ca2095fef33">procesarCargarUsuarios.php</a></li>
 </ul>
 
 
-<h3 class="doxsection"><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>else&#160;:&#160;<a class="el" href="procesar_estado_usuario_8php.html#a60e9a318c1cbe1e61c22e69ce5b490de">procesarEstadoUsuario.php</a></li>
-<li>endforeach&#160;:&#160;<a class="el" href="gestion_usuarios_8php.html#a672d9707ef91db026c210f98cc601123">gestionUsuarios.php</a></li>
-<li>endif&#160;:&#160;<a class="el" href="gestion_usuarios_8php.html#a82cd33ca97ff99f2fcc5e9c81d65251b">gestionUsuarios.php</a></li>
-<li>exit&#160;:&#160;<a class="el" href="procesar_login_8php.html#a48ddb81f4c39561bb9535b7663693506">procesarLogin.php</a></li>
-</ul>
-
-
-<h3 class="doxsection"><a id="index_f" name="index_f"></a>- f -</h3><ul>
-<li>foreach&#160;:&#160;<a class="el" href="gestion_usuarios_8php.html#affff01e058332013dfafe3ee1a857a0c">gestionUsuarios.php</a></li>
+<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>else&#160;:&#160;<a class="el" href="procesarEstadoEquipo_8php.html#af3ed398717d9729216e952dc9e426bf9">procesarEstadoEquipo.php</a>, <a class="el" href="procesarEstadoSolicitud_8php.html#a4630de7dcda5ac4a083bcac55cedc66f">procesarEstadoSolicitud.php</a>, <a class="el" href="procesarEstadoTicket_8php.html#a6c7deb6e111129c34806add5015533c7">procesarEstadoTicket.php</a>, <a class="el" href="procesarModificarTicket_8php.html#a03c35dce84ebaec834f43d5dc1dc4b0e">procesarModificarTicket.php</a>, <a class="el" href="procesarEstadoUsuario_8php.html#a60e9a318c1cbe1e61c22e69ce5b490de">procesarEstadoUsuario.php</a></li>
+<li>endforeach&#160;:&#160;<a class="el" href="gestionUsuarios_8php.html#a030cdc8f9d1240cba76e226c4c534b4d">gestionUsuarios.php</a></li>
+<li>endif&#160;:&#160;<a class="el" href="gestionUsuarios_8php.html#a82cd33ca97ff99f2fcc5e9c81d65251b">gestionUsuarios.php</a></li>
+<li>exit&#160;:&#160;<a class="el" href="procesarLogin_8php.html#a48ddb81f4c39561bb9535b7663693506">procesarLogin.php</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
-</div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.18.0 </li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

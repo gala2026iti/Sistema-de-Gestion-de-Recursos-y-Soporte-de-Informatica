@@ -3,16 +3,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.18.0"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SGRSI: Miembros de clases</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="codefolding.js"></script>
-<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -33,47 +33,23 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.18.0 -->
+<!-- Generado por Doxygen 1.9.8 -->
 <script type="text/javascript">
-let searchBox = new SearchBox("searchBox", "search/",'.html');
-</script>
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', codefold.init);
-</script>
-<script type="application/json" id="doxygen-config">
-{
-  "relPath": "",
-  "generateTreeView": true,
-  "searchEngine": true,
-  "serverBasedSearch": false,
-  "disableIndex": false,
-  "dynamicMenus": true,
-  "fullSidebar": false
-}
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
-<div id="main-nav-mobile">
-<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
-<label class="main-menu-btn" for="main-menu-state">
-<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
-<span id="searchBoxPos1"></span>
-</div>
-</div><!-- main-nav-mobile -->
-<div id="main-nav">
-  <ul class="sm sm-dox" id="main-menu">
-    <li id="searchBoxPos2">
-        <div id="MSearchBox" class="MSearchBoxInactive">
-        <span class="left">
-          <span id="MSearchSelect" class="search-icon"><span class="search-icon-dropdown"></span></span>
-          <input type="text" id="MSearchField" value="" placeholder="Buscar" accesskey="S"/>
-          </span><span class="right">
-            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
-          </span>
-        </div>
-    </li>
-  </ul>
-</div><!-- main-nav -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -81,16 +57,21 @@ document.addEventListener('DOMContentLoaded', codefold.init);
       <div id="nav-sync" class="sync"></div>
     </div>
   </div>
-  <div id="splitbar" class="ui-resizable-handle">
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
   </div>
 </div>
 <script type="text/javascript">
-document.addEventListener('DOMContentLoaded',() => { initNavTree('functions.html','',''); });
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('functions.html',''); initResizable(); });
+/* @license-end */
 </script>
-<div id="container">
 <div id="doc-content">
 <!-- window showing the filter options -->
-<div id="MSearchSelectWindow">
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -108,33 +89,112 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions.html
 </div>
 
 <div class="contents">
-<div class="textblock">Lista de todos los campos de clases con enlaces a las clases a las que pertenecen:</div><br/>
-<div class="qindex"><a class="qindex" href="#index_a">A</a><div class="alphasepar"></div><a class="qindex" href="#index_b">B</a><div class="alphasepar"></div><a class="qindex" href="#index_c">C</a><div class="alphasepar"></div><a class="qindex" href="#index_d">D</a><div class="alphasepar"></div><a class="qindex" href="#index_e">E</a><div class="alphasepar"></div><a class="qindex" href="#index_g">G</a><div class="alphasepar"></div><a class="qindex" href="#index_l">L</a><div class="alphasepar"></div><a class="qindex" href="#index_m">M</a><div class="alphasepar"></div><a class="qindex" href="#index_r">R</a><div class="alphasepar"></div><a class="qindex" href="#index_t">T</a><div class="alphasepar"></div><a class="qindex" href="#index__">_</a></div>
-<ul>
-<li>__construct()&#160;:&#160;<a class="el" href="class_acceso_datos_usuario.html#a01961b47b265ec1770000dcf936bcd60">CargarUsuarios</a>, <a class="el" href="class_alta_datos_usuario.html#a284dd5241fffdd0cc2f05241b85e575a">AltaUsuario</a>, <a class="el" href="class_conector_p_d_o.html#abb923ba6e63fe8db0f14b45e07733c4b">ConectorPDO</a>, <a class="el" href="class_estado_datos_usuario.html#a3144b2a7fc4e7729529d75b68417114e">EstadoDatosUsuario</a>, <a class="el" href="class_login.html#a86938313aacd3f9e82b793fb2b64102c">Login</a>, <a class="el" href="class_modificar_datos_usuario.html#aabb3283430ad589834e0ea46a7a8b298">ModificarDatosUsuario</a>, <a class="el" href="class_usuario.html#acf42a2c97654674fae0a2b2c0a5a2c80">Usuario</a></li>
-<li>autenticar()&#160;:&#160;<a class="el" href="class_login.html#a9f1155449482487e3fe1e13d8659ad8c">Login</a></li>
-<li>buscarUsuario()&#160;:&#160;<a class="el" href="class_acceso_datos_usuario.html#ac52bf08faee951f6f3c8e8491f0bdd93">CargarUsuarios</a></li>
-<li>cambiarEstadoUsuario()&#160;:&#160;<a class="el" href="class_estado_datos_usuario.html#ae9243ef2e5e9392086c02dffcece9a22">EstadoDatosUsuario</a></li>
-<li>desconectar()&#160;:&#160;<a class="el" href="class_conector_p_d_o.html#ab175e0942c335fa995ee2de2bf3d67ca">ConectorPDO</a></li>
-<li>esAdministrador()&#160;:&#160;<a class="el" href="class_usuario.html#ac075680fad031ee0860c77b1c800a19a">Usuario</a></li>
-<li>esDocente()&#160;:&#160;<a class="el" href="class_usuario.html#ac061867250056e0375e80da9735842bb">Usuario</a></li>
-<li>estaActivo()&#160;:&#160;<a class="el" href="class_usuario.html#a6291d46b41a1eb2384c99522c8307982">Usuario</a></li>
-<li>establecerConexion()&#160;:&#160;<a class="el" href="class_conector_p_d_o.html#a9c645edd8467ebf15cd1373b19e6b065">ConectorPDO</a></li>
-<li>esTecnico()&#160;:&#160;<a class="el" href="class_usuario.html#a148af2a2e9099dd16fd44d88e24044a7">Usuario</a></li>
-<li>getCedula()&#160;:&#160;<a class="el" href="class_usuario.html#a77612c21cce2c6317c3aef5805b7b811">Usuario</a></li>
-<li>getClaveHash()&#160;:&#160;<a class="el" href="class_usuario.html#ae8e4bd34048372e2709256e7c4d7c8e6">Usuario</a></li>
-<li>listarUsuarios()&#160;:&#160;<a class="el" href="class_acceso_datos_usuario.html#afe8676f129be7ce18fb35822bb495624">CargarUsuarios</a></li>
-<li>modificarUsuario()&#160;:&#160;<a class="el" href="class_modificar_datos_usuario.html#a4742dc02d5c9874393161b596049b58c">ModificarDatosUsuario</a></li>
-<li>registrarUsuario()&#160;:&#160;<a class="el" href="class_alta_datos_usuario.html#ae347ad9a482a64a1bd14477977cda762">AltaUsuario</a></li>
-<li>tieneSesionActiva()&#160;:&#160;<a class="el" href="class_usuario.html#ae10610108be05713be3692327710b4f6">Usuario</a></li>
+<div class="textblock">Lista de todos los campos de clases con enlaces a las clases a las que pertenecen:</div>
+
+<h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
+<li>__construct()&#160;:&#160;<a class="el" href="classAltaEquipo.html#a41a15fb2354d50c2cb9ac1e01646a597">AltaEquipo</a>, <a class="el" href="classAltaPrestamo.html#a5508f58e095851fd11bebb8b0c416995">AltaPrestamo</a>, <a class="el" href="classAltaSolicitud.html#adcb926444b851eb3316a9a4084c926af">AltaSolicitud</a>, <a class="el" href="classAltaTicket.html#a0363cbd50c9eccea1ee86e9ee6887db4">AltaTicket</a>, <a class="el" href="classAltaUbicacion.html#a9cc7767757d0c29d35eb17707ddd4487">AltaUbicacion</a>, <a class="el" href="classAltaUsuario.html#a7adf65a02a7e3ba25280682a8b9615c9">AltaUsuario</a>, <a class="el" href="classCargarEquipos.html#aaa6518407c41e61195f2d30c98496003">CargarEquipos</a>, <a class="el" href="classCargarPrestamos.html#a64e7b278c5aeae74ecb30f689da0574e">CargarPrestamos</a>, <a class="el" href="classCargarSolicitudes.html#ac6420eddc7e19d3b18d3f99db0626b43">CargarSolicitudes</a>, <a class="el" href="classCargarTickets.html#afed40ba62c29002d5f0ee949ccdfc1ed">CargarTickets</a>, <a class="el" href="classCargarUbicaciones.html#a99da3abb68b970c709124051a4def54f">CargarUbicaciones</a>, <a class="el" href="classCargarUsuarios.html#a5a1524841bfefe7aba4cb0fc3ccd90d4">CargarUsuarios</a>, <a class="el" href="classConectorPDO.html#abb923ba6e63fe8db0f14b45e07733c4b">ConectorPDO</a>, <a class="el" href="classEliminarUbicacion.html#ae950812373d1b1f01c3db04a96b2add5">EliminarUbicacion</a>, <a class="el" href="classEquipo.html#aeb86cda19f8c2de4da9a9ec4387f869f">Equipo</a>, <a class="el" href="classEstadoDatosEquipo.html#a3904c1e40ede7479354d7acc1f1f3ee0">EstadoDatosEquipo</a>, <a class="el" href="classEstadoDatosPrestamo.html#ae31a88faf8adad02ba3b807207c323ed">EstadoDatosPrestamo</a>, <a class="el" href="classEstadoDatosSolicitud.html#ae142be241f7354dbd7b6b98f3796589f">EstadoDatosSolicitud</a>, <a class="el" href="classEstadoDatosTicket.html#a89514f0222ee852b70f8f357f7287540">EstadoDatosTicket</a>, <a class="el" href="classEstadoDatosUsuario.html#a3144b2a7fc4e7729529d75b68417114e">EstadoDatosUsuario</a>, <a class="el" href="classLogin.html#a216b5d2d784a6150f241c077ec108fd6">Login</a>, <a class="el" href="classModificarDatosTicket.html#aac54b17b0cdb7d548691938bb21abffa">ModificarDatosTicket</a>, <a class="el" href="classModificarDatosUsuario.html#aabb3283430ad589834e0ea46a7a8b298">ModificarDatosUsuario</a>, <a class="el" href="classModificarUbicacionEquipo.html#ad3541dde4c6f98cb55ae22d1be4a3fca">ModificarUbicacionEquipo</a>, <a class="el" href="classSolicitud.html#a9a551b39bf0f9c69ac3de9feac9e9281">Solicitud</a>, <a class="el" href="classTicket.html#aa15fb74c4fb055ceae9bf375b7f48b30">Ticket</a>, <a class="el" href="classUbicacion.html#ae8370c0fe19477f9881181d58d21cfda">Ubicacion</a>, <a class="el" href="classUsuario.html#acf42a2c97654674fae0a2b2c0a5a2c80">Usuario</a></li>
+</ul>
+
+
+<h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
+<li>asignarme()&#160;:&#160;<a class="el" href="classModificarDatosTicket.html#a1665ba0f427e30bc5c5a4fc590831d7b">ModificarDatosTicket</a></li>
+<li>autenticar()&#160;:&#160;<a class="el" href="classLogin.html#a9f1155449482487e3fe1e13d8659ad8c">Login</a></li>
+</ul>
+
+
+<h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
+<li>buscarTicket()&#160;:&#160;<a class="el" href="classCargarTickets.html#a335cf34041d2925adf86c342b6855b0f">CargarTickets</a></li>
+<li>buscarUsuario()&#160;:&#160;<a class="el" href="classCargarUsuarios.html#a230a463f236e6a320cb91b35bcf8f02b">CargarUsuarios</a></li>
+</ul>
+
+
+<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
+<li>cambiarEstadoEquipo()&#160;:&#160;<a class="el" href="classEstadoDatosEquipo.html#acc1ef7f5b891ce88ec0c5e18fe00ecba">EstadoDatosEquipo</a></li>
+<li>cambiarEstadoPrestamo()&#160;:&#160;<a class="el" href="classEstadoDatosPrestamo.html#aa41a827b23b8bb5f1c051b04231d1718">EstadoDatosPrestamo</a></li>
+<li>cambiarEstadoSolicitud()&#160;:&#160;<a class="el" href="classEstadoDatosSolicitud.html#a8a9a2e457fd6c07bd899352557ad1693">EstadoDatosSolicitud</a></li>
+<li>cambiarEstadoTicket()&#160;:&#160;<a class="el" href="classEstadoDatosTicket.html#a8f73d72f7d8f2547c56d52bbaad881ab">EstadoDatosTicket</a></li>
+<li>cambiarEstadoUsuario()&#160;:&#160;<a class="el" href="classEstadoDatosUsuario.html#ae9243ef2e5e9392086c02dffcece9a22">EstadoDatosUsuario</a></li>
+<li>cambiarGravedadTicket()&#160;:&#160;<a class="el" href="classEstadoDatosTicket.html#a8f43387d0cf1f1a16567a66df5526b53">EstadoDatosTicket</a></li>
+</ul>
+
+
+<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>desasignarme()&#160;:&#160;<a class="el" href="classModificarDatosTicket.html#a691e3e3848891b9cf67cb2e359338322">ModificarDatosTicket</a></li>
+<li>desconectar()&#160;:&#160;<a class="el" href="classConectorPDO.html#ab175e0942c335fa995ee2de2bf3d67ca">ConectorPDO</a></li>
+</ul>
+
+
+<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>eliminarUbicacion()&#160;:&#160;<a class="el" href="classEliminarUbicacion.html#a110d096b7eb107a22ce056892939e7bf">EliminarUbicacion</a></li>
+<li>esAdministrador()&#160;:&#160;<a class="el" href="classUsuario.html#ac075680fad031ee0860c77b1c800a19a">Usuario</a></li>
+<li>esDocente()&#160;:&#160;<a class="el" href="classUsuario.html#ac061867250056e0375e80da9735842bb">Usuario</a></li>
+<li>estaActivo()&#160;:&#160;<a class="el" href="classEquipo.html#a73ea375af752d897e0dd73e5c63788b6">Equipo</a>, <a class="el" href="classUsuario.html#a6291d46b41a1eb2384c99522c8307982">Usuario</a></li>
+<li>establecerConexion()&#160;:&#160;<a class="el" href="classConectorPDO.html#a9c645edd8467ebf15cd1373b19e6b065">ConectorPDO</a></li>
+<li>estaFinalizada()&#160;:&#160;<a class="el" href="classSolicitud.html#afefdc9fee8395bce8babccbf44217906">Solicitud</a></li>
+<li>esTecnico()&#160;:&#160;<a class="el" href="classUsuario.html#a148af2a2e9099dd16fd44d88e24044a7">Usuario</a></li>
+</ul>
+
+
+<h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
+<li>getAsunto()&#160;:&#160;<a class="el" href="classSolicitud.html#ad857b315c8c11ad5e0e721f51d4aa7bb">Solicitud</a>, <a class="el" href="classTicket.html#a34bf648dc64509cd055227cab3f4256c">Ticket</a></li>
+<li>getCedula()&#160;:&#160;<a class="el" href="classUsuario.html#a77612c21cce2c6317c3aef5805b7b811">Usuario</a></li>
+<li>getCiDocente()&#160;:&#160;<a class="el" href="classSolicitud.html#ac4ff62dbc5885ecf2183dd5b8835aacc">Solicitud</a>, <a class="el" href="classTicket.html#a4b221a77a576b5163ee73959c600bab7">Ticket</a></li>
+<li>getClaveHash()&#160;:&#160;<a class="el" href="classUsuario.html#ae8e4bd34048372e2709256e7c4d7c8e6">Usuario</a></li>
+<li>getDescripcion()&#160;:&#160;<a class="el" href="classSolicitud.html#a70013bc195cb3f24db3cd4db0a50ef85">Solicitud</a>, <a class="el" href="classTicket.html#ab4dcc007bc0409370c3ab67ab72f2754">Ticket</a></li>
+<li>getEstado()&#160;:&#160;<a class="el" href="classTicket.html#a51206078226ef05de2a2f90bd4a2f3c7">Ticket</a></li>
+<li>getFechaCreacion()&#160;:&#160;<a class="el" href="classEquipo.html#a32d1fc241061faa3b5cc22f82858ab68">Equipo</a>, <a class="el" href="classTicket.html#aed5535e985bdd821746a9f3dccef10ba">Ticket</a></li>
+<li>getFechaLimite()&#160;:&#160;<a class="el" href="classSolicitud.html#a65c10b1316f4b5891f8077373ed02e4e">Solicitud</a></li>
+<li>getGravedad()&#160;:&#160;<a class="el" href="classTicket.html#aa0134e566e4c188a4e1bdd9945710345">Ticket</a></li>
+<li>getHoraCreacion()&#160;:&#160;<a class="el" href="classEquipo.html#adc833b16943cf342f49eab2b18278d48">Equipo</a>, <a class="el" href="classTicket.html#a47ec916bf7338229646f3e0b11416c00">Ticket</a></li>
+<li>getHoraLimite()&#160;:&#160;<a class="el" href="classSolicitud.html#aa0fc984e10a0d022a37e6500df97aaec">Solicitud</a></li>
+<li>getId()&#160;:&#160;<a class="el" href="classEquipo.html#ae8b95912d3ce054f04a2ba41c5369d42">Equipo</a></li>
+<li>getID()&#160;:&#160;<a class="el" href="classSolicitud.html#a8066679eab1a1ea4d63afa038490f1de">Solicitud</a>, <a class="el" href="classTicket.html#ad2f322f2460bd00d525abc4169a85fb7">Ticket</a></li>
+<li>getId()&#160;:&#160;<a class="el" href="classUbicacion.html#af89b7451596d752d5a8519c5dd7a07df">Ubicacion</a></li>
+<li>getIdEquipo()&#160;:&#160;<a class="el" href="classTicket.html#a2a4de19e286d5aff0c7a255004953e72">Ticket</a></li>
+<li>getJustificacion()&#160;:&#160;<a class="el" href="classTicket.html#accd7901a27dd78ee9fd43c42c822e5c9">Ticket</a></li>
+<li>getNombre()&#160;:&#160;<a class="el" href="classSolicitud.html#ab38ddfa8ba6e7bec73ce978880e24757">Solicitud</a></li>
+<li>getNombreDocente()&#160;:&#160;<a class="el" href="classTicket.html#a7ecf54d95e6fd5942b27b5bf9ee4ff8c">Ticket</a></li>
+<li>getTipo()&#160;:&#160;<a class="el" href="classTicket.html#a8a21ceca82ee8ed69b34f376fd24e1a7">Ticket</a>, <a class="el" href="classUbicacion.html#addf9d1d91158e9f94eba060ba5924689">Ubicacion</a></li>
+<li>getTipoUbicacion()&#160;:&#160;<a class="el" href="classTicket.html#a6e72dea5f6a6430004cc7c88c65f35c5">Ticket</a></li>
+<li>getUltimaIntervencion()&#160;:&#160;<a class="el" href="classEquipo.html#a05ba0a4212ad349c97e46815be19dc5d">Equipo</a></li>
+</ul>
+
+
+<h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
+<li>listarEquipos()&#160;:&#160;<a class="el" href="classCargarEquipos.html#a46a5510c43014c9dd975065b6fba3182">CargarEquipos</a></li>
+<li>listarPrestamos()&#160;:&#160;<a class="el" href="classCargarPrestamos.html#a066ccfb3e8f241551361718ad8f8815c">CargarPrestamos</a></li>
+<li>listarSolicitudes()&#160;:&#160;<a class="el" href="classCargarSolicitudes.html#a3072af27d7f234f79c70b78ae67f7264">CargarSolicitudes</a></li>
+<li>listarTickets()&#160;:&#160;<a class="el" href="classCargarTickets.html#aa65b2f7267c54ac5cf57223c7f9e9754">CargarTickets</a></li>
+<li>listarUbicaciones()&#160;:&#160;<a class="el" href="classCargarUbicaciones.html#af453bb69865fdc2dd0bf6e92c2e55491">CargarUbicaciones</a></li>
+<li>listarUsuarios()&#160;:&#160;<a class="el" href="classCargarUsuarios.html#a47a9a2ca7a5e6c576afa64c238523454">CargarUsuarios</a></li>
+</ul>
+
+
+<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
+<li>modificarUbicacionEquipo()&#160;:&#160;<a class="el" href="classModificarUbicacionEquipo.html#a635bee71542dda346aa49ca37ae951dc">ModificarUbicacionEquipo</a></li>
+<li>modificarUsuario()&#160;:&#160;<a class="el" href="classModificarDatosUsuario.html#a4742dc02d5c9874393161b596049b58c">ModificarDatosUsuario</a></li>
+</ul>
+
+
+<h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
+<li>registrarEquipo()&#160;:&#160;<a class="el" href="classAltaEquipo.html#a92cfeca55fd9c4b8b4794c49e506368f">AltaEquipo</a></li>
+<li>registrarPrestamo()&#160;:&#160;<a class="el" href="classAltaPrestamo.html#a707b4fb3be8e445a38189c0e584d8f05">AltaPrestamo</a></li>
+<li>registrarSolicitud()&#160;:&#160;<a class="el" href="classAltaSolicitud.html#a130213992c05bebf92efb8f0cad06443">AltaSolicitud</a></li>
+<li>registrarTicket()&#160;:&#160;<a class="el" href="classAltaTicket.html#a30e22c4a3bfbb3a6e03df5334e5f8912">AltaTicket</a></li>
+<li>registrarUbicacion()&#160;:&#160;<a class="el" href="classAltaUbicacion.html#a7a45487225830143c7925a267cb403bd">AltaUbicacion</a></li>
+<li>registrarUsuario()&#160;:&#160;<a class="el" href="classAltaUsuario.html#a53172ec3940e6b0f09474b93e5921760">AltaUsuario</a></li>
+</ul>
+
+
+<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>tieneSesionActiva()&#160;:&#160;<a class="el" href="classUsuario.html#ae10610108be05713be3692327710b4f6">Usuario</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
-</div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.18.0 </li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

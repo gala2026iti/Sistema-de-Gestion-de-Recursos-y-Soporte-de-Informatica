@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SGRSI: Referencia del archivo SGRSI/app/controlador/usuarios/procesarAltaUsuario.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SGRSI
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('procesarAltaUsuario_8php.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo procesarAltaUsuario.php</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Procesa el registro de nuevos usuarios.  
+<a href="#details">Más...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8a42adb023565f51589e8bbc80b5e065" id="r_a8a42adb023565f51589e8bbc80b5e065"><td class="memItemLeft" align="right" valign="top">if($_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset( $_SESSION[&quot;cedula&quot;])) if(!($_SESSION[&quot;administrador&quot;] ?? false))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a8a42adb023565f51589e8bbc80b5e065">$csrfToken</a> = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a8a42adb023565f51589e8bbc80b5e065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b398e0a71495998794046902bdc0e9" id="r_ab4b398e0a71495998794046902bdc0e9"><td class="memItemLeft" align="right" valign="top">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">$cedula</a> = trim($_POST[&quot;cedula&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:ab4b398e0a71495998794046902bdc0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa7b9d1ce32c1d2e32f7ad3e0b59aac2" id="r_aaa7b9d1ce32c1d2e32f7ad3e0b59aac2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">$nombre</a> = trim($_POST[&quot;nombre&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:aaa7b9d1ce32c1d2e32f7ad3e0b59aac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f" id="r_a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">$correo</a> = trim($_POST[&quot;correo&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9afec6c1b8bfe5b785eac455dbcb9eef" id="r_a9afec6c1b8bfe5b785eac455dbcb9eef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a9afec6c1b8bfe5b785eac455dbcb9eef">$clave</a> = $_POST[&quot;clave&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a9afec6c1b8bfe5b785eac455dbcb9eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaee93afe6cf50afeb1e4c1c9ebe34911" id="r_aaee93afe6cf50afeb1e4c1c9ebe34911"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#aaee93afe6cf50afeb1e4c1c9ebe34911">$confirmarClave</a> = $_POST[&quot;confirmarClave&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:aaee93afe6cf50afeb1e4c1c9ebe34911"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a565772e407805783bcc46deeafeb3" id="r_a24a565772e407805783bcc46deeafeb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a24a565772e407805783bcc46deeafeb3">$roles</a> = $_POST[&quot;roles&quot;] ?? []</td></tr>
+<tr class="separator:a24a565772e407805783bcc46deeafeb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f8547b31d08bdd28a7f7a645d8a4eba" id="r_a6f8547b31d08bdd28a7f7a645d8a4eba"><td class="memItemLeft" align="right" valign="top">if($cedula===&quot;&quot;||$nombre===&quot;&quot;||$correo===&quot;&quot;||$clave===&quot;&quot;||$confirmarClave===&quot;&quot;||empty( $roles)) if($cedula&lt; 10000000|| $cedula &gt; 99999999) if(!preg_match(&quot;/^&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a6f8547b31d08bdd28a7f7a645d8a4eba">$rolesValidos</a> [A-Za-zÁÉÍÓÚáéíóúÑñ]{1, 100}$/&quot;, $nombre)) if(!filter_var( $correo, FILTER_VALIDATE_EMAIL)) if(strlen($clave)&lt; 12) if ( $clave !==$confirmarClave) = [&quot;administrador&quot;, &quot;tecnico&quot;, &quot;docente&quot;]</td></tr>
+<tr class="separator:a6f8547b31d08bdd28a7f7a645d8a4eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7007a6aa1d5b7d3b387d77aa3e39bdda" id="r_a7007a6aa1d5b7d3b387d77aa3e39bdda"><td class="memItemLeft" align="right" valign="top">foreach($roles as $rol)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">$claveHash</a> = password_hash($clave, PASSWORD_DEFAULT)</td></tr>
+<tr class="separator:a7007a6aa1d5b7d3b387d77aa3e39bdda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adecbd788367c785d74b2222c5aa12d4e" id="r_adecbd788367c785d74b2222c5aa12d4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#adecbd788367c785d74b2222c5aa12d4e">$conectorPDO</a></td></tr>
+<tr class="separator:adecbd788367c785d74b2222c5aa12d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
+<tr class="separator:a881924afaecbe8ee5c0d26174a1e8081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6050d57abe1ce12fde708fa2baad9739" id="r_a6050d57abe1ce12fde708fa2baad9739"><td class="memItemLeft" align="right" valign="top">if($conexion===null)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a6050d57abe1ce12fde708fa2baad9739">$AltaUsuario</a> = new <a class="el" href="classAltaUsuario.html">AltaUsuario</a>($conexion)</td></tr>
+<tr class="separator:a6050d57abe1ce12fde708fa2baad9739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06face0ef35c41554d8f4fe115363f58" id="r_a06face0ef35c41554d8f4fe115363f58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a06face0ef35c41554d8f4fe115363f58">$resultado</a></td></tr>
+<tr class="separator:a06face0ef35c41554d8f4fe115363f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12be2568c6783d195ce118168423003e" id="r_a12be2568c6783d195ce118168423003e"><td class="memItemLeft" align="right" valign="top">if(! $resultado)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaUsuario_8php.html#a12be2568c6783d195ce118168423003e">$mensaje</a> = &quot;Usuario registrado correctamente.&quot;</td></tr>
+<tr class="separator:a12be2568c6783d195ce118168423003e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Procesa el registro de nuevos usuarios. </p>
+<p>Valida los datos recibidos mediante POST, genera el hash de la contraseña y solicita al modelo el registro del usuario y sus roles.</p>
+<p>Valida los datos recibidos, comprueba la sesión y el token CSRF y solicita al modelo el registro del usuario. </p>
+</div><h2 class="groupheader">Documentación de variables</h2>
+<a id="a6050d57abe1ce12fde708fa2baad9739" name="a6050d57abe1ce12fde708fa2baad9739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6050d57abe1ce12fde708fa2baad9739">&#9670;&#160;</a></span>$AltaUsuario</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if ( $conexion===null) $<a class="el" href="classAltaUsuario.html">AltaUsuario</a> = new <a class="el" href="classAltaUsuario.html">AltaUsuario</a>($conexion)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab4b398e0a71495998794046902bdc0e9" name="ab4b398e0a71495998794046902bdc0e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b398e0a71495998794046902bdc0e9">&#9670;&#160;</a></span>$cedula</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (!isset( $_SESSION[&quot;csrfToken&quot;])||!is_string( $csrfToken)||!hash_equals( $_SESSION[&quot;csrfToken&quot;], $csrfToken)) $cedula = trim($_POST[&quot;cedula&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9afec6c1b8bfe5b785eac455dbcb9eef" name="a9afec6c1b8bfe5b785eac455dbcb9eef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9afec6c1b8bfe5b785eac455dbcb9eef">&#9670;&#160;</a></span>$clave</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$clave = $_POST[&quot;clave&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7007a6aa1d5b7d3b387d77aa3e39bdda" name="a7007a6aa1d5b7d3b387d77aa3e39bdda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7007a6aa1d5b7d3b387d77aa3e39bdda">&#9670;&#160;</a></span>$claveHash</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">foreach ( $roles as $rol) $claveHash = password_hash($clave, PASSWORD_DEFAULT)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adecbd788367c785d74b2222c5aa12d4e" name="adecbd788367c785d74b2222c5aa12d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adecbd788367c785d74b2222c5aa12d4e">&#9670;&#160;</a></span>$conectorPDO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$conectorPDO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <a class="code hl_class" href="classConectorPDO.html">ConectorPDO</a>(</div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_HOST&#39;</span>] . <span class="stringliteral">&quot;:&quot;</span> . </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_PUERTO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_USUARIO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_CLAVE&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_NOMBRE&#39;</span>]</div>
+<div class="line">)</div>
+<div class="ttc" id="aclassConectorPDO_html"><div class="ttname"><a href="classConectorPDO.html">ConectorPDO</a></div><div class="ttdoc">Gestiona la conexión con la base de datos mediante PDO.</div><div class="ttdef"><b>Definition</b> ConectorPDO.php:9</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a881924afaecbe8ee5c0d26174a1e8081" name="a881924afaecbe8ee5c0d26174a1e8081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881924afaecbe8ee5c0d26174a1e8081">&#9670;&#160;</a></span>$conexion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$conexion = $conectorPDO-&gt;establecerConexion()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaee93afe6cf50afeb1e4c1c9ebe34911" name="aaee93afe6cf50afeb1e4c1c9ebe34911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaee93afe6cf50afeb1e4c1c9ebe34911">&#9670;&#160;</a></span>$confirmarClave</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$confirmarClave = $_POST[&quot;confirmarClave&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f" name="a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">&#9670;&#160;</a></span>$correo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$correo = trim($_POST[&quot;correo&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a42adb023565f51589e8bbc80b5e065" name="a8a42adb023565f51589e8bbc80b5e065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a42adb023565f51589e8bbc80b5e065">&#9670;&#160;</a></span>$csrfToken</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset($_SESSION[&quot;cedula&quot;])) if (!( $_SESSION[&quot;administrador&quot;] ?? false)) $csrfToken = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a12be2568c6783d195ce118168423003e" name="a12be2568c6783d195ce118168423003e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12be2568c6783d195ce118168423003e">&#9670;&#160;</a></span>$mensaje</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (! $resultado) $mensaje = &quot;Usuario registrado correctamente.&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaa7b9d1ce32c1d2e32f7ad3e0b59aac2" name="aaa7b9d1ce32c1d2e32f7ad3e0b59aac2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">&#9670;&#160;</a></span>$nombre</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$nombre = trim($_POST[&quot;nombre&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a06face0ef35c41554d8f4fe115363f58" name="a06face0ef35c41554d8f4fe115363f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06face0ef35c41554d8f4fe115363f58">&#9670;&#160;</a></span>$resultado</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$resultado</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="procesarAltaUsuario_8php.html#a6050d57abe1ce12fde708fa2baad9739">$AltaUsuario</a>-&gt;registrarUsuario(</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">$cedula</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaUsuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">$nombre</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaUsuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">$correo</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaUsuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">$claveHash</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaUsuario_8php.html#a24a565772e407805783bcc46deeafeb3">$roles</a></div>
+<div class="line">)</div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_a24a565772e407805783bcc46deeafeb3"><div class="ttname"><a href="procesarAltaUsuario_8php.html#a24a565772e407805783bcc46deeafeb3">$roles</a></div><div class="ttdeci">$roles</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:69</div></div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f"><div class="ttname"><a href="procesarAltaUsuario_8php.html#a43dfe1ee9d8a8ccf9c5ea3dd79fcac6f">$correo</a></div><div class="ttdeci">$correo</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:66</div></div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_a6050d57abe1ce12fde708fa2baad9739"><div class="ttname"><a href="procesarAltaUsuario_8php.html#a6050d57abe1ce12fde708fa2baad9739">$AltaUsuario</a></div><div class="ttdeci">if($conexion===null) $AltaUsuario</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:193</div></div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_a7007a6aa1d5b7d3b387d77aa3e39bdda"><div class="ttname"><a href="procesarAltaUsuario_8php.html#a7007a6aa1d5b7d3b387d77aa3e39bdda">$claveHash</a></div><div class="ttdeci">foreach($roles as $rol) $claveHash</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:171</div></div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_aaa7b9d1ce32c1d2e32f7ad3e0b59aac2"><div class="ttname"><a href="procesarAltaUsuario_8php.html#aaa7b9d1ce32c1d2e32f7ad3e0b59aac2">$nombre</a></div><div class="ttdeci">$nombre</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:65</div></div>
+<div class="ttc" id="aprocesarAltaUsuario_8php_html_ab4b398e0a71495998794046902bdc0e9"><div class="ttname"><a href="procesarAltaUsuario_8php.html#ab4b398e0a71495998794046902bdc0e9">$cedula</a></div><div class="ttdeci">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken)) $cedula</div><div class="ttdef"><b>Definition</b> procesarAltaUsuario.php:64</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a24a565772e407805783bcc46deeafeb3" name="a24a565772e407805783bcc46deeafeb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24a565772e407805783bcc46deeafeb3">&#9670;&#160;</a></span>$roles</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$roles = $_POST[&quot;roles&quot;] ?? []</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f8547b31d08bdd28a7f7a645d8a4eba" name="a6f8547b31d08bdd28a7f7a645d8a4eba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f8547b31d08bdd28a7f7a645d8a4eba">&#9670;&#160;</a></span>$rolesValidos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $cedula===&quot;&quot;|| $nombre===&quot;&quot;|| $correo===&quot;&quot;|| $clave===&quot;&quot;|| $confirmarClave===&quot;&quot;||empty($roles)) if( $cedula&lt; 10000000||$cedula &gt; 99999999) if(!preg_match(&quot;/^ $rolesValidos[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,100}$/&quot;, $nombre)) if(!filter_var( $correo, FILTER_VALIDATE_EMAIL)) if(strlen($clave)&lt; 12) if ( $clave !==$confirmarClave) = [&quot;administrador&quot;, &quot;tecnico&quot;, &quot;docente&quot;]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_e200cb17b77820cc938f6d4859c5e467.html">SGRSI</a></li><li class="navelem"><a class="el" href="dir_0311326f6572d69981b7c165bac20f7d.html">app</a></li><li class="navelem"><a class="el" href="dir_093559de2df60fff20ea69c6c3bcc726.html">controlador</a></li><li class="navelem"><a class="el" href="dir_45090b42f77f52b80aeceaa7bcf0cf04.html">usuarios</a></li><li class="navelem"><a class="el" href="procesarAltaUsuario_8php.html">procesarAltaUsuario.php</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

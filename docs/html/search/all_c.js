@@ -1,7 +1,23 @@
 var searchData=
 [
-  ['metricas_2ephp_0',['metricas.php',['../metricas_8php.html',1,'']]],
-  ['modificardatosusuario_1',['ModificarDatosUsuario',['../class_modificar_datos_usuario.html',1,'']]],
-  ['modificardatosusuario_2ephp_2',['ModificarDatosUsuario.php',['../_modificar_datos_usuario_8php.html',1,'']]],
-  ['modificarusuario_3',['modificarUsuario',['../class_modificar_datos_usuario.html#a4742dc02d5c9874393161b596049b58c',1,'ModificarDatosUsuario']]]
+  ['pagsolicitudes_2ephp_0',['pagsolicitudes.php',['../pagsolicitudes_8php.html',1,'']]],
+  ['procesaraltaequipo_2ephp_1',['procesarAltaEquipo.php',['../procesarAltaEquipo_8php.html',1,'']]],
+  ['procesaraltasolicitud_2ephp_2',['procesarAltaSolicitud.php',['../procesarAltaSolicitud_8php.html',1,'']]],
+  ['procesaraltaticket_2ephp_3',['procesarAltaTicket.php',['../procesarAltaTicket_8php.html',1,'']]],
+  ['procesaraltaubicacion_2ephp_4',['procesarAltaUbicacion.php',['../procesarAltaUbicacion_8php.html',1,'']]],
+  ['procesaraltausuario_2ephp_5',['procesarAltaUsuario.php',['../procesarAltaUsuario_8php.html',1,'']]],
+  ['procesarcargarequipos_2ephp_6',['procesarCargarEquipos.php',['../procesarCargarEquipos_8php.html',1,'']]],
+  ['procesarcargarsolicitudes_2ephp_7',['procesarCargarSolicitudes.php',['../procesarCargarSolicitudes_8php.html',1,'']]],
+  ['procesarcargartickets_2ephp_8',['procesarCargarTickets.php',['../procesarCargarTickets_8php.html',1,'']]],
+  ['procesarcargarubicaciones_2ephp_9',['procesarCargarUbicaciones.php',['../procesarCargarUbicaciones_8php.html',1,'']]],
+  ['procesarcargarusuarios_2ephp_10',['procesarCargarUsuarios.php',['../procesarCargarUsuarios_8php.html',1,'']]],
+  ['procesareliminarubicacion_2ephp_11',['procesarEliminarUbicacion.php',['../procesarEliminarUbicacion_8php.html',1,'']]],
+  ['procesarestadoequipo_2ephp_12',['procesarEstadoEquipo.php',['../procesarEstadoEquipo_8php.html',1,'']]],
+  ['procesarestadosolicitud_2ephp_13',['procesarEstadoSolicitud.php',['../procesarEstadoSolicitud_8php.html',1,'']]],
+  ['procesarestadoticket_2ephp_14',['procesarEstadoTicket.php',['../procesarEstadoTicket_8php.html',1,'']]],
+  ['procesarestadousuario_2ephp_15',['procesarEstadoUsuario.php',['../procesarEstadoUsuario_8php.html',1,'']]],
+  ['procesarlogin_2ephp_16',['procesarLogin.php',['../procesarLogin_8php.html',1,'']]],
+  ['procesarmodificarequipo_2ephp_17',['procesarModificarEquipo.php',['../procesarModificarEquipo_8php.html',1,'']]],
+  ['procesarmodificarticket_2ephp_18',['procesarModificarTicket.php',['../procesarModificarTicket_8php.html',1,'']]],
+  ['procesarmodificarusuario_2ephp_19',['procesarModificarUsuario.php',['../procesarModificarUsuario_8php.html',1,'']]]
 ];

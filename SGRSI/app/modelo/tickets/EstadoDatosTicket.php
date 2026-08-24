@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el estado de los usuarios.
+ * @brief Gestiona el estado y la gravedad de los tickets.
  *
- * Permite activar o desactivar usuarios mediante el campo
- * activo de la tabla USUARIO.
+ * Permite actualizar estos valores sin modificar el resto de sus datos.
  */
 class EstadoDatosTicket
 {
@@ -14,7 +13,7 @@ class EstadoDatosTicket
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para modificar el estado de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,15 +23,12 @@ class EstadoDatosTicket
     }
 
     /**
-     * @brief Cambia el estado de un usuario.
+     * @brief Cambia el estado de un ticket.
      *
-     * Actualiza el campo activo de la tabla USUARIO para activar
-     * o desactivar al usuario sin modificar sus roles.
+     * @param string $id Identificador del ticket.
+     * @param string $estado Nuevo estado del ticket.
      *
-     * @param string $cedula Cédula del usuario cuyo estado se modificará.
-     * @param bool $activo Nuevo estado del usuario.
-     *
-     * @return bool true si el usuario fue actualizado correctamente;
+     * @return bool true si el ticket fue actualizado;
      *              false si ocurrió un error.
      */
     public function cambiarEstadoTicket(string $id, string $estado): bool
@@ -56,7 +52,15 @@ class EstadoDatosTicket
             return false;
         }
     }
-
+        /**
+         * @brief Cambia la gravedad de un ticket.
+         *
+         * @param string $id Identificador del ticket.
+         * @param string $gravedad Nueva gravedad del ticket.
+         *
+         * @return bool true si el ticket fue actualizado;
+         *              false si ocurrió un error.
+         */
         public function cambiarGravedadTicket(string $id, string $gravedad): bool
     {
         $sql = "

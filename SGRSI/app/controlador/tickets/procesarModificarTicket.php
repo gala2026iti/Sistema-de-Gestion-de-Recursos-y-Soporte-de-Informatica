@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarModificarUsuario.php
+ * @file procesarModificarTicket.php
  *
- * @brief Procesa la modificación de usuarios.
+ * @brief Procesa la asignación o desasignación de tickets.
  *
- * Valida los datos recibidos mediante POST y solicita al modelo
- * la actualización de los datos, contraseña y roles del usuario.
+ * Valida la solicitud y utiliza el modelo para modificar la relación del técnico con el ticket.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

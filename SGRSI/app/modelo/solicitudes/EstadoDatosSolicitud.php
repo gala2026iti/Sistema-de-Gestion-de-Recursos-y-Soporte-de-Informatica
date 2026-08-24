@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el estado de los usuarios.
+ * @brief Gestiona el estado de las solicitudes.
  *
- * Permite activar o desactivar usuarios mediante el campo
- * activo de la tabla USUARIO.
+ * Permite marcar una solicitud como finalizada o pendiente.
  */
 class EstadoDatosSolicitud
 {
@@ -14,7 +13,7 @@ class EstadoDatosSolicitud
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para modificar el estado de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,15 +23,12 @@ class EstadoDatosSolicitud
     }
 
     /**
-     * @brief Cambia el estado de un usuario.
+     * @brief Cambia el estado de finalización de una solicitud.
      *
-     * Actualiza el campo activo de la tabla USUARIO para activar
-     * o desactivar al usuario sin modificar sus roles.
+     * @param string $idSolicitud Identificador de la solicitud.
+     * @param bool $finalizada Nuevo estado de finalización.
      *
-     * @param string $cedula Cédula del usuario cuyo estado se modificará.
-     * @param bool $activo Nuevo estado del usuario.
-     *
-     * @return bool true si el usuario fue actualizado correctamente;
+     * @return bool true si la solicitud fue actualizada;
      *              false si ocurrió un error.
      */
     public function cambiarEstadoSolicitud(string $idSolicitud, bool $finalizada): bool

@@ -5,8 +5,7 @@
  *
  * @brief Carga los usuarios para la página de gestión.
  *
- * Obtiene los filtros enviados mediante GET, consulta los usuarios
- * correspondientes y carga la vista de gestión de usuarios.
+ * Obtiene los filtros enviados mediante GET, consulta los usuarios y carga la vista correspondiente.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

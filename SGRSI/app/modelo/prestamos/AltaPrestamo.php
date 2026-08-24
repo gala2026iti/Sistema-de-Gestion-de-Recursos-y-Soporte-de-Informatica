@@ -1,12 +1,10 @@
 <?php
-
 /**
- * @brief Gestiona el registro de nuevos usuarios.
+ * @brief Gestiona el registro de nuevos préstamos.
  *
- * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
- * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Registra el préstamo y la intervención del técnico dentro de una transacción.
  */
-class AltaSolicitud
+class AltaPrestamo
 {
     /**
      * @brief Conexión con la base de datos.
@@ -14,7 +12,7 @@ class AltaSolicitud
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para registrar usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,19 +22,22 @@ class AltaSolicitud
     }
 
     /**
-     * @brief Registra un nuevo usuario y sus roles.
+     * @brief Registra un nuevo préstamo.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
+     * Registra el préstamo y la intervención del técnico dentro de una transacción.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
-     * @param array $roles Roles que tendrá el usuario.
+     * @param string $idPrestamo Identificador del préstamo.
+     * @param string $ciTecnico Cédula del técnico que tramita el préstamo.
+     * @param string $nombrePrestado Nombre de la persona a la que se presta.
+     * @param string $ciPrestado Cédula de la persona a la que se presta.
+     * @param string $fechaFin Fecha prevista de devolución.
+     * @param string $horaFin Hora prevista de devolución.
+     * @param string $fecha Fecha de la intervención.
+     * @param string $hora Hora de la intervención.
+     * @param string $tipoInteraccion Tipo de interacción registrada.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarPrestamo(
         string $idPrestamo,

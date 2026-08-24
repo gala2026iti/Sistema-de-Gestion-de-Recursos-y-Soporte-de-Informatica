@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SGRSI: Referencia del archivo SGRSI/app/controlador/recursos/procesarAltaEquipo.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SGRSI
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('procesarAltaEquipo_8php.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo procesarAltaEquipo.php</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Procesa el registro de nuevos equipos.  
+<a href="#details">Más...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8a42adb023565f51589e8bbc80b5e065" id="r_a8a42adb023565f51589e8bbc80b5e065"><td class="memItemLeft" align="right" valign="top">if($_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset( $_SESSION[&quot;cedula&quot;])) if(!($_SESSION[&quot;administrador&quot;] ?? false))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a8a42adb023565f51589e8bbc80b5e065">$csrfToken</a> = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a8a42adb023565f51589e8bbc80b5e065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff582d500545edf0dd6494cbc55680ca" id="r_aff582d500545edf0dd6494cbc55680ca"><td class="memItemLeft" align="right" valign="top">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#aff582d500545edf0dd6494cbc55680ca">$id</a> = trim($_POST[&quot;id&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:aff582d500545edf0dd6494cbc55680ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30b059578046ad4a96cb10eaa03bd102" id="r_a30b059578046ad4a96cb10eaa03bd102"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a30b059578046ad4a96cb10eaa03bd102">$fechaCreacion</a> = trim($_POST[&quot;fechaCreacion&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:a30b059578046ad4a96cb10eaa03bd102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebfbfa34d280d1fa65215d13f5c93eb" id="r_a8ebfbfa34d280d1fa65215d13f5c93eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a8ebfbfa34d280d1fa65215d13f5c93eb">$horaCreacion</a> = trim($_POST[&quot;horaCreacion&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:a8ebfbfa34d280d1fa65215d13f5c93eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c9d51e5c68dd0b077bc3c58a618ba38" id="r_a2c9d51e5c68dd0b077bc3c58a618ba38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a2c9d51e5c68dd0b077bc3c58a618ba38">$ultimaIntervencion</a> = $_POST[&quot;ultimaIntervencion&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a2c9d51e5c68dd0b077bc3c58a618ba38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a675c6e517191338818caa488c0bbd4" id="r_a1a675c6e517191338818caa488c0bbd4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a1a675c6e517191338818caa488c0bbd4">$idUbicacion</a> = $_POST[&quot;idUbicacion&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a1a675c6e517191338818caa488c0bbd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b22412cf320166b2152cbe2b77056e" id="r_a16b22412cf320166b2152cbe2b77056e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a16b22412cf320166b2152cbe2b77056e">$tipoUbicacion</a> = $_POST[&quot;tipoUbicacion&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a16b22412cf320166b2152cbe2b77056e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241652b3ae6b343c6ae6f7fbd7312d22" id="r_a241652b3ae6b343c6ae6f7fbd7312d22"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a241652b3ae6b343c6ae6f7fbd7312d22">$posicion</a> = $_POST[&quot;posicion&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a241652b3ae6b343c6ae6f7fbd7312d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaec0583108321e8244f142caf43895e" id="r_aaaec0583108321e8244f142caf43895e"><td class="memItemLeft" align="right" valign="top">if( $id===&quot;&quot;|| $fechaCreacion===&quot;&quot;|| $horaCreacion===&quot;&quot;|| $ultimaIntervencion===&quot;&quot;) if(!is_numeric( $id) &amp;&amp;strlen( $id) &gt; 6) if(strlen($fechaCreacion) !==10) if(strlen( $horaCreacion) !==5) if($ultimaIntervencion !==null)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#aaaec0583108321e8244f142caf43895e">$conectorPDO</a></td></tr>
+<tr class="separator:aaaec0583108321e8244f142caf43895e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
+<tr class="separator:a881924afaecbe8ee5c0d26174a1e8081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03ffc52062148a2c7a40526642744e28" id="r_a03ffc52062148a2c7a40526642744e28"><td class="memItemLeft" align="right" valign="top">if($conexion===null)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a03ffc52062148a2c7a40526642744e28">$AltaEquipo</a> = new <a class="el" href="classAltaEquipo.html">AltaEquipo</a>($conexion)</td></tr>
+<tr class="separator:a03ffc52062148a2c7a40526642744e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06face0ef35c41554d8f4fe115363f58" id="r_a06face0ef35c41554d8f4fe115363f58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a06face0ef35c41554d8f4fe115363f58">$resultado</a></td></tr>
+<tr class="separator:a06face0ef35c41554d8f4fe115363f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12be2568c6783d195ce118168423003e" id="r_a12be2568c6783d195ce118168423003e"><td class="memItemLeft" align="right" valign="top">if(! $resultado)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarAltaEquipo_8php.html#a12be2568c6783d195ce118168423003e">$mensaje</a> = &quot;Equipo registrado correctamente.&quot;</td></tr>
+<tr class="separator:a12be2568c6783d195ce118168423003e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Procesa el registro de nuevos equipos. </p>
+<p>Valida los datos, la sesión y el token CSRF antes de solicitar al modelo el registro del equipo. </p>
+</div><h2 class="groupheader">Documentación de variables</h2>
+<a id="a03ffc52062148a2c7a40526642744e28" name="a03ffc52062148a2c7a40526642744e28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ffc52062148a2c7a40526642744e28">&#9670;&#160;</a></span>$AltaEquipo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if ( $conexion===null) $<a class="el" href="classAltaEquipo.html">AltaEquipo</a> = new <a class="el" href="classAltaEquipo.html">AltaEquipo</a>($conexion)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaaec0583108321e8244f142caf43895e" name="aaaec0583108321e8244f142caf43895e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaec0583108321e8244f142caf43895e">&#9670;&#160;</a></span>$conectorPDO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if($id===&quot;&quot;||$fechaCreacion===&quot;&quot;||$horaCreacion===&quot;&quot;||$ultimaIntervencion===&quot;&quot;) if(!is_numeric($id) &amp;&amp;strlen($id) &gt; 6) if(strlen( $fechaCreacion) !==10) if(strlen($horaCreacion) !==5) if ( $ultimaIntervencion !==null) $conectorPDO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <a class="code hl_class" href="classConectorPDO.html">ConectorPDO</a>(</div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_HOST&#39;</span>] . <span class="stringliteral">&quot;:&quot;</span> . </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_PUERTO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_USUARIO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_CLAVE&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_NOMBRE&#39;</span>]</div>
+<div class="line">)</div>
+<div class="ttc" id="aclassConectorPDO_html"><div class="ttname"><a href="classConectorPDO.html">ConectorPDO</a></div><div class="ttdoc">Gestiona la conexión con la base de datos mediante PDO.</div><div class="ttdef"><b>Definition</b> ConectorPDO.php:9</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a881924afaecbe8ee5c0d26174a1e8081" name="a881924afaecbe8ee5c0d26174a1e8081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881924afaecbe8ee5c0d26174a1e8081">&#9670;&#160;</a></span>$conexion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$conexion = $conectorPDO-&gt;establecerConexion()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a42adb023565f51589e8bbc80b5e065" name="a8a42adb023565f51589e8bbc80b5e065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a42adb023565f51589e8bbc80b5e065">&#9670;&#160;</a></span>$csrfToken</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset($_SESSION[&quot;cedula&quot;])) if (!( $_SESSION[&quot;administrador&quot;] ?? false)) $csrfToken = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30b059578046ad4a96cb10eaa03bd102" name="a30b059578046ad4a96cb10eaa03bd102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30b059578046ad4a96cb10eaa03bd102">&#9670;&#160;</a></span>$fechaCreacion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$fechaCreacion = trim($_POST[&quot;fechaCreacion&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8ebfbfa34d280d1fa65215d13f5c93eb" name="a8ebfbfa34d280d1fa65215d13f5c93eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ebfbfa34d280d1fa65215d13f5c93eb">&#9670;&#160;</a></span>$horaCreacion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$horaCreacion = trim($_POST[&quot;horaCreacion&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aff582d500545edf0dd6494cbc55680ca" name="aff582d500545edf0dd6494cbc55680ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff582d500545edf0dd6494cbc55680ca">&#9670;&#160;</a></span>$id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (!isset( $_SESSION[&quot;csrfToken&quot;])||!is_string( $csrfToken)||!hash_equals( $_SESSION[&quot;csrfToken&quot;], $csrfToken)) $id = trim($_POST[&quot;id&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a675c6e517191338818caa488c0bbd4" name="a1a675c6e517191338818caa488c0bbd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a675c6e517191338818caa488c0bbd4">&#9670;&#160;</a></span>$idUbicacion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$idUbicacion = $_POST[&quot;idUbicacion&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a12be2568c6783d195ce118168423003e" name="a12be2568c6783d195ce118168423003e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12be2568c6783d195ce118168423003e">&#9670;&#160;</a></span>$mensaje</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (! $resultado) $mensaje = &quot;Equipo registrado correctamente.&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a241652b3ae6b343c6ae6f7fbd7312d22" name="a241652b3ae6b343c6ae6f7fbd7312d22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a241652b3ae6b343c6ae6f7fbd7312d22">&#9670;&#160;</a></span>$posicion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$posicion = $_POST[&quot;posicion&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a06face0ef35c41554d8f4fe115363f58" name="a06face0ef35c41554d8f4fe115363f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06face0ef35c41554d8f4fe115363f58">&#9670;&#160;</a></span>$resultado</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$resultado</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a03ffc52062148a2c7a40526642744e28">$AltaEquipo</a>-&gt;registrarEquipo(</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#aff582d500545edf0dd6494cbc55680ca">$id</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a30b059578046ad4a96cb10eaa03bd102">$fechaCreacion</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a8ebfbfa34d280d1fa65215d13f5c93eb">$horaCreacion</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a2c9d51e5c68dd0b077bc3c58a618ba38">$ultimaIntervencion</a>,</div>
+<div class="line">    <span class="keyword">true</span>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a1a675c6e517191338818caa488c0bbd4">$idUbicacion</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a16b22412cf320166b2152cbe2b77056e">$tipoUbicacion</a>,</div>
+<div class="line">    <a class="code hl_variable" href="procesarAltaEquipo_8php.html#a241652b3ae6b343c6ae6f7fbd7312d22">$posicion</a></div>
+<div class="line">)</div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a03ffc52062148a2c7a40526642744e28"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a03ffc52062148a2c7a40526642744e28">$AltaEquipo</a></div><div class="ttdeci">if($conexion===null) $AltaEquipo</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:136</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a16b22412cf320166b2152cbe2b77056e"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a16b22412cf320166b2152cbe2b77056e">$tipoUbicacion</a></div><div class="ttdeci">$tipoUbicacion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:70</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a1a675c6e517191338818caa488c0bbd4"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a1a675c6e517191338818caa488c0bbd4">$idUbicacion</a></div><div class="ttdeci">$idUbicacion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:69</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a241652b3ae6b343c6ae6f7fbd7312d22"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a241652b3ae6b343c6ae6f7fbd7312d22">$posicion</a></div><div class="ttdeci">$posicion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:71</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a2c9d51e5c68dd0b077bc3c58a618ba38"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a2c9d51e5c68dd0b077bc3c58a618ba38">$ultimaIntervencion</a></div><div class="ttdeci">$ultimaIntervencion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:68</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a30b059578046ad4a96cb10eaa03bd102"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a30b059578046ad4a96cb10eaa03bd102">$fechaCreacion</a></div><div class="ttdeci">$fechaCreacion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:66</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_a8ebfbfa34d280d1fa65215d13f5c93eb"><div class="ttname"><a href="procesarAltaEquipo_8php.html#a8ebfbfa34d280d1fa65215d13f5c93eb">$horaCreacion</a></div><div class="ttdeci">$horaCreacion</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:67</div></div>
+<div class="ttc" id="aprocesarAltaEquipo_8php_html_aff582d500545edf0dd6494cbc55680ca"><div class="ttname"><a href="procesarAltaEquipo_8php.html#aff582d500545edf0dd6494cbc55680ca">$id</a></div><div class="ttdeci">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken)) $id</div><div class="ttdef"><b>Definition</b> procesarAltaEquipo.php:65</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a16b22412cf320166b2152cbe2b77056e" name="a16b22412cf320166b2152cbe2b77056e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b22412cf320166b2152cbe2b77056e">&#9670;&#160;</a></span>$tipoUbicacion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$tipoUbicacion = $_POST[&quot;tipoUbicacion&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c9d51e5c68dd0b077bc3c58a618ba38" name="a2c9d51e5c68dd0b077bc3c58a618ba38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c9d51e5c68dd0b077bc3c58a618ba38">&#9670;&#160;</a></span>$ultimaIntervencion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$ultimaIntervencion = $_POST[&quot;ultimaIntervencion&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_e200cb17b77820cc938f6d4859c5e467.html">SGRSI</a></li><li class="navelem"><a class="el" href="dir_0311326f6572d69981b7c165bac20f7d.html">app</a></li><li class="navelem"><a class="el" href="dir_093559de2df60fff20ea69c6c3bcc726.html">controlador</a></li><li class="navelem"><a class="el" href="dir_bdcfd03805bf6e755725e0d3a49cbed6.html">recursos</a></li><li class="navelem"><a class="el" href="procesarAltaEquipo_8php.html">procesarAltaEquipo.php</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

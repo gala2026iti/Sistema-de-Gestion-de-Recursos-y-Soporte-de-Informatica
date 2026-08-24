@@ -5,8 +5,7 @@
  *
  * @brief Procesa la modificación de usuarios.
  *
- * Valida los datos recibidos mediante POST y solicita al modelo
- * la actualización de los datos, contraseña y roles del usuario.
+ * Valida los datos recibidos y solicita al modelo actualizar sus datos y roles.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

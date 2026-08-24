@@ -45,9 +45,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_acceso_datos_usuario_8php.html"
+"AltaEquipo_8php.html",
+"procesarAltaUsuario_8php.html#a6050d57abe1ce12fde708fa2baad9739"
 ];
 
-const SYNCONMSG = 'pulsar para deshabilitar sincronización';
-const SYNCOFFMSG = 'pulsar para habilitar sincronización';
-const LISTOFALLMEMBERS = 'Lista de todos los miembros';
+var SYNCONMSG = 'pulsar para deshabilitar sincronización';
+var SYNCOFFMSG = 'pulsar para habilitar sincronización';

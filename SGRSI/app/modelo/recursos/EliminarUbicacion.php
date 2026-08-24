@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @brief Gestiona el estado de los usuarios.
+ * @brief Gestiona la eliminación de ubicaciones.
  *
- * Permite activar o desactivar usuarios mediante el campo
- * activo de la tabla USUARIO.
+ * Desvincula los equipos asociados y elimina la ubicación indicada.
  */
 class EliminarUbicacion
 {
@@ -14,7 +13,7 @@ class EliminarUbicacion
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso para modificar el estado de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,16 +23,10 @@ class EliminarUbicacion
     }
 
     /**
-     * @brief Cambia el estado de un usuario.
+     * @brief Elimina las relaciones de equipos con una ubicación.
      *
-     * Actualiza el campo activo de la tabla USUARIO para activar
-     * o desactivar al usuario sin modificar sus roles.
-     *
-     * @param string $cedula Cédula del usuario cuyo estado se modificará.
-     * @param bool $activo Nuevo estado del usuario.
-     *
-     * @return bool true si el usuario fue actualizado correctamente;
-     *              false si ocurrió un error.
+     * @param string $id Identificador de la ubicación.
+     * @param string $tipo Tipo de ubicación.
      */
 
     private function eliminarEquiposDeUbicacion(string $id, string $tipo): void
@@ -46,7 +39,17 @@ class EliminarUbicacion
             "id" => $id,
             "tipo" => $tipo
         ]);
-    }
+    }    /**
+     * @brief Elimina una ubicación.
+     *
+     * Antes de eliminarla, desvincula los equipos asociados a la ubicación.
+     *
+     * @param string $id Identificador de la ubicación.
+     * @param string $tipo Tipo de ubicación.
+     *
+     * @return bool true si la ubicación fue eliminada;
+     *              false si ocurrió un error.
+     */
 
     public function eliminarUbicacion(string $id, string $tipo): bool
     {

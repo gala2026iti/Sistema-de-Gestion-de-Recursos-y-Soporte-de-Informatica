@@ -3,10 +3,9 @@
 require_once __DIR__ . "/../Equipo.php";
 
 /**
- * @brief Gestiona las consultas relacionadas con los usuarios.
+ * @brief Gestiona las consultas relacionadas con los equipos.
  *
- * Consulta la información de los usuarios y determina sus roles
- * mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Permite listar equipos aplicando filtros y criterios de ordenamiento.
  */
 class CargarEquipos
 {
@@ -16,7 +15,7 @@ class CargarEquipos
     private PDO $conexion;
 
     /**
-     * @brief Construye el acceso a datos de usuarios.
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -25,16 +24,15 @@ class CargarEquipos
         $this->conexion = $conexion;
     }
 
-    /**
-     * @brief Busca un usuario por su cédula.
-     *
-     * Obtiene los datos necesarios para la autenticación y determina
-     * los roles administrador, técnico y docente del usuario.
-     *
-     * @param string $cedula Cédula del usuario sin puntos ni guiones.
-     *
-     * @return Equipo|null Usuario encontrado; null si no existe.
-     */
+/**
+ * @brief Obtiene los equipos registrados aplicando filtros opcionales.
+ *
+ * @param string $estado Estado por el cual filtrar.
+ * @param string $cantIncidencias Orden por cantidad de incidencias.
+ * @param string $ordenIntervencion Orden por fecha de última intervención.
+ *
+ * @return array Lista de equipos encontrados.
+ */
 public function listarEquipos(string $estado = "", string $cantIncidencias = "", string $ordenIntervencion = ""): array
     {
         $sql = "

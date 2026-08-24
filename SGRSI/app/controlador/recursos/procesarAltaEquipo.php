@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @file procesarAltaUsuario.php
+ * @file procesarAltaEquipo.php
  *
- * @brief Procesa el registro de nuevos usuarios.
+ * @brief Procesa el registro de nuevos equipos.
  *
- * Valida los datos recibidos mediante POST, genera el hash de la
- * contraseña y solicita al modelo el registro del usuario y sus roles.
+ * Valida los datos, la sesión y el token CSRF antes de solicitar al modelo
+ * el registro del equipo.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

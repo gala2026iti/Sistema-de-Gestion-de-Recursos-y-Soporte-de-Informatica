@@ -5,10 +5,9 @@
  *
  * @brief Procesa el registro de nuevos usuarios.
  *
- * Valida los datos recibidos mediante POST, genera el hash de la
- * contraseña y solicita al modelo el registro del usuario y sus roles.
+ * Valida los datos recibidos, comprueba la sesión y el token CSRF
+ * y solicita al modelo el registro del usuario.
  */
-
 require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";

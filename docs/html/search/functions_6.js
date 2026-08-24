@@ -1,5 +1,22 @@
 var searchData=
 [
-  ['getcedula_0',['getCedula',['../class_usuario.html#a77612c21cce2c6317c3aef5805b7b811',1,'Usuario']]],
-  ['getclavehash_1',['getClaveHash',['../class_usuario.html#ae8e4bd34048372e2709256e7c4d7c8e6',1,'Usuario']]]
+  ['getasunto_0',['getasunto',['../classTicket.html#a34bf648dc64509cd055227cab3f4256c',1,'Ticket\getAsunto()'],['../classSolicitud.html#ad857b315c8c11ad5e0e721f51d4aa7bb',1,'Solicitud\getAsunto()']]],
+  ['getcedula_1',['getCedula',['../classUsuario.html#a77612c21cce2c6317c3aef5805b7b811',1,'Usuario']]],
+  ['getcidocente_2',['getcidocente',['../classSolicitud.html#ac4ff62dbc5885ecf2183dd5b8835aacc',1,'Solicitud\getCiDocente()'],['../classTicket.html#a4b221a77a576b5163ee73959c600bab7',1,'Ticket\getCiDocente()']]],
+  ['getclavehash_3',['getClaveHash',['../classUsuario.html#ae8e4bd34048372e2709256e7c4d7c8e6',1,'Usuario']]],
+  ['getdescripcion_4',['getdescripcion',['../classSolicitud.html#a70013bc195cb3f24db3cd4db0a50ef85',1,'Solicitud\getDescripcion()'],['../classTicket.html#ab4dcc007bc0409370c3ab67ab72f2754',1,'Ticket\getDescripcion()']]],
+  ['getestado_5',['getEstado',['../classTicket.html#a51206078226ef05de2a2f90bd4a2f3c7',1,'Ticket']]],
+  ['getfechacreacion_6',['getfechacreacion',['../classEquipo.html#a32d1fc241061faa3b5cc22f82858ab68',1,'Equipo\getFechaCreacion()'],['../classTicket.html#aed5535e985bdd821746a9f3dccef10ba',1,'Ticket\getFechaCreacion()']]],
+  ['getfechalimite_7',['getFechaLimite',['../classSolicitud.html#a65c10b1316f4b5891f8077373ed02e4e',1,'Solicitud']]],
+  ['getgravedad_8',['getGravedad',['../classTicket.html#aa0134e566e4c188a4e1bdd9945710345',1,'Ticket']]],
+  ['gethoracreacion_9',['gethoracreacion',['../classTicket.html#a47ec916bf7338229646f3e0b11416c00',1,'Ticket\getHoraCreacion()'],['../classEquipo.html#adc833b16943cf342f49eab2b18278d48',1,'Equipo\getHoraCreacion()']]],
+  ['gethoralimite_10',['getHoraLimite',['../classSolicitud.html#aa0fc984e10a0d022a37e6500df97aaec',1,'Solicitud']]],
+  ['getid_11',['getid',['../classSolicitud.html#a8066679eab1a1ea4d63afa038490f1de',1,'Solicitud\getID()'],['../classTicket.html#ad2f322f2460bd00d525abc4169a85fb7',1,'Ticket\getID()'],['../classEquipo.html#ae8b95912d3ce054f04a2ba41c5369d42',1,'Equipo\getId()'],['../classUbicacion.html#af89b7451596d752d5a8519c5dd7a07df',1,'Ubicacion\getId()']]],
+  ['getidequipo_12',['getIdEquipo',['../classTicket.html#a2a4de19e286d5aff0c7a255004953e72',1,'Ticket']]],
+  ['getjustificacion_13',['getJustificacion',['../classTicket.html#accd7901a27dd78ee9fd43c42c822e5c9',1,'Ticket']]],
+  ['getnombre_14',['getNombre',['../classSolicitud.html#ab38ddfa8ba6e7bec73ce978880e24757',1,'Solicitud']]],
+  ['getnombredocente_15',['getNombreDocente',['../classTicket.html#a7ecf54d95e6fd5942b27b5bf9ee4ff8c',1,'Ticket']]],
+  ['gettipo_16',['gettipo',['../classTicket.html#a8a21ceca82ee8ed69b34f376fd24e1a7',1,'Ticket\getTipo()'],['../classUbicacion.html#addf9d1d91158e9f94eba060ba5924689',1,'Ubicacion\getTipo()']]],
+  ['gettipoubicacion_17',['getTipoUbicacion',['../classTicket.html#a6e72dea5f6a6430004cc7c88c65f35c5',1,'Ticket']]],
+  ['getultimaintervencion_18',['getUltimaIntervencion',['../classEquipo.html#a05ba0a4212ad349c97e46815be19dc5d',1,'Equipo']]]
 ];

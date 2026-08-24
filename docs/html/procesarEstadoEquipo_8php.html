@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SGRSI: Referencia del archivo SGRSI/app/controlador/recursos/procesarEstadoEquipo.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SGRSI
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('procesarEstadoEquipo_8php.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo procesarEstadoEquipo.php</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Procesa la activación o desactivación de equipos.  
+<a href="#details">Más...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8a42adb023565f51589e8bbc80b5e065" id="r_a8a42adb023565f51589e8bbc80b5e065"><td class="memItemLeft" align="right" valign="top">if($_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset( $_SESSION[&quot;cedula&quot;])) if(!($_SESSION[&quot;administrador&quot;] ?? false))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a8a42adb023565f51589e8bbc80b5e065">$csrfToken</a> = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td></tr>
+<tr class="separator:a8a42adb023565f51589e8bbc80b5e065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc4e6e514fc2473729625a9a04ff350" id="r_a9bc4e6e514fc2473729625a9a04ff350"><td class="memItemLeft" align="right" valign="top">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a9bc4e6e514fc2473729625a9a04ff350">$idEquipo</a> = trim($_POST[&quot;idEquipo&quot;] ?? &quot;&quot;)</td></tr>
+<tr class="separator:a9bc4e6e514fc2473729625a9a04ff350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72ee2fc8baee210bbf369702d14040e" id="r_ab72ee2fc8baee210bbf369702d14040e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#ab72ee2fc8baee210bbf369702d14040e">$accion</a> = strtolower(trim($_POST[&quot;accion&quot;] ?? &quot;&quot;))</td></tr>
+<tr class="separator:ab72ee2fc8baee210bbf369702d14040e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3ed398717d9729216e952dc9e426bf9" id="r_af3ed398717d9729216e952dc9e426bf9"><td class="memItemLeft" align="right" valign="top">if($idEquipo===&quot;&quot;|| $accion===&quot;&quot;) if( $accion===&quot;activar&quot;) elseif($accion===&quot;desactivar&quot;)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#af3ed398717d9729216e952dc9e426bf9">else</a></td></tr>
+<tr class="separator:af3ed398717d9729216e952dc9e426bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adecbd788367c785d74b2222c5aa12d4e" id="r_adecbd788367c785d74b2222c5aa12d4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#adecbd788367c785d74b2222c5aa12d4e">$conectorPDO</a></td></tr>
+<tr class="separator:adecbd788367c785d74b2222c5aa12d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881924afaecbe8ee5c0d26174a1e8081" id="r_a881924afaecbe8ee5c0d26174a1e8081"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a881924afaecbe8ee5c0d26174a1e8081">$conexion</a> = $conectorPDO-&gt;establecerConexion()</td></tr>
+<tr class="separator:a881924afaecbe8ee5c0d26174a1e8081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d62382ccd09640bd714e5c7a211d46c" id="r_a0d62382ccd09640bd714e5c7a211d46c"><td class="memItemLeft" align="right" valign="top">if($conexion===null)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a0d62382ccd09640bd714e5c7a211d46c">$estadoDatosEquipo</a> = new <a class="el" href="classEstadoDatosEquipo.html">EstadoDatosEquipo</a>($conexion)</td></tr>
+<tr class="separator:a0d62382ccd09640bd714e5c7a211d46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06face0ef35c41554d8f4fe115363f58" id="r_a06face0ef35c41554d8f4fe115363f58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a06face0ef35c41554d8f4fe115363f58">$resultado</a></td></tr>
+<tr class="separator:a06face0ef35c41554d8f4fe115363f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12be2568c6783d195ce118168423003e" id="r_a12be2568c6783d195ce118168423003e"><td class="memItemLeft" align="right" valign="top">if(! $resultado)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procesarEstadoEquipo_8php.html#a12be2568c6783d195ce118168423003e">$mensaje</a></td></tr>
+<tr class="separator:a12be2568c6783d195ce118168423003e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Procesa la activación o desactivación de equipos. </p>
+<p>Valida la solicitud y solicita al modelo actualizar el estado del equipo. </p>
+</div><h2 class="groupheader">Documentación de variables</h2>
+<a id="ab72ee2fc8baee210bbf369702d14040e" name="ab72ee2fc8baee210bbf369702d14040e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab72ee2fc8baee210bbf369702d14040e">&#9670;&#160;</a></span>$accion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$accion = strtolower(trim($_POST[&quot;accion&quot;] ?? &quot;&quot;))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adecbd788367c785d74b2222c5aa12d4e" name="adecbd788367c785d74b2222c5aa12d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adecbd788367c785d74b2222c5aa12d4e">&#9670;&#160;</a></span>$conectorPDO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$conectorPDO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <a class="code hl_class" href="classConectorPDO.html">ConectorPDO</a>(</div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_HOST&#39;</span>] . <span class="stringliteral">&quot;:&quot;</span> . </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_PUERTO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_USUARIO&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_CLAVE&#39;</span>], </div>
+<div class="line">    $_ENV[<span class="stringliteral">&#39;DB_NOMBRE&#39;</span>]</div>
+<div class="line">)</div>
+<div class="ttc" id="aclassConectorPDO_html"><div class="ttname"><a href="classConectorPDO.html">ConectorPDO</a></div><div class="ttdoc">Gestiona la conexión con la base de datos mediante PDO.</div><div class="ttdef"><b>Definition</b> ConectorPDO.php:9</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a881924afaecbe8ee5c0d26174a1e8081" name="a881924afaecbe8ee5c0d26174a1e8081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881924afaecbe8ee5c0d26174a1e8081">&#9670;&#160;</a></span>$conexion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$conexion = $conectorPDO-&gt;establecerConexion()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a42adb023565f51589e8bbc80b5e065" name="a8a42adb023565f51589e8bbc80b5e065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a42adb023565f51589e8bbc80b5e065">&#9670;&#160;</a></span>$csrfToken</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $_SERVER[&quot;REQUEST_METHOD&quot;] !==&quot;POST&quot;) if(!isset($_SESSION[&quot;cedula&quot;])) if (!( $_SESSION[&quot;administrador&quot;] ?? false)) $csrfToken = $_POST[&quot;csrfToken&quot;] ?? &quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0d62382ccd09640bd714e5c7a211d46c" name="a0d62382ccd09640bd714e5c7a211d46c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d62382ccd09640bd714e5c7a211d46c">&#9670;&#160;</a></span>$estadoDatosEquipo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if ( $conexion===null) $estadoDatosEquipo = new <a class="el" href="classEstadoDatosEquipo.html">EstadoDatosEquipo</a>($conexion)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9bc4e6e514fc2473729625a9a04ff350" name="a9bc4e6e514fc2473729625a9a04ff350"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bc4e6e514fc2473729625a9a04ff350">&#9670;&#160;</a></span>$idEquipo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (!isset( $_SESSION[&quot;csrfToken&quot;])||!is_string( $csrfToken)||!hash_equals( $_SESSION[&quot;csrfToken&quot;], $csrfToken)) $idEquipo = trim($_POST[&quot;idEquipo&quot;] ?? &quot;&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a12be2568c6783d195ce118168423003e" name="a12be2568c6783d195ce118168423003e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12be2568c6783d195ce118168423003e">&#9670;&#160;</a></span>$mensaje</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if (! $resultado) $mensaje</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= $activo</div>
+<div class="line">    ? <span class="stringliteral">&quot;Equipo activado correctamente.&quot;</span></div>
+<div class="line">    : <span class="stringliteral">&quot;Equipo desactivado correctamente.&quot;</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a06face0ef35c41554d8f4fe115363f58" name="a06face0ef35c41554d8f4fe115363f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06face0ef35c41554d8f4fe115363f58">&#9670;&#160;</a></span>$resultado</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$resultado</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="procesarEstadoEquipo_8php.html#a0d62382ccd09640bd714e5c7a211d46c">$estadoDatosEquipo</a>-&gt;cambiarEstadoEquipo(</div>
+<div class="line">    <a class="code hl_variable" href="procesarEstadoEquipo_8php.html#a9bc4e6e514fc2473729625a9a04ff350">$idEquipo</a>,</div>
+<div class="line">    $activo</div>
+<div class="line">)</div>
+<div class="ttc" id="aprocesarEstadoEquipo_8php_html_a0d62382ccd09640bd714e5c7a211d46c"><div class="ttname"><a href="procesarEstadoEquipo_8php.html#a0d62382ccd09640bd714e5c7a211d46c">$estadoDatosEquipo</a></div><div class="ttdeci">if($conexion===null) $estadoDatosEquipo</div><div class="ttdef"><b>Definition</b> procesarEstadoEquipo.php:111</div></div>
+<div class="ttc" id="aprocesarEstadoEquipo_8php_html_a9bc4e6e514fc2473729625a9a04ff350"><div class="ttname"><a href="procesarEstadoEquipo_8php.html#a9bc4e6e514fc2473729625a9a04ff350">$idEquipo</a></div><div class="ttdeci">if(!isset($_SESSION[&quot;csrfToken&quot;])||!is_string($csrfToken)||!hash_equals($_SESSION[&quot;csrfToken&quot;], $csrfToken)) $idEquipo</div><div class="ttdef"><b>Definition</b> procesarEstadoEquipo.php:64</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af3ed398717d9729216e952dc9e426bf9" name="af3ed398717d9729216e952dc9e426bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3ed398717d9729216e952dc9e426bf9">&#9670;&#160;</a></span>else</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $idEquipo===&quot;&quot;||$accion===&quot;&quot;) if($accion===&quot;activar&quot;) elseif ( $accion===&quot;desactivar&quot;) else</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valor inicial:</b><div class="fragment"><div class="line">{</div>
+<div class="line">    <a class="code hl_variable" href="procesarEstadoEquipo_8php.html#a12be2568c6783d195ce118168423003e">$mensaje</a> = <span class="stringliteral">&quot;La acción solicitada no es válida.&quot;</span></div>
+<div class="ttc" id="aprocesarEstadoEquipo_8php_html_a12be2568c6783d195ce118168423003e"><div class="ttname"><a href="procesarEstadoEquipo_8php.html#a12be2568c6783d195ce118168423003e">$mensaje</a></div><div class="ttdeci">if(! $resultado) $mensaje</div><div class="ttdef"><b>Definition</b> procesarEstadoEquipo.php:130</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_e200cb17b77820cc938f6d4859c5e467.html">SGRSI</a></li><li class="navelem"><a class="el" href="dir_0311326f6572d69981b7c165bac20f7d.html">app</a></li><li class="navelem"><a class="el" href="dir_093559de2df60fff20ea69c6c3bcc726.html">controlador</a></li><li class="navelem"><a class="el" href="dir_bdcfd03805bf6e755725e0d3a49cbed6.html">recursos</a></li><li class="navelem"><a class="el" href="procesarEstadoEquipo_8php.html">procesarEstadoEquipo.php</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

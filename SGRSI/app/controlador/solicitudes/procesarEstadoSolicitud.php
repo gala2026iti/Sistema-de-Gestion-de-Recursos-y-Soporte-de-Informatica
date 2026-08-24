@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @file procesarEstadoUsuario.php
+ * @file procesarEstadoSolicitud.php
  *
- * @brief Procesa la activación o desactivación de usuarios.
+ * @brief Procesa cambios de estado de solicitudes.
  *
- * Recibe mediante POST la cédula y la acción solicitada, valida
- * la petición y solicita al modelo actualizar el estado del usuario.
+ * Valida la solicitud recibida y solicita al modelo actualizar su estado de finalización.
  */
 
 require_once __DIR__ . "/../../../config/config.php";

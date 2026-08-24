@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @brief Gestiona el registro de nuevos usuarios.
+ * @brief Gestiona el registro de nuevas solicitudes.
  *
- * Inserta usuarios en la tabla USUARIO y los asocia con uno o varios
- * roles mediante las tablas ADMINISTRADOR, TECNICO y DOCENTE.
+ * Registra la solicitud y la relación con el docente que la ingresa
+ * dentro de una transacción.
  */
 class AltaSolicitud
 {
@@ -13,8 +13,8 @@ class AltaSolicitud
      */
     private PDO $conexion;
 
-    /**
-     * @brief Construye el acceso para registrar usuarios.
+     /**
+     * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
      */
@@ -24,19 +24,21 @@ class AltaSolicitud
     }
 
     /**
-     * @brief Registra un nuevo usuario y sus roles.
+     * @brief Registra una nueva solicitud.
      *
-     * Utiliza una transacción para garantizar que el usuario y sus
-     * roles se registren como una única operación.
+     * Registra la solicitud y su relación con el docente dentro de una transacción.
      *
-     * @param string $cedula Cédula de identidad del usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $correo Correo electrónico del usuario.
-     * @param string $claveHash Contraseña almacenada mediante hash.
-     * @param array $roles Roles que tendrá el usuario.
+     * @param string $id Identificador de la solicitud.
+     * @param string $asunto Asunto de la solicitud.
+     * @param string $descripcion Descripción de la solicitud.
+     * @param string $fechaLimite Fecha límite.
+     * @param string $horaLimite Hora límite.
+     * @param string $ciDocente Cédula del docente que ingresa la solicitud.
+     * @param string $fecha Fecha de ingreso.
+     * @param string $hora Hora de ingreso.
      *
      * @return bool true si el registro se realizó correctamente;
-     *              false si ocurrió algún error.
+     *              false si ocurrió un error.
      */
     public function registrarSolicitud(
         string $id,

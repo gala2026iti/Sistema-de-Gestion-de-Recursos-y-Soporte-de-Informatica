@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['modificardatosusuario_0',['ModificarDatosUsuario',['../class_modificar_datos_usuario.html',1,'']]]
+  ['modificardatosticket_0',['ModificarDatosTicket',['../classModificarDatosTicket.html',1,'']]],
+  ['modificardatosusuario_1',['ModificarDatosUsuario',['../classModificarDatosUsuario.html',1,'']]],
+  ['modificarubicacionequipo_2',['ModificarUbicacionEquipo',['../classModificarUbicacionEquipo.html',1,'']]]
 ];

@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @file procesarAltaUsuario.php
+ * @file procesarAltaTicket.php
  *
- * @brief Procesa el registro de nuevos usuarios.
+ * @brief Procesa el registro de nuevos tickets.
  *
- * Valida los datos recibidos mediante POST, genera el hash de la
- * contraseña y solicita al modelo el registro del usuario y sus roles.
+ * Valida la solicitud recibida, comprueba la sesión y solicita al modelo
+ * el registro del ticket.
  */
 
 require_once __DIR__ . "/../../../config/config.php";
