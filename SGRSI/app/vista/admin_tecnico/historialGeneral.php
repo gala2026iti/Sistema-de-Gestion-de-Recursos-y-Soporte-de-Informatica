@@ -20,27 +20,57 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-menu">
-                              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-                </ul>
+                <ul class="desplegable-menu">
+                        <li><a href="#">Cambiar a Docente</a></li>
+                        <li><a href="#">Cambiar a Tecnico</a></li>
+                        <li><a href="#">Cambiar a Administrador</a></li>
+                        <li><a href="cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    </ul>
             </section>
             
             <ul class="nav-menu">
+
+                <!-- NAVBAR ASISTENTE -->
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'asistente'): ?>
                 <li class="desplegable">
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
-                        <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-                        <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
+                        <li><a href="../administracion/homeAdmin.php">Tickets registrados</a></li>
+                        <li><a href="../administracion/ticketsPersonales.php">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
                     <a href="#">Gestion de prestamos 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
-                        <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
+                        <li><a href="../administracion/tablaPrestamos.php">Tabla de prestamos</a></li>
+                        <li><a href="../administracion/inventarioEquipos.php">Inventario de equipos</a></li>
                     </ul>
                 </li>
-                <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+                <li><a href="../administracion/gestionSolicitudes.php">Gestion de solicitudes</a></li>
+                
+                <!-- FIN NAVBAR ASISTENTE -->
+                
+                <?php elseif (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
+            
+                <!-- NAVBAR ADMINISTRADOR -->
+
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="metricas.php">Metricas del sistema</a></li>
+            </ul>
+            <ul class="nav-menu">
+                <li class="desplegable-padding" id="opcionesAdmin">
+                    <a href="#">Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <!-- FIN NAVBAR ADMINISTRADOR -->
+
             </ul>
         </section>
     </nav>

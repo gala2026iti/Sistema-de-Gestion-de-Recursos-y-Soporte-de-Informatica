@@ -12,7 +12,7 @@
 
 <body>
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../public/assets/img/logo_iti.png" alt="Logo">
+        <img class="img-logo" src="../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <main class="d-flex flex-column justify-content-center align-items-center my-5 px-3">
@@ -54,7 +54,7 @@
     </main>
 
     <footer>
-        <span>Copyright 2026 - SGRSI | Instituto Tecnológico de Informática</span>
+        <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática</span>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

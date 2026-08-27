@@ -11,7 +11,7 @@
 
 <body>
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../../assets/img/logo_iti.png" alt="Logo">
+    <img class="img-logo" src="../../assets/img/logo_iti.png" alt="Logo">
   </header>
 
 
@@ -21,7 +21,7 @@
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-        <ul class="nav-opciones-sistema">
+        <ul class="nav-menu">
           <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
         </ul>
       </section>
@@ -46,7 +46,7 @@
   </nav>
 
   <main class="container-fluid px-0 py-3">
-    <a href="historialGeneral.php?tipo=solicitudes" class="btn btn-primary mx-3">Historial de solicitudes</a>
+    <a href="../admin_tecnico/historialGeneral.php?tipo=solicitudes" class="btn btn-primary mx-3">Historial de solicitudes</a>
     <h2 class="centro mt-3 text-primary">Solicitudes registradas</h2>
     <span class="centro mb-4">A continuación se muestran las solicitudes del personal docente</span>
     <section class="filtros">
@@ -75,7 +75,7 @@
   </main>
 
   <footer>
-    <span>Copyright 2026 - SGRSI | Instituto tecnológico de Informática</span>
+    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnológico de Informática</span>
   </footer>
 
   <script src="../../../public/assets/js/btnMenuCelular.js"></script>

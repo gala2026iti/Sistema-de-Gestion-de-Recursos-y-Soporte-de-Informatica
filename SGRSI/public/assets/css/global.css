@@ -11,6 +11,16 @@
     --blanco: #ffffff;
 }
 
+.img-logo {
+    height: 28vh;
+    min-height: 100px;
+}
+
+.footer-bold {
+    font-weight: bold;
+    color: var(--amarillo-iti)
+}
+
 header {
     background-color: var(--azul-institucional);
     border-bottom: 3px solid var(--azul-principal);
@@ -143,6 +153,7 @@ select {
     padding: 0;
     height: 50px;
     align-items: center;
+    font-weight: bold;
 }
 
 .nav-menu li a {

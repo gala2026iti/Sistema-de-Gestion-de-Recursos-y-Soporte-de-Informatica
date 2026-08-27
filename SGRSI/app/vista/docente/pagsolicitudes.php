@@ -12,16 +12,19 @@
 
 <body data-rol-permitido="docente">
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../assets/img/logo_iti.png" alt="Logo">
+    <img class="img-logo" src="../assets/img/logo_iti.png" alt="Logo">
   </header>
   <nav class="navbarSGRSI">
     <section class="nav-container">
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-      <ul class="nav-opciones-sistema">
-        <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-      </ul>
+      <ul class="desplegable-menu">
+                        <li><a href="#">Cambiar a Docente</a></li>
+                        <li><a href="#">Cambiar a Tecnico</a></li>
+                        <li><a href="#">Cambiar a Administrador</a></li>
+                        <li><a href="cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                    </ul>
       </section>
       <ul class="nav-menu">
         <li><a href="../homeDocente.php" id="btnIncidencias">Registro de incidencias</a></li>
@@ -63,7 +66,7 @@
   </main>
 
   <footer>
-    <span>Copyright 2026 - SGRSI | Instituto tecnológico de Informática</span>
+    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnológico de Informática</span>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

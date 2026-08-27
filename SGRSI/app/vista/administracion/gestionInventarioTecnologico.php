@@ -13,7 +13,7 @@
 
 <body>
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
+        <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <nav class="navbarSGRSI">
@@ -21,9 +21,9 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-opciones-sistema">
-                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
-                </ul>
+<ul class="nav-menu">
+<li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+</ul>
             </section>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
@@ -33,7 +33,7 @@
             </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding" id="opcionesAdmin">
-                    <a href="#">⚙ Administracion y control 🡻</a>
+                    <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
                     </ul>
@@ -111,9 +111,9 @@
         </section>
 
         <section class="w-100 d-flex px-3 mt-4">
-            <a href="historialGeneral.php?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+            <a href="../admin_tecnico/historialGeneral.php?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
                 de Equipos</a>
-            <a href="historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
+            <a href="../admin_tecnico/historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2">Historial
                 de Salones</a>
             <button id="btnRegistrarEquipo" class="btn btn-success ms-auto" type="button">Registrar PC</button>
         </section>
@@ -159,7 +159,7 @@
         </div>
     </main>
 
-    <footer><span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span></footer>
+    <footer><span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnologico de Informática</span></footer>
     <script src="../../../public/assets/js/btnMenuCelular.js"></script>
     <script src="../../../public/assets/js/gestionEquipos.js" defer></script>
     <script src="../../../public/assets/js/verificarSesion.js"></script>

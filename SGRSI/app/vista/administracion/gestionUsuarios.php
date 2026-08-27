@@ -18,7 +18,7 @@
 <body>
 
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
+        <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
     <nav class="navbarSGRSI">
         <section class="nav-container">
@@ -29,7 +29,7 @@
                 <button class="btn-cerrar-lateral" id="btnCerrar">
                     X
                 </button>
-                <ul class="nav-opciones-sistema">
+                <ul class="nav-menu">
                     <li>
                         <a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">
                             Cerrar Sesion
@@ -67,7 +67,7 @@
                 <li class="desplegable-padding">
 
                     <a href="#">
-                        ⚙ Administracion y control 🡻
+                        Administracion y control 🡻
                     </a>
 
                     <ul class="desplegable-menu">
@@ -83,7 +83,7 @@
         </section>
     </nav>
     <main class="container-fluid px-0 py-3">
-        <a href="historialGeneral.php?tipo=usuarios" class="btn btn-primary mx-3">
+        <a href="../admin_tecnico/historialGeneral.php?tipo=usuarios" class="btn btn-primary mx-3">
             Historial de cambios
         </a>
         <h2 class="centro mt-3 text-warning">

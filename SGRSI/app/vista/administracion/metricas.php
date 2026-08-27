@@ -12,7 +12,7 @@
 
 <body>
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
+        <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
     <nav class="navbarSGRSI">
@@ -20,19 +20,19 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-            <ul class="nav-opciones-sistema">
+            <ul class="nav-menu">
               <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
             </ul>
             </section>
             <ul class="nav-menu">
-                <li class="desplegable"><a href="administracion/estadoEquipos.php">Estado de equipos</a></li>
-                <li class="desplegable"><a href="administracion/reportes.php">Reportes y estadisticas</a></li>
-                <li><a href="administracion/metricas.php">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
                 <li class="desplegable-padding" id="opcionesAdmin">
-                    <a href="#">⚙ Administracion y control 🡻</a>
+                    <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="administracion/gestionUsuarios.php">Gestion de usuarios</a></li>
-                        <li><a href="administracion/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
             </ul>
@@ -122,7 +122,7 @@
     </main>
 
     <footer>
-        <span>Copyright 2026 - SGRSI | Instituto Tecnológico de Informática</span>
+        <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática</span>
     </footer>
 
     <script src="../../../public/assets/js/btnMenuCelular.js"></script>

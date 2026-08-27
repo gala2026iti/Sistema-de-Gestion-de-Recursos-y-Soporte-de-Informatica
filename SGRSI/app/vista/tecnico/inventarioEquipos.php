@@ -11,7 +11,7 @@
 
 <body>
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="imagen img-fluid" src="../../../public/assets/img/logo_iti.png" alt="Logo">
+    <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
   </header>
 
   <nav class="navbarSGRSI">
@@ -19,7 +19,7 @@
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-        <ul class="nav-opciones-sistema">
+        <ul class="nav-menu">
                     <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
         </ul>
       </section>
@@ -131,7 +131,7 @@
   </div>
 
   <footer>
-    <span>Copyright 2026 - SGRSI | Instituto tecnologico de Informática</span>
+    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnologico de Informática</span>
   </footer>
 
   <script src="../../../public/assets/js/btnMenuCelular.js"></script>
