@@ -27,7 +27,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -38,4 +38,4 @@ $ubicaciones = $accesoDatosUbicacion->listarUbicaciones();
 
 $conectorPDO->desconectar();
 
-require_once RUTA_VISTA . "/administracion/gestionEquipos.php";
+require_once RUTA_VISTA . "/administracion/gestionInventarioTecnologico.php";

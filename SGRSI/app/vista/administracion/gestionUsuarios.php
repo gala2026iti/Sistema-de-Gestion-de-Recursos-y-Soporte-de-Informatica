@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -129,8 +127,6 @@
                 </button>
             </form>
         </section>
-
-                
 
         <section class="table-responsive w-100 m-0">
             <table class="tabla-contenedor m-0" id="tablaUsuarios">

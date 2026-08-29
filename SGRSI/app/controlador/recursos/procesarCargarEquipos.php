@@ -13,7 +13,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/recursos/CargarEquipos.php";
 
-$rol = strtolower(trim($_GET["rol"] ?? ""));
+$orden = strtolower(trim($_GET["orden"] ?? ""));
 $estado = strtolower(trim($_GET["estado"] ?? ""));
 
 $conectorPDO = new ConectorPDO(
@@ -30,15 +30,13 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
 $accesoDatosEquipo = new CargarEquipos($conexion);
-$equipos = $accesoDatosEquipo->listarEquipos($rol, $estado);
+$equipos = $accesoDatosEquipo->listarEquipos($orden, $estado);
 
 $conectorPDO->desconectar();
-
-require_once RUTA_VISTA . "/administracion/gestionEquipos.php";

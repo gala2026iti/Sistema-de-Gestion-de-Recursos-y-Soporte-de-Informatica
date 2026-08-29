@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS UBICACION (
 );
 
 CREATE TABLE IF NOT EXISTS EQUIPO (
-    id INT AUTO_INCREMENT NOT NULL,
-    fechaCreacion DATE NOT NULL,
-    horaCreacion TIME NOT NULL,
-    ultimaIntervencion DATE NULL,
+    id INT NOT NULL,
+    fechaCreacion CHAR(10) NOT NULL,
+    horaCreacion CHAR(5) NOT NULL,
+    ultimaIntervencion CHAR(10) NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_equipo PRIMARY KEY (id)
 );
@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS administrador_maneja_equipo (
     id INT AUTO_INCREMENT NOT NULL,
     ciAdministrador CHAR(8) NOT NULL,
     idEquipo INT NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    fecha CHAR(10) NOT NULL,
+    hora CHAR(5) NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_maneja_equipo PRIMARY KEY (id),
     CONSTRAINT fk_ame_admin FOREIGN KEY (ciAdministrador) 
@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS administrador_controla_ubicacion (
     ciAdministrador CHAR(8) NOT NULL,
     idUbicacion INT NOT NULL,
     tipoUbicacion VARCHAR(50) NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    fecha CHAR(10) NOT NULL,
+    hora CHAR(5) NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_controla_ubicacion PRIMARY KEY (id),
     CONSTRAINT fk_acu_admin FOREIGN KEY (ciAdministrador) 

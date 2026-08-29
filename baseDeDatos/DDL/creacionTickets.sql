@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS TICKET (
     descripcion VARCHAR(255) NOT NULL,
     gravedad VARCHAR(20) NOT NULL,
     estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
-    fechaCreacion DATE NOT NULL,
-    horaCreacion TIME NOT NULL,
+    fechaCreacion CHAR(10) NOT NULL,
+    horaCreacion CHAR(5) NOT NULL,
     justificacion VARCHAR(255) NULL,
     CONSTRAINT pk_ticket PRIMARY KEY (id)
 );
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS docente_reporta_ticket (
 CREATE TABLE IF NOT EXISTS equipo_ubicacion_genera_ticket (
     idEquipo INT NOT NULL,
     idUbicacion INT NOT NULL,
-    tipoUbicacion INT NOT NULL,
+    tipoUbicacion VARCHAR(50) NOT NULL,
     idTicket INT NOT NULL,
-    CONSTRAINT pk_eugt PRIMARY KEY (idEquipo, idUbicacion, idTicket),
+    CONSTRAINT pk_eugt PRIMARY KEY (idEquipo, idUbicacion, tipoUbicacion, idTicket),
     CONSTRAINT fk_eugt_equipo FOREIGN KEY (idEquipo) 
         REFERENCES EQUIPO (id) 
         ON DELETE CASCADE ON UPDATE CASCADE,
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS tecnico_gestiona_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
     idTicket INT NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    fecha CHAR(10) NOT NULL,
+    hora CHAR(5) NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_tecnico_gestiona_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tgt_tecnico FOREIGN KEY (ciTecnico) 
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS tecnico_comenta_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
     idTicket INT NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    fecha CHAR(10) NOT NULL,
+    hora CHAR(5) NOT NULL,
     texto TEXT NOT NULL,
     CONSTRAINT pk_tecnico_comenta_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tct_tecnico FOREIGN KEY (ciTecnico) 

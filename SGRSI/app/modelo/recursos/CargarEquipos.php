@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . "/../Equipo.php";
 
 /**
@@ -33,8 +37,11 @@ class CargarEquipos
  *
  * @return array Lista de equipos encontrados.
  */
-public function listarEquipos(string $estado = "", string $cantIncidencias = "", string $ordenIntervencion = ""): array
+public function listarEquipos(string $orden = "", string $estado = ""): array
     {
+        $ubicacion = $_GET["ubicacion"] ?? "";
+        $tipoUbicacion = $_GET["tipoUbicacion"] ?? "";
+
         $sql = "
             SELECT
                 e.id AS idEquipo,
@@ -42,14 +49,33 @@ public function listarEquipos(string $estado = "", string $cantIncidencias = "",
                 e.horaCreacion,
                 e.ultimaIntervencion,
                 e.activo,
-                COUNT(eugt.idTicket) AS totalIncidencias
+                eru.idUbicacion,
+                eru.tipoUbicacion,
+                eru.posicion,
+                COUNT(eugt.idEquipo) AS totalIncidencias
+
             FROM EQUIPO AS e
+
+            LEFT JOIN equipo_reside_ubicacion AS eru
+                ON e.id = eru.idEquipo
+
             LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
                 ON e.id = eugt.idEquipo
+
         ";
+
         $condiciones = [];
         $parametros = [];
-        $orden = [];
+
+        if($tipoUbicacion === "prestamo" || $tipoUbicacion === "laboratorio" || $tipoUbicacion === "taller") {
+            $condiciones[] = "eru.tipoUbicacion = :tipoUbicacion";
+            $parametros["tipoUbicacion"] = $tipoUbicacion;
+        }
+
+        if(is_numeric($ubicacion) && $ubicacion > 0) {
+            $condiciones[] = "eru.idUbicacion = :ubicacion";
+            $parametros["ubicacion"] = $ubicacion;
+        }
 
         if ($estado === "activo") {
             $condiciones[] = "e.activo = :activo";
@@ -59,26 +85,32 @@ public function listarEquipos(string $estado = "", string $cantIncidencias = "",
             $parametros["activo"] = 0;
         }
 
-        if ($cantIncidencias === "mayor") {
-            $orden[] = "totalIncidencias DESC";
-        } elseif ($cantIncidencias === "menor") {
-            $orden[] = "totalIncidencias ASC";
-        }
-
-        if ($ordenIntervencion === "reciente") {
-            $orden[] = "STR_TO_DATE(e.ultimaIntervencion, '%d/%m/%Y') DESC";
-        } elseif ($ordenIntervencion === "antiguo") {
-            $orden[] = "STR_TO_DATE(e.ultimaIntervencion, '%d/%m/%Y') ASC";
-        }
-
-        if (!empty($condiciones)) {
+                if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        $sql .= " GROUP BY e.id, e.fechaCreacion, e.horaCreacion, e.ultimaIntervencion, e.activo";
+        $sql .= "
+         GROUP BY
+            e.id,
+            e.fechaCreacion,
+            e.horaCreacion,
+            e.ultimaIntervencion,
+            e.activo,
+            eru.idUbicacion,
+            eru.tipoUbicacion,
+            eru.posicion 
+        ";
 
         if (!empty($orden)) {
-            $sql .= " ORDER BY " . implode(", ", $orden);
+            if($orden === "reciente") {
+                $sql .= " ORDER BY STR_TO_DATE(e.ultimaIntervencion, '%d/%m/%Y') DESC";
+            } elseif($orden === "antiguo") {
+                $sql .= " ORDER BY STR_TO_DATE(e.ultimaIntervencion, '%d/%m/%Y') ASC";
+            } elseif($orden === "masincidencias") {
+                $sql .= " ORDER BY totalIncidencias DESC";
+            } elseif($orden === "menosincidencias") {
+                $sql .= " ORDER BY totalIncidencias ASC";
+            }
         } else {
             $sql .= " ORDER BY e.id ASC";
         }
@@ -91,4 +123,5 @@ public function listarEquipos(string $estado = "", string $cantIncidencias = "",
 
         return $equipos;
     }
+
 }

@@ -1,3 +1,11 @@
+<!-- TOFIX : MOVER PHP A PROCESARCARGAREQUIPOS.PHP, ADEMAS DE AÑADIRLE TRIM Y HTMLSPECIALCHARS -->
+<?php 
+$estado = trim($_GET["estado"] ?? "");
+$orden = trim($_GET["orden"] ?? "");
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -15,6 +23,8 @@
     <header class="d-flex justify-content-center align-items-center py-4">
         <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
+
+<!-- TOFIX : CORRECCIÓN EN BARRAS DE NAVEGACIÓN, SE ADAPTARON AL NUEVO SISTEMA DE BUSQUEDA MEDIANTE GET -->    
 
     <nav class="navbarSGRSI">
         <section class="nav-container">
@@ -54,18 +64,30 @@
             </div>
             <div class="barralateral-contenido">
                 <h4>Laboratorios</h4>
-                <ul id="listaLaboratorios"></ul>
+                <ul id="listaLaboratorios">
+                    <?php foreach ($ubicaciones as $ubicacion): ?>
+                        <?php if($ubicacion["tipo"] === "laboratorio"): ?>
+                            <li><a href="gestionInventarioTecnologico.php?tipoUbicacion=laboratorio&ubicacion=<?= $ubicacion['id'] ?>"><?= ucfirst($ubicacion['tipo']) . " " . $ubicacion['id'] ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
                 <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
 
                 <h4>Talleres</h4>
-                <ul id="listaTalleres"></ul>
+                <ul id="listaTalleres">
+                    <?php foreach ($ubicaciones as $ubicacion): ?>
+                        <?php if($ubicacion["tipo"] === "taller"): ?>
+                            <li><a href="gestionInventarioTecnologico.php?tipoUbicacion=taller&ubicacion=<?= $ubicacion['id'] ?>"><?= ucfirst($ubicacion['tipo']) . " " . $ubicacion['id'] ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
 
                 <h4>Otros</h4>
                 <ul>
-                    <li><a href="#" class="filtro-ubicacion-directa" salones-ubicacion="prestamo">Dispositivos para
+                    <li><a href="gestionInventarioTecnologico.php?tipoUbicacion=prestamo" class="filtro-ubicacion-directa" salones-ubicacion="prestamo">Dispositivos para
                             prestar</a></li>
-                    <li><a href="#" class="filtro-ubicacion-directa" salones-ubicacion="todos">Todos los
+                    <li><a href="gestionInventarioTecnologico.php" class="filtro-ubicacion-directa" salones-ubicacion="todos">Todos los
                             Dispositivos</a>
                     </li>
                 </ul>
@@ -75,27 +97,39 @@
         <h2 class="centro mt-3 text-warning">Gestion de Equipos Tecnologicos</h2>
         <span class="centro mb-4">A continuacion se muestran los equipos registrados en el sistema</span>
 
-        <section class="filtros">
-            <select id="filtroEstado">
-                <option value="">Filtrar por Estado</option>
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
-            </select>
+                <section class="filtros">
+            <form method="GET" action="gestionInventarioTecnologico.php">
+                <label for="estado">Estado:</label>
 
-            <select id="filtroIncidencias">
-                <option value="">Ordenar por cantidad de incidencias</option>
-                <option value="menor">Menor cantidad</option>
-                <option value="mayor">Mayor cantidad</option>
-            </select>
+                <select id="estado" name="estado">
+                    <option value=""> Todos </option>
+                    <option value="activo" <?= ($estado === "activo") ? "selected" : "" ?>> Activo
+                    </option>
+                    <option value="inactivo" <?= ($estado === "inactivo") ? "selected" : "" ?>> Inactivo
+                    </option>
+                </select>
 
-            <select id="filtroIntervencion">
-                <option value="">Ordenar por fecha de intervención</option>
-                <option value="reciente">Reciente primero</option>
-                <option value="antiguo">Antiguo primero</option>
-            </select>
+                <label for="orden"> Ordenar por: </label>
+                <select id="orden" name="orden">
+                    <option value="" selected> ID </option>
+                <!-- FIX: SE EVITA USAR TIPADO CAMELCASE DEBIDO A QUE SE CONVIERTE TODO A MINUSCULAS AL SER ENVIADO POR GET -->
+
+                    <option value="masincidencias" <?= ($orden === "masincidencias") ? "selected" : "" ?>> Incidencias (Más) </option>
+                    <option value="menosincidencias" <?= ($orden === "menosincidencias") ? "selected" : "" ?>> Incidencias (Menos)</option>
+                    <option value="reciente" <?= ($orden === "reciente") ? "selected" : "" ?>> Intervenciones (Recientes)</option>
+                    <option value="antiguo" <?= ($orden === "antiguo") ? "selected" : "" ?>> Intervenciones (Antiguas)</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">
+                    Filtrar
+                </button>
+            </form>
         </section>
 
         <section class="table-responsive w-100 m-0 overflow-x-auto">
+
+        <!-- TOFIX : INSERTAR COLUMNA "ULTIMA INCIDENCIA" FALTANTE, ADEMÁS DE INCLUIR SU OBTENCION EN LOS TD -->
+
             <table class="tabla-contenedor m-0" id="tablaEquipos">
                 <thead>
                     <tr>
@@ -103,10 +137,35 @@
                         <th>Ubicación</th>
                         <th>Estado</th>
                         <th>Incidencias</th>
+                        <th>Última Intervención</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody> 
+                    <?php foreach ($equipos as $equipo) { ?>
+                        <tr>
+                            <td><?= $equipo['idEquipo'] ?></td>
+                            <?php if ($equipo['tipoUbicacion']) { ?>
+                            <?php if($equipo['tipoUbicacion'] === "prestamo") { ?>
+                                <td>Equipo de Préstamo</td>
+                            <?php } else { ?>
+                                <td><?= ucfirst($equipo['tipoUbicacion']) . " " . $equipo['idUbicacion'] . " (PC-" . $equipo["posicion"] . ")" ?></td>
+                            <?php } ?>
+                            <?php } else { ?>
+                                <td>Sin ubicación</td>
+                            <?php } ?>
+                            <td><?= $equipo['activo'] ? "Activo" : "Inactivo" ?></td>
+                            <td><?= $equipo['totalIncidencias'] ?></td>
+                            <?php if($equipo['ultimaIntervencion']) { ?>
+                                <td><?= $equipo['ultimaIntervencion'] ?></td>
+                            <?php } else { ?>
+                                <td>Sin intervenciones previas</td>
+                            <!-- TOFIX: AGREGAR LOS BOTONES CORRESPONDIENTES AL ÁREA DE ACCIONES: EDITAR, REMOVER DEL SALON, DESACTIVAR, VER INCIDENCIAS -->
+                            <?php } ?>
+                            <td> <a href="paginaNoExistente.php?id=<?= $equipo['idEquipo'] ?>" class="btn btn-info btn-sm">Botón Programable</a> </td>
+                        </tr> 
+                    <?php } ?>
+                </tbody>
             </table>
         </section>
 
@@ -161,8 +220,8 @@
 
     <footer><span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnologico de Informática</span></footer>
     <script src="../../../public/assets/js/btnMenuCelular.js"></script>
-    <script src="../../../public/assets/js/gestionEquipos.js" defer></script>
     <script src="../../../public/assets/js/verificarSesion.js"></script>
+    <script src="../../../public/assets/js/gestionEquipos.js"></script>
     <script src="../../../public/assets/js/cerrarSesion.js"></script>
 
 

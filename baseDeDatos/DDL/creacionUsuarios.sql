@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS administrador_modifica_usuario (
     id INT AUTO_INCREMENT NOT NULL,
     ciAdministrador CHAR(8) NOT NULL,
     ciUsuario CHAR(8) NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    fecha CHAR(10) NOT NULL,
+    hora CHAR(5) NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_modifica_usuario PRIMARY KEY (id),
     CONSTRAINT fk_amu_admin FOREIGN KEY (ciAdministrador) 

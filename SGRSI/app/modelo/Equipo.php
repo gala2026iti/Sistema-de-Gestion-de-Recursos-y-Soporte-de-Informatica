@@ -14,6 +14,16 @@ class Equipo
     private string $id;
 
     /**
+     * @brief Identificador del equipo.
+     */
+    private string $idUbicacion;
+
+    /**
+     * @brief Tipo de ubicación del equipo.
+     */
+    private string $tipoUbicacion;
+
+    /**
      * @brief Fecha de creación del equipo.
      */
     private string $fechaCreacion;
@@ -32,7 +42,19 @@ class Equipo
     /**
      * @brief Estado de actividad del equipo.
      */
-    private string $activo;
+    private bool $activo;
+
+    /**
+     * @brief Posicion del equipo dentro de una ubicacion.
+     */
+    private string $posicion;
+
+    /**
+     * @brief Cantidad de incidencias registrada de dicho equipo.
+     */
+    private string $totalIncidencias;
+
+
 
 
     /**
@@ -42,21 +64,33 @@ class Equipo
      * @param string $fechaCreacion Fecha de creación del equipo.
      * @param string $horaCreacion Hora de creación del equipo.
      * @param string $ultimaIntervencion Fecha de la última intervención.
-     * @param string $activo Estado de actividad del equipo.
+     * @param bool $activo Estado de actividad del equipo.
+     * @param string $idUbicacion Identificador de la ubicación del equipo.
+     * @param string $tipoUbicacion Tipo de ubicación del equipo.
+     * @param string $posicion Posición del equipo dentro de la ubicación.
+     * @param string $totalIncidencias Cantidad de incidencias registradas del equipo.
      */
 
     public function __construct(
-        string $id,
+        string $idEquipo,
         string $fechaCreacion,
         string $horaCreacion,
         string $ultimaIntervencion,
-        string $activo
+        bool $activo,
+        string $idUbicacion,
+        string $tipoUbicacion,
+        string $posicion,
+        string $totalIncidencias
     ) {
-        $this->id = $id;
+        $this->id = $idEquipo;
+        $this->idUbicacion = $idUbicacion;
+        $this->tipoUbicacion = $tipoUbicacion;
         $this->fechaCreacion = $fechaCreacion;
         $this->horaCreacion = $horaCreacion;
         $this->ultimaIntervencion = $ultimaIntervencion;
         $this->activo = $activo;
+        $this->posicion = $posicion;
+        $this->totalIncidencias = $totalIncidencias;
     }
 
     /**
@@ -64,9 +98,39 @@ class Equipo
      *
      * @return string Identificador del equipo.
      */
-    public function getId(): string
+    public function getIdEquipo(): string
     {
         return $this->id;
+    }
+
+     /**
+     * @brief Obtiene la posicion del equipo dentro del salon.
+     *
+     * @return string Identificador de equipo dentro del salon.
+     */
+    public function getPosicion(): string
+    {
+        return $this->posicion;
+    }
+
+    /**
+     * @brief Obtiene el Numero de la ubicación del equipo.
+     *
+     * @return string Numero de Ubicacion del equipo.
+     */
+    public function getUbicacion(): string
+    {
+        return $this->idUbicacion;
+    }
+
+        /**
+     * @brief Obtiene el tipo de ubicación del equipo.
+     *
+     * @return string Tipo de ubicación del equipo.
+     */
+    public function getTipoUbicacion(): string
+    {
+        return $this->tipoUbicacion;
     }
 
     /**
@@ -109,4 +173,6 @@ class Equipo
     {
         return $this->activo;
     }
+
+    
 }

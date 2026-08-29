@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -26,5 +30,5 @@ if (!isset($_SESSION["csrfToken"])) {
     exit("Solicitud Rechazada..." . $_SESSION["csrfToken"]);
 }
 
-require_once __DIR__ . "/../../../app/vista/administracion/gestionInventarioTecnologico.php";
+require_once __DIR__ . "/../../../app/controlador/recursos/procesarGestionInventarioTecnologico.php";
 ?>
