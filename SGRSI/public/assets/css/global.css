@@ -111,6 +111,7 @@ select {
     margin-top: 0.6rem;
     min-width: 12rem;
     border-radius: 0 0 8px 8px;
+    z-index: 10;
 }
 
 .desplegable:hover .desplegable-menu{

@@ -6,25 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitudes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/global.css">
-  <link rel="stylesheet" href="../assets/css/index.css">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/index.css">
 </head>
 
 <body data-rol-permitido="docente">
   <header class="d-flex justify-content-center align-items-center py-4">
-    <img class="img-logo" src="../assets/img/logo_iti.png" alt="Logo">
+    <img class="img-logo" src="../../assets/img/logo_iti.png" alt="Logo">
   </header>
   <nav class="navbarSGRSI">
     <section class="nav-container">
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-      <ul class="desplegable-menu">
+<!-- TOFIX: No funciona la opcion para cerrar sesión-->
+      <ul class="nav-menu">
+            <li class="desplegable">
+              <a href="Prueba"></a>
+              <ul class="desplegable-menu">
                         <li><a href="#">Cambiar a Docente</a></li>
                         <li><a href="#">Cambiar a Tecnico</a></li>
                         <li><a href="#">Cambiar a Administrador</a></li>
-                        <li><a href="cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                        <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
                     </ul>
+            </li>
+      </ul>
       </section>
       <ul class="nav-menu">
         <li><a href="../homeDocente.php" id="btnIncidencias">Registro de incidencias</a></li>
@@ -70,10 +76,10 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/btnMenuCelular.js"></script>
-  <script src="../assets/js/cerrarSesion.js"></script>
-  <script src="../assets/js/verificarSesion.js"></script>
-  <script src="../assets/js/ingresoSolicitudes.js"></script>
+  <script src="../../assets/js/btnMenuCelular.js"></script>
+  <script src="../../assets/js/cerrarSesion.js"></script>
+  <script src="../../assets/js/verificarSesion.js"></script>
+  <script src="../../assets/js/ingresoSolicitudes.js"></script>
 </body>
 
 </html>
