@@ -15,12 +15,22 @@ require_once RUTA_MODELO . "/recursos/EstadoDatosEquipo.php";
 
 session_start();
 
+function insertarFiltros(string $url): string {
+ $estado = $_POST['estado'] ?? '';
+ $orden = $_POST['orden'] ?? '';
+ $ubicacion = $_POST['ubicacion'] ?? '';
+ $tipoUbicacion = $_POST['tipoUbicacion'] ?? '';
+
+ return $url . (strpos($url, '?') !== false ? '&' : '?') . "estado=$estado&orden=$orden&ubicacion=$ubicacion&tipoUbicacion=$tipoUbicacion";
+}
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -29,8 +39,9 @@ if (!isset($_SESSION["cedula"])) {
     $mensaje = "Acceso denegado: debe iniciar sesión.";
 
     header(
+        insertarFiltros(
         "Location: ../../../public/paginaWeb/index.php?error="
-        . urlencode($mensaje)
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -39,8 +50,9 @@ if (!($_SESSION["administrador"] ?? false)) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
+        insertarFiltros(
         "Location: ../../../public/paginaWeb/index.php?error="
-        . urlencode($mensaje)
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -55,8 +67,9 @@ if (
     $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -68,8 +81,9 @@ if ($idEquipo === "" || $accion === "") {
     $mensaje = "No se recibieron los datos necesarios.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -82,8 +96,9 @@ if ($accion === "activar") {
     $mensaje = "La acción solicitada no es válida.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -102,8 +117,9 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje))
     );
     exit();
 }
@@ -121,8 +137,10 @@ if (!$resultado) {
     $mensaje = "No se pudo modificar el estado del equipo.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
+        insertarFiltros(
+            "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+            . urlencode($mensaje)
+        )
     );
     exit();
 }
@@ -132,8 +150,9 @@ $mensaje = $activo
     : "Equipo desactivado correctamente.";
 
 header(
-    "Location: ../../../public/paginaWeb/administracion/gestionEquipos.php?resultado="
-    . urlencode($mensaje)
+    insertarFiltros(
+    "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?resultado="
+    . urlencode($mensaje))
 );
 
 exit();

@@ -31,10 +31,24 @@ class AltaUbicacion
      * @return bool true si el registro se realizó correctamente;
      *              false si ocurrió un error.
      */
+
+    
+    private function espacioLibre(string $tipo): string {
+    for($i = 1; ; $i++){
+        $sql = "SELECT id FROM UBICACION WHERE id = :id AND tipo = :tipo";
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute(["id" => $i, "tipo" => $tipo]);
+        if (!$consulta->fetch()) {
+            return $i;
+        }
+    }
+    }
+
     public function registrarUbicacion(
-        string $id,
         string $tipo
     ): bool {
+        $id = $this->espacioLibre($tipo);
+
         try {
             $this->conexion->beginTransaction();
 

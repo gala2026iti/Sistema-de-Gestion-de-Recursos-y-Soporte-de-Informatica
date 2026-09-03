@@ -18,6 +18,7 @@ const modificarRolAdministrador = document.getElementById("modificarRolAdministr
 const modificarClave = document.getElementById("modificarClave");
 const modificarConfirmarClave = document.getElementById("modificarConfirmarClave");
 const btnMostrarClaveModificar = document.getElementById("btnMostrarClaveModificar");
+
 const botonesModificar = document.querySelectorAll(".btnModificarUsuario");
 
 /*

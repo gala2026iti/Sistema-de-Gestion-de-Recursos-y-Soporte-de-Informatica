@@ -81,7 +81,7 @@
         </section>
     </nav>
     <main class="container-fluid px-0 py-3">
-        <a href="../admin_tecnico/historialGeneral.php?tipo=usuarios" class="btn btn-primary mx-3">
+        <a href="../admin_tecnico/historialGeneral.php?tipo=usuarios" class="btn btn-primary mx-3 text-bold">
             Historial de cambios
         </a>
         <h2 class="centro mt-3 text-warning">
@@ -122,14 +122,14 @@
                     <option value="inactivo" <?= ($estado === "inactivo") ? "selected" : "" ?>> De baja</option>
                 </select>
 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary text-bold">
                     Filtrar
                 </button>
             </form>
         </section>
 
         <section class="table-responsive w-100 m-0">
-            <table class="tabla-contenedor m-0" id="tablaUsuarios">
+            <table class="tabla-contenedor m-0 text-bold" id="tablaUsuarios">
                 <thead>
                     <tr>
                         <th>Cedula/Usuario</th>
@@ -144,7 +144,7 @@
 
                     <?php if (empty($usuarios)): ?>
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted"> No se encontraron usuarios. </td>
+                            <td colspan="6" class="text-center py-4 text-muted text-bold"> No se encontraron usuarios. </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($usuarios as $usuario): ?>
@@ -175,7 +175,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btnModificarUsuario"
+                                    <button type="button" class="btn btn-primary btnModificarUsuario text-bold"
                                         data-cedula="<?= htmlspecialchars($usuario["cedula"]) ?>"
                                         data-nombre="<?= htmlspecialchars($usuario["nombre"]) ?>"
                                         data-correo="<?= htmlspecialchars($usuario["correo"]) ?>"
@@ -192,7 +192,7 @@
 
                                             <input type="hidden" name="cedula" value="<?= htmlspecialchars($usuario["cedula"]) ?>">
                                             <input type="hidden" name="accion" value="desactivar">
-                                            <button type="submit" class="btn btn-danger ms-1">
+                                            <button type="submit" class="btn btn-danger ms-1 text-bold">
                                                 Desactivar
                                             </button>
                                         </form>
@@ -206,7 +206,7 @@
 
                                             <input type="hidden" name="cedula" value="<?= htmlspecialchars($usuario["cedula"]) ?>">
                                             <input type="hidden" name="accion" value="activar">
-                                            <button type="submit" class="btn btn-success ms-1">
+                                            <button type="submit" class="btn btn-success ms-1 text-bold">
                                                 Activar
                                             </button>
                                         </form>
@@ -220,7 +220,7 @@
 
         </section>
         <section class="d-flex justify-content-end px-3 mt-4">
-            <button id="btnRegistrarUsuario" class="btn btn-success" type="button">
+            <button id="btnRegistrarUsuario" class="btn btn-success text-bold" type="button">
                 Registrar usuario
             </button>
         </section>
@@ -266,7 +266,7 @@
                     </label>
                     <input type="password" id="confirmarClave" name="confirmarClave" class="form-control"
                         placeholder="Repita la contraseña" minlength="12" required>
-                    <button type="button" class="btn btn-outline-secondary mt-2" id="btnMostrarClave">
+                    <button type="button" class="btn btn-outline-secondary mt-2 text-bold" id="btnMostrarClave">
                         Mostrar contraseña
                     </button>
                     <div class=" my-3">
@@ -290,10 +290,10 @@
                     </div>
 
                 </fieldset>
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-success text-bold">
                     Guardar usuario
                 </button>
-                <button type="button" id="btnCancelarUsuario" class="btn btn-danger">
+                <button type="button" id="btnCancelarUsuario" class="btn btn-danger text-bold">
                     Cancelar
                 </button>
             </form>
@@ -335,7 +335,7 @@
                     </label>
                     <input type="password" id="modificarConfirmarClave" name="confirmarClave" class="form-control"
                         placeholder="Repita la nueva contraseña" minlength="12">
-                    <button type="button" class="btn btn-outline-secondary mt-2" id="btnMostrarClaveModificar">
+                    <button type="button" class="btn btn-outline-secondary mt-2 text-bold" id="btnMostrarClaveModificar">
                         Mostrar contraseña
                     </button>
 
@@ -363,10 +363,10 @@
                     </div>
                 </fieldset>
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success text-bold">
                         Guardar cambios
                     </button>
-                    <button type="button" id="btnCancelarModificarUsuario" class="btn btn-danger">
+                    <button type="button" id="btnCancelarModificarUsuario" class="btn btn-danger text-bold">
                         Cancelar
                     </button>
                 </div>
@@ -375,7 +375,7 @@
     </main>
     <footer>
         <span>
-            Copyright 2026 - DGTEP | Instituto tecnologico de Informática
+            Copyright 2026 - DGTEP | Instituto Tecnológico de Informática
         </span>
     </footer>
 

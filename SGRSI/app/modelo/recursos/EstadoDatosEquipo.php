@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @brief Gestiona el estado de los equipos.
  *
@@ -36,7 +37,7 @@ class EstadoDatosEquipo
         $sql = "
             UPDATE EQUIPO
             SET activo = :activo
-            WHERE ci = :idEquipo
+            WHERE id = :idEquipo
         ";
 
         try {
