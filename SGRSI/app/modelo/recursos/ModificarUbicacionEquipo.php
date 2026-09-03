@@ -30,17 +30,104 @@ class ModificarUbicacionEquipo
      * @param string $tipoUbicacion Nuevo tipo de ubicación.
      */
 
-    public function modificarUbicacionEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion): void
+private function obtenerPosicionLibrePrestamo(): string
+{
+    $sql = "
+        SELECT posicion
+        FROM equipo_reside_ubicacion
+        WHERE tipoUbicacion = 'prestamo'
+          AND idUbicacion = 0
+        ORDER BY posicion
+    ";
+
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute();
+
+    $posicionesOcupadas = $consulta->fetchAll(PDO::FETCH_COLUMN);
+
+    $posicion = 1;
+
+    while (in_array($posicion, $posicionesOcupadas)) {
+        $posicion++;
+    }
+
+    $consulta->closeCursor();
+
+    return (string)$posicion;
+}
+
+    /* TOFIX : LAS SELECCIONES NO ENCUENTRAN NINGUNA FILA COINCIDENTE, VERIFICAR VARIABLES A FILTRAR, EQUIPOS DE "NINGUNO" ES EL ÚNICO QUE FUNCIONA, DE SALONES Y DE PRESTAMO TIRAN ERROR :() */
+    public function modificarUbicacionEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion, string $posicion, string $tipoUbicacionOrigen): bool
     {
-        $sql = "
-        UPDATE equipo_reside_ubicacion SET idUbicacion = :idUbicacion, tipoUbicacion = :tipoUbicacion WHERE idEquipo = :idEquipo
-        ";
+        try{
+        
+        $this->conexion->beginTransaction();
+        if($tipoUbicacionOrigen === "ninguna"){
+            $sql = "
+            INSERT INTO equipo_reside_ubicacion (idEquipo, idUbicacion, tipoUbicacion, posicion) VALUES 
+                (:idEquipo, :idUbicacion, :tipoUbicacion, :posicion)
+            ";
+
+            if($tipoUbicacion === "prestamo"){
+                 $posicion = $this->obtenerPosicionLibrePrestamo();
+                 $idUbicacion = 0;
+            }
+
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->execute([
+            "idEquipo" => $idEquipo,
+            "idUbicacion" => $idUbicacion,
+            "tipoUbicacion" => $tipoUbicacion,
+            "posicion" => $posicion
+        ]);
+
+
+
+        } else {
+        if($tipoUbicacion === "ninguna") {
+            $sql = "
+            DELETE FROM equipo_reside_ubicacion WHERE idEquipo = :idEquipo
+            ";
+
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([
+        "idEquipo" => $idEquipo
+        ]);
+
+        } else {
+        
+        if ($tipoUbicacion === "prestamo"){
+             $posicion = $this->obtenerPosicionLibrePrestamo();
+             $idUbicacion = "0";
+             }
+
+            $sql = "
+            UPDATE equipo_reside_ubicacion SET idUbicacion = :idUbicacion, tipoUbicacion = :tipoUbicacion, posicion = :posicion WHERE idEquipo = :idEquipo
+            ";
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([
             "idEquipo" => $idEquipo,
             "idUbicacion" => $idUbicacion,
-            "tipoUbicacion" => $tipoUbicacion
+            "tipoUbicacion" => $tipoUbicacion,
+            "posicion" => $posicion
         ]);
+
+        }
+        }
+        
+            $consulta->closeCursor();
+            $this->conexion->commit();
+            return true;
+        
+        } catch(PDOException $error) {
+                if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+
+            error_log("Error al modificar la ubicación del equipo: " . $error->getMessage());
+            return false;
+        }
+
     }
 
 }

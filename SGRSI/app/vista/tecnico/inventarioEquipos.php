@@ -131,7 +131,7 @@
   </div>
 
   <footer>
-    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto tecnologico de Informática</span>
+    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática</span>
   </footer>
 
   <script src="../../../public/assets/js/btnMenuCelular.js"></script>

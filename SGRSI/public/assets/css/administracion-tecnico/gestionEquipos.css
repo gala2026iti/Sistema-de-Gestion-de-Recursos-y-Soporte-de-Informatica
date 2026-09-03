@@ -13,6 +13,12 @@
     color: white;
 }
 
+.invisible-form {
+    background-color: rgba(0,0,0,0);
+    padding: 0;
+}
+
+
 .barralateral-ubicaciones.abierto {
     left: 0;
 }
@@ -86,6 +92,10 @@
     cursor: pointer;
     font-size: 0.85rem;
     transition: 0.2s;
+}
+
+.max-450 {
+    max-width: 450px;
 }
 
 .btn-agregar-salon:hover {

@@ -11,6 +11,10 @@
     --blanco: #ffffff;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .img-logo {
     height: 28vh;
     min-height: 100px;

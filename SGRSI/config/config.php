@@ -1,4 +1,7 @@
 <?php
+/* TOFEAT : ASIGNACIÓN DE FECHA LOCAL, PARA PODER PROPORCIONARLA A LA BD */
+date_default_timezone_set('America/Montevideo');
+
 define("RUTA_RAIZ", dirname(__DIR__));
 
 define("RUTA_APP", RUTA_RAIZ . "/app");

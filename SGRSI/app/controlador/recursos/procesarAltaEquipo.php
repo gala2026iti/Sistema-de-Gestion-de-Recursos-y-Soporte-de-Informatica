@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -56,34 +56,38 @@ if (
     $mensaje = "Solicitud rechazada: token de seguridad inválido.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$id = trim($_POST["id"] ?? "");
-$fechaCreacion = trim($_POST["fechaCreacion"] ?? "");
-$horaCreacion = trim($_POST["horaCreacion"] ?? "");
-$ultimaIntervencion = $_POST["ultimaIntervencion"] ?? "";
-$idUbicacion = $_POST["idUbicacion"] ?? "";
-$tipoUbicacion = $_POST["tipoUbicacion"] ?? "";
-$posicion = $_POST["posicion"] ?? "";
-
-// $activo = $_POST["activo"] ?? ""; Activo existe, pero no en POST
+$ubicacion = explode(" ", trim(htmlspecialchars($_POST["ubicacion"] ?? "")));
 
 
+$id = trim(htmlspecialchars($_POST["idEquipo"] ?? ""));
+$fechaCreacion = date("d-m-Y");
+$horaCreacion = date("H:i");
+$idUbicacion = $ubicacion[1] ?? "";
+$tipoUbicacion = $ubicacion[0] ?? "";
+$posicion = trim(htmlspecialchars($_POST["posicion"])) ?? "";
 
-if (
-    $id === "" ||
-    $fechaCreacion === "" ||
-    $horaCreacion === "" ||
-    $ultimaIntervencion === ""
-) {
-    $mensaje = "Existen campos vacíos.";
+if ($id === "") {
+    $mensaje = 'El campo "ID" esta vacío.';
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
+
+if ($posicion === "") {
+    $mensaje = 'El campo "Posicion del PC" esta vacío.';
+
+    header(
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -91,27 +95,22 @@ if (
 
 if(!is_numeric($id) && strlen($id) > 6)  {
     $mensaje = "El ID debe ser un número entero de hasta 6 dígitos.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/tecnico/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
 if(strlen($fechaCreacion) !== 10) {
     $mensaje = "La fecha no tiene el formato valido: (DD/MM/AAAA)";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/tecnico/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
 if(strlen($horaCreacion) !== 5) {
     $mensaje = "La hora no tiene el formato valido: (HH:MM)";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/tecnico/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
-if($ultimaIntervencion !== null) {
- $mensaje = "Los equipos dados de alta no cuentan con última intervención";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
-    exit();
-}
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -127,7 +126,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -139,8 +138,6 @@ $resultado = $AltaEquipo->registrarEquipo(
     $id,
     $fechaCreacion,
     $horaCreacion,
-    $ultimaIntervencion,
-    true,
     $idUbicacion,
     $tipoUbicacion,
     $posicion
@@ -152,7 +149,7 @@ if (!$resultado) {
     $mensaje = "No se pudo registrar el equipo.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -161,7 +158,7 @@ if (!$resultado) {
 $mensaje = "Equipo registrado correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?resultado="
+    "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?resultado="
     . urlencode($mensaje)
 );
 

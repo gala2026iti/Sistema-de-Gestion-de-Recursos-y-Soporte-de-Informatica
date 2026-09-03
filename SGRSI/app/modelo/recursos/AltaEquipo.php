@@ -43,8 +43,6 @@ class AltaEquipo
         string $idEquipo,
         string $fechaCreacion,
         string $horaCreacion,
-        string $ultimaIntervencion,
-        bool $activo,
         string $idUbicacion,
         string $tipoUbicacion,
         string $posicion
@@ -64,11 +62,9 @@ class AltaEquipo
 
             $consultaEquipo = $this->conexion->prepare($sqlEquipo);
             $consultaEquipo->execute([
-                "id" => $idEquipo,
+                "idEquipo" => $idEquipo,
                 "fechaCreacion" => $fechaCreacion,
                 "horaCreacion" => $horaCreacion,
-                "ultimaIntervencion" => $ultimaIntervencion,
-                "activo" => $activo
             ]);
 
             $consultaUbicacion = $this->conexion->prepare($sqlUbicacion);

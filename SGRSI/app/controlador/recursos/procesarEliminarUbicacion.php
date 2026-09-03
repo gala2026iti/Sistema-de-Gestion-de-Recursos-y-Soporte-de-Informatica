@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -72,7 +72,7 @@ if (
     $mensaje = "Existen campos vacíos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -80,13 +80,13 @@ if (
 
 if(!is_numeric($id))  {
     $mensaje = "El ID de la ubicación debe ser un número entero.";
-    header("Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error=" . urlencode($mensaje));
+    header("Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
 if(strlen($tipo) !== "laboratorio" && strlen($tipo) !== "salon") {
     $mensaje = 'El tipo de ubicación no es válido, debe ser "laboratorio" o "salon".';
-    header("Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error=" . urlencode($mensaje));
+    header("Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
@@ -104,7 +104,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -123,7 +123,7 @@ if (!$resultado) {
     $mensaje = "No se pudo eliminar la ubicación.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -132,7 +132,7 @@ if (!$resultado) {
 $mensaje = "Ubicación eliminada correctamente, se desvincularon los equipos de dicho salón.";
 
 header(
-    "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?resultado="
+    "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?resultado="
     . urlencode($mensaje)
 );
 

@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -62,35 +62,15 @@ if (
     exit();
 }
 
-$id = trim($_POST["id"] ?? "");
-$tipo = trim($_POST["tipo"] ?? "");
+$agregar = trim($_POST["agregar"] ?? "");
 
-
-
-if (
-    $id === "" ||
-    $tipo === "" 
-    ) {
-    $mensaje = "Existen campos vacíos.";
-
-    header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
-        . urlencode($mensaje)
-    );
+if($agregar !== "laboratorio" && $agregar !== "taller")  {
+    $mensaje = "El tipo de ubicación no es válido.";
+    header("Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
     exit();
 }
 
-if(!is_numeric($id))  {
-    $mensaje = "El ID de la ubicación debe ser un número entero.";
-    header("Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error=" . urlencode($mensaje));
-    exit();
-}
 
-if(strlen($tipo) !== "laboratorio" && strlen($tipo) !== "salon") {
-    $mensaje = 'El tipo de ubicación no es válido, debe ser "laboratorio" o "salon".';
-    header("Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error=" . urlencode($mensaje));
-    exit();
-}
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -106,7 +86,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -115,8 +95,7 @@ if ($conexion === null) {
 $AltaUbicacion = new AltaUbicacion($conexion);
 
 $resultado = $AltaUbicacion->registrarUbicacion(
-    $id,
-    $tipo
+    $agregar
 );
 
 $conectorPDO->desconectar();
@@ -125,7 +104,7 @@ if (!$resultado) {
     $mensaje = "No se pudo registrar la ubicación.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -134,7 +113,7 @@ if (!$resultado) {
 $mensaje = "Ubicación registrada correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/administracion/gestionEquipos.php?resultado="
+    "Location: ../../../public/paginaWeb/administracion/gestionInventarioTecnologico.php?resultado="
     . urlencode($mensaje)
 );
 
