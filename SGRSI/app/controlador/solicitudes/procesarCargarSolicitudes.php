@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * @file procesarEstadoSolicitud.php
  *
@@ -40,4 +42,4 @@ $solicitudes = $accesoDatosSolicitud->listarSolicitudes($estado);
 
 $conectorPDO->desconectar();
 
-require_once RUTA_VISTA . "/administracion/gestionSolicitudes.php";
+require_once RUTA_VISTA . "/tecnico/gestionSolicitudes.php";

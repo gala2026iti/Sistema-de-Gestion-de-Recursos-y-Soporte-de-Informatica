@@ -73,6 +73,7 @@ $tipoUbicacionOrigen = trim(htmlspecialchars($_POST["tipoUbicacionOrigen"] ?? ""
 $idUbicacion = $ubicacion[1] ?? "";
 $tipoUbicacion = $ubicacion[0] ?? "";
 
+
 if (!is_numeric($idEquipo) || strlen($idEquipo) > 6) {
     $mensaje = "El ID del equipo debe ser un número entero de hasta 6 dígitos.";
 

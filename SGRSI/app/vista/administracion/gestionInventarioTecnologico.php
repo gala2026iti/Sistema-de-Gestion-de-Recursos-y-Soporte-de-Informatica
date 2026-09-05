@@ -1,9 +1,7 @@
 <!-- TOFIX : MOVER PHP A PROCESARCARGAREQUIPOS.PHP, ADEMAS DE AÑADIRLE TRIM Y HTMLSPECIALCHARS -->
 <?php
 $estado = trim($_GET["estado"] ?? "");
-$orden = trim($_GET["orden"] ?? "");
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -70,7 +68,7 @@ $orden = trim($_GET["orden"] ?? "");
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
-            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline invisible-form">
+            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarLaboratorio" name="agregar" value="laboratorio">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                 <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
@@ -84,7 +82,7 @@ $orden = trim($_GET["orden"] ?? "");
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
-            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline invisible-form">
+            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarTaller" name="agregar" value="taller">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
@@ -199,7 +197,7 @@ $orden = trim($_GET["orden"] ?? "");
         data-posicion="<?= htmlspecialchars($equipo['posicion'] ?? 0) ?>">
     Mover
 </button>
-                            <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline invisible-form">
+                            <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline form-estado">
                                 <input type="hidden" name="idEquipo" value="<?= $equipo['idEquipo'] ?>">
                                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                                 <input type="hidden" name="estado" value=<?= htmlspecialchars($_GET['estado']) ?? "" ?>>
