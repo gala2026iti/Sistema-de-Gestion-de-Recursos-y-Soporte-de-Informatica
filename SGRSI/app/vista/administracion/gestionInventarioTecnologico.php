@@ -170,20 +170,20 @@ $estado = trim($_GET["estado"] ?? "");
                     <?php else: ?>
                     <?php foreach ($equipos as $equipo) { ?>
                         <tr>
-                            <td><?= $equipo['idEquipo'] ?></td>
-                            <?php if ($equipo['tipoUbicacion']) { ?>
+                            <td><?= htmlspecialchars($equipo['idEquipo']) ?></td>
+                            <?php if (htmlspecialchars($equipo['tipoUbicacion'])) { ?>
                                 <?php if ($equipo['tipoUbicacion'] === "prestamo") { ?>
                                     <td>Equipo de Préstamo</td>
                                 <?php } else { ?>
-                                    <td><?= ucfirst($equipo['tipoUbicacion']) . " " . $equipo['idUbicacion'] . " (PC-" . $equipo["posicion"] . ")" ?></td>
+                                    <td><?= ucfirst(htmlspecialchars($equipo['tipoUbicacion'])) . " " . htmlspecialchars($equipo['idUbicacion']) . " (PC-" . htmlspecialchars($equipo["posicion"]) . ")" ?></td>
                                 <?php } ?>
                             <?php } else { ?>
                                 <td>Sin ubicación</td>
                             <?php } ?>
-                            <td><?= $equipo['activo'] ? "Activo" : "Inactivo" ?></td>
-                            <td><?= $equipo['totalIncidencias'] ?></td>
-                            <?php if ($equipo['ultimaIntervencion']) { ?>
-                                <td><?= $equipo['ultimaIntervencion'] ?></td>
+                            <td><?= htmlspecialchars($equipo['activo']) ? "Activo" : "Inactivo" ?></td>
+                            <td><?= htmlspecialchars($equipo['totalIncidencias']) ?></td>
+                            <?php if (htmlspecialchars($equipo['ultimaIntervencion'])) { ?>
+                                <td><?= htmlspecialchars($equipo['ultimaIntervencion']) ?></td>
                             <?php } else { ?>
                                 <td>Sin intervenciones previas</td>
                                 <!-- TOFIX: AGREGAR LOS BOTONES CORRESPONDIENTES AL ÁREA DE ACCIONES: EDITAR, REMOVER DEL SALON, DESACTIVAR, VER INCIDENCIAS -->
@@ -198,12 +198,12 @@ $estado = trim($_GET["estado"] ?? "");
     Mover
 </button>
                             <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline form-estado">
-                                <input type="hidden" name="idEquipo" value="<?= $equipo['idEquipo'] ?>">
+                                <input type="hidden" name="idEquipo" value="<?= htmlspecialchars($equipo['idEquipo']) ?>">
                                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
-                                <input type="hidden" name="estado" value=<?= htmlspecialchars($_GET['estado']) ?? "" ?>>
-                                <input type="hidden" name="orden" value=<?= htmlspecialchars($_GET['orden']) ?? "" ?>>
-                                <input type="hidden" name="ubicacion" value=<?= htmlspecialchars($_GET['ubicacion']) ?? "" ?>>
-                                <input type="hidden" name="tipoUbicacion" value=<?= htmlspecialchars($_GET['tipoUbicacion']) ?? "" ?>>
+                                <input type="hidden" name="estado" value=<?= htmlspecialchars(trim($_GET['estado']) ?? "") ?>>
+                                <input type="hidden" name="orden" value=<?= htmlspecialchars(trim($_GET['orden']) ?? "") ?>>
+                                <input type="hidden" name="ubicacion" value=<?= htmlspecialchars(trim($_GET['ubicacion']) ?? "") ?>>
+                                <input type="hidden" name="tipoUbicacion" value=<?= htmlspecialchars(trim($_GET['tipoUbicacion']) ?? "") ?>>
                                 
                                 <?php if($equipo['activo']) { ?>
                                 <input type="hidden" name="accion" value="desactivar">

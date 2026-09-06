@@ -55,7 +55,7 @@ $estado = trim($_GET["estado"] ?? "");
 
     <section class="filtros">
             <form method="GET" action="gestionSolicitudes.php">
-<!-- TOFIX: IMPLEMENTAR POSIBLE BUSQUEDA O POR ID, O POR ASUNTO -->
+<!-- TOFIX: IMPLEMENTAR POSIBLE BUSQUEDA O POR ID -->
                 <label for="estado">Filtrar por Estado:</label>
 
                 <select id="estado" name="estado">
@@ -65,6 +65,9 @@ $estado = trim($_GET["estado"] ?? "");
                     <option value="finalizada" <?= ($estado === "finalizada") ? "selected" : "" ?>> Finalizada
                     </option>
                 </select>
+
+                <label for="id">Filtrar por ID:</label>
+                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
 
                 <button type="submit" class="btn btn-primary text-bold">
                     Filtrar

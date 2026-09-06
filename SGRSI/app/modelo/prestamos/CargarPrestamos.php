@@ -31,7 +31,8 @@ class CargarPrestamos
  *
  * @return array Lista de préstamos encontrados con sus datos asociados.
  */
-public function listarPrestamos(): array
+
+public function listarPrestamos(string $estado, string $id): array
     {
         $sql ="
             SELECT
@@ -56,19 +57,33 @@ public function listarPrestamos(): array
             INNER JOIN USUARIO AS u
             ON u.ci = ttp.ciTecnico
 
-            WHERE p.devuelto = FALSE
-
             ORDER BY p.id
         ";
 
-        $sql .= " ORDER BY s.id";
+        $condiciones = [];
+        $parametros = [];
+
+        if($estado === "pendiente") {
+            $condiciones[] = "p.devuelto = FALSE";
+        } elseif($estado === "devuelto") {
+            $condiciones[] = "p.devuelto = TRUE";        
+            }
+
+        if(is_numeric($id) && $id > 0) {
+            $condiciones[] = "p.id = :id";
+            $parametros["id"] = $id;
+        }
+
+            if (!empty($condiciones)) {
+            $sql .= " WHERE " . implode(" AND ", $condiciones);
+        }
 
         $consulta = $this->conexion->prepare($sql);
-        $consulta->execute();
+        $consulta->execute($parametros);
 
-        $solicitudes = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $prestamos = $consulta->fetchAll(PDO::FETCH_ASSOC);
         $consulta = null;
 
-        return $solicitudes;
+        return $prestamos;
     }
 }

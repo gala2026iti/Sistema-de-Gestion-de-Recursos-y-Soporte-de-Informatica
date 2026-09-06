@@ -15,5 +15,5 @@ if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
     exit();
 }
 
-require_once __DIR__ . "/../../../app/vista/tecnico/tablaPrestamos.php";
+require_once __DIR__ . "/../../../app/controlador/prestamos/procesarCargarPrestamos.php";
 ?>

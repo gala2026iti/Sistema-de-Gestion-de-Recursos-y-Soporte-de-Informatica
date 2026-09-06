@@ -55,9 +55,8 @@
         <thead>
           <tr>
             <th>Id</th>
-            <th>Cédula Prestador</th>
-            <th>Cédula Prestado</th>
-            <th>Nombre Prestado</th>
+            <th>Prestador</th>
+            <th>Prestado</th>
             <th>Equipo Prestado</th>
             <th>Fecha inicio</th>
             <th>Fecha final</th>
@@ -66,6 +65,26 @@
           </tr>
         </thead>
         <tbody>
+          <?php foreach ($prestamos as $prestamo): ?>
+            <tr>
+              <td><?= htmlspecialchars($prestamo["id"]) ?></td>
+              <td><?= htmlspecialchars($prestamo["nombrePrestador"] . " - (" . $prestamo["ciPrestador"] . ")") ?></td>
+              <td><?= htmlspecialchars($prestamo["nombrePrestado"] . " - (" . $prestamo["ciPrestado"] . ")") ?></td>
+              <td><?= htmlspecialchars($prestamo["equipoPrestado"]) ?></td>
+              <td><?= htmlspecialchars($prestamo["fechaInicio"]) ?></td>
+              <td><?= htmlspecialchars($prestamo["fechaFinal"]) ?></td>
+              <td><?= htmlspecialchars($prestamo["estado"]) ?></td>
+              <td>
+                <form method="POST" action="../../../app/controlador/prestamos/EstadoDatosPrestamo.php" class="d-inline">
+                  <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                  <input type="hidden" name="id" value="<?= htmlspecialchars($prestamo["id"]) ?>">
+                  <button type="submit" class="btn btn-primary ms-1 text-bold">
+                    Finalizar
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </section>
@@ -114,7 +133,6 @@
   </footer>
 
   <script src="../../../public/assets/js/btnMenuCelular.js"></script>
-  <script src="../../../public/assets/js/gestionPrestamos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/assets/js/verificarSesion.js"></script>
   <script src="../../../public/assets/js/cerrarSesion.js"></script>

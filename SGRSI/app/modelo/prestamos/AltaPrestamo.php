@@ -32,9 +32,6 @@ class AltaPrestamo
      * @param string $ciPrestado Cédula de la persona a la que se presta.
      * @param string $fechaFin Fecha prevista de devolución.
      * @param string $horaFin Hora prevista de devolución.
-     * @param string $fecha Fecha de la intervención.
-     * @param string $hora Hora de la intervención.
-     * @param string $tipoInteraccion Tipo de interacción registrada.
      *
      * @return bool true si el registro se realizó correctamente;
      *              false si ocurrió un error.
