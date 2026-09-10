@@ -32,7 +32,7 @@ class ModificarDatosTicket
         string $idTicket
     ): bool {
         try {
-            $ciTecnico = $_SESSION['ci'];
+            $ciTecnico = $_SESSION['cedula'];
             $this->conexion->beginTransaction();
 
                 $sqlColaborador = "
@@ -71,7 +71,7 @@ class ModificarDatosTicket
         string $idTicket
     ): bool {
         try {
-            $ciTecnico = $_SESSION['ci'];
+            $ciTecnico = $_SESSION['cedula'];
             $this->conexion->beginTransaction();
 
                 $sqlColaborador = "
