@@ -46,21 +46,19 @@ class AltaSolicitud
         string $descripcion,
         string $fechaLimite,
         string $horaLimite,
-        string $ciDocente,
-        string $fecha,
-        string $hora
+        string $ciDocente
     ): bool {
         try {
             $this->conexion->beginTransaction();
 
             $sqlSolicitud = "
-                INSERT INTO SOLICITUD (id, asunto, descripcion, fecha_limite, hora_limite, finalizada)
-                VALUES (:idSolicitud, :asunto, :descripcion, :fechaLimite, :horaLimite, FALSE)
+                INSERT INTO SOLICITUD (id, asunto, descripcion, fecha_limite, hora_limite)
+                VALUES (:idSolicitud, :asunto, :descripcion, :fechaLimite, :horaLimite)
             ";
 
             $sqlDocente = "
-                INSERT INTO docente_ingresa_solicitud (ciDocente, idSolicitud, fecha, hora)
-                VALUES (:ciDocente, :idSolicitud, :fecha, :hora)
+                INSERT INTO docente_ingresa_solicitud (ciDocente, idSolicitud)
+                VALUES (:ciDocente, :idSolicitud)
             ";
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
@@ -75,9 +73,7 @@ class AltaSolicitud
             $consultaDocente = $this->conexion->prepare($sqlDocente);
             $consultaDocente->execute([
                 "ciDocente" => $ciDocente,
-                "idSolicitud" => $id,
-                "fecha" => $fecha,
-                "hora" => $hora
+                "idSolicitud" => $id
             ]);
 
             $this->conexion->commit();

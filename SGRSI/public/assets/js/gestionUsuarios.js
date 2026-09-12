@@ -47,13 +47,14 @@ function validarClavesEnEdicion() {
     }
 }
 
-validarClavesEnEdicion()
-
 registrarUsuario.addEventListener("click", () => { 
     modalUsuario.classList.remove("d-none");
     modalUsuario.classList.add("d-flex");
 
     cedula.readOnly = false
+
+    clave.required = true
+    confirmarClave.required = true
 
     tituloFormulario.innerText = "Registrar usuario";
     btnGuardarUsuario.innerText = "Guardar usuario";
@@ -61,7 +62,7 @@ registrarUsuario.addEventListener("click", () => {
     contra.innerText = "Cambiar contraseña"
     confirmarContra.innerText = "Confirmar nueva contraseña"
 
-    formUsuario.action = "../../../../app/controlador/usuarios/procesarAltaUsuario.php"
+    formUsuario.action = "../../../app/controlador/usuarios/procesarAltaUsuario.php"
 
 
 });
@@ -100,6 +101,8 @@ botonesModificar.forEach((boton) => {
         btnGuardarUsuario.innerText = "Guardar Cambios";
 
         formUsuario.action = "../../../app/controlador/usuarios/procesarModificarUsuario.php"
+
+        validarClavesEnEdicion()
 
         contra.innerText = "Cambiar contraseña"
         confirmarContra.innerText = "Confirmar nueva contraseña"

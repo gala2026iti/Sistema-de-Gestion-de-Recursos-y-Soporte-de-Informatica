@@ -1,11 +1,9 @@
-USE sgrsi;
-
 CREATE TABLE IF NOT EXISTS SOLICITUD (
     id INT AUTO_INCREMENT NOT NULL,
     asunto VARCHAR(150) NOT NULL,
     descripcion TEXT NOT NULL,
-    fechaLimite CHAR(10) NOT NULL,
-    horaLimite CHAR(5) NOT NULL,
+    fechaLimite DATE NOT NULL,
+    horaLimite TIME NOT NULL,
     finalizada BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pk_solicitud PRIMARY KEY (id)
 );
@@ -13,8 +11,8 @@ CREATE TABLE IF NOT EXISTS SOLICITUD (
 CREATE TABLE IF NOT EXISTS docente_ingresa_solicitud (
     ciDocente VARCHAR(8) NOT NULL,
     idSolicitud INT NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     CONSTRAINT pk_docente_ingresa_solicitud PRIMARY KEY (ciDocente, idSolicitud),
     CONSTRAINT fk_dis_docente FOREIGN KEY (ciDocente) 
         REFERENCES DOCENTE (ci) 
@@ -26,8 +24,8 @@ CREATE TABLE IF NOT EXISTS docente_ingresa_solicitud (
 CREATE TABLE IF NOT EXISTS tecnico_finaliza_solicitud (
     ciTecnico VARCHAR(8) NOT NULL,
     idSolicitud INT NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     CONSTRAINT pk_tecnico_finaliza_solicitud PRIMARY KEY (ciTecnico, idSolicitud),
     CONSTRAINT fk_tfs_tecnico FOREIGN KEY (ciTecnico) 
         REFERENCES TECNICO (ci) 
@@ -36,4 +34,3 @@ CREATE TABLE IF NOT EXISTS tecnico_finaliza_solicitud (
         REFERENCES SOLICITUD (id) 
         ON DELETE CASCADE ON UPDATE CASCADE
 );
-

@@ -41,8 +41,6 @@ class AltaEquipo
      */
     public function registrarEquipo(
         string $idEquipo,
-        string $fechaCreacion,
-        string $horaCreacion,
         string $idUbicacion,
         string $tipoUbicacion,
         string $posicion
@@ -51,8 +49,8 @@ class AltaEquipo
             $this->conexion->beginTransaction();
 
             $sqlEquipo = "
-                INSERT INTO EQUIPO (id, fechaCreacion, horaCreacion, ultimaIntervencion, activo)
-                VALUES (:idEquipo, :fechaCreacion, :horaCreacion, NULL, TRUE)
+                INSERT INTO EQUIPO (id)
+                VALUES (:idEquipo)
             ";
 
             $sqlUbicacion = "
@@ -62,9 +60,7 @@ class AltaEquipo
 
             $consultaEquipo = $this->conexion->prepare($sqlEquipo);
             $consultaEquipo->execute([
-                "idEquipo" => $idEquipo,
-                "fechaCreacion" => $fechaCreacion,
-                "horaCreacion" => $horaCreacion,
+                "idEquipo" => $idEquipo
             ]);
 
             $consultaUbicacion = $this->conexion->prepare($sqlUbicacion);

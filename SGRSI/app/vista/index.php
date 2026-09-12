@@ -21,7 +21,7 @@
         
         <section class="Tarjeta-login card p-4 shadow border-0 w-100">
 
-            <form id="formInicio" action="../../app/controlador/procesarLogin.php" method="post">
+            <form id="formInicio" action="../../app/controlador/procesarLogin.php" method="POST">
                 <fieldset class="border-0 p-0 m-0">
                     <span class="d-block h4 fw-bold mb-4 texto-azul-dark">Inicio de sesión</span>
                     

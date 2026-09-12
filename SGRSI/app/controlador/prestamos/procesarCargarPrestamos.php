@@ -32,7 +32,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -42,5 +42,3 @@ $accesoDatosPrestamo = new CargarPrestamos($conexion);
 $prestamos = $accesoDatosPrestamo->listarPrestamos($estado, $id);
 
 $conectorPDO->desconectar();
-
-require_once RUTA_VISTA . "/tecnico/tablaPrestamos.php";

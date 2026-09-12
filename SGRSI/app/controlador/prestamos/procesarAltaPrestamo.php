@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file procesarAltaSolicitud.php
  *
@@ -19,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
+        /* TOFIX : CORREGIR REDIRECCIONES DE ERRORES*/
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -58,28 +58,20 @@ if (
         "Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
-    exit();
 }
 
- $id = htmlspecialchars(trim($_POST["idPrestamo"] ?? ""));
- $ciTecnico = htmlspecialchars(trim($_POST["ciTecnico"] ?? ""));
+ $ciTecnico = htmlspecialchars(trim($_SESSION["cedula"] ?? ""));
  $nombrePrestado = htmlspecialchars(trim($_POST["nombrePrestado"] ?? ""));
  $ciPrestado = htmlspecialchars(trim($_POST["ciPrestado"] ?? ""));
- $fechaFin = htmlspecialchars(trim($_POST["fechaFin"] ?? ""));
- $horaFin = htmlspecialchars(trim($_POST["horaFin"] ?? ""));
-
- // No se les hace validación ni formateo ya que no son objetos proporcionados por el usuario
- $fecha = date('d/m/Y');
- $hora = date('H:i');
- $tipoIntervencion = "creacion";
+ $fechaDevolucion = htmlspecialchars(trim($_POST["final"] ?? ""));
+ $idEquipo = htmlspecialchars(trim($_POST["idEquipo"] ?? ""));
 
 if (
-    $id === "" ||
+    $idEquipo === "" ||
     $ciTecnico === "" ||
     $nombrePrestado === "" ||
     $ciPrestado === "" ||
-    $fechaFin === "" ||
-    $horaFin === ""
+    $fechaDevolucion === ""
 
 ) {
     $mensaje = "Existen campos vacíos.";
@@ -91,8 +83,8 @@ if (
     exit();
 }
 
-if (!is_integer($id)) {
-    $mensaje = "El ID debe ser un número entero.";
+if (!is_numeric($idEquipo) && $idEquipo > 0) {
+    $mensaje = "El ID del equipo debe ser un número entero mayor a 0.";
 
     header(
         "Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
@@ -111,44 +103,47 @@ if (strlen($ciTecnico) !== 8 || !is_numeric($ciTecnico)) {
     exit();
 }
 
-if (strlen($fechaFin) !== 10) {
-    $mensaje = "La fecha no tiene el formato valido: (DD/MM/AAAA)";
-    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-$fechaIngresada = DateTime::createFromFormat('d/m/Y H:i', $fechaFin . ' ' . $horaFin);
-
-if (!$fechaIngresada) {
+if (!$fechaDevolucion) {
     $mensaje = "La fecha u hora ingresadas no son válidas.";
     header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
     exit();
 }
 
+if (strlen($fechaDevolucion) !== 16) {
+    $mensaje = "Error al recibir la información correspondiente a la fecha y la hora de devolución";
+    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    exit();
+}
+
+$fecha = DateTime::createFromFormat('Y-m-d\TH:i', $fechaDevolucion);
+
+$fechaFin = $fecha->format('Y/m/d');
+$horaFin = $fecha->format('H:i');
+
 $ahora = new DateTime();
 
-if ($fechaIngresada <= $ahora) {
+if ($fecha <= $ahora) {
     $mensaje = "La fecha y hora deben ser posteriores al momento actual.";
     header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
     exit();
 }
 
 if(strlen($ciPrestado) !== 8 || !is_numeric($ciPrestado)) {
-    $mensaje = "La cédula del prestado debe tener 8 dígitos y ser un número válido.";
-    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    $mensaje = "La cédula del prestado debe tener 8 dígitos y ser un número positivo.";
+    header("Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
     exit();
 }
 
 if(strlen($ciTecnico) !== 8 || !is_numeric($ciTecnico)) {
-    $mensaje = "La cédula del técnico debe tener 8 dígitos y ser un número válido.";
-    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    $mensaje = "La cédula del técnico debe tener 8 dígitos y ser un número positivo.";
+    header("Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
     exit();
 }
 
 
 if(strlen($horaFin) !== 5) {
     $mensaje = "La hora no tiene el formato valido: (HH:MM)";
-    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    header("Location: ../../..public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
     exit();
 }
 
@@ -166,7 +161,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -175,15 +170,12 @@ if ($conexion === null) {
 $AltaPrestamo = new AltaPrestamo($conexion);
 
 $resultado = $AltaPrestamo->registrarPrestamo(
- $id,
  $ciTecnico,
  $nombrePrestado,
  $ciPrestado,
  $fechaFin,
  $horaFin,
- $fecha,
- $hora,
- $tipoIntervencion
+ $idEquipo
 );
 
 $conectorPDO->desconectar();
@@ -193,16 +185,16 @@ if (!$resultado) {
 
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$mensaje = "Solicitud registrada correctamente.";
+$mensaje = "Prestamo registrado correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?resultado="
+    "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?resultado="
     . urlencode($mensaje)
 );
 

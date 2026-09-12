@@ -58,14 +58,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>123456</td>
-            <td>Activa</td>
-            <td>Juan Pablo (12312321)</td>
-            <td>
-              <button class="btn btn-warning">Ver Incidencias</button>
-            </td>
-          </tr>
+      <?php foreach ($equipos as $equipo) { ?>
+        <!-- ID del equipo, Estado del equipo (prestado o no, o si tiene incidencia), Prestamo (ID: id del prestamo, más a quien se le prestó), Opciones (botones para accion de registrar incidencia)  -->
+        <tr>
+          <td><?= $equipo["idEquipo"]; ?></td>
+          <td><?= $equipo["activo"] ? "Activo" : "Inactivo"; ?></td>
+          <td><?= isset($equipo["idPrestamo"]) ? $equipo["idPrestamo"] . " - " . ($equipo["nombrePrestado"] ?? "Usuario no encontrado") : "No prestado"; ?></td>
+          <td>
+            <button class="btn btn-primary">Registrar Incidencia</button>
+          </td>
+        </tr>
+      <?php } ?>
         </tbody>
       </table>
       <button class="btn btn-danger m-3" id="btnRegistrarIncidencia">Registrar Incidencia</button>
@@ -135,7 +138,6 @@
   </footer>
 
   <script src="../../../public/assets/js/btnMenuCelular.js"></script>
-  <script src="../../../public/assets/js/inventarioEquiposPrestamo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/assets/js/verificarSesion.js"></script>
   <script src="../../../public/assets/js/cerrarSesion.js"></script>

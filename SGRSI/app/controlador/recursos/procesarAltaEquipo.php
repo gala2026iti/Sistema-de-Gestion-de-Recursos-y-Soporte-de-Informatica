@@ -66,8 +66,6 @@ $ubicacion = explode(" ", trim(htmlspecialchars($_POST["ubicacion"] ?? "")));
 
 
 $id = trim(htmlspecialchars($_POST["idEquipo"] ?? ""));
-$fechaCreacion = date("d-m-Y");
-$horaCreacion = date("H:i");
 $idUbicacion = $ubicacion[1] ?? "";
 $tipoUbicacion = $ubicacion[0] ?? "";
 $posicion = trim(htmlspecialchars($_POST["posicion"])) ?? "";
@@ -99,19 +97,6 @@ if(!is_numeric($id) && strlen($id) > 6)  {
     exit();
 }
 
-if(strlen($fechaCreacion) !== 10) {
-    $mensaje = "La fecha no tiene el formato valido: (DD/MM/AAAA)";
-    header("Location: ../../../public/paginaWeb/tecnico/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-if(strlen($horaCreacion) !== 5) {
-    $mensaje = "La hora no tiene el formato valido: (HH:MM)";
-    header("Location: ../../../public/paginaWeb/tecnico/gestionInventarioTecnologico.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
     $_ENV['DB_PUERTO'], 
@@ -136,8 +121,6 @@ $AltaEquipo = new AltaEquipo($conexion);
 
 $resultado = $AltaEquipo->registrarEquipo(
     $id,
-    $fechaCreacion,
-    $horaCreacion,
     $idUbicacion,
     $tipoUbicacion,
     $posicion

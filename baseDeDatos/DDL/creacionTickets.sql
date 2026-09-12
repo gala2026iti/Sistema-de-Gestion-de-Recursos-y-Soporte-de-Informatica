@@ -1,6 +1,3 @@
-
-USE sgrsi;
-
 CREATE TABLE IF NOT EXISTS TICKET (
     id INT AUTO_INCREMENT NOT NULL,
     tipo VARCHAR(50) NOT NULL,
@@ -8,11 +5,12 @@ CREATE TABLE IF NOT EXISTS TICKET (
     descripcion VARCHAR(255) NOT NULL,
     gravedad VARCHAR(20) NOT NULL,
     estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
-    fechaCreacion CHAR(10) NOT NULL,
-    horaCreacion CHAR(5) NOT NULL,
+    fechaCreacion DATE NOT NULL DEFAULT (CURRENT_DATE),
+    horaCreacion TIME NOT NULL DEFAULT (CURRENT_TIME),
     justificacion VARCHAR(255) NULL,
     CONSTRAINT pk_ticket PRIMARY KEY (id)
 );
+
 CREATE TABLE IF NOT EXISTS COLABORADOR (
     idTicket INT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
@@ -42,7 +40,9 @@ CREATE TABLE IF NOT EXISTS equipo_ubicacion_genera_ticket (
     idUbicacion INT NOT NULL,
     tipoUbicacion VARCHAR(50) NOT NULL,
     idTicket INT NOT NULL,
-    CONSTRAINT pk_eugt PRIMARY KEY (idEquipo, idUbicacion, tipoUbicacion, idTicket),
+    CONSTRAINT pk_eugt PRIMARY KEY (
+        idEquipo, idUbicacion, tipoUbicacion, idTicket
+    ),
     CONSTRAINT fk_eugt_equipo FOREIGN KEY (idEquipo) 
         REFERENCES EQUIPO (id) 
         ON DELETE CASCADE ON UPDATE CASCADE,
@@ -58,15 +58,15 @@ CREATE TABLE IF NOT EXISTS tecnico_gestiona_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
     idTicket INT NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_tecnico_gestiona_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tgt_tecnico FOREIGN KEY (ciTecnico) 
         REFERENCES TECNICO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tgt_ticket FOREIGN KEY (idTicket) 
-        REFERENCES TICKET (id) 
+        REFERENCES TICKET (id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS tecnico_comenta_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
     idTicket INT NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     texto TEXT NOT NULL,
     CONSTRAINT pk_tecnico_comenta_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tct_tecnico FOREIGN KEY (ciTecnico) 

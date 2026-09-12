@@ -1,19 +1,20 @@
-USE sgrsi;
 CREATE TABLE IF NOT EXISTS PRESTAMO (
     id INT AUTO_INCREMENT NOT NULL,
     nombrePrestado VARCHAR(100) NOT NULL,
     ciPrestado CHAR(8) NOT NULL,
-    fechaFin CHAR(10) NOT NULL,
-    horaFin CHAR(5) NOT NULL,
+    fechaFin DATE NOT NULL,
+    horaFin TIME NOT NULL,
     devuelto BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pk_prestamo PRIMARY KEY (id)
+
 );
+
 CREATE TABLE IF NOT EXISTS tecnico_tramita_prestamo (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
     idPrestamo INT NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_tecnico_tramita_prestamo PRIMARY KEY (id),
     CONSTRAINT fk_ttp_tecnico FOREIGN KEY (ciTecnico) 
