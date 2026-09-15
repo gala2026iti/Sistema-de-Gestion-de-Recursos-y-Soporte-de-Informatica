@@ -61,24 +61,16 @@ if (
     exit();
 }
 
- $id = trim($_POST["id"] ?? "");
  $asunto = trim($_POST["asunto"] ?? "");
  $descripcion = trim($_POST["descripcion"] ?? "");
  $fechaLimite = trim($_POST["fechaLimite"] ?? "");
- $horaLimite = trim($_POST["horaLimite"] ?? "");
  $ciDocente = trim($_POST["ciDocente"] ?? "");
- $fecha = trim($_POST["fecha"] ?? "");
- $hora = trim($_POST["hora"] ?? "");
 
 if (
-    $id === "" ||
     $asunto === "" ||
     $descripcion === "" ||
     $fechaLimite === "" ||
     $horaLimite === "" ||
-    $ciDocente === "" ||
-    $fecha === "" ||
-    $hora === ""
 ) {
     $mensaje = "Existen campos vacíos.";
 
