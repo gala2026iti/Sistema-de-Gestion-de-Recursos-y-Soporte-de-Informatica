@@ -55,56 +55,75 @@ class CargarEquipos
         if ($paginaPrestamos) {
 
             $sql = "
-                SELECT
-                    e.id AS idEquipo
+SELECT
+    e.id AS idEquipo
+FROM EQUIPO AS e
 
-                FROM EQUIPO AS e
+INNER JOIN equipo_reside_ubicacion AS eru
+    ON e.id = eru.idEquipo
 
-                LEFT JOIN equipo_reside_ubicacion AS eru
-                    ON e.id = eru.idEquipo
+WHERE eru.tipoUbicacion = 'prestamo'
+  AND e.activo = TRUE
 
-                LEFT JOIN prestamo_corresponde_equipo AS pce
-                    ON e.id = pce.idEquipo
+  AND NOT EXISTS (
+      SELECT 1
+      FROM prestamo_corresponde_equipo AS pce
+      INNER JOIN PRESTAMO AS p
+          ON p.id = pce.idPrestamo
+      WHERE pce.idEquipo = e.id
+        AND p.devuelto = FALSE
+  )
 
-                WHERE eru.tipoUbicacion = 'prestamo'
-                  AND pce.idPrestamo IS NULL
+  AND NOT EXISTS (
+      SELECT 1
+      FROM equipo_ubicacion_genera_ticket AS eugt
+      INNER JOIN TICKET AS t
+          ON t.id = eugt.idTicket
+      WHERE eugt.idEquipo = e.id
+        AND t.estado != 'resuelto'
+  )
 
-                ORDER BY e.id ASC
+ORDER BY e.id ASC;
             ";
 
         } elseif ($paginaInventarioPrestamos) {
 
             $sql = "
-                SELECT
-                    e.id AS idEquipo,
-                    e.activo,
-                    p.id AS idPrestamo,
-                    p.nombrePrestado,
-                    p.ciPrestado,
-                    p.fechaFin,
-                    p.horaFin
+SELECT
+    e.id AS idEquipo,
+    e.activo,
+    ip.idPrestamo,
+    ip.nombrePrestado,
+    ip.ciPrestado,
+    ip.fechaFin,
+    ip.horaFin
 
-                FROM EQUIPO AS e
+FROM EQUIPO AS e
 
-                LEFT JOIN (
-                    SELECT
-                        pce.idEquipo,
-                        p.id,
-                        p.nombrePrestado,
-                        p.ciPrestado,
-                        p.fechaFin,
-                        p.horaFin
+INNER JOIN equipo_reside_ubicacion AS eru
+    ON eru.idEquipo = e.id
 
-                    FROM prestamo_corresponde_equipo AS pce
+LEFT JOIN (
+    SELECT
+        pce.idEquipo,
+        p.id AS idPrestamo,
+        p.nombrePrestado,
+        p.ciPrestado,
+        p.fechaFin,
+        p.horaFin
 
-                    INNER JOIN PRESTAMO AS p
-                        ON p.id = pce.idPrestamo
+    FROM prestamo_corresponde_equipo AS pce
 
-                    WHERE p.devuelto = FALSE
-                ) AS p
-                    ON p.idEquipo = e.id
+    INNER JOIN PRESTAMO AS p
+        ON p.id = pce.idPrestamo
 
-                ORDER BY e.id ASC
+    WHERE p.devuelto = FALSE
+) AS ip
+    ON ip.idEquipo = e.id
+
+WHERE eru.tipoUbicacion = 'prestamo'
+
+ORDER BY e.id ASC;
             ";
 
         } else {

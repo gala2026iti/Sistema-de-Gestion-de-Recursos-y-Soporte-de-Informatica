@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 
+<!-- TOFIX : AÑADIR PERMANENCIA DE FILTROS -->
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,7 +50,28 @@
   <main class="container-fluid px-0 py-3">
     <a href="../admin_tecnico/historialGeneral.php?tipo=prestamos" class="btn btn-primary mx-3">Historial de prestamos</a>
     <h2 class="centro mt-3 text-primary">Tabla de prestamos</h2>
-    <span class="centro mb-4">A continuacion se muestran los prestamos activos de equipos</span>
+    <span class="centro mb-4">A continuacion se muestran los prestamos de equipos ingresados al sistema</span>
+
+    <section class="filtros">
+            <form method="GET" action="tablaPrestamos.php">
+                <label for="estado">Filtrar por Estado:</label>
+
+                <select id="estado" name="estado">
+                    <option value=""> Todos </option>
+                    <option value="prestado" <?= ($estado === "prestado") ? "selected" : "" ?>> Prestado
+                    </option>
+                    <option value="devuelto" <?= ($estado === "devuelto") ? "selected" : "" ?>> Devuelto
+                    </option>
+                </select>
+
+                <label for="id">Filtrar por ID:</label>
+                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+
+                <button type="submit" class="btn btn-primary text-bold">
+                    Filtrar
+                </button>
+            </form>
+        </section>
 
 <?php if (isset($_GET["resultado"])): ?>
     <span class="alert alert-success d-table text-center mx-auto my-2">

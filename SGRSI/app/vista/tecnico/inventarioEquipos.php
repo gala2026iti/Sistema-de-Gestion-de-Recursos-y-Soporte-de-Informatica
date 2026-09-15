@@ -7,6 +7,8 @@
   <title>Inventario de Equipos - Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../../../public/assets/css/global.css">
+  <link rel="stylesheet" href="../../../public/assets/css/formulariospopup.css">
+
 </head>
 
 <body>
@@ -62,16 +64,26 @@
         <!-- ID del equipo, Estado del equipo (prestado o no, o si tiene incidencia), Prestamo (ID: id del prestamo, más a quien se le prestó), Opciones (botones para accion de registrar incidencia)  -->
         <tr>
           <td><?= $equipo["idEquipo"]; ?></td>
-          <td><?= $equipo["activo"] ? "Activo" : "Inactivo"; ?></td>
-          <td><?= isset($equipo["idPrestamo"]) ? $equipo["idPrestamo"] . " - " . ($equipo["nombrePrestado"] ?? "Usuario no encontrado") : "No prestado"; ?></td>
+          <td><?= $equipo["activo"] ? empty($equipo["idPrestamo"]) ? "Activo" : "Prestado" : "Inactivo"; ?></td>
+          <td><?= isset($equipo["idPrestamo"]) ? "ID: " . $equipo["idPrestamo"] . " - " . ($equipo["nombrePrestado"] . " - C.I: " . $equipo["ciPrestado"]  ?? "Usuario no encontrado") : "No prestado"; ?></td>
           <td>
-            <button class="btn btn-primary">Registrar Incidencia</button>
+            <?php if(!isset($equipo["idPrestamo"])): ?>
+            <button class="btn btn-warning m-3 text-bold" id="btnRegistrarIncidencia">Registrar Incidencia</button>
+            <?php else: ?>
+                    <form method="POST" action="../../../app/controlador/prestamos/procesarEstadoPrestamo.php" class="d-inline form-estado">
+                      <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                      <input type="hidden" name="id" value="<?= htmlspecialchars($equipo["idPrestamo"]) ?>">
+                      <button type="submit" class="btn btn-primary ms-1 text-bold ">
+                        Finalizar Préstamo
+                      </button>
+                    </form>            
+            <?php endif; ?>
           </td>
         </tr>
       <?php } ?>
         </tbody>
       </table>
-      <button class="btn btn-danger m-3" id="btnRegistrarIncidencia">Registrar Incidencia</button>
+
     </section>
   </main>
 

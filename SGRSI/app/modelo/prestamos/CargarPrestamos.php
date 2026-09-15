@@ -34,7 +34,8 @@ class CargarPrestamos
 
 public function listarPrestamos(string $estado, string $id): array
     {
-        $sql ="
+        $sql =
+        "
             SELECT
                 p.id,
                 p.nombrePrestado,
@@ -67,19 +68,19 @@ public function listarPrestamos(string $estado, string $id): array
                 ON t.idPrestamo = p.id
             
             LEFT JOIN USUARIO AS u
-                ON u.ci = t.ciTecnico;
+                ON u.ci = t.ciTecnico
         ";
 
         $condiciones = [];
         $parametros = [];
 
-        if($estado === "pendiente") {
+        if($estado === "prestado") {
             $condiciones[] = "p.devuelto = FALSE";
-        } elseif($estado === "devuelto") {
+        } else if($estado === "devuelto") {
             $condiciones[] = "p.devuelto = TRUE";        
             }
 
-        if(is_numeric($id) && $id > 0) {
+        if(!empty($id)) {
             $condiciones[] = "p.id = :id";
             $parametros["id"] = $id;
         }

@@ -2,6 +2,8 @@
 $estado = trim($_GET["estado"] ?? "");
 ?>
 
+<!-- TOFIX : AÑADIR PERMANENCIA DE FILTROS -->
+
 <!DOCTYPE html>
 <html lang="es">
 

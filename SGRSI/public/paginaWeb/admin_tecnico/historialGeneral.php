@@ -10,8 +10,8 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (/*realizar verificacion de si es admin o tecnico en base a lo que se pdida en la url*/ false){
-    header("Location: ../../index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado"
+if (/* TOFIX : realizar verificacion de si es admin o tecnico en base a lo que se pdida en la url*/ false){
+    header("Location: ../index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado"
 );
     exit();
 }
