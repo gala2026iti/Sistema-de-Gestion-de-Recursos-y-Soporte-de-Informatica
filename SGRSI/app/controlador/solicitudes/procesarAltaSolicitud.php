@@ -1,5 +1,6 @@
 <?php
-
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * @file procesarAltaSolicitud.php
  *
@@ -35,7 +36,7 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["administrador"] ?? false)) {
+if (!($_SESSION["docente"] ?? false)) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
@@ -63,14 +64,29 @@ if (
 
  $asunto = trim($_POST["asunto"] ?? "");
  $descripcion = trim($_POST["descripcion"] ?? "");
- $fechaLimite = trim($_POST["fechaLimite"] ?? "");
- $ciDocente = trim($_POST["ciDocente"] ?? "");
+ $fechaLimite = trim($_POST["fecha"] ?? "");
+
+ $fecha = DateTime::createFromFormat('Y-m-d\TH:i', $fechaLimite);
+
+$fechaFin = $fecha->format('Y/m/d');
+$horaFin = $fecha->format('H:i');
+
+$ahora = new DateTime();
+
+if ($fecha <= $ahora) {
+    $mensaje = "La fecha y hora deben ser posteriores al momento actual.";
+    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    exit();
+}
+
+
+ $ciDocente = trim($_SESSION["ci"] ?? "");
 
 if (
     $asunto === "" ||
     $descripcion === "" ||
-    $fechaLimite === "" ||
-    $horaLimite === "" ||
+    $fechaFin === "" ||
+    $horaFin === ""
 ) {
     $mensaje = "Existen campos vacíos.";
 
@@ -101,13 +117,7 @@ if (strlen($descripcion) < 10 || strlen($descripcion) > 200) {
     exit();
 }
 
-if (strlen($fecha) !== 10) {
-    $mensaje = "La fecha no tiene el formato valido: (DD/MM/AAAA<L)";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-$fechaIngresada = DateTime::createFromFormat('d/m/Y H:i', $fecha . ' ' . $hora);
+$fechaIngresada = DateTime::createFromFormat('d/m/Y H:i', $fechaFin . ' ' . $horaFin);
 
 if (!$fechaIngresada) {
     $mensaje = "La fecha u hora ingresadas no son válidas.";
@@ -131,18 +141,6 @@ if($ciDocente < 10000000 || $ciDocente > 99999999) {
 
 if($ciDocente === "") {
     $mensaje = "La cédula del docente es requerida.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-if(strlen($fecha ) !== 10) {
-    $mensaje = "La fecha no tiene el formato valido: (DD/MM/AAAA)";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-if(strlen($hora ) !== 5) {
-    $mensaje = "La hora no tiene el formato valido: (HH:MM)";
     header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
     exit();
 }

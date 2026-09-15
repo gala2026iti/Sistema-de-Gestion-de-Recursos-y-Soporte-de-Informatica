@@ -50,7 +50,7 @@
 <?php endif; ?>
 
     <section class="Tarjeta-login card p-4 shadow border-0 w-100">
-      <form action="../../../app/controlador/procesarAltaSolicitud.php" method="post" id="formSolicitud">
+      <form action="../../../app/controlador/solicitudes/procesarAltaSolicitud.php" method="post" id="formSolicitud">
         <fieldset class="border-0 p-0 m-0">
 
           <div class="mb-3 text-start">
@@ -66,6 +66,8 @@
           <div class="mb-4 text-start">
             <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha y Hora solicitada:</label>
             <input type="datetime-local" name="fecha" id="fecha" class="form-control form-control-lg" required>
+            <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+            
           </div>
 
         </fieldset>
