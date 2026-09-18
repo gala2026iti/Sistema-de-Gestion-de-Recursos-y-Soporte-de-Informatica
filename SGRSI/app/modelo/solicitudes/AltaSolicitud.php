@@ -41,7 +41,6 @@ class AltaSolicitud
      *              false si ocurrió un error.
      */
     public function registrarSolicitud(
-        string $id,
         string $asunto,
         string $descripcion,
         string $fechaLimite,
@@ -52,8 +51,8 @@ class AltaSolicitud
             $this->conexion->beginTransaction();
 
             $sqlSolicitud = "
-                INSERT INTO SOLICITUD (id, asunto, descripcion, fecha_limite, hora_limite)
-                VALUES (:idSolicitud, :asunto, :descripcion, :fechaLimite, :horaLimite)
+                INSERT INTO SOLICITUD (asunto, descripcion, fechaLimite, horaLimite)
+                VALUES (:asunto, :descripcion, :fechaLimite, :horaLimite)
             ";
 
             $sqlDocente = "
@@ -63,12 +62,13 @@ class AltaSolicitud
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
             $consultaSolicitud->execute([
-                "idSolicitud" => $id,
                 "asunto" => $asunto,
                 "descripcion" => $descripcion,
                 "fechaLimite" => $fechaLimite,
                 "horaLimite" => $horaLimite
             ]);
+
+            $id = $this->conexion->lastInsertId();
 
             $consultaDocente = $this->conexion->prepare($sqlDocente);
             $consultaDocente->execute([
@@ -80,6 +80,8 @@ class AltaSolicitud
             return true;
 
         } catch (PDOException $error) {
+            var_dump($error->getMessage());
+            exit;
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }

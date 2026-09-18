@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,6 +80,7 @@
       <table id="tablaEquipos">
         <thead>
           <tr>
+            <th>ID</th>
             <th>Asunto</th>
             <th>Tipo</th>
             <th>Gravedad</th>
@@ -90,6 +90,24 @@
           </tr>
         </thead>
         <tbody>
+          <?php foreach ($tickets as $ticket) : ?>
+            <tr>
+            <td><?= $ticket["id"] ?></td>
+            <td><?= $ticket["asunto"] ?></td>
+            <td><?= $ticket["tipo"] ?></td>
+            <td><?= $ticket["gravedad"] ?></td>
+            <td><?= $ticket["estado"] ?></td>
+            <td><?= $ticket["fechaCreacion"] . " - " . $ticket["horaCreacion"]  ?></td>
+            <td>
+              <?php if($ticket["esColaborador"]): ?>
+                  <button class="btn btn-danger"> Desasignarse </button>
+                <?php else: ?>
+                  <button class="btn btn-success"> Asignarse </button>
+                <?php endif; ?>
+            </td>
+          </tr>
+
+          <?php endforeach; ?>
           </tbody>
       </table>
     </section>

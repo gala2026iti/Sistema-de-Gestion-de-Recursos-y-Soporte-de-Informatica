@@ -1,5 +1,8 @@
 /*
 
+EN ESTA NUEVA VERSIÓN DE LA BD SE MODIFICAN LAS DEPENDENCIAS DE LOS ROLES, CON EL OBJETIVO DE QUE:
+SI SE ELIMINA UN USUARIO DE X ROL, NO SE BORREN LOS REGISTROS QUE HIZO EL USUARIO CUANDO ESTE ERA ESE ROL
+
 ESTE ARCHIVO ES LA RECOPILACIÓN DE:
 - CREACION DE BD
 - CREACION DE TABLAS
@@ -48,7 +51,7 @@ CREATE TABLE IF NOT EXISTS CORREO (
 CREATE TABLE IF NOT EXISTS DOCENTE (
     ci CHAR(8) NOT NULL,
     CONSTRAINT pk_docente PRIMARY KEY (ci),
-      CONSTRAINT fk_docente_usuario FOREIGN KEY (ci) 
+    CONSTRAINT fk_docente_usuario FOREIGN KEY (ci) 
         REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -63,8 +66,8 @@ CREATE TABLE IF NOT EXISTS ADMINISTRADOR(
 
 CREATE TABLE IF NOT EXISTS TECNICO(
     ci CHAR(8),
-    CONSTRAINT  pk_tecnico PRIMARY KEY (ci),
-     CONSTRAINT fk_tecnico_usuario FOREIGN KEY (ci) 
+    CONSTRAINT pk_tecnico PRIMARY KEY (ci),
+    CONSTRAINT fk_tecnico_usuario FOREIGN KEY (ci) 
         REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -78,7 +81,7 @@ CREATE TABLE IF NOT EXISTS administrador_modifica_usuario (
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_modifica_usuario PRIMARY KEY (id),
     CONSTRAINT fk_amu_admin FOREIGN KEY (ciAdministrador) 
-        REFERENCES ADMINISTRADOR (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_amu_usuario FOREIGN KEY (ciUsuario) 
         REFERENCES USUARIO (ci) 
@@ -104,12 +107,13 @@ CREATE TABLE IF NOT EXISTS docente_ingresa_solicitud (
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     CONSTRAINT pk_docente_ingresa_solicitud PRIMARY KEY (ciDocente, idSolicitud),
     CONSTRAINT fk_dis_docente FOREIGN KEY (ciDocente) 
-        REFERENCES DOCENTE (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_dis_solicitud FOREIGN KEY (idSolicitud) 
         REFERENCES SOLICITUD (id) 
         ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS tecnico_finaliza_solicitud (
     ciTecnico VARCHAR(8) NOT NULL,
     idSolicitud INT NOT NULL,
@@ -117,7 +121,7 @@ CREATE TABLE IF NOT EXISTS tecnico_finaliza_solicitud (
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     CONSTRAINT pk_tecnico_finaliza_solicitud PRIMARY KEY (ciTecnico, idSolicitud),
     CONSTRAINT fk_tfs_tecnico FOREIGN KEY (ciTecnico) 
-        REFERENCES TECNICO (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tfs_solicitud FOREIGN KEY (idSolicitud) 
         REFERENCES SOLICITUD (id) 
@@ -169,7 +173,7 @@ CREATE TABLE IF NOT EXISTS administrador_maneja_equipo (
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_maneja_equipo PRIMARY KEY (id),
     CONSTRAINT fk_ame_admin FOREIGN KEY (ciAdministrador) 
-        REFERENCES ADMINISTRADOR (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_ame_equipo FOREIGN KEY (idEquipo) 
         REFERENCES EQUIPO (id) 
@@ -186,7 +190,7 @@ CREATE TABLE IF NOT EXISTS administrador_controla_ubicacion (
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_controla_ubicacion PRIMARY KEY (id),
     CONSTRAINT fk_acu_admin FOREIGN KEY (ciAdministrador) 
-        REFERENCES ADMINISTRADOR (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_acu_ubicacion FOREIGN KEY (idUbicacion, tipoUbicacion) 
         REFERENCES UBICACION (id, tipo) 
@@ -203,7 +207,6 @@ CREATE TABLE IF NOT EXISTS PRESTAMO (
     horaFin TIME NOT NULL,
     devuelto BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pk_prestamo PRIMARY KEY (id)
-
 );
 
 CREATE TABLE IF NOT EXISTS tecnico_tramita_prestamo (
@@ -215,13 +218,12 @@ CREATE TABLE IF NOT EXISTS tecnico_tramita_prestamo (
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_tecnico_tramita_prestamo PRIMARY KEY (id),
     CONSTRAINT fk_ttp_tecnico FOREIGN KEY (ciTecnico) 
-        REFERENCES TECNICO (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_ttp_prestamo FOREIGN KEY (idPrestamo) 
         REFERENCES PRESTAMO (id) 
         ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 
 CREATE TABLE IF NOT EXISTS prestamo_corresponde_equipo (
     idPrestamo INT NOT NULL,
@@ -270,7 +272,7 @@ CREATE TABLE IF NOT EXISTS docente_reporta_ticket (
     incidencia BOOLEAN NOT NULL,
     CONSTRAINT pk_docente_reporta_ticket PRIMARY KEY (ciDocente, idTicket),
     CONSTRAINT fk_drt_docente FOREIGN KEY (ciDocente) 
-        REFERENCES DOCENTE (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_drt_ticket FOREIGN KEY (idTicket) 
         REFERENCES TICKET (id) 
@@ -305,7 +307,7 @@ CREATE TABLE IF NOT EXISTS tecnico_gestiona_ticket (
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_tecnico_gestiona_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tgt_tecnico FOREIGN KEY (ciTecnico) 
-        REFERENCES TECNICO (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tgt_ticket FOREIGN KEY (idTicket) 
         REFERENCES TICKET (id)
@@ -321,10 +323,10 @@ CREATE TABLE IF NOT EXISTS tecnico_comenta_ticket (
     texto TEXT NOT NULL,
     CONSTRAINT pk_tecnico_comenta_ticket PRIMARY KEY (id),
     CONSTRAINT fk_tct_tecnico FOREIGN KEY (ciTecnico) 
-        REFERENCES TECNICO (ci) 
+        REFERENCES USUARIO (ci) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tct_ticket FOREIGN KEY (idTicket) 
-        REFERENCES TICKET (id) 
+        REFERENCES TICKET (id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -430,13 +432,14 @@ INSERT INTO TICKET
 (5, 'software', 'Navegador desactualizado', 'El navegador instalado no permite acceder correctamente a algunas plataformas.', 'ligera', 'resuelto', 'Se actualizo el navegador a la version disponible.'),
 (6, 'red', 'Conexion inestable', 'La conexion de red presenta cortes durante las clases.', 'media', 'en proceso', NULL);
 
-INSERT INTO docente_reporta_ticket (ciDocente, idTicket) VALUES
-('22222222', 1),
-('22222222', 2),
-('88888888', 3),
-('66666666', 4),
-('88888888', 5),
-('22222222', 6);
+INSERT INTO docente_reporta_ticket
+(ciDocente, idTicket, incidencia) VALUES
+('22222222', 1, TRUE),
+('22222222', 2, FALSE),
+('88888888', 3, TRUE),
+('66666666', 4, FALSE),
+('88888888', 5, FALSE),
+('22222222', 6, TRUE);
 
 INSERT INTO equipo_ubicacion_genera_ticket
 (idEquipo, idUbicacion, tipoUbicacion, idTicket) VALUES

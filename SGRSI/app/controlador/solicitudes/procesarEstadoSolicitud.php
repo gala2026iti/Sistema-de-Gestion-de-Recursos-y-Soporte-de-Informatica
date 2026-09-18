@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -58,7 +58,7 @@ if (
     $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -70,7 +70,7 @@ if ($id === "") {
     $mensaje = "No se recibieron los datos necesarios.";
 
     header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -90,7 +90,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();

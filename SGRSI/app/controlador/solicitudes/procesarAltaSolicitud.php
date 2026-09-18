@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -40,7 +40,7 @@ if (!($_SESSION["docente"] ?? false)) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
-        "Location: ../../public/paginaWeb/index.php?error="
+        "Location: ../index.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -56,17 +56,18 @@ if (
     $mensaje = "Solicitud rechazada: token de seguridad inválido.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
- $asunto = trim($_POST["asunto"] ?? "");
- $descripcion = trim($_POST["descripcion"] ?? "");
- $fechaLimite = trim($_POST["fecha"] ?? "");
+ $asunto = htmlspecialchars(trim($_POST["asunto"] ?? ""));
+ $descripcion = htmlspecialchars(trim($_POST["descripcion"] ?? ""));
+ $fechaLimite = htmlspecialchars(trim($_POST["fecha"] ?? ""));
+ $ciDocente = htmlspecialchars(trim($_SESSION["cedula"] ?? ""));
 
- $fecha = DateTime::createFromFormat('Y-m-d\TH:i', $fechaLimite);
+$fecha = DateTime::createFromFormat('Y-m-d\TH:i', $fechaLimite);
 
 $fechaFin = $fecha->format('Y/m/d');
 $horaFin = $fecha->format('H:i');
@@ -75,12 +76,9 @@ $ahora = new DateTime();
 
 if ($fecha <= $ahora) {
     $mensaje = "La fecha y hora deben ser posteriores al momento actual.";
-    header("Location: ../../public/paginaWeb/tecnico/tablaPrestamos.php?error=" . urlencode($mensaje));
+    header("Location: ../../public/paginaWeb/docente/pagsolicitudes.php?error=" . urlencode($mensaje));
     exit();
 }
-
-
- $ciDocente = trim($_SESSION["ci"] ?? "");
 
 if (
     $asunto === "" ||
@@ -91,7 +89,7 @@ if (
     $mensaje = "Existen campos vacíos.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -101,7 +99,7 @@ if (strlen($asunto) < 10 || strlen($asunto) > 30) {
     $mensaje = "El asunto debe tener entre 10 y 30 caracteres.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -111,17 +109,17 @@ if (strlen($descripcion) < 10 || strlen($descripcion) > 200) {
     $mensaje = "La descripción debe tener entre 10 y 200 caracteres.";
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$fechaIngresada = DateTime::createFromFormat('d/m/Y H:i', $fechaFin . ' ' . $horaFin);
+$fechaIngresada = DateTime::createFromFormat('Y/m/d H:i', $fechaFin . ' ' . $horaFin);
 
 if (!$fechaIngresada) {
     $mensaje = "La fecha u hora ingresadas no son válidas.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error=" . urlencode($mensaje));
     exit();
 }
 
@@ -129,19 +127,13 @@ $ahora = new DateTime();
 
 if ($fechaIngresada <= $ahora) {
     $mensaje = "La fecha y hora deben ser posteriores al momento actual.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error=" . urlencode($mensaje));
     exit();
 }
 
-if($ciDocente < 10000000 || $ciDocente > 99999999) {
+if(!strlen($ciDocente) === 8 || !is_numeric($ciDocente)) {
     $mensaje = "La cédula del docente debe tener 8 dígitos.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
-    exit();
-}
-
-if($ciDocente === "") {
-    $mensaje = "La cédula del docente es requerida.";
-    header("Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error=" . urlencode($mensaje));
+    header("Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error=" . urlencode($mensaje));
     exit();
 }
 
@@ -159,7 +151,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -168,14 +160,11 @@ if ($conexion === null) {
 $AltaSolicitud = new AltaSolicitud($conexion);
 
 $resultado = $AltaSolicitud->registrarSolicitud(
-    $id,
     $asunto,
     $descripcion,
-    $fechaLimite,
-    $horaLimite,
-    $ciDocente,
-    $fecha,
-    $hora
+    $fechaFin,
+    $horaFin,
+    $ciDocente
 );
 
 $conectorPDO->desconectar();
@@ -185,7 +174,7 @@ if (!$resultado) {
 
 
     header(
-        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -194,7 +183,7 @@ if (!$resultado) {
 $mensaje = "Solicitud registrada correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?resultado="
+    "Location: ../../../public/paginaWeb/docente/pagsolicitudes.php?resultado="
     . urlencode($mensaje)
 );
 

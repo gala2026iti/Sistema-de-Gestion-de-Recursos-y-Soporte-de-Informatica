@@ -113,9 +113,11 @@ class ModificarDatosUsuario
         } catch (PDOException $error) {
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
+
+                var_dump($error->getMessage());
+                exit;
             }
 
-            error_log("Error en modificarUsuario: " . $error->getMessage());
             return false;
         }
     }

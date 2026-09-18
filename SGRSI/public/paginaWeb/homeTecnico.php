@@ -45,4 +45,4 @@ if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
  * Si las comprobaciones son correctas,
  * cargamos la vista del panel.
  */
-require_once __DIR__ . "/../../app/vista/homeTecnico.php";
+require_once __DIR__ . "/../../app/controlador/tickets/procesarCargarTickets.php";

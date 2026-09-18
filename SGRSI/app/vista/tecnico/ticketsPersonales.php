@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-
+  <?php var_dump($tickets);?>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,6 +57,11 @@
             </tr>
           </thead>
           <tbody>
+          <?php foreach ($tickets as $ticket): ?>
+            <?php if($ticket["estado"] === "pendiente"): ?>
+              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+            <?php endif; ?>
+          <?php endforeach; ?>  
             </tbody>
         </table>
 
@@ -67,6 +72,11 @@
             </tr>
           </thead>
           <tbody>
+          <?php foreach ($tickets as $ticket): ?>
+            <?php if($ticket["estado"] === "en proceso"): ?>
+              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+            <?php endif; ?>
+          <?php endforeach; ?>  
             </tbody>
         </table>
 
@@ -77,6 +87,11 @@
             </tr>
           </thead>
           <tbody>
+          <?php foreach ($tickets as $ticket): ?>
+            <?php if($ticket["estado"] === "resuelto"): ?>
+              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+            <?php endif; ?>
+          <?php endforeach; ?>  
             </tbody>
         </table>
 
@@ -91,7 +106,6 @@
   <script src="../../../public/assets/js/cerrarSesion.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/assets/js/verificarSesion.js"></script>
-  <script src="../../../public/assets/js/ticketsPersonales.js"></script>
 
 </body>
  
