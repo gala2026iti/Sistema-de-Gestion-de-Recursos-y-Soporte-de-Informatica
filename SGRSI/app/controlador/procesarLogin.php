@@ -77,6 +77,7 @@ $_SESSION["cedula"] = $usuario->getCedula();
 $_SESSION["administrador"] = $usuario->esAdministrador();
 $_SESSION["tecnico"] = $usuario->esTecnico();
 $_SESSION["docente"] = $usuario->esDocente();
+$_SESSION["rolActual"] = $_SESSION["administrador"] ? "administrador" : ($_SESSION["tecnico"] ? "tecnico" : "docente");
 
 /*
  * Si posee varios roles, se utiliza el primero

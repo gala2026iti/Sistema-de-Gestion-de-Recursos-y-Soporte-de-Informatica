@@ -104,18 +104,25 @@ class CargarTickets
 
         $ticketsRegistrados = false;
         $ticketsPersonales = false;
+        $detalleTicket = false;
+
 
         foreach ($urlDividida as $seccion) {
             if ($seccion === "homeTecnico.php") {
                 $ticketsRegistrados = true;
+                break;
             } elseif ($seccion === "ticketsPersonales.php") {
                 $ticketsPersonales = true;
+                break;
+            } elseif ($seccion === "detalleTicket.php") {
+                $detalleTicket = true;
+                break;
             }
         }
-        return [$ticketsRegistrados, $ticketsPersonales];
+        return [$ticketsRegistrados, $ticketsPersonales, $detalleTicket];
     }
 
-    public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = "", string $ciTecnico = ""): array
+    public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = "", string $ciTecnico = "", string $idTicket): array
     {
         $resultadoURL = $this->obtenerURL();
 
@@ -167,6 +174,11 @@ class CargarTickets
                 $parametros["gravedad"] = "grave";
             }
 
+            if(!empty($idTicket)){
+                $condiciones[] = "t.id = :idTicket";
+                $parametros["idTicket"] = $idTicket;
+            }
+
             if ($clasificacion === "hardware") {
                 $condiciones[] = "t.clasificacion = :clasificacion";
                 $parametros["clasificacion"] = "hardware";
@@ -177,6 +189,7 @@ class CargarTickets
                 $condiciones[] = "t.clasificacion = :clasificacion";
                 $parametros["clasificacion"] = "red";
             }
+
         } else if ($ticketsPersonales) {
                     $sql = "
         SELECT 

@@ -51,29 +51,17 @@ class AltaSolicitud
             $this->conexion->beginTransaction();
 
             $sqlSolicitud = "
-                INSERT INTO SOLICITUD (asunto, descripcion, fechaLimite, horaLimite)
-                VALUES (:asunto, :descripcion, :fechaLimite, :horaLimite)
-            ";
-
-            $sqlDocente = "
-                INSERT INTO docente_ingresa_solicitud (ciDocente, idSolicitud)
-                VALUES (:ciDocente, :idSolicitud)
+                INSERT INTO SOLICITUD (ciDocente, asunto, descripcion, fechaLimite, horaLimite)
+                VALUES (:ciDocente, :asunto, :descripcion, :fechaLimite, :horaLimite)
             ";
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
             $consultaSolicitud->execute([
+                "ciDocente" => $ciDocente,
                 "asunto" => $asunto,
                 "descripcion" => $descripcion,
                 "fechaLimite" => $fechaLimite,
                 "horaLimite" => $horaLimite
-            ]);
-
-            $id = $this->conexion->lastInsertId();
-
-            $consultaDocente = $this->conexion->prepare($sqlDocente);
-            $consultaDocente->execute([
-                "ciDocente" => $ciDocente,
-                "idSolicitud" => $id
             ]);
 
             $this->conexion->commit();

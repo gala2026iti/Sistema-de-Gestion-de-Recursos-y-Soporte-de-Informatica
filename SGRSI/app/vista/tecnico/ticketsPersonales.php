@@ -59,7 +59,7 @@
           <tbody>
           <?php foreach ($tickets as $ticket): ?>
             <?php if($ticket["estado"] === "pendiente"): ?>
-              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+              <tr><td class="ticket-marcado"><a href="detalleTicket.php?id=<?=$ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
             <?php endif; ?>
           <?php endforeach; ?>  
             </tbody>
@@ -74,7 +74,7 @@
           <tbody>
           <?php foreach ($tickets as $ticket): ?>
             <?php if($ticket["estado"] === "en proceso"): ?>
-              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+              <tr><td class="ticket-marcado"><a href="detalleTicket.php?id=<?=$ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
             <?php endif; ?>
           <?php endforeach; ?>  
             </tbody>
@@ -89,7 +89,7 @@
           <tbody>
           <?php foreach ($tickets as $ticket): ?>
             <?php if($ticket["estado"] === "resuelto"): ?>
-              <tr><td class="ticket-marcado"><a href="../admin_tecnico/historialGeneral.php?tipo=tickets&id=<?= $ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
+              <tr><td class="ticket-marcado"><a href="detalleTicket.php?id=<?=$ticket["id"] ?>" class="text-decoration-none text-dark d-block w-100 h-100 py-2"><?=$ticket["asunto"]?></a></td></tr>
             <?php endif; ?>
           <?php endforeach; ?>  
             </tbody>

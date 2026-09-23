@@ -43,16 +43,13 @@ public function listarSolicitudes(string $estado = "", string $id = ""): array
             s.fechaLimite,
             s.horaLimite,
             s.finalizada,
-            dis.ciDocente,
+            s.ciDocente,
             u.nombre
 
             FROM SOLICITUD AS s
 
-            INNER JOIN docente_ingresa_solicitud AS dis
-            ON dis.idSolicitud = s.id
-
             INNER JOIN USUARIO AS u
-            ON u.ci = dis.ciDocente
+            ON u.ci = s.ciDocente
         ";
 
         $condiciones = [];

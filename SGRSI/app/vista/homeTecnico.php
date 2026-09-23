@@ -31,14 +31,10 @@
                         <li><a href="tecnico/ticketsPersonales.php">Tickets asignados</a></li>
                     </ul>
                 </li>
-                <li class="desplegable">
-                    <a href="#">Gestion de prestamos 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
-                        <li><a href="tecnico/inventarioEquipos.php">Inventario de equipos</a></li>
-                    </ul>
-                </li>
-                <li><a href="tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
+                <li><a href="tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
+                <li><a href="tecnico/gestionSolicitudes.php?modo=inventarioEquiposTecnico">Gestion de solicitudes</a></li>
+                <li><a href="admin_tecnico/gestionInventarioTecnologico.php?modo=inventarioTecnico">Inventario de equipos</a></li>
+
             </ul>
         </section>
     </nav>

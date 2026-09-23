@@ -23,5 +23,5 @@ SE EVITABA QUE EL ARCHIVO ALOJADO EN PUBLIC PREPARE LOS DATOS ANTES DE MOSTRAR L
 require_once __DIR__ . "/../../../app/controlador/recursos/procesarCargarEquipos.php";
 require_once __DIR__ . "/../../../app/controlador/recursos/procesarCargarUbicaciones.php";
 
-require_once __DIR__ . "/../../../app/vista/administracion/gestionInventarioTecnologico.php";
+require_once __DIR__ . "/../../../app/vista/admin_tecnico/gestionInventarioTecnologico.php";
 ?>
