@@ -21,9 +21,18 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-            <ul class="nav-menu">
-                    <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-            </ul>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="docente">
+                        <a href="#">Docente 🡻</a>
+                        <ul class="desplegable-menu">
+                            <li><a href="#" class="cambiar-rol" data-rol="tecnico">Cambiar a Técnico</a></li>
+                            <li><a href="#" class="cambiar-rol" data-rol="administrador">Cambiar a Administrador</a>
+                            </li>
+                            <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar
+                                    Sesion</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </section>
             <ul class="nav-menu">
                 <li><a href="docente/pagsolicitudes.php" id="btnServicios">Solicitud de servicios</a></li>
@@ -54,9 +63,8 @@
             </form>
         </section>
 
-        <div id="incidencia" class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
-
-            <form class="from modal-contenido w-100 p-4 bg-white">
+        <dialog id="incidencia" class="modal-contenido rounded shadow p-4">
+            <form class="from">
 
                 <h3 id="titulo" class="h5 fw-bold texto-azul mb-3">Registro de incidencia</h3>
 
@@ -72,7 +80,8 @@
                     <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
                     <input type="text" id="asunto" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa">
 
-                    <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso de la PC</label>
+                    <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso
+                        de la PC</label>
                     <input type="text" id="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez">
 
                     <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la incidencia</label>
@@ -92,7 +101,8 @@
                     </div>
 
                     <label for="descripcion" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-                    <textarea id="descripcion" name="descripcion02" class="form-control mb-3" placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
+                    <textarea id="descripcion" name="descripcion02" class="form-control mb-3"
+                        placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
@@ -101,7 +111,7 @@
                 </div>
 
             </form>
-        </div>
+        </dialog>
     </main>
 
     <footer>

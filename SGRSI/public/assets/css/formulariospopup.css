@@ -17,6 +17,11 @@
     background: transparent;
     border: 0;
 }
+
+.oculto {
+    display: none !important;
+}
+
 @media (max-width: 576px) {
 
     .modal-contenido {

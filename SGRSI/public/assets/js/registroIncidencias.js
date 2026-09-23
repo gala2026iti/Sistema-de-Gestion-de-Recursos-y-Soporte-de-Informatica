@@ -86,7 +86,7 @@ const renderizarEquiposDelSalon = (valorSeleccionado) => {
 
         const nombrePC = document.createElement("h4")
         nombrePC.className = "h5 mb-0 fw-bold text-secondary"
-        nombrePC.innerText = `PC: ${indice+1} (ID: ${pcId})`
+        nombrePC.innerText = `PC: ${indice + 1} (ID: ${pcId})`
 
 
         headerDiv.appendChild(nombrePC)
@@ -179,8 +179,7 @@ const abrirFormularioModal = (pcId) => {
         })
     }
 
-    campoIncidencia.classList.remove("oculto") //Clase propia encargada de esconder ventanas
-    campoIncidencia.classList.add("d-flex")
+    campoIncidencia.showModal()
 }
 
 const buscarNombre = (cedulaUsuario) => {
@@ -197,7 +196,7 @@ const obtenerFecha = (dato) => {
     const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
     const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
-    if(dato === "fecha"){
+    if (dato === "fecha") {
         return formatoFecha
     } else {
         return formatoHora
@@ -205,8 +204,7 @@ const obtenerFecha = (dato) => {
 }
 
 const cerrarFormularioModal = () => {
-    campoIncidencia.classList.remove("d-flex")
-    campoIncidencia.classList.add("oculto")
+    campoIncidencia.close()
     pcActualId = null
 }
 
@@ -236,16 +234,16 @@ btnAceptar.addEventListener("click", () => {
     const gravedadRadio = campoIncidencia.querySelector('input[name="gravedad"]:checked')
 
     if (!validarIncidencia(tipo, asunto, persona, descripcion, gravedadRadio)) {
-    return
-    }   
+        return
+    }
 
-            incidenciasTemporales[pcActualId] = {
-            tipo: tipo,
-            asunto: asunto,
-            persona: persona,
-            gravedad: gravedadRadio.value,
-            descripcion: descripcion
-        }
+    incidenciasTemporales[pcActualId] = {
+        tipo: tipo,
+        asunto: asunto,
+        persona: persona,
+        gravedad: gravedadRadio.value,
+        descripcion: descripcion
+    }
 
     cerrarFormularioModal()
 })
@@ -253,7 +251,7 @@ btnAceptar.addEventListener("click", () => {
 const validarTexto = (texto) => {
     // Permite letras, números, espacios y algunos signos comunes
     const expresion = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s.,()-]+$/
-return expresion.test(texto)
+    return expresion.test(texto)
 }
 const validarPersona = (nombre) => {
     // La persona debería ser un nombre, no números ni símbolos
@@ -318,7 +316,7 @@ formularioSalon.addEventListener("submit", (e) => {
         const confirmacion = confirm("¿Está seguro de enviar los datos de las incidencias del salón al sistema?")
         if (confirmacion) {
 
-            const llavesIncidencias = Object.keys(incidenciasTemporales) 
+            const llavesIncidencias = Object.keys(incidenciasTemporales)
 
             if (llavesIncidencias.length > 0) {
                 const datosTickets = localStorage.getItem("tickets")
@@ -334,9 +332,9 @@ formularioSalon.addEventListener("submit", (e) => {
                     docenteId = uObj.usuario
                 }
 
-const fechaActual = new Date()
-    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
-    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+                const fechaActual = new Date()
+                const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
+                const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
 
                 const textoSalon = selectSalon.options[selectSalon.selectedIndex].text
 
