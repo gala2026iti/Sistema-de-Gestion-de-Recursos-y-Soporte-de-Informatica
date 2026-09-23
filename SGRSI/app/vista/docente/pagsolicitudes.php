@@ -19,18 +19,16 @@
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-<!-- TOFIX: No funciona la opcion para cerrar sesión-->
-      <ul class="nav-menu">
-            <li class="desplegable">
-              <a href="Prueba"></a>
-              <ul class="desplegable-menu">
-                        <li><a href="#">Cambiar a Docente</a></li>
-                        <li><a href="#">Cambiar a Tecnico</a></li>
-                        <li><a href="#">Cambiar a Administrador</a></li>
-                        <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-                    </ul>
-            </li>
-      </ul>
+        <ul class="nav-opciones-sistema">
+          <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="docente">
+            <a href="#">Docente 🡻</a>
+            <ul class="desplegable-menu">
+              <li><a href="#" class="cambiar-rol" data-rol="tecnico">Cambiar a Técnico</a></li>
+              <li><a href="#" class="cambiar-rol" data-rol="administrador">Cambiar a Administrador</a></li>
+              <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
+          </li>
+        </ul>
       </section>
       <ul class="nav-menu">
         <li><a href="../homeDocente.php" id="btnIncidencias">Registro de incidencias</a></li>

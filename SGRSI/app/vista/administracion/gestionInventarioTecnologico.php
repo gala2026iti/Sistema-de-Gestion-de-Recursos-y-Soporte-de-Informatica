@@ -30,8 +30,15 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-menu">
-                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="administrador">
+                        <a href="#">Administrador 🡻</a>
+                        <ul class="desplegable-menu">
+                            <li><a href="#" class="cambiar-rol" data-rol="docente">Cambiar a Docente</a></li>
+                            <li><a href="#" class="cambiar-rol" data-rol="tecnico">Cambiar a Técnico</a></li>
+                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
             <ul class="nav-menu">

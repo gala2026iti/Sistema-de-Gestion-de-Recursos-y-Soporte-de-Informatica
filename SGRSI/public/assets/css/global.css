@@ -122,6 +122,11 @@ select {
     display: block;
 }
 
+.desplegable-derecha .desplegable-menu {
+    left: auto;
+    right: 0;
+}
+
 .desplegable-padding:hover .desplegable-menu{
     display: block;
 }
@@ -129,6 +134,7 @@ select {
 .desplegable-menu li a {
     display: block;
     color: var(--amarillo-iti);
+    background-color: transparent;
     text-decoration: none;
     transition: 0.2s;
 }
@@ -362,6 +368,14 @@ textarea {
 
     .desplegable-padding {
         padding: 0;
+    }
+
+    #menuUsuario .desplegable-menu {
+        display: none;
+    }
+
+    #menuUsuario.desplegable-abierto .desplegable-menu {
+        display: flex;
     }
 
     form th,
