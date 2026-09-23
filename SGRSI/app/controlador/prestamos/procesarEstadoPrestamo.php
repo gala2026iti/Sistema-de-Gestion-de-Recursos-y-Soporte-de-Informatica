@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 require_once __DIR__ . "/../../../config/config.php";
 
 require_once RUTA_MODELO . "/ConectorPDO.php";
-require_once RUTA_MODELO . "/solicitudes/EstadoDatosSolicitud.php";
+require_once RUTA_MODELO . "/prestamos/EstadoDatosPrestamo.php";
 
 session_start();
 
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -38,7 +38,7 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["tecnico"] ?? false)) {
+if (!($_SESSION["tecnico"])) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
@@ -58,7 +58,7 @@ if (
     $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -70,7 +70,7 @@ if ($id === "") {
     $mensaje = "No se recibieron los datos necesarios.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -90,34 +90,34 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$estadoDatosSolicitud = new EstadoDatosSolicitud($conexion);
+$estadoDatosPrestamo = new EstadoDatosPrestamo($conexion);
 
-$resultado = $estadoDatosSolicitud->cambiarEstadoSolicitud(
-    $id,
+$resultado = $estadoDatosPrestamo->cambiarEstadoPrestamo(
+    $id
 );
 
 $conectorPDO->desconectar();
 
 if (!$resultado) {
-    $mensaje = "No se pudo modificar el estado de la solicitud.";
+    $mensaje = "No se pudo modificar el estado del préstamo.";
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$mensaje = "Solicitud finalizada correctamente.";
+$mensaje = "Préstamo finalizado correctamente.";
 
 header(
-    "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?resultado="
+    "Location: ../../../public/paginaWeb/tecnico/tablaPrestamos.php?resultado="
     . urlencode($mensaje)
 );
 

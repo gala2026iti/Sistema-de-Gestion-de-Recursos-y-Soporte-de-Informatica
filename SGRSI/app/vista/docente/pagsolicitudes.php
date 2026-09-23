@@ -45,13 +45,25 @@
       <p class="text-danger fw-semibold small">Le pedimos por favor realizar la solicitud con un tiempo de anticipación adecuado.</p>
     </section>
 
+            <?php if (isset($_GET["resultado"])): ?>
+    <span class="alert alert-success d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["resultado"]) ?>
+    </span>
+<?php endif; ?>
+
+<?php if (isset($_GET["error"])): ?>
+    <span class="alert alert-danger d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["error"]) ?>
+    </span>
+<?php endif; ?>
+
     <section class="Tarjeta-login card p-4 shadow border-0 w-100">
-      <form action="" method="post" id="formSolicitud">
+      <form action="../../../app/controlador/solicitudes/procesarAltaSolicitud.php" method="post" id="formSolicitud">
         <fieldset class="border-0 p-0 m-0">
 
           <div class="mb-3 text-start">
             <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
-            <input type="text" id="asunto" class="form-control form-control-lg" placeholder="Ej: Instalación de NetBeans" required>
+            <input type="text" name="asunto" class="form-control form-control-lg" placeholder="Ej: Instalación de NetBeans" required>
           </div>
 
           <div class="mb-3 text-start">
@@ -62,6 +74,8 @@
           <div class="mb-4 text-start">
             <label for="fecha" class="form-label fw-semibold texto-azul-dark">Fecha y Hora solicitada:</label>
             <input type="datetime-local" name="fecha" id="fecha" class="form-control form-control-lg" required>
+            <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+            
           </div>
 
         </fieldset>

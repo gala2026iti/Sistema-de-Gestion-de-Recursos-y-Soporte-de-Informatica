@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -29,7 +29,7 @@ if (!isset($_SESSION["cedula"])) {
     $mensaje = "Acceso denegado: debe iniciar sesión.";
 
     header(
-        "Location: ../../public/paginaWeb/index.php?error="
+        "Location: ../../../public/paginaWeb/index.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -39,7 +39,7 @@ if (!($_SESSION["administrador"] ?? false)) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(
-        "Location: ../../public/paginaWeb/index.php?error="
+        "Location: ../../../public/paginaWeb/index.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -55,7 +55,7 @@ if (
     $mensaje = "Solicitud rechazada: token de seguridad inválido.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -72,7 +72,7 @@ if (!is_array($roles)) {
     $mensaje = "Los roles seleccionados no son válidos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -98,7 +98,7 @@ if (
     $mensaje = "Existen campos vacíos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -108,7 +108,7 @@ if ($cedula < 10000000 || $cedula > 99999999) {
     $mensaje = "La cédula debe contener exactamente 8 dígitos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -118,7 +118,7 @@ if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,100}$/", $nombre)) {
     $mensaje = "El nombre contiene caracteres no válidos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -128,7 +128,7 @@ if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     $mensaje = "El correo electrónico no es válido.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -138,7 +138,7 @@ if (strlen($clave) < 12) {
     $mensaje = "La contraseña debe contener al menos 12 caracteres.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -148,7 +148,7 @@ if ($clave !== $confirmarClave) {
     $mensaje = "Las contraseñas no coinciden.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -161,7 +161,7 @@ foreach ($roles as $rol) {
         $mensaje = "Uno de los roles seleccionados no es válido.";
 
         header(
-            "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+            "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
             . urlencode($mensaje)
         );
         exit();
@@ -184,7 +184,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -206,7 +206,7 @@ if (!$resultado) {
     $mensaje = "No se pudo registrar el usuario. La cédula o el correo pueden estar ya registrados.";
 
     header(
-        "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -215,7 +215,7 @@ if (!$resultado) {
 $mensaje = "Usuario registrado correctamente.";
 
 header(
-    "Location: ../../public/paginaWeb/administracion/gestionUsuarios.php?resultado="
+    "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?resultado="
     . urlencode($mensaje)
 );
 

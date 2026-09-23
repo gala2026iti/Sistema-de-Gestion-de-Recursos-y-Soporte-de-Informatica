@@ -31,24 +31,30 @@ class EstadoDatosSolicitud
      * @return bool true si la solicitud fue actualizada;
      *              false si ocurrió un error.
      */
-    public function cambiarEstadoSolicitud(string $idSolicitud, bool $finalizada): bool
+    public function cambiarEstadoSolicitud(string $id): bool
     {
         $sql = "
             UPDATE SOLICITUD
-            SET finalizada = :finalizada
-            WHERE id = :idSolicitud
+            SET finalizada = 1
+            WHERE id = CAST(:id AS INT)
         ";
+
+        /*
+        Debido a que en la BD "id" es de tipo entero,
+        se debe formatear porque, si se manda el número como String,
+        no se encuentran coincidencias
+        */
 
         try {
             $consulta = $this->conexion->prepare($sql);
             $consulta->execute([
-                "finalizada" => $finalizada,
-                "idSolicitud" => $idSolicitud
+                "id" => $id
             ]);
 
             return $consulta->rowCount() > 0;
 
         } catch (PDOException $error) {
+
             return false;
         }
     }

@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-$cedula = trim($_POST["cedula"] ?? "");
-$clave = $_POST["clave"] ?? "";
+$cedula = htmlspecialchars(trim($_POST["cedula"] ?? ""));
+$clave = htmlspecialchars(trim($_POST["clave"])) ?? "";
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -90,4 +90,4 @@ if ($_SESSION["administrador"]) {
     header("Location: ../../public/paginaWeb/homeDocente.php");
 }
 
-exit;
+exit();

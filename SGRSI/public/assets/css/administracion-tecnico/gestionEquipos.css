@@ -13,11 +13,6 @@
     color: white;
 }
 
-.invisible-form {
-    background-color: rgba(0,0,0,0);
-    padding: 0;
-}
-
 
 .barralateral-ubicaciones.abierto {
     left: 0;

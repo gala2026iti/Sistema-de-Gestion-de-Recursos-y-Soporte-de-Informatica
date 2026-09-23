@@ -14,7 +14,7 @@ class CargarTickets
      */
     private PDO $conexion;
 
-   /**
+    /**
      * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
@@ -87,87 +87,130 @@ class CargarTickets
         );
     }
 
-/**
- * @brief Obtiene un listado aplicando filtros opcionales.
- *
- * @param string $tiempo Criterio de orden temporal.
- * @param string $gravedad Gravedad por la cual filtrar.
- * @param string $clasificacion Clasificación por la cual filtrar.
- * @param string $estado Estado por el cual filtrar.
- *
- * @return array Lista de registros obtenidos.
- */
-public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = ""): array
+    /**
+     * @brief Obtiene un listado aplicando filtros opcionales.
+     *
+     * @param string $tiempo Criterio de orden temporal.
+     * @param string $gravedad Gravedad por la cual filtrar.
+     * @param string $clasificacion Clasificación por la cual filtrar.
+     * @param string $estado Estado por el cual filtrar.
+     *
+     * @return array Lista de registros obtenidos.
+     */
+    public function obtenerURL(): array
     {
-        $sql ="
-            SELECT
-                u.ci AS cedula,
-                u.nombre,
-                c.correo,
-                u.activo,
-                CASE WHEN a.ci IS NOT NULL THEN TRUE ELSE FALSE END AS administrador,
-                CASE WHEN t.ci IS NOT NULL THEN TRUE ELSE FALSE END AS tecnico,
-                CASE WHEN d.ci IS NOT NULL THEN TRUE ELSE FALSE END AS docente
-            FROM USUARIO AS u
-            LEFT JOIN CORREO AS c ON c.ci = u.ci
-            LEFT JOIN ADMINISTRADOR AS a ON a.ci = u.ci
-            LEFT JOIN TECNICO AS t ON t.ci = u.ci
-            LEFT JOIN DOCENTE AS d ON d.ci = u.ci
+        $url = $_SERVER["REQUEST_URI"];
+        $urlDividida = explode("/", $url);
+
+        $ticketsRegistrados = false;
+        $ticketsPersonales = false;
+
+        foreach ($urlDividida as $seccion) {
+            if ($seccion === "homeTecnico.php") {
+                $ticketsRegistrados = true;
+            } elseif ($seccion === "ticketsPersonales.php") {
+                $ticketsPersonales = true;
+            }
+        }
+        return [$ticketsRegistrados, $ticketsPersonales];
+    }
+
+    public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = "", string $ciTecnico = ""): array
+    {
+        $resultadoURL = $this->obtenerURL();
+
+        $ticketsRegistrados = $resultadoURL[0];
+        $ticketsPersonales = $resultadoURL[1];
+
+        if ($ticketsRegistrados) {
+            $sql = "
+            SELECT 
+                t.id,
+                t.tipo,
+                t.asunto,
+                t.descripcion,
+                t.gravedad,
+                t.estado,
+                t.fechaCreacion,
+                t.horaCreacion,
+                EXISTS (
+                    SELECT 1
+                    FROM COLABORADOR AS c
+                    WHERE c.idTicket = t.id
+                      AND c.ciTecnico = :ciTecnico
+                ) AS esColaborador
+            FROM TICKET AS t;
+                    ";
+
+            $condiciones = [];
+            $parametros = [];
+
+            if ($estado === "pendiente") {
+                $condiciones[] = "t.estado = :estado";
+                $parametros["estado"] = "pendiente";
+            } elseif ($estado === "en proceso") {
+                $condiciones[] = "t.estado = :estado";
+                $parametros["estado"] = "en proceso";
+            } elseif ($estado === "resuelto") {
+                $condiciones[] = "t.estado = :estado";
+                $parametros["estado"] = "resuelto";
+            }
+
+            if ($gravedad === "ligera") {
+                $condiciones[] = "t.gravedad = :gravedad";
+                $parametros["gravedad"] = "ligera";
+            } elseif ($gravedad === "media") {
+                $condiciones[] = "t.gravedad = :gravedad";
+                $parametros["gravedad"] = "media";
+            } elseif ($gravedad === "grave") {
+                $condiciones[] = "t.gravedad = :gravedad";
+                $parametros["gravedad"] = "grave";
+            }
+
+            if ($clasificacion === "hardware") {
+                $condiciones[] = "t.clasificacion = :clasificacion";
+                $parametros["clasificacion"] = "hardware";
+            } elseif ($clasificacion === "software") {
+                $condiciones[] = "t.clasificacion = :clasificacion";
+                $parametros["clasificacion"] = "software";
+            } elseif ($clasificacion === "red") {
+                $condiciones[] = "t.clasificacion = :clasificacion";
+                $parametros["clasificacion"] = "red";
+            }
+        } else if ($ticketsPersonales) {
+                    $sql = "
+        SELECT 
+            t.id,
+            t.estado,
+            t.asunto
+            FROM TICKET AS t
+
+            LEFT JOIN COLABORADOR AS c
+                ON c.idTicket = t.id
+
+            WHERE c.ciTecnico = :ciTecnico;
         ";
-
-        $condiciones = [];
-        $parametros = [];
-
-        if ($estado === "pendiente") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "pendiente";
-        } elseif ($estado === "en proceso") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "en proceso";
-        } elseif ($estado === "resuelto") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "resuelto";
         }
+            $parametros["ciTecnico"] = $ciTecnico;
 
-        if ($gravedad === "ligera") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "ligera";
-        } elseif ($gravedad === "media") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "media";
-        } elseif ($gravedad === "grave") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "grave";
-        }
-
-        if ($clasificacion === "hardware") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "hardware";
-        } elseif ($clasificacion === "software") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "software";
-        } elseif ($clasificacion === "red") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "red";
-        }
-
+        
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        if($tiempo === "antiguo"){
-        $sql .= " ORDER BY u.ci ASC";
-
+        if ($tiempo === "antiguo") {
+            $sql .= " ORDER BY t.id ASC";
         } else if ($tiempo === "reciente") {
-            $sql .= " ORDER BY u.ci DESC";
+            $sql .= " ORDER BY t.id DESC";
         }
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
 
-        $usuarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $tickets = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
         $consulta = null;
 
-        return $usuarios;
+        return $tickets;
     }
 }

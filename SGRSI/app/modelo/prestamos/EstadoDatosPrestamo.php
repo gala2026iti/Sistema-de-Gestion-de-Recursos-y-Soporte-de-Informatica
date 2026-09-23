@@ -31,18 +31,17 @@ class EstadoDatosPrestamo
      * @return bool true si el préstamo fue actualizado;
      *              false si ocurrió un error.
      */
-    public function cambiarEstadoPrestamo(string $idPrestamo, bool $devuelto): bool
+    public function cambiarEstadoPrestamo(string $idPrestamo): bool
     {
         $sql = "
             UPDATE PRESTAMO
-            SET devuelto = :devuelto
+            SET devuelto = TRUE
             WHERE id = :idPrestamo
         ";
 
         try {
             $consulta = $this->conexion->prepare($sql);
             $consulta->execute([
-                "devuelto" => $devuelto,
                 "idPrestamo" => $idPrestamo
             ]);
 

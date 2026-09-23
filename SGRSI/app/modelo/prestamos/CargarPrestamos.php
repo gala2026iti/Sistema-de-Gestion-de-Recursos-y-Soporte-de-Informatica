@@ -31,44 +31,73 @@ class CargarPrestamos
  *
  * @return array Lista de préstamos encontrados con sus datos asociados.
  */
-public function listarPrestamos(): array
+
+public function listarPrestamos(string $estado, string $id): array
     {
-        $sql ="
+        $sql =
+        "
             SELECT
                 p.id,
                 p.nombrePrestado,
                 p.ciPrestado,
                 p.fechaFin,
                 p.horaFin,
-                p.devuelto, 
-                ttp.ciTecnico,
-                pce.idEquipo,
+                p.devuelto,
+                e.idEquipo,
+                t.ciTecnico,
                 u.nombre AS nombreTecnico
-
+            
             FROM PRESTAMO AS p
-
-            INNER JOIN prestamo_corresponde_equipo AS pce
-            ON pce.idPrestamo = p.id
-
-            INNER JOIN tecnico_tramita_prestamo AS ttp
-            ON ttp.idPrestamo = p.id
-
-            INNER JOIN USUARIO AS u
-            ON u.ci = ttp.ciTecnico
-
-            WHERE p.devuelto = FALSE
-
-            ORDER BY p.id
+            
+            LEFT JOIN (
+                SELECT
+                    idPrestamo,
+                    MIN(idEquipo) AS idEquipo
+                FROM prestamo_corresponde_equipo
+                GROUP BY idPrestamo
+            ) AS e
+                ON e.idPrestamo = p.id
+            
+            LEFT JOIN (
+                SELECT
+                    idPrestamo,
+                    MIN(ciTecnico) AS ciTecnico
+                FROM tecnico_tramita_prestamo
+                GROUP BY idPrestamo
+            ) AS t
+                ON t.idPrestamo = p.id
+            
+            LEFT JOIN USUARIO AS u
+                ON u.ci = t.ciTecnico
         ";
 
-        $sql .= " ORDER BY s.id";
+        $condiciones = [];
+        $parametros = [];
+
+        if($estado === "prestado") {
+            $condiciones[] = "p.devuelto = FALSE";
+        } else if($estado === "devuelto") {
+            $condiciones[] = "p.devuelto = TRUE";        
+            }
+
+        if(!empty($id)) {
+            $condiciones[] = "p.id = :id";
+            $parametros["id"] = $id;
+        }
+
+            if (!empty($condiciones)) {
+            $sql .= " WHERE " . implode(" AND ", $condiciones);
+        }
+
+        $sql .= " ORDER BY p.id";
+
 
         $consulta = $this->conexion->prepare($sql);
-        $consulta->execute();
+        $consulta->execute($parametros);
 
-        $solicitudes = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $prestamos = $consulta->fetchAll(PDO::FETCH_ASSOC);
         $consulta = null;
 
-        return $solicitudes;
+        return $prestamos;
     }
 }

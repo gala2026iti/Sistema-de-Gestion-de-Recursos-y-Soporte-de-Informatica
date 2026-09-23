@@ -33,7 +33,7 @@ class CargarSolicitudes
  *
  * @return array Lista de solicitudes encontradas.
  */
-public function listarSolicitudes(string $estado = ""): array  //Opciones: pendiente, finalizada
+public function listarSolicitudes(string $estado = "", string $id = ""): array 
     {
         $sql ="
             SELECT
@@ -58,7 +58,7 @@ public function listarSolicitudes(string $estado = ""): array  //Opciones: pendi
         $condiciones = [];
         $parametros = [];
 
-        if ($estado === "finalizado") {
+        if ($estado === "finalizada") {
             $condiciones[] = "s.finalizada = :finalizada";
             $parametros["finalizada"] = 1;
         } elseif ($estado === "pendiente") {
@@ -66,6 +66,10 @@ public function listarSolicitudes(string $estado = ""): array  //Opciones: pendi
             $parametros["finalizada"] = 0;
         }
 
+        if(!empty($id)) {
+            $condiciones[] = "s.id = :id";
+            $parametros["id"] = $id;
+        }
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
