@@ -24,13 +24,14 @@
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
-                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="tecnico">
-                        <a href="#">Técnico 🡻</a>
-                        <ul class="desplegable-menu">
-                            <li><a href="#" class="cambiar-rol" data-rol="docente">Cambiar a Docente</a></li>
-                            <li><a href="#" class="cambiar-rol" data-rol="administrador">Cambiar a Administrador</a></li>
-                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-                        </ul>
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                      <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+                      <ul class="desplegable-menu">
+                        <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                        <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                        <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                        <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+                      </ul>
                     </li>
                 </ul>
       </section>
@@ -40,16 +41,11 @@
           <a href="#">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
             <li><a href="../homeTecnico.php">Tickets registrados</a></li>
-            <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
+            <li><a href="../tecnico/ticketsPersonales.php">Tickets asignados</a></li>
           </ul>
         </li>
-        <li class="desplegable">
-          <a href="#">Gestion de prestamos 🡻</a>
-          <ul class="desplegable-menu">
-            <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
-          </ul>
-        </li>
-        <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+        <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
+        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php?modo=inventarioTecnico">Inventario de equipos</a></li>
       </ul>
     </section>
   </nav>

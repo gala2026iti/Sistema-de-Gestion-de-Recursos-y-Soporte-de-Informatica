@@ -39,7 +39,7 @@ if ($conexion === null) {
     exit();
 }
 
-if (!isset($_SESSION["tecnico"]) && !isset($_SESSION["administrador"])) {
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") ||  ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
     header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
     exit();
 

@@ -35,7 +35,7 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["tecnico"] ?? false)) {
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
     $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
 
     header(

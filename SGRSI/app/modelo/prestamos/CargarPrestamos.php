@@ -43,20 +43,11 @@ public function listarPrestamos(string $estado, string $id): array
                 p.fechaFin,
                 p.horaFin,
                 p.devuelto,
-                e.idEquipo,
+                p.idEquipo,
                 t.ciTecnico,
                 u.nombre AS nombreTecnico
             
             FROM PRESTAMO AS p
-            
-            LEFT JOIN (
-                SELECT
-                    idPrestamo,
-                    MIN(idEquipo) AS idEquipo
-                FROM prestamo_corresponde_equipo
-                GROUP BY idPrestamo
-            ) AS e
-                ON e.idPrestamo = p.id
             
             LEFT JOIN (
                 SELECT

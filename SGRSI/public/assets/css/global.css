@@ -131,7 +131,8 @@ select {
     display: block;
 }
 
-.desplegable-menu li a {
+.desplegable-menu li a,
+.desplegable-menu li button {
     display: block;
     color: var(--amarillo-iti);
     background-color: transparent;
@@ -139,7 +140,8 @@ select {
     transition: 0.2s;
 }
 
-.desplegable-menu li a:hover {
+.desplegable-menu li a:hover,
+.desplegable-menu li button:hover {
     background-color: var(--amarillo-iti);
     color: var(--azul-navbar);
 }
@@ -182,7 +184,8 @@ select {
     color: var(--azul-navbar);
 }
 
-.nav-opciones-sistema a {
+.nav-opciones-sistema a,
+.nav-opciones-sistema button {
     background-color: var(--amarillo-iti);
     color: var(--azul-navbar);
     padding: 0.7rem 1rem;
@@ -192,9 +195,23 @@ select {
     transition: 0.2s;
     overflow-x: auto;
     white-space: nowrap;
+    border: none;
+    width: 100%;
+    text-align: left;
+
 }
 
-.nav-opciones-sistema a:hover {
+.nav-opciones-sistema form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.nav-opciones-sistema a:hover,
+.nav-opciones-sistema button:hover {
     background-color: var(--amarillo-hover);
     color: var(--azul-navbar);
 }

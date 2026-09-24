@@ -74,6 +74,7 @@ session_regenerate_id(true);
 $_SESSION["csrfToken"] = bin2hex(random_bytes(32));
 
 $_SESSION["cedula"] = $usuario->getCedula();
+$_SESSION["nombre"] = $usuario->getNombre();
 $_SESSION["administrador"] = $usuario->esAdministrador();
 $_SESSION["tecnico"] = $usuario->esTecnico();
 $_SESSION["docente"] = $usuario->esDocente();

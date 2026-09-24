@@ -13,6 +13,8 @@ class Usuario
      */
     private string $cedula;
 
+    private string $nombre;
+
     /**
      * @brief Hash de la contraseña del usuario.
      */
@@ -50,6 +52,7 @@ class Usuario
      */
     public function __construct(
         string $cedula,
+        string $nombre,
         string $claveHash,
         bool $sesionActiva,
         bool $administrador,
@@ -57,6 +60,7 @@ class Usuario
         bool $docente
     ) {
         $this->cedula = $cedula;
+        $this->nombre = $nombre;
         $this->claveHash = $claveHash;
         $this->sesionActiva = $sesionActiva;
         $this->administrador = $administrador;
@@ -72,6 +76,16 @@ class Usuario
     public function getCedula(): string
     {
         return $this->cedula;
+    }
+
+        /**
+     * @brief Obtiene la cédula del usuario.
+     *
+     * @return string Cédula del usuario.
+     */
+    public function getNombre(): string
+    {
+        return $this->nombre;
     }
 
     /**

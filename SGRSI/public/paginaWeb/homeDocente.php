@@ -33,7 +33,7 @@ if (!isset($_SESSION["cedula"])) {
 /*
  * Verificamos que el usuario posea el rol de docente.
  */
-if (!isset($_SESSION["docente"]) || $_SESSION["docente"] !== true) {
+if (!($_SESSION["docente"] && $_SESSION["rolActual"] === "docente")) {
 
     header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
 

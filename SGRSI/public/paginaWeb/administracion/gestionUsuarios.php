@@ -19,7 +19,7 @@ if (!isset($_SESSION["cedula"])) {
 /*
  * Verificar que el usuario sea administrador.
  */
-if (!isset($_SESSION["administrador"]) || $_SESSION["administrador"] !== true) {
+if (!($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
     header("Location: ../index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
     exit();
 }

@@ -10,7 +10,7 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!isset($_SESSION["docente"]) || $_SESSION["docente"] !== true) {
+if (!($_SESSION["docente"] && $_SESSION["rolActual"] === "docente")) {
     header("Location: ../index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado"
 );
     exit();
