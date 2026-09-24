@@ -41,6 +41,7 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     </li>
                 </ul>
             </section>
+            <?php if($_SESSION["rolActual"] === "administrador"): ?>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
                 <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
@@ -55,6 +56,25 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     </ul>
                 </li>
             </ul>
+            <?php elseif ($_SESSION["rolActual"] === "tecnico"): ?>
+                        <ul class="nav-menu">
+                <li class="desplegable">
+                    <a href="#">Gestión de tickets 🡻 </a>
+                    <ul class="desplegable-menu">
+                        <li><a href="../homeAdmin.php">Tickets registrados</a></li>
+                        <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
+                    </ul>
+                </li>
+                <li class="desplegable">
+                    <a href="#">Gestion de prestamos 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
+                        <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
+                    </ul>
+                </li>
+                <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+            </ul>
+            <?php endif; ?>
         </section>
     </nav>
 
@@ -94,6 +114,7 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
             <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarTaller" name="agregar" value="taller">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                if($_)
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
             </form>
                 <h4>Otros</h4>
@@ -113,7 +134,7 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
         <section class="filtros">
             <form method="GET" action="gestionInventarioTecnologico.php">
                 <label for="estado">Estado:</label>
-
+                <?php if($_SESSION["rolActual"] === "administrador"): ?>
                 <select id="estado" name="estado">
                     <option value=""> Todos </option>
                     <option value="activo" <?= ($estado === "activo") ? "selected" : "" ?>> Activo
@@ -121,6 +142,7 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     <option value="inactivo" <?= ($estado === "inactivo") ? "selected" : "" ?>> Inactivo
                     </option>
                 </select>
+                <?php endif; ?>
 
                 <label for="orden"> Ordenar por: </label>
                 <select id="orden" name="orden">
@@ -165,8 +187,10 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     <tr>
                         <th>Codigo (ID Global)</th>
                         <th>Ubicación</th>
+                        <?php if($_SESSION["rolActual"] === "administrador"): ?>
                         <th>Estado</th>
                         <th>Incidencias</th>
+                        <?php endif; ?>
                         <th>Última Intervención</th>
                         <th>Acciones</th>
                     </tr>
@@ -177,7 +201,7 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                             <td colspan="6" class="text-center py-4 text-muted text-bold"> No se encontraron equipos. </td>
                         </tr>
                     <?php else: ?>
-                    <?php foreach ($equipos as $equipo) { ?>
+                    <?php foreach ($equipos as $equipo): ?>
                         <tr>
                             <td><?= htmlspecialchars($equipo['idEquipo']) ?></td>
                             <?php if (htmlspecialchars($equipo['tipoUbicacion'] ?? "")) { ?>
@@ -189,19 +213,24 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                             <?php } else { ?>
                                 <td>Sin ubicación</td>
                             <?php } ?>
+                            <?php if($_SESSION["rolActual"] === "administrador"): ?>
                             <td><?= htmlspecialchars($equipo['activo']) ? "Activo" : "Inactivo" ?></td>
                             <td><?= htmlspecialchars($equipo['totalIncidencias']) ?></td>
+                            <?php endif; ?>
                                 <td><?= htmlspecialchars($equipo['ultimaIntervencion'] ?? "Sin intervenciones previas")  ?></td>
                                 <!-- TOFIX: AGREGAR LOS BOTONES CORRESPONDIENTES AL ÁREA DE ACCIONES: EDITAR, REMOVER DEL SALON, DESACTIVAR, VER INCIDENCIAS -->
                                 <!-- TOFIX: STYLE: EVITAR GENERALIZAR NOMBRES CUANDO HACEN ALGO ESPECIFICO -->
 
-                                                            <td> <button class="btn btn-info btn-sm text-bold btnMoverEquipo" 
+                                <td> 
+                                    <?php if($_SESSION["rolActual"] === "administrador"): ?>
+                                    <button class="btn btn-info btn-sm text-bold btnMoverEquipo" 
                                         data-idequipo="<?= htmlspecialchars($equipo['idEquipo']) ?>" 
                                         data-idubicacion="<?= htmlspecialchars($equipo['idUbicacion'] ?? 0) ?>" 
                                         data-tipoubicacion="<?= htmlspecialchars($equipo['tipoUbicacion'] ?? 'ninguna') ?>" 
                                         data-posicion="<?= htmlspecialchars($equipo['posicion'] ?? 0) ?>">
-                                    Mover
-                                </button>
+                                        Mover
+                                    </button>
+                                    
                             <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline form-estado">
                                 <input type="hidden" name="idEquipo" value="<?= htmlspecialchars($equipo['idEquipo']) ?>">
                                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
@@ -210,18 +239,21 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                                 <input type="hidden" name="ubicacion" value=<?= htmlspecialchars(trim($_GET['ubicacion'] ?? "")) ?>>
                                 <input type="hidden" name="tipoUbicacion" value=<?= htmlspecialchars(trim($_GET['tipoUbicacion'] ?? "")) ?>>
                                 
-                                <?php if($equipo['activo']) { ?>
+                                <?php if($equipo['activo']) : ?>
                                 <input type="hidden" name="accion" value="desactivar">
                                 <button type="submit" class="btn btn-danger btn-sm text-bold">Desactivar</button> 
-                             <?php } else { ?>
+                             <?php else: ?>
                                 <input type="hidden" name="accion" value="activar">
                                 <button type="submit" class="btn btn-success btn-sm text-bold">Activar</button>
-                            <?php } ?>
+                            <?php endif; ?>
                             </form>
                              <a href="paginaNoExistente.php?id=<?= $equipo['idEquipo'] ?>" class="btn btn-warning btn-sm text-bold">Ver Incidencias</a> </td>
-
+                            <?php endif; ?>
+                            <?php if($_SESSION["rolActual"] === "tecnico"): ?>
+                                <button class="btn btn-danger">Registrar Incidencia</button>
+                            <?php endif; ?>
                         </tr>
-                    <?php } ?>
+                    <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>

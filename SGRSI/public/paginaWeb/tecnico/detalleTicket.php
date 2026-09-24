@@ -16,5 +16,5 @@ if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
     exit();
 }
 
-require_once __DIR__ . "/../../../app/vista/tecnico/detalleTicket.php";
+require_once __DIR__ . "/../../../app/controlador/tickets/procesarCargarTickets.php";
 ?>

@@ -79,15 +79,15 @@
 
             <label for="selectorEstado" class="form-label fw-bold text-secondary">Estado del flujo operativo</label>
             <select id="selectorEstado" name="selectorEstado" class="form-select mb-3">
-                <option value="pendiente">🔴 Pendiente</option>
-                <option value="en proceso">🟡 En proceso</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en proceso">En proceso</option>
             </select>
 
             <label for="selectorGravedad" class="form-label fw-bold text-secondary">Gravedad de la incidencia</label>
             <select id="selectorGravedad" name="selectorGravedad" class="form-select mb-3">
-                <option value="ligera">🟢 Ligera</option>
-                <option value="media">🟡 Media</option>
-                <option value="grave">🔴 Grave</option>
+                <option value="ligera">Ligera</option>
+                <option value="media">Media</option>
+                <option value="grave">Grave</option>
             </select>
 
             <label for="ubicacionSalon" class="form-label small fw-bold text-secondary">Ubicación</label>

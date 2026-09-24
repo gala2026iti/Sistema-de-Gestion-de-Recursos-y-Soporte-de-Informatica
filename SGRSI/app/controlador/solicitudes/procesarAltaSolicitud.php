@@ -67,6 +67,7 @@ if (
  $fechaLimite = htmlspecialchars(trim($_POST["fecha"] ?? ""));
  $ciDocente = htmlspecialchars(trim($_SESSION["cedula"] ?? ""));
 
+ 
 $fecha = DateTime::createFromFormat('Y-m-d\TH:i', $fechaLimite);
 
 $fechaFin = $fecha->format('Y/m/d');

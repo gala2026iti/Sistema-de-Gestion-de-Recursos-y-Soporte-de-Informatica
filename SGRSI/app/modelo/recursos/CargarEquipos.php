@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . "/../Equipo.php";
 
 /**
@@ -32,187 +31,104 @@ class CargarEquipos
      *
      * @return array Lista de equipos encontrados.
      */
-    public function listarEquipos(string $orden = "", string $estado = ""): array
+    public function listarEquipos(?string $orden = "", ?string $estado = "", ?string $ubicacion = "", ?string $tipoUbicacion = ""): array
     {
-        $ubicacion = trim(htmlspecialchars($_GET["ubicacion"] ?? ""));
-
-        $url = $_SERVER["REQUEST_URI"];
-        $urlDividida = explode("/", $url);
-
-        $paginaPrestamos = false;
-        $paginaInventarioPrestamos = false;
-
-        foreach ($urlDividida as $seccion) {
-            if ($seccion === "tablaPrestamos.php") {
-                $paginaPrestamos = true;
-            } elseif ($seccion === "inventarioEquipos.php") {
-                $paginaInventarioPrestamos = true;
-            }
-        }
-
         $parametros = [];
 
-        if ($paginaPrestamos) {
-
+        if ($_SESSION['tecnico']):
             $sql = "
-SELECT
-    e.id AS idEquipo
-FROM EQUIPO AS e
+                    SELECT
+                        e.id AS idEquipo,
+                        e.activo,
+                        eru.idUbicacion,
+                        eru.tipoUbicacion,
+                        eru.posicion
+                    FROM EQUIPO AS e
+                    
+                    LEFT JOIN equipo_reside_ubicacion AS eru
+                        ON e.id = eru.idEquipo
 
-INNER JOIN equipo_reside_ubicacion AS eru
-    ON e.id = eru.idEquipo
+                ";
 
-WHERE eru.tipoUbicacion = 'prestamo'
-  AND e.activo = TRUE
-
-  AND NOT EXISTS (
-      SELECT 1
-      FROM prestamo_corresponde_equipo AS pce
-      INNER JOIN PRESTAMO AS p
-          ON p.id = pce.idPrestamo
-      WHERE pce.idEquipo = e.id
-        AND p.devuelto = FALSE
-  )
-
-  AND NOT EXISTS (
-      SELECT 1
-      FROM equipo_ubicacion_genera_ticket AS eugt
-      INNER JOIN TICKET AS t
-          ON t.id = eugt.idTicket
-      WHERE eugt.idEquipo = e.id
-        AND t.estado != 'resuelto'
-  )
-
-ORDER BY e.id ASC;
-            ";
-
-        } elseif ($paginaInventarioPrestamos) {
-
+        elseif ($_SESSION['administrador']):
             $sql = "
-SELECT
-    e.id AS idEquipo,
-    e.activo,
-    ip.idPrestamo,
-    ip.nombrePrestado,
-    ip.ciPrestado,
-    ip.fechaFin,
-    ip.horaFin
+                    SELECT
+                        e.id AS idEquipo,
+                        e.fechaCreacion,
+                        e.horaCreacion,
+                        e.ultimaIntervencion,
+                        e.activo,
+                        eru.idUbicacion,
+                        eru.tipoUbicacion,
+                        eru.posicion,
+                        COUNT(eugt.idEquipo) AS totalIncidencias
+                    FROM EQUIPO AS e
+                    LEFT JOIN equipo_reside_ubicacion AS eru
+                        ON e.id = eru.idEquipo
+                    LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
+                        ON e.id = eugt.idEquipo
+                ";
 
-FROM EQUIPO AS e
-
-INNER JOIN equipo_reside_ubicacion AS eru
-    ON eru.idEquipo = e.id
-
-LEFT JOIN (
-    SELECT
-        pce.idEquipo,
-        p.id AS idPrestamo,
-        p.nombrePrestado,
-        p.ciPrestado,
-        p.fechaFin,
-        p.horaFin
-
-    FROM prestamo_corresponde_equipo AS pce
-
-    INNER JOIN PRESTAMO AS p
-        ON p.id = pce.idPrestamo
-
-    WHERE p.devuelto = FALSE
-) AS ip
-    ON ip.idEquipo = e.id
-
-WHERE eru.tipoUbicacion = 'prestamo'
-
-ORDER BY e.id ASC;
-            ";
-
-        } else {
-
-            $tipoUbicacion = $_GET["tipoUbicacion"] ?? "";
-
-            $sql = "
-                SELECT
-                    e.id AS idEquipo,
-                    e.fechaCreacion,
-                    e.horaCreacion,
-                    e.ultimaIntervencion,
-                    e.activo,
-                    eru.idUbicacion,
-                    eru.tipoUbicacion,
-                    eru.posicion,
-                    COUNT(eugt.idEquipo) AS totalIncidencias
-
-                FROM EQUIPO AS e
-
-                LEFT JOIN equipo_reside_ubicacion AS eru
-                    ON e.id = eru.idEquipo
-
-                LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
-                    ON e.id = eugt.idEquipo
-            ";
-
-            $condiciones = [];
-
-            if (
-                $tipoUbicacion === "prestamo" ||
-                $tipoUbicacion === "laboratorio" ||
-                $tipoUbicacion === "taller"
-            ) {
-                $condiciones[] = "eru.tipoUbicacion = :tipoUbicacion";
-                $parametros["tipoUbicacion"] = $tipoUbicacion;
-            }
-
-            if (is_numeric($ubicacion) && $ubicacion > 0) {
-                $condiciones[] = "eru.idUbicacion = :ubicacion";
-                $parametros["ubicacion"] = $ubicacion;
-            }
-
-            if ($estado === "activo") {
+            if (!empty($estado)) {
                 $condiciones[] = "e.activo = :activo";
-                $parametros["activo"] = 1;
-            } elseif ($estado === "inactivo") {
-                $condiciones[] = "e.activo = :activo";
-                $parametros["activo"] = 0;
+                $parametros["activo"] = $estado === "activo" ? 1 : 0;
             }
 
-            if (!empty($condiciones)) {
-                $sql .= " WHERE " . implode(" AND ", $condiciones);
-            }
+        endif;
 
-            $sql .= "
-                GROUP BY
-                    e.id,
-                    e.fechaCreacion,
-                    e.horaCreacion,
-                    e.ultimaIntervencion,
-                    e.activo,
-                    eru.idUbicacion,
-                    eru.tipoUbicacion,
-                    eru.posicion
-            ";
+        $condiciones = [];
 
-            if ($orden === "reciente") {
-                $sql .= "
-                    ORDER BY e.ultimaIntervencion DESC
+        if (!empty($tipoUbicacion)) {
+            $condiciones[] = "eru.tipoUbicacion = :tipoUbicacion";
+            $parametros["tipoUbicacion"] = $tipoUbicacion;
+        }
+
+        if (!empty($ubicacion)) {
+            $condiciones[] = "eru.idUbicacion = :ubicacion";
+            $parametros["ubicacion"] = $ubicacion;
+        }
+
+        if (!empty($condiciones)) {
+            $sql .= " WHERE " . implode(" AND ", $condiciones);
+        }
+
+        if($_SESSION['tecnico']) {
+        $sql .= " AND e.activo = TRUE";
+
+        }
+
+         $sql .= "
+                    GROUP BY
+                        e.id,
+                        e.fechaCreacion,
+                        e.horaCreacion,
+                        e.ultimaIntervencion,
+                        e.activo,
+                        eru.idUbicacion,
+                        eru.tipoUbicacion,
+                        eru.posicion
                 ";
-            } elseif ($orden === "antiguo") {
-                $sql .= "
-                    ORDER BY e.ultimaIntervencion ASC
-                ";
-            } elseif ($orden === "masincidencias") {
-                $sql .= "
-                    ORDER BY totalIncidencias DESC
-                ";
-            } elseif ($orden === "menosincidencias") {
-                $sql .= "
-                    ORDER BY totalIncidencias ASC
-                ";
+
+            if (!empty($orden)) {
+                switch ($orden):
+                    case "reciente":
+                        $sql .= "ORDER BY e.ultimaIntervencion DESC";
+                        break;
+                    case "antiguo":
+                        $sql .= "ORDER BY e.ultimaIntervencion ASC";
+                        break;
+                    case "masincidencias":
+                        $sql .= "ORDER BY totalIncidencias DESC";
+                        break;
+                    case "menosincidencias":
+                        $sql .= "ORDER BY totalIncidencias ASC";
+                        break;
+                endswitch;
             } else {
                 $sql .= "
-                    ORDER BY e.id ASC
-                ";
+                        ORDER BY e.id ASC
+                    ";
             }
-        }
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
@@ -220,6 +136,7 @@ ORDER BY e.id ASC;
         $equipos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
         $consulta = null;
+
 
         return $equipos;
     }

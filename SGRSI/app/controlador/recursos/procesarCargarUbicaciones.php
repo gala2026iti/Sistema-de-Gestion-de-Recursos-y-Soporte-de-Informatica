@@ -38,4 +38,4 @@ $ubicaciones = $accesoDatosUbicacion->listarUbicaciones();
 
 $conectorPDO->desconectar();
 
-require_once RUTA_VISTA . "/administracion/gestionInventarioTecnologico.php";
+require_once RUTA_VISTA . "/admin_tecnico/gestionInventarioTecnologico.php";
