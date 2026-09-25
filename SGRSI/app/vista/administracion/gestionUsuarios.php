@@ -75,10 +75,8 @@
                     <ul class="desplegable-menu">
 
                         <li>
-                            <a href="gestionInventarioTecnologico.php">
-                                Gestion de inventario de equipos
-                            </a>
-                        </li>
+                        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+
                     </ul>
                 </li>
             </ul>

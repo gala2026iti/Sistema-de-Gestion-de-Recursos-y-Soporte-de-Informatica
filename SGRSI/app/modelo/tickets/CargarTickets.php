@@ -92,7 +92,7 @@ class CargarTickets
      *
      * @param string $tiempo Criterio de orden temporal.
      * @param string $gravedad Gravedad por la cual filtrar.
-     * @param string $clasificacion Clasificación por la cual filtrar.
+     * @param string $tipo Clasificación por la cual filtrar.
      * @param string $estado Estado por el cual filtrar.
      *
      * @return array Lista de registros obtenidos.
@@ -108,21 +108,22 @@ class CargarTickets
 
 
         foreach ($urlDividida as $seccion) {
-            if ($seccion === "homeTecnico.php") {
-                $ticketsRegistrados = true;
-                break;
-            } elseif ($seccion === "ticketsPersonales.php") {
-                $ticketsPersonales = true;
-                break;
-            } elseif ($seccion === "detalleTicket.php") {
-                $detalleTicket = true;
-                break;
+            $subseccion = explode("?", $seccion);
+            foreach ($subseccion as $subsubseccion) {
+                if ($subsubseccion === "homeTecnico.php") {
+                    $ticketsRegistrados = true;
+                    break;
+                } elseif ($subsubseccion === "ticketsPersonales.php") {
+                    $ticketsPersonales = true;
+                } elseif ($subsubseccion === "detalleTicket.php") {
+                    $detalleTicket = true;
+                }
             }
         }
         return [$ticketsRegistrados, $ticketsPersonales, $detalleTicket];
     }
 
-    public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = "", string $ciTecnico = "", string $idTicket): array
+    public function listarTickets(string $ciTecnico, string $orden, ?string $gravedad, ?string $tipo, ?string $estado, ?string $idTicket): array
     {
         $resultadoURL = $this->obtenerURL();
 
@@ -146,52 +147,34 @@ class CargarTickets
                     WHERE c.idTicket = t.id
                       AND c.ciTecnico = :ciTecnico
                 ) AS esColaborador
-            FROM TICKET AS t;
+            FROM TICKET AS t
                     ";
 
             $condiciones = [];
             $parametros = [];
 
-            if ($estado === "pendiente") {
+            if (!empty($estado)) {
                 $condiciones[] = "t.estado = :estado";
-                $parametros["estado"] = "pendiente";
-            } elseif ($estado === "en proceso") {
-                $condiciones[] = "t.estado = :estado";
-                $parametros["estado"] = "en proceso";
-            } elseif ($estado === "resuelto") {
-                $condiciones[] = "t.estado = :estado";
-                $parametros["estado"] = "resuelto";
+                $parametros["estado"] = $estado;
             }
 
-            if ($gravedad === "ligera") {
+            if (!empty($gravedad)) {
                 $condiciones[] = "t.gravedad = :gravedad";
-                $parametros["gravedad"] = "ligera";
-            } elseif ($gravedad === "media") {
-                $condiciones[] = "t.gravedad = :gravedad";
-                $parametros["gravedad"] = "media";
-            } elseif ($gravedad === "grave") {
-                $condiciones[] = "t.gravedad = :gravedad";
-                $parametros["gravedad"] = "grave";
+                $parametros["gravedad"] = $gravedad;
             }
 
-            if(!empty($idTicket)){
+            if (!empty($idTicket)) {
                 $condiciones[] = "t.id = :idTicket";
                 $parametros["idTicket"] = $idTicket;
             }
 
-            if ($clasificacion === "hardware") {
-                $condiciones[] = "t.clasificacion = :clasificacion";
-                $parametros["clasificacion"] = "hardware";
-            } elseif ($clasificacion === "software") {
-                $condiciones[] = "t.clasificacion = :clasificacion";
-                $parametros["clasificacion"] = "software";
-            } elseif ($clasificacion === "red") {
-                $condiciones[] = "t.clasificacion = :clasificacion";
-                $parametros["clasificacion"] = "red";
+            if (!empty($tipo)) {
+                $condiciones[] = "t.tipo = :tipo";
+                $parametros["tipo"] = $tipo;
             }
 
         } else if ($ticketsPersonales) {
-                    $sql = "
+            $sql = "
         SELECT 
             t.id,
             t.estado,
@@ -204,16 +187,16 @@ class CargarTickets
             WHERE c.ciTecnico = :ciTecnico;
         ";
         }
-            $parametros["ciTecnico"] = $ciTecnico;
+        $parametros["ciTecnico"] = $ciTecnico;
 
-        
+
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        if ($tiempo === "antiguo") {
+        if ($orden === "antiguo") {
             $sql .= " ORDER BY t.id ASC";
-        } else if ($tiempo === "reciente") {
+        } else if ($orden === "reciente") {
             $sql .= " ORDER BY t.id DESC";
         }
 

@@ -13,6 +13,16 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/recursos/CargarUbicaciones.php";
 
+if (!(($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") || ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador"))) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
     $_ENV['DB_PUERTO'], 

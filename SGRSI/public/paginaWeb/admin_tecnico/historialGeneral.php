@@ -10,9 +10,13 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (/* TOFIX : realizar verificacion de si es admin o tecnico en base a lo que se pdida en la url*/ false){
-    header("Location: ../index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado"
-);
+if (!(($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") || ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador"))) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
     exit();
 }
 

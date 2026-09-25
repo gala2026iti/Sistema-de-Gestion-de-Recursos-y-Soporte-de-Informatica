@@ -18,6 +18,16 @@ require_once RUTA_MODELO . "/solicitudes/CargarSolicitudes.php";
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
 $id = htmlspecialchars(trim($_GET["id"] ?? ""));
 
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
     $_ENV['DB_PUERTO'], 

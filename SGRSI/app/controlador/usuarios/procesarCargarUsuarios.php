@@ -16,6 +16,16 @@ require_once RUTA_MODELO . "/usuarios/CargarUsuarios.php";
 $rol = strtolower(trim($_GET["rol"] ?? ""));
 $estado = strtolower(trim($_GET["estado"] ?? ""));
 
+if (!($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
     $_ENV['DB_PUERTO'], 

@@ -43,7 +43,7 @@
                 <li class="desplegable">
                         <li><a href="../tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
                 </li>
-                <li><a href="../admin_tecnico/gestionInventarioTecnologico.php?modo=inventarioTecnico">Inventario de equipos</a></li>
+                <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Inventario de equipos</a></li>
 
                 </li>
                 <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>

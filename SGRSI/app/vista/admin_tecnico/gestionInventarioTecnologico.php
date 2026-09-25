@@ -78,15 +78,15 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
             <?php if($_SESSION["rolActual"] === "administrador"): ?>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
-                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
-                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
-                <li><a href="metricas.php">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../administracion/estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="../administracion/reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="../administracion/metricas.php">Metricas del sistema</a></li>
             </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="../administracion/gestionUsuarios.php">Gestion de usuarios</a></li>
                     </ul>
                 </li>
             </ul>
@@ -127,11 +127,14 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
+                <?php if($_SESSION["rolActual"] === "administrador") :?>
             <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarLaboratorio" name="agregar" value="laboratorio">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                 <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
             </form>
+                            <?php endif;?>
+
 
                 <h4>Talleres</h4>
                 <ul id="listaTalleres">
@@ -141,12 +144,15 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
+                                <?php if($_SESSION["rolActual"] === "administrador") :?>
             <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarTaller" name="agregar" value="taller">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                 if($_)
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
             </form>
+                            <?php endif;?>
+
                 <h4>Otros</h4>
                 <ul>
                     <li><a href="gestionInventarioTecnologico.php?tipoUbicacion=prestamo" class="filtro-ubicacion-directa" salones-ubicacion="prestamo">Dispositivos para
@@ -180,8 +186,10 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     <!-- TOFIX: SE EVITA USAR TIPADO CAMELCASE DEBIDO A QUE SE CONVIERTE TODO A MINUSCULAS AL SER ENVIADO POR GET -->
                     <!-- TOFIX: SE IMPLEMENTA FUNCION QUE HACE QUE EL FILTRADO FUNCIONE DENTRO DE SALONES ESPECIFICOS -->
 
+                    <?php if($_SESSION['rolActual'] === "administrador"): ?>
                     <option value="masincidencias" <?= ($orden === "masincidencias") ? "selected" : "" ?>> Incidencias (Más) </option>
                     <option value="menosincidencias" <?= ($orden === "menosincidencias") ? "selected" : "" ?>> Incidencias (Menos)</option>
+                    <?php endif; ?>
                     <option value="reciente" <?= ($orden === "reciente") ? "selected" : "" ?>> Intervenciones (Recientes)</option>
                     <option value="antiguo" <?= ($orden === "antiguo") ? "selected" : "" ?>> Intervenciones (Antiguas)</option>
                     </select>
@@ -189,6 +197,8 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                     <input name="ubicacion" type="hidden" value="<?php echo isset($_GET['ubicacion']) ? $_GET['ubicacion'] : ''; ?>" />
                     <input name="tipoUbicacion" type="hidden" value="<?php echo isset($_GET['tipoUbicacion']) ? $_GET['tipoUbicacion'] : ''; ?>" />
 
+                    <label for="id">Filtrar por ID:</label>
+                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
 
                 <button type="submit" class="btn btn-primary text-bold">
                     Filtrar
@@ -294,7 +304,10 @@ $orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
                 de Equipos</a>
             <a href="../admin_tecnico/historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2 text-bold">Historial
                 de Salones</a>
+                                <?php if($_SESSION["rolActual"] === "administrador") :?>
             <button id="btnRegistrarEquipo" class="btn btn-success ms-auto text-bold" type="button">Registrar PC</button>
+                            <?php endif; ?>
+
         </section>
 
         <div id="modalEquipo"

@@ -17,12 +17,21 @@ require_once RUTA_MODELO . "/tickets/CargarTickets.php";
 
 $idTicket = htmlspecialchars(trim($_GET["id"] ?? ""));
 
-$tiempo = strtolower(htmlspecialchars(trim($_GET["tiempo"] ?? "")));
+$orden = strtolower(htmlspecialchars(trim($_GET["orden"] ?? "")));
 $gravedad = strtolower(htmlspecialchars(trim($_GET["gravedad"] ?? "")));
-$clasificacion = strtolower(htmlspecialchars(trim($_GET["clasificacion"] ?? "")));
+$tipo = strtolower(htmlspecialchars(trim($_GET["tipo"] ?? "")));
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
 $ciTecnico = trim($_SESSION["cedula"] ?? "");
-$idTicket = htmlspecialchars(trim($_GET["id"] ?? ""));
+
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -65,7 +74,7 @@ if (!empty($idTicket) && !is_numeric($idTicket)) {
 }
 
 $accesoDatosTicket = new CargarTickets($conexion);
-$tickets = $accesoDatosTicket->listarTickets($tiempo, $gravedad, $clasificacion, $estado, $ciTecnico, $idTicket);
+$tickets = $accesoDatosTicket->listarTickets($ciTecnico, $orden, $gravedad, $tipo, $estado, $idTicket);
 
 $conectorPDO->desconectar();
 

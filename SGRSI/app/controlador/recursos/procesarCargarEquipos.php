@@ -13,6 +13,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/recursos/CargarEquipos.php";
 
+$id = htmlspecialchars(trim($_GET["id"] ?? ""));
 $orden = strtolower(htmlspecialchars(trim($_GET["orden"] ?? "")));
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
 $ubicacion = htmlspecialchars(trim($_GET["ubicacion"] ?? ""));
@@ -39,10 +40,14 @@ if ($conexion === null) {
     exit();
 }
 
-if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") ||  ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
-    header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
-    exit();
+if (!(($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") || ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador"))) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
 }
 
 if (!empty($ubicacion)){
@@ -91,6 +96,6 @@ if (!empty($estado)) {
 }
 
 $accesoDatosEquipo = new CargarEquipos($conexion);
-$equipos = $accesoDatosEquipo->listarEquipos($orden, $estado, $ubicacion, $tipoUbicacion);
+$equipos = $accesoDatosEquipo->listarEquipos($orden, $estado, $ubicacion, $tipoUbicacion, $id);
 
 $conectorPDO->desconectar();

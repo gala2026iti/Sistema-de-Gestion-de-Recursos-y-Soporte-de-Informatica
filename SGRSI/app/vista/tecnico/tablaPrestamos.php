@@ -23,17 +23,26 @@
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-opciones-sistema">
-                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                      <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
-                      <ul class="desplegable-menu">
-                        <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                        <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                        <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                        <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
-                      </ul>
-                    </li>
-                </ul>
+        <ul class="nav-opciones-sistema">
+          <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+            <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''):
+                                                                                                    case 'administrador': ?> Administrador<?php break;
+                                                                                                                                                                                    case 'tecnico': ?> Técnico<?php break;
+                                                                                                                                                                                                                          case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+            <ul class="desplegable-menu">
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li>
+                  <form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form>
+                </li><?php endif; ?>
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li>
+                  <form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form>
+                </li><?php endif; ?>
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li>
+                  <form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form>
+                </li><?php endif; ?>
+              <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
+          </li>
+        </ul>
       </section>
 
       <ul class="nav-menu">
@@ -45,7 +54,7 @@
           </ul>
         </li>
         <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
-        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php?modo=inventarioTecnico">Inventario de equipos</a></li>
+        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Inventario de equipos</a></li>
       </ul>
     </section>
   </nav>
@@ -56,37 +65,37 @@
     <span class="centro mb-4">A continuacion se muestran los prestamos de equipos ingresados al sistema</span>
 
     <section class="filtros">
-            <form method="GET" action="tablaPrestamos.php">
-                <label for="estado">Filtrar por Estado:</label>
+      <form method="GET" action="tablaPrestamos.php">
+        <label for="estado">Filtrar por Estado:</label>
 
-                <select id="estado" name="estado">
-                    <option value=""> Todos </option>
-                    <option value="prestado" <?= ($estado === "prestado") ? "selected" : "" ?>> Prestado
-                    </option>
-                    <option value="devuelto" <?= ($estado === "devuelto") ? "selected" : "" ?>> Devuelto
-                    </option>
-                </select>
+        <select id="estado" name="estado">
+          <option value=""> Todos </option>
+          <option value="prestado" <?= ($estado === "prestado") ? "selected" : "" ?>> Prestado
+          </option>
+          <option value="devuelto" <?= ($estado === "devuelto") ? "selected" : "" ?>> Devuelto
+          </option>
+        </select>
 
-                <label for="id">Filtrar por ID:</label>
-                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+        <label for="id">Filtrar por ID:</label>
+        <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
 
-                <button type="submit" class="btn btn-primary text-bold">
-                    Filtrar
-                </button>
-            </form>
-        </section>
+        <button type="submit" class="btn btn-primary text-bold">
+          Filtrar
+        </button>
+      </form>
+    </section>
 
-<?php if (isset($_GET["resultado"])): ?>
-    <span class="alert alert-success d-table text-center mx-auto my-2">
+    <?php if (isset($_GET["resultado"])): ?>
+      <span class="alert alert-success d-table text-center mx-auto my-2">
         <?= htmlspecialchars($_GET["resultado"]) ?>
-    </span>
-<?php endif; ?>
+      </span>
+    <?php endif; ?>
 
-<?php if (isset($_GET["error"])): ?>
-    <span class="alert alert-danger d-table text-center mx-auto my-2">
+    <?php if (isset($_GET["error"])): ?>
+      <span class="alert alert-danger d-table text-center mx-auto my-2">
         <?= htmlspecialchars($_GET["error"]) ?>
-    </span>
-<?php endif; ?>
+      </span>
+    <?php endif; ?>
 
     <section class="table-responsive w-100 m-0">
       <table class="tabla-contenedor m-0" id="tablaPrestamos">

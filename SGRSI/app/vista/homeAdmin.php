@@ -66,7 +66,7 @@
                     <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="administracion/gestionUsuarios.php">Gestion de usuarios</a></li>
-                        <li><a href="administracion/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+                        <li><a href="admin_tecnico/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
                     </ul>
                 </li>
             </ul>

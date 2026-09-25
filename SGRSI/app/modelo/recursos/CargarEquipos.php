@@ -31,7 +31,7 @@ class CargarEquipos
      *
      * @return array Lista de equipos encontrados.
      */
-    public function listarEquipos(?string $orden = "", ?string $estado = "", ?string $ubicacion = "", ?string $tipoUbicacion = ""): array
+    public function listarEquipos(?string $orden = "", ?string $estado = "", ?string $ubicacion = "", ?string $tipoUbicacion = "", ?string $id = ""): array
     {
         $parametros = [];
 
@@ -86,6 +86,11 @@ class CargarEquipos
         if (!empty($ubicacion)) {
             $condiciones[] = "eru.idUbicacion = :ubicacion";
             $parametros["ubicacion"] = $ubicacion;
+        }
+
+        if (!empty($id)) {
+            $condiciones[] = "e.id = :id";
+            $parametros["id"] = $id;
         }
 
         if (!empty($condiciones)) {

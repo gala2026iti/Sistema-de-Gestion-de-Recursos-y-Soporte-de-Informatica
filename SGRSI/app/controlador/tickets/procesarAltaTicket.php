@@ -37,7 +37,7 @@ if (!isset($_SESSION["cedula"])) {
 }
 
 if (!($_SESSION["tecnico"] ?? false)) {
-    $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
     header(
         "Location: ../../public/paginaWeb/index.php?error="

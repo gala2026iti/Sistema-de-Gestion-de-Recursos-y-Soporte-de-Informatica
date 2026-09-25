@@ -15,68 +15,86 @@
         <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
     </header>
 
-   <nav class="navbarSGRSI">
+    <nav class="navbarSGRSI">
         <section class="nav-container">
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
                 <ul class="nav-opciones-sistema">
                     <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+                        <a href="#">
+                        <?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') . " - " ?>
+                        <?php switch($_SESSION['rolActual'] ?? ''): case "administrador": ?> Administrador
+                        <?php break; case "tecnico": ?> Técnico
+                        <?php break; case "docente": ?> Docente
+                        <?php endswitch; ?> 🡻</a>
                         <ul class="desplegable-menu">
-                            <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                            <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                            <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
-                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+
+                            <?php if($_SESSION['rolActual'] !== "docente" && $_SESSION['docente']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Docente</button>
+                                <input type="hidden" name="rol" value="docente">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($_SESSION['rolActual'] !== "tecnico" && $_SESSION['tecnico']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Tecnico</button>
+                                <input type="hidden" name="rol" value="tecnico">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($_SESSION['rolActual'] !== "administrador" && $_SESSION['administrador']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Administrador</button>
+                                <input type="hidden" name="rol" value="administrador">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
                         </ul>
                     </li>
                 </ul>
             </section>
-            
+            <?php if($_SESSION["rolActual"] === "administrador"): ?>
             <ul class="nav-menu">
-
-                <!-- NAVBAR ASISTENTE -->
-            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'asistente'): ?>
-                <li class="desplegable">
-                    <a href="#">Gestión de tickets 🡻 </a>
-                    <ul class="desplegable-menu">
-                        <li><a href="../administracion/homeAdmin.php">Tickets registrados</a></li>
-                        <li><a href="../administracion/ticketsPersonales.php">Tickets asignados</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Gestion de prestamos 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="../administracion/tablaPrestamos.php">Tabla de prestamos</a></li>
-                        <li><a href="../administracion/inventarioEquipos.php">Inventario de equipos</a></li>
-                    </ul>
-                </li>
-                <li><a href="../administracion/gestionSolicitudes.php">Gestion de solicitudes</a></li>
-                
-                <!-- FIN NAVBAR ASISTENTE -->
-                
-                <?php elseif (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
-            
-                <!-- NAVBAR ADMINISTRADOR -->
-
                 <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
-                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
-                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
-                <li><a href="metricas.php">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../administracion/estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="../administracion/reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="../administracion/metricas.php">Metricas del sistema</a></li>
             </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
                         <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
-                        <li><a href="gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
-
                     </ul>
                 </li>
-                <?php endif; ?>
-                <!-- FIN NAVBAR ADMINISTRADOR -->
-
             </ul>
+            <?php elseif ($_SESSION["rolActual"] === "tecnico"): ?>
+                        <ul class="nav-menu">
+                <li class="desplegable">
+                    <a href="#">Gestión de tickets 🡻 </a>
+                    <ul class="desplegable-menu">
+                        <li><a href="../homeAdmin.php">Tickets registrados</a></li>
+                        <li><a href="../tecnico/ticketsPersonales.php">Tickets asignados</a></li>
+                    </ul>
+                </li>
+                <li class="desplegable">
+                        <li><a href="../tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
+                </li>
+                <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
+            </ul>
+            <?php endif; ?>
         </section>
     </nav>
 

@@ -47,7 +47,7 @@ if (!isset($_SESSION["cedula"])) {
 }
 
 if (!($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
-    $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
     header(
         insertarFiltros(
