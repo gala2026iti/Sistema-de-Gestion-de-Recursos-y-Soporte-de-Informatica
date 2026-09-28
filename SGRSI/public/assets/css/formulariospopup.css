@@ -10,14 +10,6 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
-.form-estado {
-    display: inline;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    border: 0;
-}
-
 .oculto {
     display: none !important;
 }

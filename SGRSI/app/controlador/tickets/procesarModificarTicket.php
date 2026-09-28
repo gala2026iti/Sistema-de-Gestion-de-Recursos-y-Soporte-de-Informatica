@@ -65,9 +65,12 @@ if (
     exit();
 }
 
-$idTicket = trim($_POST["idTicket"] ?? "");
-$ciTecnico = trim($_POST["ciTecnico"] ?? "");
-$accion = trim($_POST["accion"] ?? "");
+$idTicket = htmlspecialchars(trim($_POST["id"] ?? ""));
+$csrfToken = htmlspecialchars(trim($_POST["csrfToken"] ?? ""));
+$ciTecnico = htmlspecialchars(trim($_SESSION["cedula"] ?? ""));
+$idEquipo = htmlspecialchars(trim($_POST["idEquipo"] ?? ""));
+$idReporte = htmlspecialchars(trim($_POST["idReporte"] ?? ""));
+$accion = htmlspecialchars(trim($_POST["accion"] ?? ""));
 
 
 if (!is_numeric($idTicket)) {
@@ -91,7 +94,7 @@ if(!is_numeric($ciTecnico)) {
 }
 
 if(!strlen($ciTecnico) === 8) {
-    $mensaje = "La cédula del técnico debe tener  8 dígitos.";
+    $mensaje = "La cédula del técnico debe tener 8 dígitos.";
     header(
         "Location: ../../public/paginaWeb/tecnico/homeTecnico.php?error="
         . urlencode($mensaje)
@@ -132,7 +135,10 @@ $modificarDatosTicket = new ModificarDatosTicket($conexion);
 
 if($accion === "asignarse") {
     $resultado = $modificarDatosTicket->asignarme(
-        $idTicket
+        $idTicket,
+        $ciTecnico,
+        $idEquipo,
+        $idReporte
             );
 } else {
     $resultado = $modificarDatosTicket->desasignarme(
@@ -152,10 +158,14 @@ if (!$resultado) {
     exit();
 }
 
-$mensaje = "Usuario modificado correctamente.";
+if($accion === "asignarse") {
+    $mensaje = "Ticket asignado correctamente.";
+} else {
+    $mensaje = "Ticket desasignado correctamente.";
+}
 
 header(
-    "Location: ../../../public/paginaWeb/tecnico/homeTecnico.php?resultado="
+    "Location: ../../../public/paginaWeb/homeTecnico.php?resultado="
     . urlencode($mensaje)
 );
 

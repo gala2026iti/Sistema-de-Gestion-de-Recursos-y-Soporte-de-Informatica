@@ -169,30 +169,39 @@
           </tr>
         </thead>
         <tbody>
-           <?php if (empty($tickets)): ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted text-bold"> No se encontraron tickets. </td>
-                        </tr>
-                    <?php else: ?>
-          <?php foreach ($tickets as $ticket) : ?>
+          <?php if (empty($tickets)): ?>
             <tr>
-              <td><?= $ticket["id"] ?></td>
-              <td><?= $ticket["asunto"] ?></td>
-              <td><?= $ticket["tipo"] ?></td>
-              <td><?= $ticket["gravedad"] ?></td>
-              <td><?= $ticket["estado"] ?></td>
-              <td><?= $ticket["fechaCreacion"] . " - " . $ticket["horaCreacion"]  ?></td>
-              <td>
-                <?php if ($ticket["esColaborador"]): ?>
-                  <button class="btn btn-danger"> Desasignarse </button>
-                <?php else: ?>
-                  <button class="btn btn-success"> Asignarse </button>
-                <?php endif; ?>
-              </td>
+              <td colspan="7" class="text-center py-4 text-muted text-bold"> No se encontraron tickets. </td>
             </tr>
+          <?php else: ?>
+            <?php foreach ($tickets as $ticket) : ?>
+              <tr>
+                <td><?= $ticket["id"] ?></td>
+                <td><?= $ticket["asunto"] ?></td>
+                <td><?= $ticket["tipo"] ?></td>
+                <td><?= $ticket["gravedad"] ?></td>
+                <td><?= $ticket["estado"] ?></td>
+                <td><?= $ticket["fechaCreacion"] . " - " . $ticket["horaCreacion"]  ?></td>
+                <td>
+                  <form class="form-estado" action="../../app/controlador/tickets/procesarModificarTicket.php" method="POST">
+                    <input type="hidden" name="id" value="<?= $ticket["id"] ?>">
+                    <input type="hidden" name="idReporte" value="<?= $ticket["idReporte"] ?>">
+                    <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="idEquipo" value="<?= $ticket["idEquipo"] ?>">
+                    
+                    <?php if ($ticket["esColaborador"]): ?>
+                      <input type="hidden" name="accion" value="desasignarse">
+                      <button type="submit" class="btn btn-danger"> Desasignarse </button>
+                    <?php else: ?>
+                      <input type="hidden" name="accion" value="asignarse">
+                      <button type="submit" class="btn btn-success"> Asignarse </button>
+                    <?php endif; ?>
+                  </form>
+                </td>
+              </tr>
 
-          <?php endforeach; ?>
-          <?php endif;?>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </section>

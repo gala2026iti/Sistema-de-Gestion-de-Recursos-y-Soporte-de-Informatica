@@ -201,6 +201,14 @@ select {
 
 }
 
+.form-estado {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+
 .nav-opciones-sistema form {
     display: inline;
     margin: 0;

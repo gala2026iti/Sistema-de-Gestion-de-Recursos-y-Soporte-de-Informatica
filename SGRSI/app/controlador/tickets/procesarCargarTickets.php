@@ -22,6 +22,8 @@ $gravedad = strtolower(htmlspecialchars(trim($_GET["gravedad"] ?? "")));
 $tipo = strtolower(htmlspecialchars(trim($_GET["tipo"] ?? "")));
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
 $ciTecnico = trim($_SESSION["cedula"] ?? "");
+$idReporte = htmlspecialchars(trim($_GET["idReporte"] ?? ""));
+$idEquipo = htmlspecialchars(trim($_GET["idEquipo"] ?? ""));
 
 if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
     $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
@@ -74,7 +76,7 @@ if (!empty($idTicket) && !is_numeric($idTicket)) {
 }
 
 $accesoDatosTicket = new CargarTickets($conexion);
-$tickets = $accesoDatosTicket->listarTickets($ciTecnico, $orden, $gravedad, $tipo, $estado, $idTicket);
+$tickets = $accesoDatosTicket->listarTickets($ciTecnico, $orden, $gravedad, $tipo, $estado, $idTicket, $idEquipo, $idReporte);
 
 $conectorPDO->desconectar();
 
@@ -87,10 +89,7 @@ if($ticketsPersonales){
     require_once __DIR__ . "/../../vista/tecnico/ticketsPersonales.php";
 } else if ($ticketsRegistrados){
     require_once __DIR__ . "/../../vista/homeTecnico.php";
-} else if ($detalleTicket){
+} else if($detalleTicket){
     require_once __DIR__ . "/../../vista/tecnico/detalleTicket.php";
 }
-
-
-
 
