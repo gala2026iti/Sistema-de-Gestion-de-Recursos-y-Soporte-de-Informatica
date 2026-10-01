@@ -181,6 +181,7 @@ if ($clave !== "" || $confirmarClave !== "") {
         );
         exit();
     }
+    /* PUNTO HASH */
 
     $claveHash = password_hash($clave, PASSWORD_DEFAULT);
 }

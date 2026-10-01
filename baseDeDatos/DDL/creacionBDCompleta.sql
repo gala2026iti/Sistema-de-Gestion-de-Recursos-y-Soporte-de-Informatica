@@ -143,15 +143,14 @@ CREATE TABLE IF NOT EXISTS equipo_reside_ubicacion (
     idEquipo INT NOT NULL,
     idUbicacion INT NOT NULL,
     tipoUbicacion VARCHAR(50) NOT NULL,
-    posicion VARCHAR(20) NOT NULL,
+    posicion INT NOT NULL,
     CONSTRAINT pk_equipo_reside PRIMARY KEY (idEquipo),
     CONSTRAINT fk_eru_equipo FOREIGN KEY (idEquipo)
         REFERENCES EQUIPO (id)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_eru_ubicacion FOREIGN KEY (idUbicacion, tipoUbicacion)
         REFERENCES UBICACION (id, tipo)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT uk_ubicacion_posicion UNIQUE (idUbicacion, tipoUbicacion, posicion)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS administrador_maneja_equipo (
@@ -231,12 +230,14 @@ CREATE TABLE IF NOT EXISTS tecnico_tramita_prestamo (
 
 CREATE TABLE IF NOT EXISTS REPORTE (
     id INT AUTO_INCREMENT NOT NULL,
-    CONSTRAINT pk_reporte PRIMARY KEY (id)
+    idEquipo INT NOT NULL,
+    CONSTRAINT pk_reporte PRIMARY KEY (id),
+    CONSTRAINT fk_reporte_equipo FOREIGN KEY (idEquipo)
+        REFERENCES EQUIPO (id)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS TICKET (
-    id INT AUTO_INCREMENT NOT NULL,
-    idEquipo INT NOT NULL,
     idReporte INT NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     asunto VARCHAR(150) NOT NULL,
@@ -246,28 +247,18 @@ CREATE TABLE IF NOT EXISTS TICKET (
     fechaCreacion DATE NOT NULL DEFAULT (CURRENT_DATE),
     horaCreacion TIME NOT NULL DEFAULT (CURRENT_TIME),
     justificacion VARCHAR(255) NULL,
-
-    CONSTRAINT pk_ticket
-        PRIMARY KEY (id, idEquipo, idReporte),
-
-    CONSTRAINT fk_ticket_equipo
-        FOREIGN KEY (idEquipo)
-        REFERENCES EQUIPO (id),
-
-    CONSTRAINT fk_ticket_reporte
-        FOREIGN KEY (idReporte)
+    CONSTRAINT pk_ticket PRIMARY KEY (idReporte),
+    CONSTRAINT fk_ticket_reporte FOREIGN KEY (idReporte)
         REFERENCES REPORTE (id)
-
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS COLABORADOR (
-    idTicket INT NOT NULL,
-    ciTecnico CHAR(8) NOT NULL,
-    idEquipo INT NOT NULL,
     idReporte INT NOT NULL,
-    CONSTRAINT pk_colaborador PRIMARY KEY (idTicket, ciTecnico, idEquipo),
-    CONSTRAINT fk_colab_ticket FOREIGN KEY (idTicket, idEquipo, idReporte)
-        REFERENCES TICKET (id, idEquipo, idReporte)
+    ciTecnico CHAR(8) NOT NULL,
+    CONSTRAINT pk_colaborador PRIMARY KEY (idReporte, ciTecnico),
+    CONSTRAINT fk_colab_ticket FOREIGN KEY (idReporte)
+        REFERENCES TICKET (idReporte)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_colab_tecnico FOREIGN KEY (ciTecnico)
         REFERENCES TECNICO (ci)
@@ -291,6 +282,7 @@ CREATE TABLE IF NOT EXISTS docente_reporta_reporte (
 CREATE TABLE IF NOT EXISTS tecnico_comunica_reporte (
     idTecnico CHAR(8) NOT NULL,
     idReporte INT NOT NULL,
+    idEquipo INT NOT NULL,
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     CONSTRAINT pk_tecnico_comunica_reporte PRIMARY KEY (idTecnico, idReporte),
@@ -299,28 +291,16 @@ CREATE TABLE IF NOT EXISTS tecnico_comunica_reporte (
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tcr_reporte FOREIGN KEY (idReporte)
         REFERENCES REPORTE (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS equipo_genera_ticket (
-    idEquipo INT NOT NULL,
-    idTicket INT NOT NULL,
-    idReporte INT NOT NULL,
-    CONSTRAINT pk_egt PRIMARY KEY (idEquipo, idTicket, idReporte),
-    CONSTRAINT fk_egt_equipo FOREIGN KEY (idEquipo)
-        REFERENCES EQUIPO (id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_egt_ticket FOREIGN KEY (idTicket, idEquipo, idReporte)
-        REFERENCES TICKET (id, idEquipo, idReporte)
+    CONSTRAINT fk_tcr_equipo FOREIGN KEY (idEquipo)
+        REFERENCES EQUIPO (id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS tecnico_gestiona_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
-    idTicket INT NOT NULL,
     idReporte INT NOT NULL,
-    idEquipo INT NOT NULL,
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
@@ -328,20 +308,15 @@ CREATE TABLE IF NOT EXISTS tecnico_gestiona_ticket (
     CONSTRAINT fk_tgt_tecnico FOREIGN KEY (ciTecnico)
         REFERENCES TECNICO (ci)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tgt_ticket FOREIGN KEY (idTicket, idEquipo, idReporte)
-        REFERENCES TICKET (id, idEquipo, idReporte)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tgt_reporte FOREIGN KEY (idReporte)
-        REFERENCES REPORTE (id)
+    CONSTRAINT fk_tgt_ticket FOREIGN KEY (idReporte)
+        REFERENCES TICKET (idReporte)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS tecnico_comenta_ticket (
     id INT AUTO_INCREMENT NOT NULL,
     ciTecnico CHAR(8) NOT NULL,
-    idTicket INT NOT NULL,
     idReporte INT NOT NULL,
-    idEquipo INT NOT NULL,
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     texto TEXT NOT NULL,
@@ -349,11 +324,8 @@ CREATE TABLE IF NOT EXISTS tecnico_comenta_ticket (
     CONSTRAINT fk_tct_tecnico FOREIGN KEY (ciTecnico)
         REFERENCES TECNICO (ci)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tct_ticket FOREIGN KEY (idTicket, idEquipo, idReporte)
-        REFERENCES TICKET (id, idEquipo, idReporte)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tct_reporte FOREIGN KEY (idReporte)
-        REFERENCES REPORTE (id)
+    CONSTRAINT fk_tct_ticket FOREIGN KEY (idReporte)
+        REFERENCES TICKET (idReporte)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -400,8 +372,8 @@ INSERT INTO administrador_modifica_usuario
 INSERT INTO UBICACION (id, tipo) VALUES
 (1, 'laboratorio'),
 (2, 'laboratorio'),
-(101, 'salon'),
-(102, 'salon'),
+(3, 'taller'),
+(4, 'taller'),
 (0, 'prestamo');
 
 INSERT INTO EQUIPO (id) VALUES
@@ -409,13 +381,13 @@ INSERT INTO EQUIPO (id) VALUES
 
 INSERT INTO equipo_reside_ubicacion
 (idEquipo, idUbicacion, tipoUbicacion, posicion) VALUES
-(1, 1, 'laboratorio', '1'),
-(2, 1, 'laboratorio', '2'),
-(3, 2, 'laboratorio', '1'),
-(4, 101, 'salon', '1'),
-(5, 102, 'salon', '1'),
-(7, 0, 'prestamo', '1'),
-(8, 0, 'prestamo', '2');
+(1, 1, 'laboratorio', 1),
+(2, 1, 'laboratorio', 2),
+(3, 2, 'laboratorio', 1),
+(4, 3, 'taller', 1),
+(5, 4, 'taller', 1),
+(7, 0, 'prestamo', 1),
+(8, 0, 'prestamo', 2);
 
 INSERT INTO administrador_maneja_equipo
 (ciAdmin, idEquipo, tipoInteraccion) VALUES
@@ -428,27 +400,27 @@ INSERT INTO administrador_controla_ubicacion
 (ciAdmin, idUbicacion, tipoUbicacion, tipoInteraccion) VALUES
 ('11111111', 1, 'laboratorio', 'creacion'),
 ('11111111', 2, 'laboratorio', 'activacion'),
-('44444444', 101, 'salon', 'creacion'),
-('44444444', 102, 'salon', 'creacion'),
+('44444444', 3, 'taller', 'creacion'),
+('44444444', 4, 'taller', 'creacion'),
 ('11111111', 0, 'prestamo', 'desactivacion');
 
 /* Los reportes se separan de los tickets según la normalización. */
-INSERT INTO REPORTE (id) VALUES
-(1),
-(2),
-(3),
-(4),
-(5),
-(6);
+INSERT INTO REPORTE (id, idEquipo) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6);
 
 INSERT INTO TICKET
-(id, idEquipo, idReporte, tipo, asunto, descripcion, gravedad, estado, justificacion) VALUES
-(1, 1, 1, 'hardware', 'Teclado no responde', 'El teclado del equipo deja de responder de forma intermitente.', 'ligera', 'pendiente', NULL),
-(2, 2, 2, 'software', 'NetBeans no inicia', 'La aplicacion NetBeans se cierra inmediatamente al abrirla.', 'media', 'en proceso', NULL),
-(3, 3, 3, 'red', 'Sin conexion a Internet', 'Los equipos del laboratorio no pueden acceder a la red.', 'grave', 'pendiente', NULL),
-(4, 4, 4, 'hardware', 'Monitor sin imagen', 'El monitor enciende pero no recibe señal del equipo.', 'grave', 'resuelto', 'Se reemplazo el cable de video defectuoso.'),
-(5, 5, 5, 'software', 'Navegador desactualizado', 'El navegador instalado no permite acceder correctamente a algunas plataformas.', 'ligera', 'resuelto', 'Se actualizo el navegador a la version disponible.'),
-(6, 6, 6, 'red', 'Conexion inestable', 'La conexion de red presenta cortes durante las clases.', 'media', 'en proceso', NULL);
+(idReporte, tipo, asunto, descripcion, gravedad, estado, justificacion) VALUES
+(1, 'hardware', 'Teclado no responde', 'El teclado del equipo deja de responder de forma intermitente.', 'ligera', 'pendiente', NULL),
+(2, 'software', 'NetBeans no inicia', 'La aplicacion NetBeans se cierra inmediatamente al abrirla.', 'media', 'en proceso', NULL),
+(3, 'red', 'Sin conexion a Internet', 'Los equipos del laboratorio no pueden acceder a la red.', 'grave', 'pendiente', NULL),
+(4, 'hardware', 'Monitor sin imagen', 'El monitor enciende pero no recibe señal del equipo.', 'grave', 'resuelto', 'Se reemplazo el cable de video defectuoso.'),
+(5, 'software', 'Navegador desactualizado', 'El navegador instalado no permite acceder correctamente a algunas plataformas.', 'ligera', 'resuelto', 'Se actualizo el navegador a la version disponible.'),
+(6, 'red', 'Conexion inestable', 'La conexion de red presenta cortes durante las clases.', 'media', 'en proceso', NULL);
 
 INSERT INTO docente_reporta_reporte
 (ciDocente, idReporte) VALUES
@@ -459,40 +431,31 @@ INSERT INTO docente_reporta_reporte
 ('88888888', 5),
 ('22222222', 6);
 
-INSERT INTO equipo_genera_ticket
-(idEquipo, idTicket, idReporte) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 4, 4),
-(5, 5, 5),
-(6, 6, 6);
-
-INSERT INTO COLABORADOR (idTicket, ciTecnico, idEquipo, idReporte) VALUES
-(2, '33333333', 2, 2),
-(2, '44444444', 2, 2),
-(3, '66666666', 3, 3),
-(4, '33333333', 4, 4),
-(5, '44444444', 5, 5),
-(6, '33333333', 6, 6),
-(6, '66666666', 6, 6);
+INSERT INTO COLABORADOR (idReporte, ciTecnico) VALUES
+(2, '33333333'),
+(2, '44444444'),
+(3, '66666666'),
+(4, '33333333'),
+(5, '44444444'),
+(6, '33333333'),
+(6, '66666666');
 
 INSERT INTO tecnico_gestiona_ticket
-(ciTecnico, idTicket, idReporte, idEquipo, tipoInteraccion) VALUES
-('33333333', 2, 2, 2, 'creacion'),
-('44444444', 2, 2, 2, 'modificacion'),
-('66666666', 3, 3, 3, 'comentario'),
-('33333333', 4, 4, 4, 'comentario'),
-('44444444', 5, 5, 5, 'desasignacion'),
-('33333333', 6, 6, 6, 'asignacion');
+(ciTecnico, idReporte, tipoInteraccion) VALUES
+('33333333', 2, 'creacion'),
+('44444444', 2, 'modificacion'),
+('66666666', 3, 'comentario'),
+('33333333', 4, 'comentario'),
+('44444444', 5, 'desasignacion'),
+('33333333', 6, 'asignacion');
 
 INSERT INTO tecnico_comenta_ticket
-(ciTecnico, idTicket, idReporte, idEquipo, texto) VALUES
-('33333333', 2, 2, 2, 'Se revisara la instalacion y la configuracion de Java.'),
-('66666666', 3, 3, 3, 'Se detecto perdida de conectividad en el laboratorio.'),
-('33333333', 4, 4, 4, 'Se probo el monitor con un cable alternativo.'),
-('44444444', 5, 5, 5, 'La actualizacion fue instalada correctamente.'),
-('33333333', 6, 6, 6, 'Se esta verificando el punto de red del salon.');
+(ciTecnico, idReporte, texto) VALUES
+('33333333', 2, 'Se revisara la instalacion y la configuracion de Java.'),
+('66666666', 3, 'Se detecto perdida de conectividad en el laboratorio.'),
+('33333333', 4, 'Se probo el monitor con un cable alternativo.'),
+('44444444', 5, 'La actualizacion fue instalada correctamente.'),
+('33333333', 6, 'Se esta verificando el punto de red del salon.');
 
 INSERT INTO SOLICITUD
 (id, ciDocente, asunto, descripcion, fechaLimite, horaLimite) VALUES

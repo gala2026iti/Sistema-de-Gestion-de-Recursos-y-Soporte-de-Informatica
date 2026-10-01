@@ -35,8 +35,9 @@ class CargarEquipos
     {
         $parametros = [];
 
-        if ($_SESSION['tecnico']):
-            $sql = "
+        switch ($_SESSION['rolActual']):
+            case 'tecnico':
+                $sql = "
                     SELECT
                         e.id AS idEquipo,
                         e.activo,
@@ -49,9 +50,9 @@ class CargarEquipos
                         ON e.id = eru.idEquipo
 
                 ";
-
-        elseif ($_SESSION['administrador']):
-            $sql = "
+                break;
+            case 'administrador':
+                $sql = "
                     SELECT
                         e.id AS idEquipo,
                         e.fechaCreacion,
@@ -61,20 +62,33 @@ class CargarEquipos
                         eru.idUbicacion,
                         eru.tipoUbicacion,
                         eru.posicion,
-                        COUNT(eugt.idEquipo) AS totalIncidencias
+                        COUNT(r.idEquipo) AS totalIncidencias
                     FROM EQUIPO AS e
                     LEFT JOIN equipo_reside_ubicacion AS eru
                         ON e.id = eru.idEquipo
-                    LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
-                        ON e.id = eugt.idEquipo
+                    LEFT JOIN REPORTE AS r
+                        ON r.idEquipo = e.id
                 ";
 
-            if (!empty($estado)) {
-                $condiciones[] = "e.activo = :activo";
-                $parametros["activo"] = $estado === "activo" ? 1 : 0;
-            }
+                if (!empty($estado)) {
+                    $condiciones[] = "e.activo = :activo";
+                    $parametros["activo"] = $estado === "activo" ? 1 : 0;
+                }
+                break;
 
-        endif;
+            case 'docente':
+                $sql = "
+                    SELECT
+                        e.id AS idEquipo,
+                        eru.posicion
+                    FROM EQUIPO AS e
+                    
+                    LEFT JOIN equipo_reside_ubicacion AS eru
+                        ON e.id = eru.idEquipo
+
+                ";
+                break;
+        endswitch;
 
         $condiciones = [];
 
@@ -97,12 +111,11 @@ class CargarEquipos
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        if($_SESSION['tecnico']) {
-        $sql .= " AND e.activo = TRUE";
-
+        if ($_SESSION['tecnico']) {
+            $sql .= " AND e.activo = TRUE";
         }
 
-         $sql .= "
+        $sql .= "
                     GROUP BY
                         e.id,
                         e.fechaCreacion,
@@ -114,26 +127,26 @@ class CargarEquipos
                         eru.posicion
                 ";
 
-            if (!empty($orden)) {
-                switch ($orden):
-                    case "reciente":
-                        $sql .= "ORDER BY e.ultimaIntervencion DESC";
-                        break;
-                    case "antiguo":
-                        $sql .= "ORDER BY e.ultimaIntervencion ASC";
-                        break;
-                    case "masincidencias":
-                        $sql .= "ORDER BY totalIncidencias DESC";
-                        break;
-                    case "menosincidencias":
-                        $sql .= "ORDER BY totalIncidencias ASC";
-                        break;
-                endswitch;
-            } else {
-                $sql .= "
+        if (!empty($orden)) {
+            switch ($orden):
+                case "reciente":
+                    $sql .= "ORDER BY e.ultimaIntervencion DESC";
+                    break;
+                case "antiguo":
+                    $sql .= "ORDER BY e.ultimaIntervencion ASC";
+                    break;
+                case "masincidencias":
+                    $sql .= "ORDER BY totalIncidencias DESC";
+                    break;
+                case "menosincidencias":
+                    $sql .= "ORDER BY totalIncidencias ASC";
+                    break;
+            endswitch;
+        } else {
+            $sql .= "
                         ORDER BY e.id ASC
                     ";
-            }
+        }
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);

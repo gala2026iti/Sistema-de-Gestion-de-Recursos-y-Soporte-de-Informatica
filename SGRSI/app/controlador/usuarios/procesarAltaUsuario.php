@@ -167,6 +167,7 @@ foreach ($roles as $rol) {
         exit();
     }
 }
+/* PUNTO HASH */
 
 $claveHash = password_hash($clave, PASSWORD_DEFAULT);
 

@@ -1,5 +1,8 @@
 <?php
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * @brief Controla el acceso al panel docente.
  *
@@ -45,4 +48,4 @@ if (!($_SESSION["docente"] && $_SESSION["rolActual"] === "docente")) {
  * Si las comprobaciones son correctas,
  * cargamos la vista del panel.
  */
-require_once __DIR__ . "/../../app/vista/homeDocente.php";
+require_once __DIR__ . "/../../app/controlador/tickets/procesarHomeDocente.php";

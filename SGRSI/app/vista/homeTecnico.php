@@ -184,8 +184,7 @@
                 <td><?= $ticket["fechaCreacion"] . " - " . $ticket["horaCreacion"]  ?></td>
                 <td>
                   <form class="form-estado" action="../../app/controlador/tickets/procesarModificarTicket.php" method="POST">
-                    <input type="hidden" name="id" value="<?= $ticket["id"] ?>">
-                    <input type="hidden" name="idReporte" value="<?= $ticket["idReporte"] ?>">
+                    <input type="hidden" name="idReporte" value="<?= $ticket["id"] ?>">
                     <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="idEquipo" value="<?= $ticket["idEquipo"] ?>">
                     

@@ -81,9 +81,7 @@ class CargarTickets
         if ($ticketsRegistrados) {
             $sql = "
             SELECT 
-                t.id,
-                t.idEquipo,
-                t.idReporte,
+                t.idReporte AS id,
                 t.tipo,
                 t.asunto,
                 t.descripcion,
@@ -91,14 +89,18 @@ class CargarTickets
                 t.estado,
                 t.fechaCreacion,
                 t.horaCreacion,
+                r.idEquipo,
                 EXISTS (
                     SELECT 1
                     FROM COLABORADOR AS c
-                    WHERE c.idTicket = t.id
+                    WHERE c.idReporte = t.idReporte
                       AND c.ciTecnico = :ciTecnico
                 ) AS esColaborador
             FROM TICKET AS t
-                    ";
+
+            LEFT JOIN REPORTE AS r
+            ON r.id = t.idReporte
+";
 
 
             if (!empty($estado)) {
@@ -123,13 +125,13 @@ class CargarTickets
         } else if ($ticketsPersonales) {
             $sql = "
         SELECT 
-            t.id,
+            t.idReporte AS id,
             t.estado,
             t.asunto
             FROM TICKET AS t
 
             LEFT JOIN COLABORADOR AS c
-                ON c.idTicket = t.id
+                ON c.idReporte = t.idReporte
 
             WHERE c.ciTecnico = :ciTecnico;
         ";

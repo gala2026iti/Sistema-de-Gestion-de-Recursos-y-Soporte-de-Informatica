@@ -43,7 +43,7 @@ class Login
         if (!$usuario->estaActivo()) {
             return null;
         }
-
+/* PUNTO HASH                        */
         if (!password_verify($clave, $usuario->getClaveHash())) {
             return null;
         }

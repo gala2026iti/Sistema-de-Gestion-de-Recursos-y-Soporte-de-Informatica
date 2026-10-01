@@ -229,7 +229,7 @@
                 <div id="modalUsuario" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
             <form id="formUsuario" method="POST" action="../../../app/controlador/usuarios/procesarAltaUsuario.php">
                 <input type="hidden" name="csrfToken"
-                    value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                    value="<?= htmlspecialchars($_SESSION["csrfToken"]) ?>">
 
                 <h2 id="tituloFormulario" class="text-primary border-bottom pb-2 mb-4">
                     Registro de usuario

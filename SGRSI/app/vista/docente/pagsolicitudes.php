@@ -92,7 +92,6 @@
   <script src="../../assets/js/btnMenuCelular.js"></script>
   <script src="../../assets/js/cerrarSesion.js"></script>
   <script src="../../assets/js/verificarSesion.js"></script>
-  <script src="../../assets/js/ingresoSolicitudes.js"></script>
 </body>
 
 </html>

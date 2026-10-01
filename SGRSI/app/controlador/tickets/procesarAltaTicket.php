@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * @file procesarAltaTicket.php
  *
@@ -61,6 +64,29 @@ if (
     );
     exit();
 }
+
+$reportes = (json_decode($_POST["equiposReportados"] ?? [], true));
+
+$ticketsAGenerar = [];
+
+foreach ($reportes as $reporte){
+
+$ticket = [];
+
+$ticket[""] = "";
+
+
+    var_dump($reporte[0]);
+    var_dump($reporte[1]);
+    var_dump($reporte[2]);
+    var_dump($reporte[3]);
+    var_dump($reporte[4]);
+    var_dump($reporte[5]);
+    var_dump($reporte[6]);
+    var_dump($reporte[7]);
+
+    }
+    exit;
 
 $idTicket = trim($_POST["idTicket"] ?? "");
 $tipo = trim($_POST["tipo"] ?? "");

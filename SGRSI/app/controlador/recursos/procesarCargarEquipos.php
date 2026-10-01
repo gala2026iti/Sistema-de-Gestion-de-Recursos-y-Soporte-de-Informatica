@@ -40,16 +40,6 @@ if ($conexion === null) {
     exit();
 }
 
-if (!(($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico") || ($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador"))) {
-    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
-
-    header(
-        "Location: ../../../public/paginaWeb/index.php?error="
-        . urlencode($mensaje)
-    );
-    exit();
-}
-
 if (!empty($ubicacion)){
     if(!(is_numeric($ubicacion) && $ubicacion > 0)) {
             
