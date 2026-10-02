@@ -34,6 +34,7 @@ class CargarEquipos
     public function listarEquipos(?string $orden = "", ?string $estado = "", ?string $ubicacion = "", ?string $tipoUbicacion = "", ?string $id = ""): array
     {
         $parametros = [];
+        $condiciones = [];
 
         switch ($_SESSION['rolActual']):
             case 'tecnico':
@@ -88,9 +89,9 @@ class CargarEquipos
 
                 ";
                 break;
+            default:
+                return [];
         endswitch;
-
-        $condiciones = [];
 
         if (!empty($tipoUbicacion)) {
             $condiciones[] = "eru.tipoUbicacion = :tipoUbicacion";
@@ -107,12 +108,12 @@ class CargarEquipos
             $parametros["id"] = $id;
         }
 
-        if (!empty($condiciones)) {
-            $sql .= " WHERE " . implode(" AND ", $condiciones);
+        if ($_SESSION["tecnico"] ?? false) {
+            $condiciones[] = "e.activo = TRUE";
         }
 
-        if ($_SESSION['tecnico']) {
-            $sql .= " AND e.activo = TRUE";
+        if (!empty($condiciones)) {
+            $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
         $sql .= "

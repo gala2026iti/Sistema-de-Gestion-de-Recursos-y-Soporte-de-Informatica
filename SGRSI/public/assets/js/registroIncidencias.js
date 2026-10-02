@@ -1,199 +1,198 @@
+const claveBorradores = "borradorIncidenciasDocente";
+localStorage.removeItem(claveBorradores);
+
+// Posiciones de los datos guardados en cada array de borrador.
+const indiceBorrador = {
+  idUbicacion: 0,
+  tipoUbicacion: 1,
+  idEquipo: 2,
+  estado: 3,
+  tipoIncidencia: 4,
+  asunto: 5,
+  persona: 6,
+  gravedad: 7,
+  descripcion: 8,
+};
+
 const selectorUbicacion = document.getElementById("ubicacionSalon");
 const dialogoIncidencia = document.getElementById("incidencia");
-const tituloIncidencia = document.getElementById("titulo");
 const formularioIncidencia = dialogoIncidencia.querySelector("form");
+const formularioPrincipal = document.getElementById("formIncidencia");
 const campoTipo = document.getElementById("tipo");
 const campoAsunto = document.getElementById("asunto");
 const campoPersona = document.getElementById("persona");
+const campoGravedad = formularioIncidencia.querySelectorAll('input[name="gravedad"]');
 const campoDescripcion = document.getElementById("descripcion");
+const tituloIncidencia = document.getElementById("titulo");
 const botonAceptar = document.getElementById("btnAceptar");
 const botonCancelar = document.getElementById("btnCancelar");
-const formularioPrincipal = document.getElementById("formIncidencia");
 
-let equipoActualId = null;
-let incidenciaGuardada = false;
+let idEquipoActual = null;
+let incidenciaAceptada = false;
 let salidaConfirmada = false;
 
-const confirmarSalida = () => {
-  if (localStorage.getItem("borradorIncidenciasDocente") != null) {
-    const confirmada = window.confirm(
-      "Si salís de esta página, se borrarán los borradores de incidencias. ¿Querés continuar?",
-    );
-    if (!confirmada) return false;
-
-    localStorage.removeItem("borradorIncidenciasDocente");
-  }
-  salidaConfirmada = true;
-  return true;
-};
-
-window.addEventListener("beforeunload", (e) => {
-  if (salidaConfirmada) return;
-
-  e.preventDefault();
-});
-
-document.addEventListener("submit", (e) => {
-  if (e.target.id === "formIncidencia") return;
-  if (!confirmarSalida()) e.preventDefault();
-});
-
 const leerBorradores = () => {
-  try {
-    const borradores = JSON.parse(
-      localStorage.getItem("borradorIncidenciasDocente") || "[]",
-    );
-    return Array.isArray(borradores) ? borradores : [];
-  } catch {
-    return [];
-  }
+  const textoBorradores = localStorage.getItem(claveBorradores) || "[]";
+  return JSON.parse(textoBorradores);
 };
 
-const obtenerUbicacion = () => selectorUbicacion?.value || "";
+const guardarBorradores = (borradores) => {
+  localStorage.setItem(claveBorradores, JSON.stringify(borradores));
+};
+
+const obtenerUbicacionSeleccionada = () => {
+  const [tipoUbicacion, idUbicacion] = selectorUbicacion.value.split("-");
+  return { idUbicacion, tipoUbicacion };
+};
+
+const buscarBorrador = (idEquipo) => {
+  const { idUbicacion, tipoUbicacion } = obtenerUbicacionSeleccionada();
+  const borradores = leerBorradores();
+
+  return borradores.find((borrador) =>
+    String(borrador[indiceBorrador.idUbicacion]) === String(idUbicacion) &&
+    borrador[indiceBorrador.tipoUbicacion] === tipoUbicacion &&
+    String(borrador[indiceBorrador.idEquipo]) === String(idEquipo)
+  );
+};
 
 const guardarBorrador = (estado = "incidencia") => {
-  if (equipoActualId === null || equipoActualId === undefined) return;
+  if (idEquipoActual === null) return;
 
-  const ubicacion = obtenerUbicacion();
-  const gravedad =
-    formularioIncidencia?.querySelector('input[name="gravedad"]:checked')
-      ?.value || "";
-  const fila = [
-    ubicacion,
-    String(equipoActualId),
-    estado,
-    campoTipo.value ?? "",
-    campoAsunto.value ?? "",
-    campoPersona.value ?? "",
-    gravedad,
-    campoDescripcion.value ?? "",
-  ];
+  const { idUbicacion, tipoUbicacion } = obtenerUbicacionSeleccionada();
+  const gravedadSeleccionada = formularioIncidencia.querySelector(
+    'input[name="gravedad"]:checked',
+  );
+
+  const borradorActual = [];
+  borradorActual[indiceBorrador.idUbicacion] = idUbicacion;
+  borradorActual[indiceBorrador.tipoUbicacion] = tipoUbicacion;
+  borradorActual[indiceBorrador.idEquipo] = String(idEquipoActual);
+  borradorActual[indiceBorrador.estado] = estado;
+  borradorActual[indiceBorrador.tipoIncidencia] = campoTipo.value;
+  borradorActual[indiceBorrador.asunto] = campoAsunto.value;
+  borradorActual[indiceBorrador.persona] = campoPersona.value.trim();
+  borradorActual[indiceBorrador.gravedad] = gravedadSeleccionada?.value || "";
+  borradorActual[indiceBorrador.descripcion] = campoDescripcion.value;
 
   const borradores = leerBorradores();
-  const indice = borradores.findIndex(
-    (borrador) =>
-      borrador[0] === ubicacion &&
-      String(borrador[1]) === String(equipoActualId),
+  const indiceExistente = borradores.findIndex((borrador) =>
+    String(borrador[indiceBorrador.idUbicacion]) === String(idUbicacion) &&
+    borrador[indiceBorrador.tipoUbicacion] === tipoUbicacion &&
+    String(borrador[indiceBorrador.idEquipo]) === String(idEquipoActual)
   );
 
-  if (indice === -1) borradores.push(fila);
-  else borradores[indice] = fila;
+  if (indiceExistente === -1) {
+    borradores.push(borradorActual);
+  } else {
+    borradores[indiceExistente] = borradorActual;
+  }
 
-  localStorage.setItem(
-    "borradorIncidenciasDocente",
-    JSON.stringify(borradores),
-  );
+  guardarBorradores(borradores);
 };
 
-const obtenerBorrador = (idEquipo) =>
-  leerBorradores().find(
-    (borrador) =>
-      Array.isArray(borrador) &&
-      borrador[0] === obtenerUbicacion() &&
-      String(borrador[1]) === String(idEquipo),
-  );
+const cargarBorradorEnFormulario = (borrador) => {
+  campoTipo.value = borrador?.[indiceBorrador.tipoIncidencia] || "";
+  campoAsunto.value = borrador?.[indiceBorrador.asunto] || "";
+  campoPersona.value = borrador?.[indiceBorrador.persona] || "";
+  campoDescripcion.value = borrador?.[indiceBorrador.descripcion] || "";
+
+  campoGravedad.forEach((opcion) => {
+    opcion.checked = opcion.value === (borrador?.[indiceBorrador.gravedad] || "");
+  });
+};
 
 const abrirFormularioIncidencia = (idEquipo) => {
-  if (!dialogoIncidencia || !formularioIncidencia) return;
-
-  equipoActualId = idEquipo;
-  incidenciaGuardada = false;
-  const borrador = obtenerBorrador(idEquipo) || [];
+  idEquipoActual = idEquipo;
+  incidenciaAceptada = false;
   tituloIncidencia.textContent = `Registro de incidencia - PC: ${idEquipo}`;
 
-  campoTipo.value = borrador[3] ?? "";
-  campoAsunto.value = borrador[4] ?? "";
-  campoPersona.value = borrador[5] ?? "";
-  campoDescripcion.value = borrador[7] ?? "";
-
-  formularioIncidencia
-    .querySelectorAll('input[name="gravedad"]')
-    .forEach((r) => {
-      r.checked = r.value === (borrador[6] || "");
-    });
-
+  cargarBorradorEnFormulario(buscarBorrador(idEquipo));
   guardarBorrador("incidencia");
-  if (!dialogoIncidencia.open) dialogoIncidencia.showModal();
+  dialogoIncidencia.showModal();
 };
 
 const cerrarFormularioIncidencia = () => {
-  if (dialogoIncidencia?.open) dialogoIncidencia.close();
+  dialogoIncidencia.close();
 };
 
-dialogoIncidencia?.addEventListener("close", () => {
-  if (!incidenciaGuardada && equipoActualId !== null) {
-    const rSinIncidencia = document.getElementById(`ok-${equipoActualId}`);
-    if (rSinIncidencia) rSinIncidencia.checked = true;
+const confirmarCambioDeUbicacion = () => {
+  if (localStorage.getItem(claveBorradores) === null) return true;
 
-    guardarBorrador("ok");
-  }
+  const confirmado = window.confirm(
+    "Si salís de esta página, se borrarán los borradores de incidencias. ¿Querés continuar?",
+  );
+  if (confirmado) localStorage.removeItem(claveBorradores);
+  return confirmado;
+};
 
-  equipoActualId = null;
+window.addEventListener("beforeunload", (evento) => {
+  if (!salidaConfirmada) evento.preventDefault();
 });
 
-document.addEventListener("change", (e) => {
-  const r = e.target;
-  if (r.type !== "radio") return;
+document.addEventListener("change", (evento) => {
+  const opcionEstado = evento.target;
+  if (opcionEstado.type !== "radio") return;
+  if (!opcionEstado.name.startsWith("estado-")) return;
 
-  const coincidencia = r.name.match(/^estado-(.+)$/);
-  if (!coincidencia) return;
+  idEquipoActual = opcionEstado.name.replace("estado-", "");
 
-  const idEquipo = coincidencia[1];
-  if (r.value === "incidencia") {
-    abrirFormularioIncidencia(idEquipo);
-    return;
+  if (opcionEstado.value === "incidencia") {
+    abrirFormularioIncidencia(idEquipoActual);
+  } else {
+    guardarBorrador(opcionEstado.value);
   }
-
-  equipoActualId = idEquipo;
-  guardarBorrador(r.value);
 });
 
 formularioIncidencia.addEventListener("input", () => guardarBorrador());
 formularioIncidencia.addEventListener("change", () => guardarBorrador());
+formularioIncidencia.addEventListener("submit", (evento) => evento.preventDefault());
+
+dialogoIncidencia.addEventListener("close", () => {
+  if (!incidenciaAceptada && idEquipoActual !== null) {
+    document.getElementById(`ok-${idEquipoActual}`).checked = true;
+    guardarBorrador("ok");
+  }
+  idEquipoActual = null;
+});
 
 botonAceptar.addEventListener("click", () => {
   guardarBorrador("incidencia");
-  incidenciaGuardada = true;
+  incidenciaAceptada = true;
   cerrarFormularioIncidencia();
 });
 
-botonCancelar.addEventListener("click", () => {
-  cerrarFormularioIncidencia();
-});
-
-document
-  .getElementById("formIncidencia")
-  .addEventListener("submit", (e) => e.preventDefault());
+botonCancelar.addEventListener("click", cerrarFormularioIncidencia);
 
 selectorUbicacion.addEventListener("change", () => {
-  const opcionSeleccionada =
-    selectorUbicacion.options[selectorUbicacion.selectedIndex];
-  if (!opcionSeleccionada?.value) return;
+  const opcionSeleccionada = selectorUbicacion.options[selectorUbicacion.selectedIndex];
+  if (!opcionSeleccionada.value) return;
 
-  const tipo = opcionSeleccionada.classList.contains("opcion-laboratorio")
+  const { idUbicacion } = obtenerUbicacionSeleccionada();
+  const tipoUbicacion = opcionSeleccionada.classList.contains("opcion-laboratorio")
     ? "laboratorio"
-    : opcionSeleccionada.classList.contains("opcion-taller")
-      ? "taller"
-      : null;
+    : "taller";
 
-  if (tipo) {
-    if (confirmarSalida()) {
-      window.location.href = `homeDocente.php?tipo=${tipo}&ubicacion=${opcionSeleccionada.value}`;
-    } else {
-      selectorUbicacion.selectedIndex = 0;
-    }
+  if (confirmarCambioDeUbicacion()) {
+    salidaConfirmada = true;
+    window.location.href = `homeDocente.php?tipo=${tipoUbicacion}&ubicacion=${idUbicacion}`;
+  } else {
+    selectorUbicacion.selectedIndex = 0;
   }
 });
 
-formularioPrincipal.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const input = document.createElement("input");
+formularioPrincipal.addEventListener("submit", (evento) => {
+  evento.preventDefault();
 
-  input.type = "hidden";
-  input.name = "equiposReportados";
-  input.value = localStorage.getItem("borradorIncidenciasDocente");
+  let campoReportes = formularioPrincipal.querySelector('input[name="equiposReportados"]');
+  if (!campoReportes) {
+    campoReportes = document.createElement("input");
+    campoReportes.type = "hidden";
+    campoReportes.name = "equiposReportados";
+    formularioPrincipal.appendChild(campoReportes);
+  }
 
-  formularioPrincipal.appendChild(input);
-    formularioPrincipal.submit();
-
+  campoReportes.value = JSON.stringify(leerBorradores());
+  salidaConfirmada = true;
+  formularioPrincipal.submit();
 });

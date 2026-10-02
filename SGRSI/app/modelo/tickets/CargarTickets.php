@@ -67,7 +67,7 @@ class CargarTickets
         return [$ticketsRegistrados, $ticketsPersonales, $detalleTicket];
     }
 
-    public function listarTickets(string $ciTecnico, ?string $orden, ?string $gravedad, ?string $tipo, ?string $estado, ?string $idTicket, ?string $idEquipo, ?string $idReporte): array
+    public function listarTickets(string $ciTecnico, ?string $orden, ?string $gravedad, ?string $tipo, ?string $estado, ?string $idEquipo, ?string $idReporte): array
     {
         $resultadoURL = $this->obtenerURL();
 
@@ -113,9 +113,9 @@ class CargarTickets
                 $parametros["gravedad"] = $gravedad;
             }
 
-            if (!empty($idTicket)) {
-                $condiciones[] = "t.id = :idTicket";
-                $parametros["idTicket"] = $idTicket;
+            if (!empty($idReporte)) {
+                $condiciones[] = "t.idReporte = :idReporte";
+                $parametros["idReporte"] = $idReporte;
             }
 
             if (!empty($tipo)) {
@@ -138,10 +138,10 @@ class CargarTickets
         } else if ($detalleTicket) {
             $sql = "
 SELECT 
-    t.id,
-    t.idEquipo,
-    t.idReporte,
+    t.idReporte as id,
+    r.idEquipo,
     t.tipo,
+    t.persona,
     t.asunto,
     t.descripcion,
     t.gravedad,
@@ -156,21 +156,17 @@ SELECT
             SEPARATOR ','
         )
         FROM COLABORADOR AS c
-        WHERE c.idTicket = t.id
-          AND c.idReporte = t.idReporte
-          AND c.idEquipo = t.idEquipo
-    ) AS colaboradores 
-    FROM TICKET AS t;
-        ";
+        WHERE c.idReporte = t.idReporte
 
-            $condiciones[] = "t.id = :id";
-            $parametros["id"] = $idTicket;
+    ) AS colaboradores 
+    FROM TICKET AS t
+
+    LEFT JOIN REPORTE AS r ON 
+        r.id = t.idReporte
+        ";
 
             $condiciones[] = "t.idReporte = :idReporte";
             $parametros["idReporte"] = $idReporte;
-
-            $condiciones[] = "t.idEquipo = :idEquipo";
-            $parametros["idEquipo"] = $idEquipo;
         }
 
         if (!empty($condiciones)) {

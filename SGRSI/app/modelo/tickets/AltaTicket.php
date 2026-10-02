@@ -43,16 +43,15 @@ class AltaTicket
         string $asunto,
         string $descripcion,
         string $gravedad,
-        string $estado,
-        string $fechaCreacion,
-        string $horaCreacion,
+        string $persona
+
     ): bool {
         try {
             $this->conexion->beginTransaction();
 
             $sqlTicket = "
-                INSERT INTO TICKET (id, tipo, asunto, descripcion, gravedad)
-                VALUES (:id, :tipo, :asunto, :descripcion, :gravedad)
+                INSERT INTO TICKET (id, tipo, asunto, descripcion, gravedad, persona)
+                VALUES (:id, :tipo, :asunto, :descripcion, :gravedad, :persona)
             ";
 
             $consultaTicket = $this->conexion->prepare($sqlTicket);
@@ -62,6 +61,7 @@ class AltaTicket
                 "asunto" => $asunto,
                 "descripcion" => $descripcion,
                 "gravedad" => $gravedad,
+                "persona" => $persona
             ]);
 
             $this->conexion->commit();

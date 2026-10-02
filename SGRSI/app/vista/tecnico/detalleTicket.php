@@ -1,3 +1,4 @@
+<?php var_dump($tickets); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -55,14 +56,14 @@
         <section class="border-bottom pb-3 mb-4">
             <div class="d-flex align-items-center justify-content-between w-100">
                 <h2 class="text-start mb-0 text-primary" id="tituloTicket">
-                    Nombre no disponible... <span class="fw-bold" id="txt-id-ticket">#--</span>
+                    <?= $tickets[0]["asunto"] ?> - ID: <?= $tickets[0]["id"] ?>
                 </h2>
-                <a id="btnVolver" class="btn-asignar">Volver</a>
+                <a href="../tecnico/ticketsPersonales.php" class="btn btn-secondary text-bold">Volver</a>
             </div>
             <div class="d-flex flex-wrap align-items-center gap-2 text-muted small">
-                <span class="badge bg-secondary px-2 py-1 fs-6" id="pendiente">Pendiente</span>
-                <span class="badge bg-secondary px-2 py-1 fs-6" id="proceso">En proceso</span>
-                <span class="badge bg-secondary px-2 py-1 fs-6" id="resuelto">Resuelto</span>
+                <span class="badge bg-<?php if($tickets[0]["estado"] === "pendiente") echo "danger"; else echo "secondary"; ?> px-2 py-1 fs-6" id="pendiente">Pendiente</span>
+                <span class="badge bg-<?php if($tickets[0]["estado"] === "en proceso") echo "warning"; else echo "secondary"; ?> px-2 py-1 fs-6" id="proceso">En proceso</span>
+                <span class="badge bg-<?php if($tickets[0]["estado"] === "resuelto") echo "success"; else echo "secondary"; ?> px-2 py-1 fs-6" id="resuelto">Resuelto</span>
             </div>
         </section>
 
@@ -75,7 +76,7 @@
                 <button type="button" id="btnAutoasignar" class="btn btn-success py-1 px-2 fs-7">Asignarse a mí</button>
             </div>
             <input type="text" id="usuarioAsignado" name="usuarioAsignado" class="form-control bg-white text-dark mb-3"
-                readonly>
+                readonly value="<?= $tickets[0]["colaboradores"] ?>">
 
             <label for="selectorEstado" class="form-label fw-bold text-secondary">Estado del flujo operativo</label>
             <select id="selectorEstado" name="selectorEstado" class="form-select mb-3">
@@ -94,15 +95,15 @@
             <input type="text" id="ubicacionSalon" name="ubicacionSalon" class="form-control bg-white mb-3" readonly>
 
             <label for="entradaPC" class="form-label small fw-bold text-secondary">ID PC</label>
-            <input type="text" id="entradaPC" name="entradaPC" class="form-control bg-white mb-3" readonly>
+            <input type="text" id="entradaPC" name="entradaPC" class="form-control bg-white mb-3" value="<?= $tickets[0]["idEquipo"] ?>" readonly>
 
             <label for="entradaCategoria" class="form-label small fw-bold text-secondary">Categoría del Problema</label>
-            <input type="text" id="entradaCategoria" name="entradaCategoria" class="form-control bg-white mb-3"
+            <input type="text" id="entradaCategoria" name="entradaCategoria" class="form-control bg-white mb-3" value="<?= $tickets[0]["tipo"] ?>"
                 readonly>
 
             <label for="contenido" class="form-label small fw-bold text-secondary">Descripción original del
                 problema</label>
-            <textarea name="contenido" id="contenido" class="form-control bg-white mb-3" readonly></textarea>
+            <textarea name="contenido" id="contenido" class="form-control bg-white mb-3" readonly> <?= $tickets[0]["descripcion"] ?> </textarea>
 
             <div id="espacioJustificacion" class="mb-4 d-none">
                 <label for="justificacion" class="form-label small fw-bold text-success">Resolución Técnica Técnico
@@ -144,7 +145,6 @@
     <script src="../../../public/assets/js/btnMenuCelular.js"></script>
     <script src="../../../public/assets/js/verificarSesion.js"></script>
     <script src="../../../public/assets/js/cerrarSesion.js"></script>
-    <script src="../../../public/assets/js/gestionTickets.js"></script>
 </body>
 
 </html>

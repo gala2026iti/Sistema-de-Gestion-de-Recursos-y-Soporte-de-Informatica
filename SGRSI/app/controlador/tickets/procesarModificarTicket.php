@@ -65,7 +65,7 @@ if (
     exit();
 }
 
-$idTicket = htmlspecialchars(trim($_POST["id"] ?? ""));
+$idTicket = htmlspecialchars(trim($_POST["idReporte"] ?? ""));
 $csrfToken = htmlspecialchars(trim($_POST["csrfToken"] ?? ""));
 $ciTecnico = htmlspecialchars(trim($_SESSION["cedula"] ?? ""));
 $idEquipo = htmlspecialchars(trim($_POST["idEquipo"] ?? ""));
@@ -135,24 +135,26 @@ $modificarDatosTicket = new ModificarDatosTicket($conexion);
 
 if($accion === "asignarse") {
     $resultado = $modificarDatosTicket->asignarme(
-        $idTicket,
         $ciTecnico,
-        $idEquipo,
         $idReporte
             );
 } else {
     $resultado = $modificarDatosTicket->desasignarme(
-        $idTicket
+        $idReporte
             );
 }
 
 $conectorPDO->desconectar();
 
 if (!$resultado) {
-    $mensaje = "No se le pudo asignar/desasignar el ticket.";
+    if($accion === "asignarse") {
+        $mensaje = "No se le pudo asignar el ticket.";
+    } else {
+        $mensaje = "No se le pudo desasignar el ticket.";
+    }
 
     header(
-        "Location: ../../../public/paginaWeb/tecnico/homeTecnico.php?error="
+        "Location: ../../../public/paginaWeb/homeTecnico.php?error="
         . urlencode($mensaje)
     );
     exit();

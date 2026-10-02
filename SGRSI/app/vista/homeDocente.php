@@ -87,7 +87,7 @@
                         <optgroup label="Laboratorios" id="grupoLaboratorio"></optgroup>
                         <?php foreach ($ubicaciones as $ubicacion): ?>
                             <?php if (strtolower((string)$ubicacion['tipo']) === 'laboratorio'): ?>
-                                <option class="opcion-laboratorio" value="<?= $ubicacion['id'] ?>"
+                                <option class="opcion-laboratorio" value="laboratorio-<?= $ubicacion['id'] ?>"
                                     <?php if ((string)$ubicacion['id'] === (string)($_GET['ubicacion'] ?? '') && strtolower((string)$ubicacion['tipo']) === strtolower((string)($_GET['tipo'] ?? ''))): ?>
                                     selected
                                     <?php $existe = true; ?>
@@ -98,7 +98,7 @@
                         <optgroup label="Talleres" id="grupoTalleres"></optgroup>
                         <?php foreach ($ubicaciones as $ubicacion): ?>
                             <?php if (strtolower((string)$ubicacion['tipo']) === 'taller'): ?>
-                                <option class="opcion-taller" value="<?= $ubicacion['id'] ?>"
+                                <option class="opcion-taller" value="taller-<?= $ubicacion['id'] ?>"
                                     <?php if ((string)$ubicacion['id'] === (string)($_GET['ubicacion'] ?? '') && strtolower((string)$ubicacion['tipo']) === strtolower((string)($_GET['tipo'] ?? ''))): ?>
                                     selected
                                     <?php $existe = true; ?>
@@ -156,7 +156,7 @@
 
                     <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso
                         de la PC</label>
-                    <input type="text" id="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez">
+                    <input type="text" id="persona" name="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez">
 
                     <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la incidencia</label>
                     <div class="grupo-radios d-flex flex-wrap gap-4 mb-3">

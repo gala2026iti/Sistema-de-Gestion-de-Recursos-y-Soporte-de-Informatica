@@ -243,6 +243,7 @@ CREATE TABLE IF NOT EXISTS TICKET (
     asunto VARCHAR(150) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     gravedad VARCHAR(20) NOT NULL,
+    persona VARCHAR(50) NOT NULL,
     estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
     fechaCreacion DATE NOT NULL DEFAULT (CURRENT_DATE),
     horaCreacion TIME NOT NULL DEFAULT (CURRENT_TIME),
@@ -414,13 +415,13 @@ INSERT INTO REPORTE (id, idEquipo) VALUES
 (6, 6);
 
 INSERT INTO TICKET
-(idReporte, tipo, asunto, descripcion, gravedad, estado, justificacion) VALUES
-(1, 'hardware', 'Teclado no responde', 'El teclado del equipo deja de responder de forma intermitente.', 'ligera', 'pendiente', NULL),
-(2, 'software', 'NetBeans no inicia', 'La aplicacion NetBeans se cierra inmediatamente al abrirla.', 'media', 'en proceso', NULL),
-(3, 'red', 'Sin conexion a Internet', 'Los equipos del laboratorio no pueden acceder a la red.', 'grave', 'pendiente', NULL),
-(4, 'hardware', 'Monitor sin imagen', 'El monitor enciende pero no recibe señal del equipo.', 'grave', 'resuelto', 'Se reemplazo el cable de video defectuoso.'),
-(5, 'software', 'Navegador desactualizado', 'El navegador instalado no permite acceder correctamente a algunas plataformas.', 'ligera', 'resuelto', 'Se actualizo el navegador a la version disponible.'),
-(6, 'red', 'Conexion inestable', 'La conexion de red presenta cortes durante las clases.', 'media', 'en proceso', NULL);
+(idReporte, tipo, asunto, descripcion, gravedad, estado, persona, justificacion) VALUES
+(1, 'hardware', 'Teclado no responde', 'El teclado del equipo deja de responder de forma intermitente.', 'ligera', 'pendiente', "Lucas Gómez", NULL),
+(2, 'software', 'NetBeans no inicia', 'La aplicacion NetBeans se cierra inmediatamente al abrirla.', 'media', 'en proceso', "Ana Martínez", NULL),
+(3, 'red', 'Sin conexion a Internet', 'Los equipos del laboratorio no pueden acceder a la red.', 'grave', 'pendiente', "Juan Lemos", NULL),
+(4, 'hardware', 'Monitor sin imagen', 'El monitor enciende pero no recibe señal del equipo.', 'grave', 'resuelto', "Lucas Varela", 'Se reemplazo el cable de video defectuoso.'),
+(5, 'software', 'Navegador desactualizado', 'El navegador instalado no permite acceder correctamente a algunas plataformas.', 'ligera', 'resuelto', "Esteban Villanger", 'Se actualizo el navegador a la version disponible.'),
+(6, 'red', 'Conexion inestable', 'La conexion de red presenta cortes durante las clases.', 'media', 'en proceso', "Martina Etcherver", NULL);
 
 INSERT INTO docente_reporta_reporte
 (ciDocente, idReporte) VALUES

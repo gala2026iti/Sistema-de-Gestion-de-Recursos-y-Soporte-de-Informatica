@@ -15,14 +15,13 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/tickets/CargarTickets.php";
 
-$idTicket = htmlspecialchars(trim($_GET["id"] ?? ""));
 
 $orden = strtolower(htmlspecialchars(trim($_GET["orden"] ?? "")));
 $gravedad = strtolower(htmlspecialchars(trim($_GET["gravedad"] ?? "")));
 $tipo = strtolower(htmlspecialchars(trim($_GET["tipo"] ?? "")));
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
 $ciTecnico = trim($_SESSION["cedula"] ?? "");
-$idReporte = htmlspecialchars(trim($_GET["idReporte"] ?? ""));
+$idReporte = htmlspecialchars(trim($_GET["id"] ?? ""));
 $idEquipo = htmlspecialchars(trim($_GET["idEquipo"] ?? ""));
 
 if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
@@ -65,7 +64,7 @@ if (!is_numeric($ciTecnico) || strlen($ciTecnico) !== 8) {
     exit();
 }
 
-if (!empty($idTicket) && !is_numeric($idTicket)) {
+if (!empty($idReporte) && !is_numeric($idReporte)) {
     $mensaje = "Error al cargar la información del ticket.";
 
     header(
@@ -76,7 +75,7 @@ if (!empty($idTicket) && !is_numeric($idTicket)) {
 }
 
 $accesoDatosTicket = new CargarTickets($conexion);
-$tickets = $accesoDatosTicket->listarTickets($ciTecnico, $orden, $gravedad, $tipo, $estado, $idTicket, $idEquipo, $idReporte);
+$tickets = $accesoDatosTicket->listarTickets($ciTecnico, $orden, $gravedad, $tipo, $estado, $idEquipo, $idReporte);
 
 $conectorPDO->desconectar();
 

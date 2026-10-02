@@ -33,24 +33,20 @@ class ModificarDatosTicket
      *              false si ocurrió un error.
      */
     public function asignarme(
-        string $idTicket,
         string $ciTecnico,
-        string $idEquipo,
         string $idReporte
     ): bool {
         try {
             $this->conexion->beginTransaction();
 
                 $sqlColaborador = "
-                INSERT INTO COLABORADOR (idTicket, ciTecnico, idEquipo, idReporte)
-                VALUES (:idTicket, :ciTecnico, :idEquipo, :idReporte)
+                INSERT INTO COLABORADOR (ciTecnico, idReporte)
+                VALUES (:ciTecnico, :idReporte)
                 ";
 
             $consultaColaborador = $this->conexion->prepare($sqlColaborador);
             $consultaColaborador->execute([
-                "idTicket" => $idTicket,
                 "ciTecnico" => $ciTecnico,
-                "idEquipo" => $idEquipo,
                 "idReporte" => $idReporte
             ]);
 
@@ -77,7 +73,7 @@ class ModificarDatosTicket
          *              false si ocurrió un error.
          */
         public function desasignarme(
-        string $idTicket
+        string $idReporte
     ): bool {
         try {
             $ciTecnico = $_SESSION['cedula'];
@@ -85,12 +81,12 @@ class ModificarDatosTicket
 
                 $sqlColaborador = "
                 DELETE FROM COLABORADOR
-                WHERE idTicket = :idTicket AND ciTecnico = :ciTecnico
+                WHERE idReporte = :idReporte AND ciTecnico = :ciTecnico
                 ";
 
             $consultaColaborador = $this->conexion->prepare($sqlColaborador);
             $consultaColaborador->execute([
-                "idTicket" => $idTicket,
+                "idReporte" => $idReporte,
                 "ciTecnico" => $ciTecnico
             ]);
 

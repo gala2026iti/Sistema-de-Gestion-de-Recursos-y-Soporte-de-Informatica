@@ -16,9 +16,18 @@ require_once RUTA_MODELO . "/recursos/CargarEquipos.php";
 $id = htmlspecialchars(trim($_GET["id"] ?? ""));
 $orden = strtolower(htmlspecialchars(trim($_GET["orden"] ?? "")));
 $estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
-$ubicacion = htmlspecialchars(trim($_GET["ubicacion"] ?? ""));
-$tipoUbicacion = strtolower(htmlspecialchars(trim($_GET["tipoUbicacion"] ?? "")));
 
+$ubicacion = strtolower(htmlspecialchars(trim($_GET["ubicacion"] ?? "")));
+$tipoUbicacion = strtolower(htmlspecialchars(trim(
+    $_GET["tipoUbicacion"] ?? $_GET["tipo"] ?? ""
+)));
+
+// Compatibilidad con enlaces antiguos que envían "tipo-id" en ubicacion.
+if (str_contains($ubicacion, "-")) {
+    [$tipoEnUbicacion, $idEnUbicacion] = explode("-", $ubicacion, 2);
+    $tipoUbicacion = $tipoUbicacion !== "" ? $tipoUbicacion : $tipoEnUbicacion;
+    $ubicacion = $idEnUbicacion;
+}
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
