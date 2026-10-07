@@ -41,49 +41,35 @@ class AltaSolicitud
      *              false si ocurrió un error.
      */
     public function registrarSolicitud(
-        string $id,
         string $asunto,
         string $descripcion,
         string $fechaLimite,
         string $horaLimite,
-        string $ciDocente,
-        string $fecha,
-        string $hora
+        string $ciDocente
     ): bool {
         try {
             $this->conexion->beginTransaction();
 
             $sqlSolicitud = "
-                INSERT INTO SOLICITUD (id, asunto, descripcion, fecha_limite, hora_limite, finalizada)
-                VALUES (:idSolicitud, :asunto, :descripcion, :fechaLimite, :horaLimite, FALSE)
-            ";
-
-            $sqlDocente = "
-                INSERT INTO docente_ingresa_solicitud (ciDocente, idSolicitud, fecha, hora)
-                VALUES (:ciDocente, :idSolicitud, :fecha, :hora)
+                INSERT INTO SOLICITUD (ciDocente, asunto, descripcion, fechaLimite, horaLimite)
+                VALUES (:ciDocente, :asunto, :descripcion, :fechaLimite, :horaLimite)
             ";
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
             $consultaSolicitud->execute([
-                "idSolicitud" => $id,
+                "ciDocente" => $ciDocente,
                 "asunto" => $asunto,
                 "descripcion" => $descripcion,
                 "fechaLimite" => $fechaLimite,
                 "horaLimite" => $horaLimite
             ]);
 
-            $consultaDocente = $this->conexion->prepare($sqlDocente);
-            $consultaDocente->execute([
-                "ciDocente" => $ciDocente,
-                "idSolicitud" => $id,
-                "fecha" => $fecha,
-                "hora" => $hora
-            ]);
-
             $this->conexion->commit();
             return true;
 
         } catch (PDOException $error) {
+            var_dump($error->getMessage());
+            exit;
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }

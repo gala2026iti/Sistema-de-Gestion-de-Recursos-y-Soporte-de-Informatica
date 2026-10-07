@@ -1,5 +1,9 @@
 <?php
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * @brief Gestiona la asignación de técnicos a tickets.
  *
@@ -29,23 +33,25 @@ class ModificarDatosTicket
      *              false si ocurrió un error.
      */
     public function asignarme(
-        string $idTicket
+        string $idTicket,
+        string $ciTecnico,
+        string $idEquipo,
+        string $idReporte
     ): bool {
         try {
-            $ciTecnico = $_SESSION['ci'];
             $this->conexion->beginTransaction();
 
                 $sqlColaborador = "
-                INSERT INTO COLABORADOR (idTicket, ciTecnico)
-                VALUES (:idTicket, :ciTecnico)
+                INSERT INTO COLABORADOR (idTicket, ciTecnico, idEquipo, idReporte)
+                VALUES (:idTicket, :ciTecnico, :idEquipo, :idReporte)
                 ";
-
-                
 
             $consultaColaborador = $this->conexion->prepare($sqlColaborador);
             $consultaColaborador->execute([
                 "idTicket" => $idTicket,
-                "ciTecnico" => $ciTecnico
+                "ciTecnico" => $ciTecnico,
+                "idEquipo" => $idEquipo,
+                "idReporte" => $idReporte
             ]);
 
             $this->conexion->commit();
@@ -54,6 +60,9 @@ class ModificarDatosTicket
         } catch (PDOException $error) {
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
+
+                var_dump($error->getMessage());
+                exit;
             }
 
             return false;
@@ -71,7 +80,7 @@ class ModificarDatosTicket
         string $idTicket
     ): bool {
         try {
-            $ciTecnico = $_SESSION['ci'];
+            $ciTecnico = $_SESSION['cedula'];
             $this->conexion->beginTransaction();
 
                 $sqlColaborador = "

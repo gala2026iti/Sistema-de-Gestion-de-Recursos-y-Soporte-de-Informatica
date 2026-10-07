@@ -33,7 +33,7 @@ class CargarSolicitudes
  *
  * @return array Lista de solicitudes encontradas.
  */
-public function listarSolicitudes(string $estado = ""): array  //Opciones: pendiente, finalizada
+public function listarSolicitudes(string $estado = "", string $id = ""): array 
     {
         $sql ="
             SELECT
@@ -43,22 +43,19 @@ public function listarSolicitudes(string $estado = ""): array  //Opciones: pendi
             s.fechaLimite,
             s.horaLimite,
             s.finalizada,
-            dis.ciDocente,
+            s.ciDocente,
             u.nombre
 
             FROM SOLICITUD AS s
 
-            INNER JOIN docente_ingresa_solicitud AS dis
-            ON dis.idSolicitud = s.id
-
             INNER JOIN USUARIO AS u
-            ON u.ci = dis.ciDocente
+            ON u.ci = s.ciDocente
         ";
 
         $condiciones = [];
         $parametros = [];
 
-        if ($estado === "finalizado") {
+        if ($estado === "finalizada") {
             $condiciones[] = "s.finalizada = :finalizada";
             $parametros["finalizada"] = 1;
         } elseif ($estado === "pendiente") {
@@ -66,6 +63,10 @@ public function listarSolicitudes(string $estado = ""): array  //Opciones: pendi
             $parametros["finalizada"] = 0;
         }
 
+        if(!empty($id)) {
+            $condiciones[] = "s.id = :id";
+            $parametros["id"] = $id;
+        }
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);

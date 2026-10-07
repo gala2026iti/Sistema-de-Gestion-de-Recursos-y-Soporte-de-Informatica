@@ -10,13 +10,10 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
-.form-estado-usuario {
-    display: inline;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    border: 0;
+.oculto {
+    display: none !important;
 }
+
 @media (max-width: 576px) {
 
     .modal-contenido {

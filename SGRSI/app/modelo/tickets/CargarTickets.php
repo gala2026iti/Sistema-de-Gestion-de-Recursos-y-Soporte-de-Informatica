@@ -14,7 +14,7 @@ class CargarTickets
      */
     private PDO $conexion;
 
-   /**
+    /**
      * @brief Construye el acceso a datos.
      *
      * @param PDO $conexion Conexión PDO con la base de datos.
@@ -28,14 +28,60 @@ class CargarTickets
      * @brief Busca un ticket por su identificador.
      *
      * @param string $id Identificador del ticket.
+
+
+
+    /**
+     * @brief Obtiene un listado aplicando filtros opcionales.
      *
-     * @return Ticket|null Ticket encontrado; null si no existe.
+     * @param string $tiempo Criterio de orden temporal.
+     * @param string $gravedad Gravedad por la cual filtrar.
+     * @param string $tipo Clasificación por la cual filtrar.
+     * @param string $estado Estado por el cual filtrar.
+     *
+     * @return array Lista de registros obtenidos.
      */
-    public function buscarTicket(string $id): ?Ticket
+    public function obtenerURL(): array
     {
-        $sql = "
-            SELECT
-                t.id,
+        $url = $_SERVER["REQUEST_URI"];
+        $urlDividida = explode("/", $url);
+
+        $ticketsRegistrados = false;
+        $ticketsPersonales = false;
+        $detalleTicket = false;
+
+
+        foreach ($urlDividida as $seccion) {
+            $subseccion = explode("?", $seccion);
+            foreach ($subseccion as $subsubseccion) {
+                if ($subsubseccion === "homeTecnico.php") {
+                    $ticketsRegistrados = true;
+                    break;
+                } elseif ($subsubseccion === "ticketsPersonales.php") {
+                    $ticketsPersonales = true;
+                } elseif ($subsubseccion === "detalleTicket.php") {
+                    $detalleTicket = true;
+                }
+            }
+        }
+        return [$ticketsRegistrados, $ticketsPersonales, $detalleTicket];
+    }
+
+    public function listarTickets(string $ciTecnico, ?string $orden, ?string $gravedad, ?string $tipo, ?string $estado, ?string $idTicket, ?string $idEquipo, ?string $idReporte): array
+    {
+        $resultadoURL = $this->obtenerURL();
+
+        $ticketsRegistrados = $resultadoURL[0];
+        $ticketsPersonales = $resultadoURL[1];
+        $detalleTicket = $resultadoURL[2];
+
+        $condiciones = [];
+        $parametros = [];
+
+        if ($ticketsRegistrados) {
+            $sql = "
+            SELECT 
+                t.idReporte AS id,
                 t.tipo,
                 t.asunto,
                 t.descripcion,
@@ -43,131 +89,111 @@ class CargarTickets
                 t.estado,
                 t.fechaCreacion,
                 t.horaCreacion,
-                t.justificacion,
-                drt.ciDocente,
-                u_doc.nombre AS nombreDocente,
-                eugt.idEquipo,
-                eugt.idUbicacion
+                r.idEquipo,
+                EXISTS (
+                    SELECT 1
+                    FROM COLABORADOR AS c
+                    WHERE c.idReporte = t.idReporte
+                      AND c.ciTecnico = :ciTecnico
+                ) AS esColaborador
             FROM TICKET AS t
-            LEFT JOIN docente_reporta_ticket AS drt ON drt.idTicket = t.id
-            LEFT JOIN USUARIO AS u_doc ON u_doc.ci = drt.ciDocente
-            LEFT JOIN equipo_ubicacion_genera_ticket AS eugt ON eugt.idTicket = t.id
-            WHERE t.id = :id
-            ORDER BY t.id DESC
 
+            LEFT JOIN REPORTE AS r
+            ON r.id = t.idReporte
+";
+
+
+            if (!empty($estado)) {
+                $condiciones[] = "t.estado = :estado";
+                $parametros["estado"] = $estado;
+            }
+
+            if (!empty($gravedad)) {
+                $condiciones[] = "t.gravedad = :gravedad";
+                $parametros["gravedad"] = $gravedad;
+            }
+
+            if (!empty($idTicket)) {
+                $condiciones[] = "t.id = :idTicket";
+                $parametros["idTicket"] = $idTicket;
+            }
+
+            if (!empty($tipo)) {
+                $condiciones[] = "t.tipo = :tipo";
+                $parametros["tipo"] = $tipo;
+            }
+        } else if ($ticketsPersonales) {
+            $sql = "
+        SELECT 
+            t.idReporte AS id,
+            t.estado,
+            t.asunto
+            FROM TICKET AS t
+
+            LEFT JOIN COLABORADOR AS c
+                ON c.idReporte = t.idReporte
+
+            WHERE c.ciTecnico = :ciTecnico;
+        ";
+        } else if ($detalleTicket) {
+            $sql = "
+SELECT 
+    t.id,
+    t.idEquipo,
+    t.idReporte,
+    t.tipo,
+    t.asunto,
+    t.descripcion,
+    t.gravedad,
+    t.estado,
+    t.fechaCreacion,
+    t.horaCreacion,
+
+    (
+        SELECT GROUP_CONCAT(
+            c.ciTecnico
+            ORDER BY c.ciTecnico
+            SEPARATOR ','
+        )
+        FROM COLABORADOR AS c
+        WHERE c.idTicket = t.id
+          AND c.idReporte = t.idReporte
+          AND c.idEquipo = t.idEquipo
+    ) AS colaboradores 
+    FROM TICKET AS t;
         ";
 
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute([
-            "id" => $id
-        ]);
+            $condiciones[] = "t.id = :id";
+            $parametros["id"] = $idTicket;
 
-        $ticket = $consulta->fetch(PDO::FETCH_ASSOC);
-        $consulta = null;
+            $condiciones[] = "t.idReporte = :idReporte";
+            $parametros["idReporte"] = $idReporte;
 
-        if ($ticket === false) {
-            return null;
-        }
-
-        return new Ticket(
-            $ticket["id"],
-            $ticket["tipo"],
-            $ticket["asunto"],
-            $ticket["descripcion"],
-            $ticket["gravedad"],
-            $ticket["estado"],
-            $ticket["fechaCreacion"],
-            $ticket["horaCreacion"],
-            $ticket["justificacion"],
-            $ticket["ciDocente"],
-            $ticket["nombreDocente"],
-            $ticket["idEquipo"],
-            $ticket["idUbicacion"],
-            $ticket["tipoUbicacion"]
-        );
-    }
-
-/**
- * @brief Obtiene un listado aplicando filtros opcionales.
- *
- * @param string $tiempo Criterio de orden temporal.
- * @param string $gravedad Gravedad por la cual filtrar.
- * @param string $clasificacion Clasificación por la cual filtrar.
- * @param string $estado Estado por el cual filtrar.
- *
- * @return array Lista de registros obtenidos.
- */
-public function listarTickets(string $tiempo = "", string $gravedad = "", string $clasificacion = "", string $estado = ""): array
-    {
-        $sql ="
-            SELECT
-                u.ci AS cedula,
-                u.nombre,
-                c.correo,
-                u.activo,
-                CASE WHEN a.ci IS NOT NULL THEN TRUE ELSE FALSE END AS administrador,
-                CASE WHEN t.ci IS NOT NULL THEN TRUE ELSE FALSE END AS tecnico,
-                CASE WHEN d.ci IS NOT NULL THEN TRUE ELSE FALSE END AS docente
-            FROM USUARIO AS u
-            LEFT JOIN CORREO AS c ON c.ci = u.ci
-            LEFT JOIN ADMINISTRADOR AS a ON a.ci = u.ci
-            LEFT JOIN TECNICO AS t ON t.ci = u.ci
-            LEFT JOIN DOCENTE AS d ON d.ci = u.ci
-        ";
-
-        $condiciones = [];
-        $parametros = [];
-
-        if ($estado === "pendiente") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "pendiente";
-        } elseif ($estado === "en proceso") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "en proceso";
-        } elseif ($estado === "resuelto") {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = "resuelto";
-        }
-
-        if ($gravedad === "ligera") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "ligera";
-        } elseif ($gravedad === "media") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "media";
-        } elseif ($gravedad === "grave") {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = "grave";
-        }
-
-        if ($clasificacion === "hardware") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "hardware";
-        } elseif ($clasificacion === "software") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "software";
-        } elseif ($clasificacion === "red") {
-            $condiciones[] = "t.clasificacion = :clasificacion";
-            $parametros["clasificacion"] = "red";
+            $condiciones[] = "t.idEquipo = :idEquipo";
+            $parametros["idEquipo"] = $idEquipo;
         }
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        if($tiempo === "antiguo"){
-        $sql .= " ORDER BY u.ci ASC";
+        if (!$detalleTicket) {
+            $parametros["ciTecnico"] = $ciTecnico;
 
-        } else if ($tiempo === "reciente") {
-            $sql .= " ORDER BY u.ci DESC";
+            if ($orden === "antiguo") {
+                $sql .= " ORDER BY t.id ASC";
+            } else if ($orden === "reciente") {
+                $sql .= " ORDER BY t.id DESC";
+            }
         }
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
 
-        $usuarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $tickets = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
         $consulta = null;
 
-        return $usuarios;
+        return $tickets;
     }
 }

@@ -1,3 +1,5 @@
+<?php $existe = false ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -21,9 +23,50 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-            <ul class="nav-menu">
-                    <li><a href="../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
-            </ul>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="#">
+                            <?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> -
+                            <?php switch ($_SESSION['rolActual'] ?? ''):
+                                case 'administrador': ?> Administrador
+                                <?php break;
+                                case 'tecnico': ?> Técnico
+                                <?php break;
+                                case 'docente': ?> Docente
+                            <?php endswitch; ?> 🡻
+                        </a>
+                        <ul class="desplegable-menu">
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?>
+                                <li>
+                                    <form action="../../app/controlador/procesarCambioRol.php" method="post">
+                                        <button type="submit" class="cambiar-rol">Cambiar a Docente</button>
+                                        <input type="hidden" name="rol" value="docente">
+                                        <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    </form>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?>
+                                <li>
+                                    <form action="../../app/controlador/procesarCambioRol.php" method="post">
+                                        <button type="submit" class="cambiar-rol">Cambiar a Técnico</button>
+                                        <input type="hidden" name="rol" value="tecnico">
+                                        <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    </form>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?>
+                                <li>
+                                    <form action="../../app/controlador/procesarCambioRol.php" method="post">
+                                        <button type="submit" class="cambiar-rol">Cambiar a Administrador</button>
+                                        <input type="hidden" name="rol" value="administrador">
+                                        <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    </form>
+                                </li>
+                            <?php endif; ?>
+                            <li><a href="../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </section>
             <ul class="nav-menu">
                 <li><a href="docente/pagsolicitudes.php" id="btnServicios">Solicitud de servicios</a></li>
@@ -35,28 +78,67 @@
         <section class="w-100 container-formulario">
             <h2 class="mb-4 fw-bold text-center texto-azul">Registro de incidencias</h2>
 
-            <form class="p-4 shadow border-0 bg-Formulario rounded-4" id="formIncidencia">
+            <form class="p-4 shadow border-0 bg-Formulario rounded-4" id="formIncidencia" action="../../app/controlador/tickets/procesarAltaTicket.php" method="POST">
 
                 <div class="campo mb-4">
                     <label class="form-label fw-semibold texto-azul-dark">Seleccione taller o laboratorio</label>
                     <select id="ubicacionSalon" name="ubicacionSalon" class="form-select form-select-lg" required>
                         <option value="">Seleccione una opción</option>
                         <optgroup label="Laboratorios" id="grupoLaboratorio"></optgroup>
+                        <?php foreach ($ubicaciones as $ubicacion): ?>
+                            <?php if (strtolower((string)$ubicacion['tipo']) === 'laboratorio'): ?>
+                                <option class="opcion-laboratorio" value="<?= $ubicacion['id'] ?>"
+                                    <?php if ((string)$ubicacion['id'] === (string)($_GET['ubicacion'] ?? '') && strtolower((string)$ubicacion['tipo']) === strtolower((string)($_GET['tipo'] ?? ''))): ?>
+                                    selected
+                                    <?php $existe = true; ?>
+                                    <?php endif; ?>><?= ucfirst($ubicacion['tipo']) . " " . $ubicacion['id'] ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
                         <optgroup label="Talleres" id="grupoTalleres"></optgroup>
+                        <?php foreach ($ubicaciones as $ubicacion): ?>
+                            <?php if (strtolower((string)$ubicacion['tipo']) === 'taller'): ?>
+                                <option class="opcion-taller" value="<?= $ubicacion['id'] ?>"
+                                    <?php if ((string)$ubicacion['id'] === (string)($_GET['ubicacion'] ?? '') && strtolower((string)$ubicacion['tipo']) === strtolower((string)($_GET['tipo'] ?? ''))): ?>
+                                    selected
+                                    <?php $existe = true; ?>
+                                    <?php endif; ?>><?= ucfirst($ubicacion['tipo']) . " " . $ubicacion['id'] ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
-                <div id="contenedorEquipos"></div>
+                <div id="contenedorEquipos">
+                    <?php if ($existe && !empty($_GET['ubicacion']) && !empty($_GET['tipo'])): ?>
+                        <?php foreach ($equipos as $equipo): ?>
+                            <div class="espacioEquipo-body d-flex flex-column justify-content-between p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="h5 mb-0 fw-bold text-secondary">PC: <?= $equipo['posicion'] ?> (ID: <?= $equipo['idEquipo'] ?>)</h4>
+                                </div>
+                                <div class="bg-light p-2 rounded-3 d-flex justify-content-around">
+                                    <div class="form-check form-check-inline mb-0">
+                                        <input class="form-check-input" type="radio" name="estado-<?= $equipo['idEquipo'] ?>" id="ok-<?= $equipo['idEquipo'] ?>" value="ok">
+                                        <label class="form-check-label text-success fw-semibold" for="ok-<?= $equipo['idEquipo'] ?>">Sin problemas</label>
+                                    </div>
+                                    <div class="form-check form-check-inline mb-0">
+                                        <input class="form-check-input" type="radio" name="estado-<?= $equipo['idEquipo'] ?>" id="inc-<?= $equipo['idEquipo'] ?>" value="incidencia">
+                                        <label class="form-check-label text-danger fw-semibold" for="inc-<?= $equipo['idEquipo'] ?>">Hay incidencia</label>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"]) ?>">
 
-                <button type="submit" class="btn btn-warning w-100 py-3 mt-3 fw-bold text-dark fs-5 shadow-sm">
+                <button  type="submit" class="btn btn-warning w-100 py-3 mt-3 fw-bold text-dark fs-5 shadow-sm">
                     Registrar estado del salón
                 </button>
             </form>
         </section>
 
-        <div id="incidencia" class="modal-incidencia oculto w-100 h-100 d-flex justify-content-center align-items-center">
-
-            <form class="from modal-contenido w-100 p-4 bg-white">
+        <dialog id="incidencia" class="modal-contenido rounded shadow p-4">
+            <form class="from">
 
                 <h3 id="titulo" class="h5 fw-bold texto-azul mb-3">Registro de incidencia</h3>
 
@@ -72,7 +154,8 @@
                     <label for="asunto" class="form-label fw-semibold texto-azul-dark">Asunto:</label>
                     <input type="text" id="asunto" class="form-control mb-3" placeholder="ej: Pantalla de monitor rosa">
 
-                    <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso de la PC</label>
+                    <label for="persona" class="form-label fw-semibold texto-azul-dark">Persona que estaba haciendo uso
+                        de la PC</label>
                     <input type="text" id="persona" class="form-control mb-3" placeholder="ej: Maria Jose Martinez">
 
                     <label class="form-label fw-semibold texto-azul-dark d-block mb-2">Gravedad de la incidencia</label>
@@ -92,7 +175,8 @@
                     </div>
 
                     <label for="descripcion" class="form-label fw-semibold texto-azul-dark">Descripción</label>
-                    <textarea id="descripcion" name="descripcion02" class="form-control mb-3" placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
+                    <textarea id="descripcion" name="descripcion02" class="form-control mb-3"
+                        placeholder="Información más detallada si así lo precisa" rows="3" maxlength="300"></textarea>
                 </div>
 
                 <div class="d-flex gap-2">
@@ -101,7 +185,7 @@
                 </div>
 
             </form>
-        </div>
+        </dialog>
     </main>
 
     <footer>

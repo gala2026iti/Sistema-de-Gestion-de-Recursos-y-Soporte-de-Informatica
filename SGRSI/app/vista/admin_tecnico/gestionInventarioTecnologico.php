@@ -1,9 +1,9 @@
 <!-- TOFIX : MOVER PHP A PROCESARCARGAREQUIPOS.PHP, ADEMAS DE AÑADIRLE TRIM Y HTMLSPECIALCHARS -->
 <?php
-$estado = trim($_GET["estado"] ?? "");
-$orden = trim($_GET["orden"] ?? "");
-?>
+$estado = htmlspecialchars(trim($_GET["estado"] ?? "")) ;
+$orden = htmlspecialchars(trim($_GET["orden"] ?? "" ));
 
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -30,24 +30,81 @@ $orden = trim($_GET["orden"] ?? "");
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-menu">
-                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="#">
+                        <?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') . " - " ?>
+                        <?php switch($_SESSION['rolActual'] ?? ''): case "administrador": ?> Administrador
+                        <?php break; case "tecnico": ?> Técnico
+                        <?php break; case "docente": ?> Docente
+                        <?php endswitch; ?> 🡻</a>
+                        <ul class="desplegable-menu">
+
+                            <?php if($_SESSION['rolActual'] !== "docente" && $_SESSION['docente']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Docente</button>
+                                <input type="hidden" name="rol" value="docente">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($_SESSION['rolActual'] !== "tecnico" && $_SESSION['tecnico']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Tecnico</button>
+                                <input type="hidden" name="rol" value="tecnico">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($_SESSION['rolActual'] !== "administrador" && $_SESSION['administrador']): ?>
+                            <li>
+                            <form class="form-estado" action="../../../app/controlador/procesarCambioRol.php" method="post">
+                                <button type="submit" class="cambiar-rol">Cambiar a Administrador</button>
+                                <input type="hidden" name="rol" value="administrador">
+                                <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                            </form>
+                            </li>
+                            <?php endif; ?>
+
+                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="get" id="cerrarSesion">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
+            <?php if($_SESSION["rolActual"] === "administrador"): ?>
             <ul class="nav-menu">
                 <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
-                <li class="desplegable"><a href="estadoEquipos.php">Estado de equipos</a></li>
-                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
-                <li><a href="metricas.php">Metricas del sistema</a></li>
+                <li class="desplegable"><a href="../administracion/estadoEquipos.php">Estado de equipos</a></li>
+                <li class="desplegable"><a href="../administracion/reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="../administracion/metricas.php">Metricas del sistema</a></li>
             </ul>
             <ul class="nav-menu">
                 <li class="desplegable-padding" id="opcionesAdmin">
                     <a href="#">Administracion y control 🡻</a>
                     <ul class="desplegable-menu">
-                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="../administracion/gestionUsuarios.php">Gestion de usuarios</a></li>
                     </ul>
                 </li>
             </ul>
+            <?php elseif ($_SESSION["rolActual"] === "tecnico"): ?>
+                        <ul class="nav-menu">
+                <li class="desplegable">
+                    <a href="#">Gestión de tickets 🡻 </a>
+                    <ul class="desplegable-menu">
+                        <li><a href="../homeAdmin.php">Tickets registrados</a></li>
+                        <li><a href="../tecnico/ticketsPersonales.php">Tickets asignados</a></li>
+                    </ul>
+                </li>
+                <li class="desplegable">
+                        <li><a href="../tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
+                </li>
+                <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
+            </ul>
+            <?php endif; ?>
         </section>
     </nav>
 
@@ -70,11 +127,14 @@ $orden = trim($_GET["orden"] ?? "");
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
-            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline invisible-form">
+                <?php if($_SESSION["rolActual"] === "administrador") :?>
+            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarLaboratorio" name="agregar" value="laboratorio">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
                 <button class="btn-agregar-salon" id="btnAgregarL">+ Añadir Laboratorio</button>
             </form>
+                            <?php endif;?>
+
 
                 <h4>Talleres</h4>
                 <ul id="listaTalleres">
@@ -84,11 +144,15 @@ $orden = trim($_GET["orden"] ?? "");
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
-            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline invisible-form">
+                                <?php if($_SESSION["rolActual"] === "administrador") :?>
+            <form method="POST" action="../../../app/controlador/recursos/procesarAltaUbicacion.php" class="d-inline form-estado">
                 <input type="hidden" id="agregarTaller" name="agregar" value="taller">
                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                if($_)
                 <button class="btn-agregar-salon" id="btnAgregarT">+ Añadir Taller</button>
             </form>
+                            <?php endif;?>
+
                 <h4>Otros</h4>
                 <ul>
                     <li><a href="gestionInventarioTecnologico.php?tipoUbicacion=prestamo" class="filtro-ubicacion-directa" salones-ubicacion="prestamo">Dispositivos para
@@ -106,7 +170,7 @@ $orden = trim($_GET["orden"] ?? "");
         <section class="filtros">
             <form method="GET" action="gestionInventarioTecnologico.php">
                 <label for="estado">Estado:</label>
-
+                <?php if($_SESSION["rolActual"] === "administrador"): ?>
                 <select id="estado" name="estado">
                     <option value=""> Todos </option>
                     <option value="activo" <?= ($estado === "activo") ? "selected" : "" ?>> Activo
@@ -114,6 +178,7 @@ $orden = trim($_GET["orden"] ?? "");
                     <option value="inactivo" <?= ($estado === "inactivo") ? "selected" : "" ?>> Inactivo
                     </option>
                 </select>
+                <?php endif; ?>
 
                 <label for="orden"> Ordenar por: </label>
                 <select id="orden" name="orden">
@@ -121,8 +186,10 @@ $orden = trim($_GET["orden"] ?? "");
                     <!-- TOFIX: SE EVITA USAR TIPADO CAMELCASE DEBIDO A QUE SE CONVIERTE TODO A MINUSCULAS AL SER ENVIADO POR GET -->
                     <!-- TOFIX: SE IMPLEMENTA FUNCION QUE HACE QUE EL FILTRADO FUNCIONE DENTRO DE SALONES ESPECIFICOS -->
 
+                    <?php if($_SESSION['rolActual'] === "administrador"): ?>
                     <option value="masincidencias" <?= ($orden === "masincidencias") ? "selected" : "" ?>> Incidencias (Más) </option>
                     <option value="menosincidencias" <?= ($orden === "menosincidencias") ? "selected" : "" ?>> Incidencias (Menos)</option>
+                    <?php endif; ?>
                     <option value="reciente" <?= ($orden === "reciente") ? "selected" : "" ?>> Intervenciones (Recientes)</option>
                     <option value="antiguo" <?= ($orden === "antiguo") ? "selected" : "" ?>> Intervenciones (Antiguas)</option>
                     </select>
@@ -130,6 +197,8 @@ $orden = trim($_GET["orden"] ?? "");
                     <input name="ubicacion" type="hidden" value="<?php echo isset($_GET['ubicacion']) ? $_GET['ubicacion'] : ''; ?>" />
                     <input name="tipoUbicacion" type="hidden" value="<?php echo isset($_GET['tipoUbicacion']) ? $_GET['tipoUbicacion'] : ''; ?>" />
 
+                    <label for="id">Filtrar por ID:</label>
+                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
 
                 <button type="submit" class="btn btn-primary text-bold">
                     Filtrar
@@ -158,8 +227,10 @@ $orden = trim($_GET["orden"] ?? "");
                     <tr>
                         <th>Codigo (ID Global)</th>
                         <th>Ubicación</th>
+                        <?php if($_SESSION["rolActual"] === "administrador"): ?>
                         <th>Estado</th>
                         <th>Incidencias</th>
+                        <?php endif; ?>
                         <th>Última Intervención</th>
                         <th>Acciones</th>
                     </tr>
@@ -170,55 +241,59 @@ $orden = trim($_GET["orden"] ?? "");
                             <td colspan="6" class="text-center py-4 text-muted text-bold"> No se encontraron equipos. </td>
                         </tr>
                     <?php else: ?>
-                    <?php foreach ($equipos as $equipo) { ?>
+                    <?php foreach ($equipos as $equipo): ?>
                         <tr>
-                            <td><?= $equipo['idEquipo'] ?></td>
-                            <?php if ($equipo['tipoUbicacion']) { ?>
+                            <td><?= htmlspecialchars($equipo['idEquipo']) ?></td>
+                            <?php if (htmlspecialchars($equipo['tipoUbicacion'] ?? "")) { ?>
                                 <?php if ($equipo['tipoUbicacion'] === "prestamo") { ?>
                                     <td>Equipo de Préstamo</td>
                                 <?php } else { ?>
-                                    <td><?= ucfirst($equipo['tipoUbicacion']) . " " . $equipo['idUbicacion'] . " (PC-" . $equipo["posicion"] . ")" ?></td>
+                                    <td><?= ucfirst(htmlspecialchars($equipo['tipoUbicacion'])) . " " . htmlspecialchars($equipo['idUbicacion']) . " (PC-" . htmlspecialchars($equipo["posicion"]) . ")" ?></td>
                                 <?php } ?>
                             <?php } else { ?>
                                 <td>Sin ubicación</td>
                             <?php } ?>
-                            <td><?= $equipo['activo'] ? "Activo" : "Inactivo" ?></td>
-                            <td><?= $equipo['totalIncidencias'] ?></td>
-                            <?php if ($equipo['ultimaIntervencion']) { ?>
-                                <td><?= $equipo['ultimaIntervencion'] ?></td>
-                            <?php } else { ?>
-                                <td>Sin intervenciones previas</td>
+                            <?php if($_SESSION["rolActual"] === "administrador"): ?>
+                            <td><?= htmlspecialchars($equipo['activo']) ? "Activo" : "Inactivo" ?></td>
+                            <td><?= htmlspecialchars($equipo['totalIncidencias']) ?></td>
+                            <?php endif; ?>
+                                <td><?= htmlspecialchars($equipo['ultimaIntervencion'] ?? "Sin intervenciones previas")  ?></td>
                                 <!-- TOFIX: AGREGAR LOS BOTONES CORRESPONDIENTES AL ÁREA DE ACCIONES: EDITAR, REMOVER DEL SALON, DESACTIVAR, VER INCIDENCIAS -->
                                 <!-- TOFIX: STYLE: EVITAR GENERALIZAR NOMBRES CUANDO HACEN ALGO ESPECIFICO -->
 
-                            <?php } ?>
-                            <td> <button class="btn btn-info btn-sm text-bold btnMoverEquipo" 
-        data-idequipo="<?= htmlspecialchars($equipo['idEquipo']) ?>" 
-        data-idubicacion="<?= htmlspecialchars($equipo['idUbicacion'] ?? 0) ?>" 
-        data-tipoubicacion="<?= htmlspecialchars($equipo['tipoUbicacion'] ?? 'ninguna') ?>" 
-        data-posicion="<?= htmlspecialchars($equipo['posicion'] ?? 0) ?>">
-    Mover
-</button>
-                            <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline invisible-form">
-                                <input type="hidden" name="idEquipo" value="<?= $equipo['idEquipo'] ?>">
+                                <td> 
+                                    <?php if($_SESSION["rolActual"] === "administrador"): ?>
+                                    <button class="btn btn-info btn-sm text-bold btnMoverEquipo" 
+                                        data-idequipo="<?= htmlspecialchars($equipo['idEquipo']) ?>" 
+                                        data-idubicacion="<?= htmlspecialchars($equipo['idUbicacion'] ?? 0) ?>" 
+                                        data-tipoubicacion="<?= htmlspecialchars($equipo['tipoUbicacion'] ?? 'ninguna') ?>" 
+                                        data-posicion="<?= htmlspecialchars($equipo['posicion'] ?? 0) ?>">
+                                        Mover
+                                    </button>
+                                    
+                            <form action="../../../app/controlador/recursos/procesarEstadoEquipo.php" method="POST" class="d-inline form-estado">
+                                <input type="hidden" name="idEquipo" value="<?= htmlspecialchars($equipo['idEquipo']) ?>">
                                 <input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
-                                <input type="hidden" name="estado" value=<?= htmlspecialchars($_GET['estado']) ?? "" ?>>
-                                <input type="hidden" name="orden" value=<?= htmlspecialchars($_GET['orden']) ?? "" ?>>
-                                <input type="hidden" name="ubicacion" value=<?= htmlspecialchars($_GET['ubicacion']) ?? "" ?>>
-                                <input type="hidden" name="tipoUbicacion" value=<?= htmlspecialchars($_GET['tipoUbicacion']) ?? "" ?>>
+                                <input type="hidden" name="estado" value=<?= $estado ?>>
+                                <input type="hidden" name="orden" value=<?= $orden ?>>
+                                <input type="hidden" name="ubicacion" value=<?= htmlspecialchars(trim($_GET['ubicacion'] ?? "")) ?>>
+                                <input type="hidden" name="tipoUbicacion" value=<?= htmlspecialchars(trim($_GET['tipoUbicacion'] ?? "")) ?>>
                                 
-                                <?php if($equipo['activo']) { ?>
+                                <?php if($equipo['activo']) : ?>
                                 <input type="hidden" name="accion" value="desactivar">
                                 <button type="submit" class="btn btn-danger btn-sm text-bold">Desactivar</button> 
-                             <?php } else { ?>
+                             <?php else: ?>
                                 <input type="hidden" name="accion" value="activar">
                                 <button type="submit" class="btn btn-success btn-sm text-bold">Activar</button>
-                            <?php } ?>
+                            <?php endif; ?>
                             </form>
                              <a href="paginaNoExistente.php?id=<?= $equipo['idEquipo'] ?>" class="btn btn-warning btn-sm text-bold">Ver Incidencias</a> </td>
-
+                            <?php endif; ?>
+                            <?php if($_SESSION["rolActual"] === "tecnico"): ?>
+                                <button class="btn btn-danger">Registrar Incidencia</button>
+                            <?php endif; ?>
                         </tr>
-                    <?php } ?>
+                    <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -229,7 +304,10 @@ $orden = trim($_GET["orden"] ?? "");
                 de Equipos</a>
             <a href="../admin_tecnico/historialGeneral.php?tipo=salones" id="btnHistorialEquipos" class="btn btn-warning me-2 text-bold">Historial
                 de Salones</a>
+                                <?php if($_SESSION["rolActual"] === "administrador") :?>
             <button id="btnRegistrarEquipo" class="btn btn-success ms-auto text-bold" type="button">Registrar PC</button>
+                            <?php endif; ?>
+
         </section>
 
         <div id="modalEquipo"

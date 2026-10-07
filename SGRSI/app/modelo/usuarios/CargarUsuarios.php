@@ -36,6 +36,7 @@ class CargarUsuarios
         $sql = "
             SELECT
                 u.ci AS cedula,
+                u.nombre,
                 u.clave AS claveHash,
                 u.activo AS sesionActiva,
                 CASE WHEN a.ci IS NOT NULL THEN TRUE ELSE FALSE END AS administrador,
@@ -62,6 +63,7 @@ class CargarUsuarios
 
         return new Usuario(
             $usuario["cedula"],
+            $usuario["nombre"],
             $usuario["claveHash"],
             (bool) $usuario["sesionActiva"],
             (bool) $usuario["administrador"],

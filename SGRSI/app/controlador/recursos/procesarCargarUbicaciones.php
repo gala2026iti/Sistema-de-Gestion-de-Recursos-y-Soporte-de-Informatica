@@ -13,6 +13,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/recursos/CargarUbicaciones.php";
 
+
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
     $_ENV['DB_PUERTO'], 
@@ -37,5 +38,3 @@ $accesoDatosUbicacion = new CargarUbicaciones($conexion);
 $ubicaciones = $accesoDatosUbicacion->listarUbicaciones();
 
 $conectorPDO->desconectar();
-
-require_once RUTA_VISTA . "/administracion/gestionInventarioTecnologico.php";

@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-$cedula = trim($_POST["cedula"] ?? "");
-$clave = $_POST["clave"] ?? "";
+$cedula = htmlspecialchars(trim($_POST["cedula"] ?? ""));
+$clave = htmlspecialchars(trim($_POST["clave"])) ?? "";
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -74,9 +74,11 @@ session_regenerate_id(true);
 $_SESSION["csrfToken"] = bin2hex(random_bytes(32));
 
 $_SESSION["cedula"] = $usuario->getCedula();
+$_SESSION["nombre"] = $usuario->getNombre();
 $_SESSION["administrador"] = $usuario->esAdministrador();
 $_SESSION["tecnico"] = $usuario->esTecnico();
 $_SESSION["docente"] = $usuario->esDocente();
+$_SESSION["rolActual"] = $_SESSION["administrador"] ? "administrador" : ($_SESSION["tecnico"] ? "tecnico" : "docente");
 
 /*
  * Si posee varios roles, se utiliza el primero
@@ -90,4 +92,4 @@ if ($_SESSION["administrador"]) {
     header("Location: ../../public/paginaWeb/homeDocente.php");
 }
 
-exit;
+exit();

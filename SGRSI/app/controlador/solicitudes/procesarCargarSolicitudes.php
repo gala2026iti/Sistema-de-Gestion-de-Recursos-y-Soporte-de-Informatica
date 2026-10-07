@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * @file procesarEstadoSolicitud.php
  *
@@ -13,7 +15,18 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/solicitudes/CargarSolicitudes.php";
 
-$estado = strtolower(trim($_GET["estado"] ?? ""));
+$estado = strtolower(htmlspecialchars(trim($_GET["estado"] ?? "")));
+$id = htmlspecialchars(trim($_GET["id"] ?? ""));
+
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
+
+    header(
+        "Location: ../../../public/paginaWeb/index.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
 
 $conectorPDO = new ConectorPDO(
     $_ENV['DB_HOST'] . ":" . 
@@ -35,9 +48,29 @@ if ($conexion === null) {
     exit();
 }
 
+if(!empty($estado) && $estado !== "pendiente" && $estado !== "finalizada") {
+    $mensaje = "Estado de solicitud no válido.";
+
+    header(
+        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
+if(!empty($id) && !is_numeric($id)) {
+    $mensaje = "ID de solicitud no válida.";
+
+    header(
+        "Location: ../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
+        . urlencode($mensaje)
+    );
+    exit();
+}
+
 $accesoDatosSolicitud = new CargarSolicitudes($conexion);
-$solicitudes = $accesoDatosSolicitud->listarSolicitudes($estado);
+$solicitudes = $accesoDatosSolicitud->listarSolicitudes($estado, $id);
 
 $conectorPDO->desconectar();
 
-require_once RUTA_VISTA . "/administracion/gestionSolicitudes.php";
+require_once RUTA_VISTA . "/tecnico/gestionSolicitudes.php";

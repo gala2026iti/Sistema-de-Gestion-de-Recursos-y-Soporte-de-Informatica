@@ -19,8 +19,16 @@
             <section class="nav-primera-fila">
                 <button class="btn-menu" id="btnMenu">☰</button>
                 <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-                <ul class="nav-menu">
-                    <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+                        <ul class="desplegable-menu">
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
 
@@ -29,17 +37,16 @@
                     <a href="#">Gestión de tickets 🡻 </a>
                     <ul class="desplegable-menu">
                         <li><a href="../homeAdmin.php">Tickets registrados</a></li>
-                        <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
+                        <li><a href="../tecnico/ticketsPersonales.php">Tickets asignados</a></li>
                     </ul>
                 </li>
                 <li class="desplegable">
-                    <a href="#">Gestion de prestamos 🡻</a>
-                    <ul class="desplegable-menu">
-                        <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
-                        <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
-                    </ul>
+                        <li><a href="../tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
                 </li>
-                <li><a href="gestionSolicitudes.php">Gestion de solicitudes</a></li>
+                <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Inventario de equipos</a></li>
+
+                </li>
+                <li><a href="../tecnico/gestionSolicitudes.php">Gestion de solicitudes</a></li>
             </ul>
         </section>
     </nav>
@@ -72,15 +79,15 @@
 
             <label for="selectorEstado" class="form-label fw-bold text-secondary">Estado del flujo operativo</label>
             <select id="selectorEstado" name="selectorEstado" class="form-select mb-3">
-                <option value="pendiente">🔴 Pendiente</option>
-                <option value="en proceso">🟡 En proceso</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en proceso">En proceso</option>
             </select>
 
             <label for="selectorGravedad" class="form-label fw-bold text-secondary">Gravedad de la incidencia</label>
             <select id="selectorGravedad" name="selectorGravedad" class="form-select mb-3">
-                <option value="ligera">🟢 Ligera</option>
-                <option value="media">🟡 Media</option>
-                <option value="grave">🔴 Grave</option>
+                <option value="ligera">Ligera</option>
+                <option value="media">Media</option>
+                <option value="grave">Grave</option>
             </select>
 
             <label for="ubicacionSalon" class="form-label small fw-bold text-secondary">Ubicación</label>

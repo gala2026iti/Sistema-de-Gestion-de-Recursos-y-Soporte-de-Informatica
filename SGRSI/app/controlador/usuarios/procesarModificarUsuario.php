@@ -35,8 +35,8 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["administrador"] ?? false)) {
-    $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
+if (!($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
     header(
         "Location: ../../public/paginaWeb/index.php?error="
@@ -181,6 +181,7 @@ if ($clave !== "" || $confirmarClave !== "") {
         );
         exit();
     }
+    /* PUNTO HASH */
 
     $claveHash = password_hash($clave, PASSWORD_DEFAULT);
 }

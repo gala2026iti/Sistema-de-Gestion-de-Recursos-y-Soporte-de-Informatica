@@ -27,11 +27,15 @@
                 <button class="btn-cerrar-lateral" id="btnCerrar">
                     X
                 </button>
-                <ul class="nav-menu">
-                    <li>
-                        <a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">
-                            Cerrar Sesion
-                        </a>
+                <ul class="nav-opciones-sistema">
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+                        <ul class="desplegable-menu">
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                            <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+                        </ul>
                     </li>
                 </ul>
             </section>
@@ -71,10 +75,8 @@
                     <ul class="desplegable-menu">
 
                         <li>
-                            <a href="gestionInventarioTecnologico.php">
-                                Gestion de inventario de equipos
-                            </a>
-                        </li>
+                        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+
                     </ul>
                 </li>
             </ul>
@@ -186,7 +188,7 @@
                                     </button>
                                     <?php if ($usuario["activo"]): ?>
                                         <form method="POST" action="../../../app/controlador/usuarios/procesarEstadoUsuario.php"
-                                            class="d-inline form-estado-usuario">
+                                            class="d-inline form-estado">
                                             <input type="hidden" name="csrfToken"
                                                 value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
 
@@ -200,7 +202,7 @@
                                     <?php else: ?>
 
                                         <form method="POST" action="../../../app/controlador/usuarios/procesarEstadoUsuario.php"
-                                            class="d-inline form-estado-usuario">
+                                            class="d-inline form-estado">
                                             <input type="hidden" name="csrfToken"
                                                 value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
 
@@ -224,14 +226,12 @@
                 Registrar usuario
             </button>
         </section>
-
-        <dialog id="dialogRegistrarUsuario" class="modal-contenido rounded shadow p-4">
-
+                <div id="modalUsuario" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
             <form id="formUsuario" method="POST" action="../../../app/controlador/usuarios/procesarAltaUsuario.php">
                 <input type="hidden" name="csrfToken"
-                    value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                    value="<?= htmlspecialchars($_SESSION["csrfToken"]) ?>">
 
-                <h2 class="text-primary border-bottom pb-2 mb-4">
+                <h2 id="tituloFormulario" class="text-primary border-bottom pb-2 mb-4">
                     Registro de usuario
                 </h2>
 
@@ -255,13 +255,13 @@
                     <input type="email" id="correo" name="correo" class="form-control"
                         placeholder="ej: javierM1998@gmail.com" maxlength="100" autocomplete="email" required>
 
-                    <label for="clave" class="form-label mt-3">
+                    <label for="clave" class="form-label mt-3" id="labelContra">
                         Contraseña
                     </label>
                     <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese contraseña"
                         minlength="12" required>
 
-                    <label for="confirmarClave" class="form-label mt-3">
+                    <label for="confirmarClave" class="form-label mt-3" id="labelConfirmarContra">
                         Confirmar contraseña
                     </label>
                     <input type="password" id="confirmarClave" name="confirmarClave" class="form-control"
@@ -290,88 +290,14 @@
                     </div>
 
                 </fieldset>
-                <button type="submit" class="btn btn-success text-bold">
+                <button type="submit" class="btn btn-success text-bold" id="btnGuardarUsuario">
                     Guardar usuario
                 </button>
                 <button type="button" id="btnCancelarUsuario" class="btn btn-danger text-bold">
                     Cancelar
                 </button>
             </form>
-        </dialog>
-
-        <dialog id="dialogModificarUsuario" class="modal-contenido rounded shadow p-4">
-            <form id="formModificarUsuario" method="POST"
-                action="../../../app/controlador/usuarios/procesarModificarUsuario.php">
-                <input type="hidden" name="csrfToken"
-                    value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
-
-                <h2 class="text-primary border-bottom pb-2 mb-4">
-                    Modificar usuario
-                </h2>
-
-                <fieldset>
-                    <label for="modificarCedula" class="form-label">
-                        Usuario / Cédula
-                    </label>
-
-                    <input type="text" id="modificarCedula" name="cedula" class="form-control" readonly>
-                    <label for="modificarNombre" class="form-label mt-3">
-                        Nombre completo
-                    </label>
-                    <input type="text" id="modificarNombre" name="nombre" class="form-control" maxlength="100" required>
-                    <label for="modificarCorreo" class="form-label mt-3">
-                        Correo electrónico
-                    </label>
-                    <input type="email" id="modificarCorreo" name="correo" class="form-control" maxlength="100"
-                        required>
-                    <label for="modificarClave" class="form-label mt-3">
-                        Nueva contraseña
-                    </label>
-                    <input type="password" id="modificarClave" name="clave" class="form-control"
-                        placeholder="Dejar vacío para mantener la actual" minlength="12">
-
-                    <label for="modificarConfirmarClave" class="form-label mt-3">
-                        Confirmar nueva contraseña
-                    </label>
-                    <input type="password" id="modificarConfirmarClave" name="confirmarClave" class="form-control"
-                        placeholder="Repita la nueva contraseña" minlength="12">
-                    <button type="button" class="btn btn-outline-secondary mt-2 text-bold" id="btnMostrarClaveModificar">
-                        Mostrar contraseña
-                    </button>
-
-                    <div class=" my-3">
-                        <span class="form-label mb-2 d-block">
-                            Roles del sistema
-                        </span>
-
-                        <label class="form-check-label px-2" for="modificarRolDocente">
-                            Docente
-                        </label>
-                        <input class="form-check-input " type="checkbox" id="modificarRolDocente" name="roles[]"
-                            value="docente">
-                        <label class="form-check-label px-2" for="modificarRolTecnico">
-                            Técnico
-                        </label>
-                        <input class="form-check-input " type="checkbox" id="modificarRolTecnico" name="roles[]"
-                            value="tecnico">
-
-                        <label class="form-check-label px-2" for="modificarRolAdministrador">
-                            Administrador
-                        </label>
-                        <input class="form-check-input" type="checkbox" id="modificarRolAdministrador" name="roles[]"
-                            value="administrador">
-                    </div>
-                </fieldset>
-                <div class="d-flex justify-content-end gap-2 mt-4">
-                    <button type="submit" class="btn btn-success text-bold">
-                        Guardar cambios
-                    </button>
-                    <button type="button" id="btnCancelarModificarUsuario" class="btn btn-danger text-bold">
-                        Cancelar
-                    </button>
                 </div>
-            </form>
-        </dialog>
     </main>
     <footer>
         <span>

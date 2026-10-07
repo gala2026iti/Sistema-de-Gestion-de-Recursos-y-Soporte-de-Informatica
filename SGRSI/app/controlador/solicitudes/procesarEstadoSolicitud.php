@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 
 /**
  * @file procesarEstadoSolicitud.php
@@ -19,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $mensaje = "Petición incorrecta.";
 
     header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -35,8 +38,8 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["tecnico"] ?? false)) {
-    $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
     header(
         "Location: ../../../public/paginaWeb/index.php?error="
@@ -55,29 +58,16 @@ if (
     $mensaje = "Solicitud rechazada: token inválido.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
 }
 
-$idSolicitud = trim($_POST["idSolicitud"] ?? "");
-$accion = strtolower(trim($_POST["finalizar"] ?? ""));
+$id = trim($_POST["id"] ?? "");
 
-if ($idSolicitud === "" || $accion === "") {
+if ($id === "") {
     $mensaje = "No se recibieron los datos necesarios.";
-
-    header(
-        "Location: ../../../public/paginaWeb/solicitudes/gestionSolicitudes.php?error="
-        . urlencode($mensaje)
-    );
-    exit();
-}
-
-if ($accion === "finalizar") {
-    $finalizada = true;
-} else {
-    $mensaje = "La acción solicitada no es válida.";
 
     header(
         "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
@@ -100,7 +90,7 @@ if ($conexion === null) {
     $mensaje = "No se pudo establecer conexión con la base de datos.";
 
     header(
-        "Location: ../../../public/paginaWeb/administracion/gestionUsuarios.php?error="
+        "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?error="
         . urlencode($mensaje)
     );
     exit();
@@ -109,8 +99,7 @@ if ($conexion === null) {
 $estadoDatosSolicitud = new EstadoDatosSolicitud($conexion);
 
 $resultado = $estadoDatosSolicitud->cambiarEstadoSolicitud(
-    $idSolicitud,
-    $finalizada
+    $id,
 );
 
 $conectorPDO->desconectar();
@@ -125,9 +114,7 @@ if (!$resultado) {
     exit();
 }
 
-$mensaje = $finalizada
-    ? "Solicitud finalizada correctamente."
-    : "Solicitud no finalizada correctamente.";
+$mensaje = "Solicitud finalizada correctamente.";
 
 header(
     "Location: ../../../public/paginaWeb/tecnico/gestionSolicitudes.php?resultado="

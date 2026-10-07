@@ -1,21 +1,9 @@
-CREATE DATABASE IF NOT EXISTS sgrsi;
-USE sgrsi;
-
 CREATE TABLE IF NOT EXISTS USUARIO (
     ci CHAR(8) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     clave VARCHAR(255) NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_usuario PRIMARY KEY (ci)
-);
-
-CREATE TABLE IF NOT EXISTS ROL (
-    ci CHAR(8) NOT NULL,
-    rol VARCHAR(20) NOT NULL,
-    CONSTRAINT pk_rol PRIMARY KEY (ci, rol),
-    CONSTRAINT fk_rol_usuario FOREIGN KEY (ci)
-        REFERENCES USUARIO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS CORREO (
@@ -55,8 +43,8 @@ CREATE TABLE IF NOT EXISTS administrador_modifica_usuario (
     id INT AUTO_INCREMENT NOT NULL,
     ciAdministrador CHAR(8) NOT NULL,
     ciUsuario CHAR(8) NOT NULL,
-    fecha CHAR(10) NOT NULL,
-    hora CHAR(5) NOT NULL,
+    fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+    hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
     CONSTRAINT pk_admin_modifica_usuario PRIMARY KEY (id),
     CONSTRAINT fk_amu_admin FOREIGN KEY (ciAdministrador) 

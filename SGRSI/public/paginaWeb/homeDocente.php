@@ -1,5 +1,8 @@
 <?php
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * @brief Controla el acceso al panel docente.
  *
@@ -33,7 +36,7 @@ if (!isset($_SESSION["cedula"])) {
 /*
  * Verificamos que el usuario posea el rol de docente.
  */
-if (!isset($_SESSION["docente"]) || $_SESSION["docente"] !== true) {
+if (!($_SESSION["docente"] && $_SESSION["rolActual"] === "docente")) {
 
     header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
 
@@ -45,4 +48,4 @@ if (!isset($_SESSION["docente"]) || $_SESSION["docente"] !== true) {
  * Si las comprobaciones son correctas,
  * cargamos la vista del panel.
  */
-require_once __DIR__ . "/../../app/vista/homeDocente.php";
+require_once __DIR__ . "/../../app/controlador/tickets/procesarHomeDocente.php";

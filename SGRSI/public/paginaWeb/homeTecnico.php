@@ -33,7 +33,7 @@ if (!isset($_SESSION["cedula"])) {
 /*
  * Verificamos que el usuario posea el rol de técnico.
  */
-if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
+if (!($_SESSION["tecnico"] && $_SESSION["rolActual"] === "tecnico")) {
 
     header("Location: index.php?error=Acceso Denegado: Acceso a la zona correspondiente no autorizado");
 
@@ -45,4 +45,4 @@ if (!isset($_SESSION["tecnico"]) || $_SESSION["tecnico"] !== true) {
  * Si las comprobaciones son correctas,
  * cargamos la vista del panel.
  */
-require_once __DIR__ . "/../../app/vista/homeTecnico.php";
+require_once __DIR__ . "/../../app/controlador/tickets/procesarCargarTickets.php";

@@ -35,8 +35,8 @@ if (!isset($_SESSION["cedula"])) {
     exit();
 }
 
-if (!($_SESSION["administrador"] ?? false)) {
-    $mensaje = "Acceso denegado: no tiene permisos para realizar esta operación.";
+if (!($_SESSION["administrador"] && $_SESSION["rolActual"] === "administrador")) {
+    $mensaje = "Acceso denegado: No tiene permisos para realizar esta operación.";
 
     header(
         "Location: ../../../public/paginaWeb/index.php?error="
@@ -72,6 +72,7 @@ $tipoUbicacionOrigen = trim(htmlspecialchars($_POST["tipoUbicacionOrigen"] ?? ""
 
 $idUbicacion = $ubicacion[1] ?? "";
 $tipoUbicacion = $ubicacion[0] ?? "";
+
 
 if (!is_numeric($idEquipo) || strlen($idEquipo) > 6) {
     $mensaje = "El ID del equipo debe ser un número entero de hasta 6 dígitos.";

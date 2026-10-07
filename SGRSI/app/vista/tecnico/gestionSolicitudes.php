@@ -1,3 +1,9 @@
+<?php
+$estado = trim($_GET["estado"] ?? "");
+?>
+
+<!-- TOFIX : AÑADIR PERMANENCIA DE FILTROS -->
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,6 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Solicitudes - Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/formulariospopup.css">
   <link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 
@@ -14,15 +21,21 @@
     <img class="img-logo" src="../../assets/img/logo_iti.png" alt="Logo">
   </header>
 
-
-
   <nav class="navbarSGRSI">
     <section class="nav-container">
       <section class="nav-primera-fila">
         <button class="btn-menu" id="btnMenu">☰</button>
         <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
-        <ul class="nav-menu">
-          <li><a href="../../../public/paginaWeb/cerrarSesion.php" method="post" id="cerrarSesion">Cerrar Sesion</a></li>
+        <ul class="nav-opciones-sistema">
+          <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+            <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+            <ul class="desplegable-menu">
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+              <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+              <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
+          </li>
         </ul>
       </section>
 
@@ -31,16 +44,13 @@
           <a href="#">Gestión de tickets 🡻 </a>
           <ul class="desplegable-menu">
             <li><a href="../homeTecnico.php">Tickets registrados</a></li>
-            <li><a href="ticketsPersonales.php">Tickets asignados</a></li>
+            <li><a href="../tecnico/ticketsPersonales.php">Tickets asignados</a></li>
           </ul>
         </li>
         <li class="desplegable-padding">
-          <a href="#">Gestion de prestamos 🡻</a>
-          <ul class="desplegable-menu">
-            <li><a href="tablaPrestamos.php">Tabla de prestamos</a></li>
-            <li><a href="inventarioEquipos.php">Inventario de equipos</a></li>
-          </ul>
+            <li><a href="../tecnico/tablaPrestamos.php">Tabla de prestamos</a></li>
         </li>
+          <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Inventario de equipos</a></li>
       </ul>
     </section>
   </nav>
@@ -49,26 +59,85 @@
     <a href="../admin_tecnico/historialGeneral.php?tipo=solicitudes" class="btn btn-primary mx-3">Historial de solicitudes</a>
     <h2 class="centro mt-3 text-primary">Solicitudes registradas</h2>
     <span class="centro mb-4">A continuación se muestran las solicitudes del personal docente</span>
+
     <section class="filtros">
-      <select id="filtroEstado">
-        <option value="todas">Filtrar por estado</option>
-        <option value="pendiente">Pendientes</option>
-        <option value="finalizada">Finalizadas</option>
-      </select>
-    </section>
+            <form method="GET" action="gestionSolicitudes.php">
+<!-- TOFIX: IMPLEMENTAR POSIBLE BUSQUEDA O POR ID -->
+                <label for="estado">Filtrar por Estado:</label>
+
+                <select id="estado" name="estado">
+                    <option value=""> Todos </option>
+                    <option value="pendiente" <?= ($estado === "pendiente") ? "selected" : "" ?>> Pendiente
+                    </option>
+                    <option value="finalizada" <?= ($estado === "finalizada") ? "selected" : "" ?>> Finalizada
+                    </option>
+                </select>
+
+                <label for="id">Filtrar por ID:</label>
+                <input type="text" id="id" name="id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+
+                <button type="submit" class="btn btn-primary text-bold">
+                    Filtrar
+                </button>
+            </form>
+        </section>
+
+    <?php if (isset($_GET["resultado"])): ?>
+      <span class="alert alert-success d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["resultado"]) ?>
+      </span>
+    <?php endif; ?>
+
+    <?php if (isset($_GET["error"])): ?>
+      <span class="alert alert-danger d-table text-center mx-auto my-2">
+        <?= htmlspecialchars($_GET["error"]) ?>
+      </span>
+    <?php endif; ?>
+
 
     <section class="table-responsive w-100 m-0 pb-3">
       <table class="ajustar-td tabla-contenedor m-0" id="tablaSolicitudes">
         <thead>
           <tr>
+            <th>ID</th>
             <th>Asunto</th>
-            <th>Fecha solicitada</th>
+            <th>Fecha límite</th>
             <th>Descripción</th>
-            <th>Datos</th>
+            <th>Ingresada Por</th>
             <th>Finalización</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
+          <?php if (empty($solicitudes)): ?>
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted text-bold"> No se encontraron solicitudes. </td>
+            </tr>
+          <?php else: ?>
+            <?php foreach ($solicitudes as $solicitud): ?>
+              <tr>
+                <td><?= htmlspecialchars($solicitud["id"]); ?></td>
+                <td><?= htmlspecialchars($solicitud["asunto"]); ?></td>
+                <td><?= htmlspecialchars($solicitud["fechaLimite"] . " - " . $solicitud['horaLimite']); ?></td>
+                <td><?= htmlspecialchars($solicitud["descripcion"]); ?></td>
+                <td><?= htmlspecialchars($solicitud["nombre"] . " - ( " . $solicitud['ciDocente'] . " )"); ?></td>
+                <td><?= htmlspecialchars($solicitud["finalizada"] ? "Finalizada" : "Pendiente"); ?></td>
+                <td>
+                  <?php if (!htmlspecialchars($solicitud["finalizada"])): ?>
+                    <form method="POST" action="../../../app/controlador/solicitudes/procesarEstadoSolicitud.php"
+                      class="d-inline form-estado">
+                      <input type="hidden" name="csrfToken"
+                        value="<?= htmlspecialchars($_SESSION["csrfToken"], ENT_QUOTES, "UTF-8") ?>">
+                      <input type="hidden" name="id" value="<?= htmlspecialchars($solicitud["id"]) ?>">
+                      <button type="submit" class="btn btn-primary ms-1 text-bold">
+                        Finalizar
+                      </button>
+                    </form>
+                  <?php endif; ?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </section>

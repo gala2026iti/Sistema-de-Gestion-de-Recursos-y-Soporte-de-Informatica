@@ -37,3 +37,19 @@ function comprobarPantalla() {
 
 comprobarPantalla()
 window.addEventListener("resize", comprobarPantalla)
+
+
+const menuUsuario = document.getElementById("menuUsuario")
+if (menuUsuario) {
+    const triggerUsuario = menuUsuario.querySelector("a")
+    triggerUsuario.addEventListener("click", function (e) {
+        e.preventDefault()
+        menuUsuario.classList.toggle("desplegable-abierto")
+    })
+
+    document.addEventListener("click", function (e) {
+        if (!menuUsuario.contains(e.target)) {
+            menuUsuario.classList.remove("desplegable-abierto")
+        }
+    })
+}
