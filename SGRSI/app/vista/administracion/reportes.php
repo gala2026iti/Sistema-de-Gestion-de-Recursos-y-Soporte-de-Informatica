@@ -15,6 +15,7 @@
     <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
   </header>
 
+  <!-- TOFIX: Usa el navbar viejo, actualizar -->
   <nav class="navbarSGRSI">
     <section class="nav-container">
       <section class="nav-primera-fila">

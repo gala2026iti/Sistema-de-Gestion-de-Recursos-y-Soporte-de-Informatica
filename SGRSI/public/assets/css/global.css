@@ -320,6 +320,16 @@ textarea {
 .btn-asignar:hover {
     background-color: rgb(15, 15, 160);
 }
+
+section.filtros, input
+section.filtros, select {
+    margin: 1rem 1rem;
+}
+
+table.tabla-contenedor, button {
+    margin: 0.2rem 0;
+}
+
 @media screen and (max-width: 1046px) {
 
     header,

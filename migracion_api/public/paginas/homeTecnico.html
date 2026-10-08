@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tickets registrados</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/administracion-tecnico/ticketsRegistrados.css">
+</head>
+
+<body>
+  <header class="d-flex justify-content-center align-items-center py-4">
+    <img class="img-logo" src="../assets/img/logo_iti.png" alt="Logo">
+  </header>
+
+  <nav class="navbarSGRSI">
+    <section class="nav-container">
+      <section class="nav-primera-fila">
+        <button class="btn-menu" id="btnMenu">☰</button>
+        <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
+        <ul class="nav-opciones-sistema">
+          <li class="desplegable desplegable-derecha" id="menuUsuario">
+            <a href="#" id="nombreInfoUsuario">Usuario - Rol 🡻</a>
+            <ul class="desplegable-menu">
+              <li><a href="#" id="cerrarSesion">Cerrar Sesion</a></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <ul class="nav-menu">
+        <li class="desplegable">
+          <a href="#">Gestión de tickets 🡻 </a>
+          <ul class="desplegable-menu">
+            <li><a href="tecnico/ticketsPersonales.html">Tickets asignados</a></li>
+          </ul>
+        </li>
+        <li><a href="tecnico/tablaPrestamos.html">Tabla de prestamos</a></li>
+        <li><a href="tecnico/gestionSolicitudes.html">Gestion de solicitudes</a></li>
+        <li><a href="admin_tecnico/gestionInventarioTecnologico.html">Inventario de equipos</a></li>
+      </ul>
+    </section>
+  </nav>
+
+  <main class="container-fluid px-0 py-3">
+    <a href="admin_tecnico/historialGeneral.html?tipo=tickets" class="btn btn-primary ms-3">Historial de tickets</a>
+    <h2 class="centro mt-3 text-primary">Tickets Registrados</h2>
+    <span class="centro mb-4">A continuación se muestran los tickets</span>
+
+    <section class="filtros">
+      <form id="formFiltrosTickets">
+        <label for="orden">Orden:</label>
+        <select id="orden" name="orden">
+          <option value="reciente">Recientes Primero</option>
+          <option value="antiguo">Antiguos Primero</option>
+        </select>
+
+        <label for="gravedad">Filtrar por Gravedad:</label>
+        <select id="gravedad" name="gravedad">
+          <option value="">Todos</option>
+          <option value="ligera">Ligera</option>
+          <option value="media">Media</option>
+          <option value="grave">Grave</option>
+        </select>
+
+        <label for="tipo">Filtrar por Tipo:</label>
+        <select id="tipo" name="tipo">
+          <option value="">Todos</option>
+          <option value="hardware">Hardware</option>
+          <option value="software">Software</option>
+          <option value="red">Red</option>
+        </select>
+
+        <label for="estado">Filtrar por Estado:</label>
+        <select id="estado" name="estado">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="en proceso">En proceso</option>
+          <option value="resuelto">Resuelto</option>
+        </select>
+
+        <label for="id">Filtrar por ID:</label>
+        <input type="text" id="id" name="id" value="">
+
+        <button type="submit" class="btn btn-primary text-bold">Filtrar</button>
+      </form>
+    </section>
+
+    <section class="table-responsive w-100 m-0 pb-5">
+      <table id="tablaEquipos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Asunto</th>
+            <th>Tipo</th>
+            <th>Gravedad</th>
+            <th>Estado</th>
+            <th>Información de creacion</th>
+            <th>Asignación de ticket</th>
+          </tr>
+        </thead>
+        
+        <tbody id="cuerpoTablaTickets"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática</span>
+  </footer>
+
+  <script src="../assets/js/homeTecnico.js"></script>
+  <script src="../assets/js/btnMenuCelular.js"></script>
+  <script src="../assets/js/cerrarSesion.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/verificarSesion.js"></script>
+</body>
+
+</html>
