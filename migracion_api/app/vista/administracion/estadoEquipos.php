@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de equipos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../../public/assets/css/global.css">
+    <link rel="stylesheet" href="../../../public/assets/css/direccion/panelConsultas.css">
+    <link rel="stylesheet" href="../../../public/assets/css/administracion-tecnico/gestionEquipos.css">
+</head>
+
+<body>
+    <header class="d-flex justify-content-center align-items-center py-4">
+        <img class="img-logo" src="../../../public/assets/img/logo_iti.png" alt="Logo">
+    </header>
+
+    <nav class="navbarSGRSI">
+        <section class="nav-container">
+            <section class="nav-primera-fila">
+                <button class="btn-menu" id="btnMenu">☰</button>
+                <button class="btn-cerrar-lateral" id="btnCerrar">X</button>
+<ul class="nav-opciones-sistema">
+                        <li class="desplegable desplegable-derecha" id="menuUsuario" data-rol-actual="<?= htmlspecialchars($_SESSION['rolActual'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                            <a href="#"><?= htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?> - <?php switch ($_SESSION['rolActual'] ?? ''): case 'administrador': ?> Administrador<?php break; case 'tecnico': ?> Técnico<?php break; case 'docente': ?> Docente<?php endswitch; ?> 🡻</a>
+                            <ul class="desplegable-menu">
+                                <?php if (($_SESSION['rolActual'] ?? '') !== 'docente' && !empty($_SESSION['docente'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Docente</button><input type="hidden" name="rol" value="docente"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                                <?php if (($_SESSION['rolActual'] ?? '') !== 'tecnico' && !empty($_SESSION['tecnico'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Técnico</button><input type="hidden" name="rol" value="tecnico"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                                <?php if (($_SESSION['rolActual'] ?? '') !== 'administrador' && !empty($_SESSION['administrador'])): ?><li><form action="../../../app/controlador/procesarCambioRol.php" method="post"><button type="submit" class="cambiar-rol">Cambiar a Administrador</button><input type="hidden" name="rol" value="administrador"><input type="hidden" name="csrfToken" value="<?= htmlspecialchars($_SESSION['csrfToken'] ?? '', ENT_QUOTES, 'UTF-8') ?>"></form></li><?php endif; ?>
+                                <li><a href="../../../public/paginaWeb/cerrarSesion.php" id="cerrarSesion">Cerrar Sesion</a></li>
+                            </ul>
+                        </li>
+</ul>
+            </section>
+            <ul class="nav-menu">
+                <li class="desplegable"><a href="../homeAdmin.php">Dashboard</a></li>
+                <li class="desplegable"><a href="reportes.php">Reportes y estadisticas</a></li>
+                <li><a href="metricas.php">Metricas del sistema</a></li>
+            </ul>
+            <ul class="nav-menu">
+                <li class="desplegable-padding" id="opcionesAdmin">
+                    <a href="#">Administracion y control 🡻</a>
+                    <ul class="desplegable-menu">
+                        <li><a href="gestionUsuarios.php">Gestion de usuarios</a></li>
+                        <li><a href="../admin_tecnico/gestionInventarioTecnologico.php">Gestion de inventario de equipos</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </nav>
+
+    <main class="container-fluid px-0 py-3">
+        <h2 class="centro mt-3 text-primary" id="tituloVista">Estado de Equipos Tecnológicos</h2>
+        <span class="centro mb-4">Consulta analítica de los dispositivos y sus historiales de falla</span>
+
+        <section class="filtros">
+            <select id="filtroUbicacion">
+                <option value="todos">Todas las ubicaciones</option>
+                <option value="prestamo">Dispositivos para prestar</option>
+                <option value="ninguna">Sin asignar / No ingresados</option>
+            </select>
+
+            <select id="filtroEstado">
+                <option value="">Filtrar por Estado</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+
+            <select id="filtroIncidencias">
+                <option value="">Ordenar por cantidad de incidencias</option>
+                <option value="menor">Menor cantidad</option>
+                <option value="mayor">Mayor cantidad</option>
+            </select>
+
+            <select id="filtroIntervencion">
+                <option value="">Ordenar por fecha de intervención</option>
+                <option value="reciente">Reciente primero</option>
+                <option value="antiguo">Antiguo primero</option>
+            </select>
+        </section>
+
+        <section class="table-responsive w-100 m-0 overflow-x-auto">
+            <table class="tabla-contenedor m-0" id="tablaEquipos">
+                <thead>
+                    <tr>
+                        <th>Codigo (ID Global)</th>
+                        <th>Estado</th>
+                        <th>Asignación / Préstamo</th>
+                        <th>Ubicación Física</th>
+                        <th>Ultima intervencion</th>
+                        <th>Incidencias</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section class="container mt-5 mb-4">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="card p-3 shadow-sm border-0 bg-white">
+                        <h3 class="titulo-grafica text-center fs-5 mb-3">Equipos por estado</h3>
+                        <div class="contenedor-grafica">
+                            <canvas id="graficaEstados"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card p-3 shadow-sm border-0 bg-white">
+                        <h3 class="titulo-grafica text-center fs-5 mb-3">Incidencias Por Equipo</h3>
+                        <div class="contenedor-grafica">
+                            <canvas id="graficaIncidencias"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span class="footer-bold">Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../../public/assets/js/btnMenuCelular.js" defer></script>
+    <script src="../../../public/assets/js/cerrarSesion.js" defer></script>
+    <script src="../../../public/assets/js/verificarSesion.js" defer></script>
+    <script src="../../../public/assets/js/graficoDireccion.js" defer></script>
+</body>
+
+</html>
