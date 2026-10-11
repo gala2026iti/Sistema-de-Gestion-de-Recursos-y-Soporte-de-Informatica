@@ -1,0 +1,23 @@
+.modal-contenido {
+    width: 100%;
+    max-width: 40rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 0;
+}
+
+.modal-contenido::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.oculto {
+    display: none !important;
+}
+
+@media (max-width: 576px) {
+
+    .modal-contenido {
+        max-height: 92vh;
+    }
+
+}
