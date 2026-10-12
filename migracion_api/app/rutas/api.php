@@ -1,6 +1,7 @@
 <?php
 
 require_once RUTA_CONTROLADOR . "/LoginController.php";
+require_once RUTA_CONTROLADOR . "/UsuarioController.php";
 
 // Espacio donde se encuentran los endpoints
 // que establecen la comunicación con el controlador.s
@@ -20,6 +21,10 @@ switch ($ruta) {
         $controlador->cerrarSesion($metodo);
         break;
 
+    case "usuarios":
+        $controlador = new UsuarioController();
+        $controlador->gestionar($metodo);
+        break;
     default:
         RespuestaJson::error(
             "Ruta no encontrada",

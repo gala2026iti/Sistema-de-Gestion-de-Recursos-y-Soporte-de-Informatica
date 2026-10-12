@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Representa un usuario del sistema.
  */

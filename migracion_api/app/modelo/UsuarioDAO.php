@@ -14,7 +14,6 @@ class UsuarioDAO
 
     /**
      * Busca un usuario por cédula.
-     *
      * Se utiliza principalmente durante el inicio de sesión.
      */
     public function buscarUsuario(string $cedula): ?Usuario
@@ -56,11 +55,11 @@ class UsuarioDAO
         ";
 
         $consulta = $this->conexion->prepare($sql);
-
-        $consulta->execute(["cedula" => $cedula]);
+        $consulta->execute([
+            "cedula" => $cedula
+        ]);
 
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
-
         $consulta = null;
 
         if ($usuario === false) {
@@ -81,10 +80,12 @@ class UsuarioDAO
 
     /**
      * Lista los usuarios registrados.
-     *
      * Permite filtrar opcionalmente por rol y estado.
      */
-    public function listarUsuarios( string $rol = "", string $estado = "" ): array {
+    public function listarUsuarios(
+        string $rol = "",
+        string $estado = ""
+    ): array {
         $sql = "
             SELECT
                 u.ci AS cedula,
@@ -145,7 +146,8 @@ class UsuarioDAO
         }
 
         if (!empty($condiciones)) {
-            $sql .= " WHERE " . implode(" AND ", $condiciones);
+            $sql .= " WHERE " .
+                implode(" AND ", $condiciones);
         }
 
         $sql .= " ORDER BY u.ci";
@@ -153,7 +155,9 @@ class UsuarioDAO
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
 
-        $usuarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $usuarios = $consulta->fetchAll(
+            PDO::FETCH_ASSOC
+        );
 
         $consulta = null;
 
@@ -189,7 +193,10 @@ class UsuarioDAO
                 )
             ";
 
-            $consultaUsuario = $this->conexion->prepare($sqlUsuario);
+            $consultaUsuario =
+                $this->conexion->prepare(
+                    $sqlUsuario
+                );
 
             $consultaUsuario->execute([
                 "cedula" => $cedula,
@@ -211,7 +218,10 @@ class UsuarioDAO
                 )
             ";
 
-            $consultaCorreo = $this->conexion->prepare($sqlCorreo);
+            $consultaCorreo =
+                $this->conexion->prepare(
+                    $sqlCorreo
+                );
 
             $consultaCorreo->execute([
                 "cedula" => $cedula,
@@ -222,9 +232,7 @@ class UsuarioDAO
 
 
             foreach ($roles as $rol) {
-
                 switch (strtolower($rol)) {
-
                     case "administrador":
                         $sqlRol = "
                             INSERT INTO ADMINISTRADOR (ci)
@@ -251,7 +259,10 @@ class UsuarioDAO
                         return false;
                 }
 
-                $consultaRol = $this->conexion->prepare($sqlRol);
+                $consultaRol =
+                    $this->conexion->prepare(
+                        $sqlRol
+                    );
 
                 $consultaRol->execute([
                     "cedula" => $cedula
@@ -265,7 +276,6 @@ class UsuarioDAO
             return true;
 
         } catch (PDOException $error) {
-
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }
@@ -289,14 +299,16 @@ class UsuarioDAO
         ";
 
         try {
-            $consulta = $this->conexion->prepare($sql);
+            $consulta =
+                $this->conexion->prepare($sql);
 
             $consulta->execute([
                 "activo" => $activo ? 1 : 0,
                 "cedula" => $cedula
             ]);
 
-            $actualizado = $consulta->rowCount() > 0;
+            $actualizado =
+                $consulta->rowCount() > 0;
 
             $consulta = null;
 
@@ -321,9 +333,7 @@ class UsuarioDAO
         try {
             $this->conexion->beginTransaction();
 
-
             if ($claveHash !== null) {
-
                 $sqlUsuario = "
                     UPDATE USUARIO
                     SET
@@ -339,7 +349,6 @@ class UsuarioDAO
                 ];
 
             } else {
-
                 $sqlUsuario = "
                     UPDATE USUARIO
                     SET nombre = :nombre
@@ -352,9 +361,10 @@ class UsuarioDAO
                 ];
             }
 
-
             $consultaUsuario =
-                $this->conexion->prepare($sqlUsuario);
+                $this->conexion->prepare(
+                    $sqlUsuario
+                );
 
             $consultaUsuario->execute(
                 $parametrosUsuario
@@ -370,7 +380,9 @@ class UsuarioDAO
             ";
 
             $consultaCorreo =
-                $this->conexion->prepare($sqlCorreo);
+                $this->conexion->prepare(
+                    $sqlCorreo
+                );
 
             $consultaCorreo->execute([
                 "correo" => $correo,
@@ -387,14 +399,15 @@ class UsuarioDAO
             ];
 
             foreach ($tablasRoles as $tabla) {
-
                 $sqlEliminarRol = "
                     DELETE FROM $tabla
                     WHERE ci = :cedula
                 ";
 
                 $consultaEliminarRol =
-                    $this->conexion->prepare($sqlEliminarRol);
+                    $this->conexion->prepare(
+                        $sqlEliminarRol
+                    );
 
                 $consultaEliminarRol->execute([
                     "cedula" => $cedula
@@ -405,9 +418,7 @@ class UsuarioDAO
 
 
             foreach ($roles as $rol) {
-
                 switch (strtolower($rol)) {
-
                     case "administrador":
                         $sqlRol = "
                             INSERT INTO ADMINISTRADOR (ci)
@@ -430,16 +441,21 @@ class UsuarioDAO
                         break;
 
                     default:
-
-                        if ($this->conexion->inTransaction()) {
-                            $this->conexion->rollBack();
+                        if (
+                            $this->conexion
+                                ->inTransaction()
+                        ) {
+                            $this->conexion
+                                ->rollBack();
                         }
 
                         return false;
                 }
 
                 $consultaRol =
-                    $this->conexion->prepare($sqlRol);
+                    $this->conexion->prepare(
+                        $sqlRol
+                    );
 
                 $consultaRol->execute([
                     "cedula" => $cedula
@@ -448,13 +464,11 @@ class UsuarioDAO
                 $consultaRol->closeCursor();
             }
 
-
             $this->conexion->commit();
 
             return true;
 
         } catch (PDOException $error) {
-
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }

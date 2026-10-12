@@ -11,13 +11,7 @@ class ConectorPDO
 
     private static ?self $instancia = null;
 
-    private function __construct(
-        string $servername,
-        int $port,
-        string $username,
-        string $password,
-        string $dbname
-    ) {
+    private function __construct(string $servername, int $port, string $username, string $password, string $dbname) {
         $this->servername = $servername;
         $this->port = $port;
         $this->username = $username;
@@ -31,42 +25,23 @@ class ConectorPDO
 
     public function __wakeup(): void
     {
-        throw new Exception(
-            "No se puede deserializar un Singleton."
-        );
+        throw new Exception("No se puede deserializar un Singleton.");
     }
 
     public function __serialize(): array
     {
-        throw new LogicException(
-            "El objeto no puede serializarse."
-        );
+        throw new LogicException("El objeto no puede serializarse.");
     }
 
     public function __unserialize(array $data): void
     {
-        throw new LogicException(
-            "El objeto no puede deserializarse."
-        );
+        throw new LogicException("El objeto no puede deserializarse.");
     }
 
-    public static function obtenerInstancia(
-        string $servername,
-        int $port,
-        string $username,
-        string $password,
-        string $dbname
-    ): ConectorPDO {
+    public static function obtenerInstancia( string $servername, int $port, string $username, string $password, string $dbname): ConectorPDO {
         if (self::$instancia === null) {
-            self::$instancia = new self(
-                $servername,
-                $port,
-                $username,
-                $password,
-                $dbname
-            );
+            self::$instancia = new self( $servername, $port, $username, $password, $dbname);
         }
-
         return self::$instancia;
     }
 
