@@ -48,6 +48,7 @@ async function obtenerTickets(orden = "", gravedad = "", clasificacion = "", est
     const parametros = new URLSearchParams();
 
     if (orden !== "") {
+        parametros.append("tiempo", orden);
         parametros.append("orden", orden);
     }
     if (gravedad !== "") {

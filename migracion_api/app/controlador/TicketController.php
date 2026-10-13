@@ -71,7 +71,7 @@ class TicketController
      */
     private function listar(): void
     {
-        $tiempo = mb_strtolower(trim($_GET["tiempo"] ?? ""));
+        $tiempo = mb_strtolower(trim($_GET["tiempo"] ?? $_GET["orden"] ?? ""));
         $gravedad = mb_strtolower(trim($_GET["gravedad"] ?? ""));
         $clasificacion = mb_strtolower(trim($_GET["clasificacion"] ?? ""));
         $estado = mb_strtolower(trim($_GET["estado"] ?? ""));

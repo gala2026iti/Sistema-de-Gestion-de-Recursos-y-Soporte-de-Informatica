@@ -35,7 +35,7 @@ class AccesoDatosTicket
     {
         $sql = "
             SELECT
-                t.idReporte as id,
+                t.id AS id,
                 t.tipo,
                 t.asunto,
                 t.descripcion,
@@ -44,24 +44,22 @@ class AccesoDatosTicket
                 t.fechaCreacion,
                 t.horaCreacion,
                 t.justificacion,
-                drr.ciDocente,
+                drt.ciDocente,
                 u.nombre AS nombreDocente,
-                eru.idEquipo,
-                eru.idUbicacion,
-                eru.tipoUbicacion
+                eugt.idEquipo,
+                eugt.idUbicacion,
+                eugt.tipoUbicacion
             FROM TICKET AS t
-            LEFT JOIN docente_reporta_reporte AS drr ON drr.idReporte = t.idReporte
-            LEFT JOIN USUARIO AS u ON u.ci = drr.ciDocente
-            LEFT JOIN REPORTE AS r ON t.idReporte = r.id
-            LEFT JOIN equipo_reside_ubicacion AS eru ON eru.idEquipo = r.idEquipo
-            WHERE t.idReporte = :idReporte
-            ORDER BY t.idReporte DESC
-
+            LEFT JOIN docente_reporta_ticket AS drt ON drt.idTicket = t.id
+            LEFT JOIN USUARIO AS u ON u.ci = drt.ciDocente
+            LEFT JOIN equipo_ubicacion_genera_ticket AS eugt ON eugt.idTicket = t.id
+            WHERE t.id = :id
+            ORDER BY t.id DESC
         ";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([
-            "idReporte" => $id
+            "id" => $id
         ]);
 
         $ticket = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -109,7 +107,7 @@ class AccesoDatosTicket
     ): array {
         $sql = "
         SELECT
-            t.idReporte as id,
+            t.id AS id,
             t.tipo,
             t.asunto,
             t.descripcion,
