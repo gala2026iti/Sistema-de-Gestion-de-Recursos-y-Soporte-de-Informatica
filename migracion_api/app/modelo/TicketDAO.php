@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../Ticket.php";
+require_once __DIR__ . "/Ticket.php";
 
 /**
  * @brief Gestiona las consultas relacionadas con los tickets.
@@ -35,7 +35,7 @@ class AccesoDatosTicket
     {
         $sql = "
             SELECT
-                t.id,
+                t.idReporte as id,
                 t.tipo,
                 t.asunto,
                 t.descripcion,
@@ -44,23 +44,24 @@ class AccesoDatosTicket
                 t.fechaCreacion,
                 t.horaCreacion,
                 t.justificacion,
-                drt.ciDocente,
-                u_doc.nombre AS nombreDocente,
-                eugt.idEquipo,
-                eugt.idUbicacion
-                eugt.tipoUbicacion
+                drr.ciDocente,
+                u.nombre AS nombreDocente,
+                eru.idEquipo,
+                eru.idUbicacion,
+                eru.tipoUbicacion
             FROM TICKET AS t
-            LEFT JOIN docente_reporta_ticket AS drt ON drt.idTicket = t.id
-            LEFT JOIN USUARIO AS u_doc ON u_doc.ci = drt.ciDocente
-            LEFT JOIN equipo_ubicacion_genera_ticket AS eugt ON eugt.idTicket = t.id
-            WHERE t.id = :id
-            ORDER BY t.id DESC
+            LEFT JOIN docente_reporta_reporte AS drr ON drr.idReporte = t.idReporte
+            LEFT JOIN USUARIO AS u ON u.ci = drr.ciDocente
+            LEFT JOIN REPORTE AS r ON t.idReporte = r.id
+            LEFT JOIN equipo_reside_ubicacion AS eru ON eru.idEquipo = r.idEquipo
+            WHERE t.idReporte = :idReporte
+            ORDER BY t.idReporte DESC
 
         ";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([
-            "id" => $id
+            "idReporte" => $id
         ]);
 
         $ticket = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -108,7 +109,7 @@ class AccesoDatosTicket
     ): array {
         $sql = "
         SELECT
-            t.id,
+            t.idReporte as id,
             t.tipo,
             t.asunto,
             t.descripcion,

@@ -13,7 +13,7 @@ require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/TicketDAO.php";
 require_once RUTA_VISTA . "/RespuestaJson.php";
 
-class ControladorTicket
+class TicketController
 {
     /**
      * @brief Gestiona las peticiones recibidas por la API.
@@ -24,20 +24,24 @@ class ControladorTicket
      */
     public function gestionar(string $metodo): void
     {
-        if (!isset($_SESSION["cedula"])) {
-            RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
-        }
+        try {
+            if (!isset($_SESSION["cedula"])) {
+                RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
+            }
 
-        if (!($_SESSION["tecnico"] ?? false)) {
-            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-        }
+            if (!($_SESSION["tecnico"] ?? false)) {
+                RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+            }
 
-        match ($metodo) {
-            "GET" => $this->consultar(),
-            "POST" => $this->alta(),
-            "PATCH" => $this->modificar(),
-            default => RespuestaJson::error("Método no permitido", 405),
-        };
+            match ($metodo) {
+                "GET" => $this->consultar(),
+                "POST" => $this->alta(),
+                "PATCH" => $this->modificar(),
+                default => RespuestaJson::error("Método no permitido", 405),
+            };
+        } catch (Throwable $error) {
+            RespuestaJson::error("Error interno del servidor", 500);
+        }
     }
 
     /**
@@ -67,10 +71,10 @@ class ControladorTicket
      */
     private function listar(): void
     {
-        $tiempo = strtolower(trim($_GET["tiempo"] ?? ""));
-        $gravedad = strtolower(trim($_GET["gravedad"] ?? ""));
-        $clasificacion = strtolower(trim($_GET["clasificacion"] ?? ""));
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
+        $tiempo = mb_strtolower(trim($_GET["tiempo"] ?? ""));
+        $gravedad = mb_strtolower(trim($_GET["gravedad"] ?? ""));
+        $clasificacion = mb_strtolower(trim($_GET["clasificacion"] ?? ""));
+        $estado = mb_strtolower(trim($_GET["estado"] ?? ""));
 
         $conexion = $this->conectar();
         $dao = new AccesoDatosTicket($conexion);
@@ -343,7 +347,8 @@ class ControladorTicket
     private function conectar(): PDO
     {
         $conector = new ConectorPDO(
-            $_ENV["DB_HOST"] . ":" . $_ENV["DB_PUERTO"],
+            $_ENV["DB_HOST"],
+            (int) $_ENV["DB_PUERTO"],
             $_ENV["DB_USUARIO"],
             $_ENV["DB_CLAVE"],
             $_ENV["DB_NOMBRE"]

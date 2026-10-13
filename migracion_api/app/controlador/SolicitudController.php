@@ -159,7 +159,8 @@ class ControladorSolicitud
     private function conectar(): PDO
     {
         $conector = new ConectorPDO(
-            $_ENV["DB_HOST"] . ":" . $_ENV["DB_PUERTO"],
+            $_ENV["DB_HOST"],
+            (int) $_ENV["DB_PUERTO"],
             $_ENV["DB_USUARIO"],
             $_ENV["DB_CLAVE"],
             $_ENV["DB_NOMBRE"]
