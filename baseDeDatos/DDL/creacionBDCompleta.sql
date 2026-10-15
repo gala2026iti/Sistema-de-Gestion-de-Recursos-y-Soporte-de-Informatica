@@ -369,12 +369,28 @@ INSERT INTO administrador_modifica_usuario
 ('44444444', '88888888', 'modificacion'),
 ('11111111', '77777777', 'desactivacion');
 
+
+/*
+    IMPORTANTE:
+
+    La ubicación (0, 'prestamo') es una ubicación interna reservada
+    utilizada para los equipos destinados a préstamo.
+
+    No representa un laboratorio ni un taller real.
+    No debe eliminarse ni mostrarse como una ubicación normal
+    al usuario.
+*/
+INSERT INTO UBICACION (id, tipo) VALUES
+(0, 'prestamo');
+
+
+/* UBICACIONES REALES DEL SISTEMA */
+
 INSERT INTO UBICACION (id, tipo) VALUES
 (1, 'laboratorio'),
 (2, 'laboratorio'),
 (3, 'taller'),
-(4, 'taller'),
-(0, 'prestamo');
+(4, 'taller');
 
 INSERT INTO EQUIPO (id) VALUES
 (1), (2), (3), (4), (5), (6), (7), (8);

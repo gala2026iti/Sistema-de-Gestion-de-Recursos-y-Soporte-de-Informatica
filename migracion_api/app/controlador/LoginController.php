@@ -13,24 +13,21 @@ class LoginController
     public function autenticar(string $metodo): void
     {
         if ($metodo !== "POST") {
-            RespuestaJson::error(
-                "Método no permitido",405);
+            RespuestaJson::error("Método no permitido",405);
         }
 
         $datos = json_decode(
             file_get_contents("php://input"),true);
 
         if (!is_array($datos)) {
-            RespuestaJson::error(
-                "JSON inválido",400);
+            RespuestaJson::error("JSON inválido",400);
         }
 
         $cedula = trim($datos["cedula"] ?? "");
         $clave = $datos["clave"] ?? "";
 
         if ($cedula === "" || $clave === "") {
-            RespuestaJson::error(
-                "Cédula y contraseña son obligatorias",422);
+            RespuestaJson::error( "Cédula y contraseña son obligatorias",422);
         }
 
         $conexion = Conexion::conectar();
@@ -49,11 +46,7 @@ class LoginController
 
         Sesion::iniciar($usuario);
         Token::generarTokenCSRF();
-        RespuestaJson::exito([
-            "mensaje" => "Sesión iniciada correctamente",
-            "csrfToken" => $_SESSION["csrfToken"],
-            "rolActual" => $_SESSION["rolActual"]
-        ]);
+        RespuestaJson::exito(["mensaje" => "Sesión iniciada correctamente", "csrfToken" => $_SESSION["csrfToken"], "rolActual" => $_SESSION["rolActual"]]);
     }
 
     public function cerrarSesion(string $metodo): void
@@ -72,16 +65,12 @@ class LoginController
 {
     if ($metodo !== "GET") {
         RespuestaJson::error(
-            "Método no permitido",
-            405
-        );
+            "Método no permitido", 405);
     }
 
     if (!isset($_SESSION["cedula"])) {
         RespuestaJson::error(
-            "Acceso denegado: sesión no iniciada",
-            401
-        );
+            "Acceso denegado: sesión no iniciada",401);
     }
 
     RespuestaJson::exito([

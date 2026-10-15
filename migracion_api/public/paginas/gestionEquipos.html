@@ -7,86 +7,48 @@
 
     <title>Gestión de Inventario Tecnológico</title>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="../assets/css/administracion-tecnico/gestionEquipos.css">
     <link rel="stylesheet" href="../assets/css/formulariospopup.css">
 </head>
 
 <body data-roles-permitidos="administrador,tecnico">
-
     <header class="d-flex justify-content-center align-items-center py-4">
-        <img
-            class="img-logo"
-            src="../assets/img/logo_iti.png"
-            alt="Logo"
-        >
+        <img class="img-logo" src="../assets/img/logo_iti.png" alt="Logo">
     </header>
 
 
     <nav class="navbarSGRSI">
-
         <section class="nav-container">
-
             <section class="nav-primera-fila">
-
-                <button
-                    class="btn-menu"
-                    id="btnMenu"
-                    type="button"
-                >
+                <button class="btn-menu" id="btnMenu" type="button">
                     ☰
                 </button>
 
-                <button
-                    class="btn-cerrar-lateral"
-                    id="btnCerrar"
-                    type="button"
-                >
+                <button class="btn-cerrar-lateral" id="btnCerrar" type="button">
                     X
                 </button>
 
-
                 <ul class="nav-opciones-sistema">
-
-                    <li
-                        class="desplegable desplegable-derecha"
-                        id="menuUsuario"
-                    >
-
+                    <li class="desplegable desplegable-derecha" id="menuUsuario" >
                         <a href="#" id="datosUsuario">
                             Usuario 🡻
                         </a>
 
-                        <ul
-                            class="desplegable-menu"
-                            id="opcionesRoles"
-                        >
-
+                        <ul class="desplegable-menu" id="opcionesRoles" >
                             <li>
                                 <a href="#" id="cerrarSesion">
                                     Cerrar Sesion
                                 </a>
                             </li>
-
                         </ul>
-
                     </li>
-
                 </ul>
 
             </section>
 
-
-            <ul
-                class="nav-menu d-none"
-                id="menuAdministrador"
-            >
-
+            <ul class="nav-menu d-none" id="menuAdministrador" >
                 <li class="desplegable">
                     <a href="./homeAdmin.html">
                         Dashboard
@@ -110,15 +72,10 @@
                         Metricas del sistema
                     </a>
                 </li>
-
             </ul>
 
 
-            <ul
-                class="nav-menu d-none"
-                id="menuAdministracion"
-            >
-
+            <ul class="nav-menu d-none" id="menuAdministracion">
                 <li class="desplegable-padding">
 
                     <a href="#">
@@ -126,25 +83,18 @@
                     </a>
 
                     <ul class="desplegable-menu">
-
                         <li>
                             <a href="./gestionUsuarios.html">
                                 Gestion de usuarios
                             </a>
                         </li>
-
                     </ul>
 
                 </li>
-
             </ul>
 
 
-            <ul
-                class="nav-menu d-none"
-                id="menuTecnico"
-            >
-
+            <ul class="nav-menu d-none" id="menuTecnico" >
                 <li class="desplegable">
 
                     <a href="#">
@@ -152,7 +102,6 @@
                     </a>
 
                     <ul class="desplegable-menu">
-
                         <li>
                             <a href="./homeTecnico.html">
                                 Tickets registrados
@@ -164,9 +113,7 @@
                                 Tickets asignados
                             </a>
                         </li>
-
                     </ul>
-
                 </li>
 
                 <li>
@@ -180,45 +127,28 @@
                         Gestion de solicitudes
                     </a>
                 </li>
-
             </ul>
-
         </section>
-
     </nav>
 
 
     <main class="container-fluid px-0 py-3">
-
         <section class="px-4 mb-3">
 
-            <button
-                id="btnAbrirUbicaciones"
-                class="btn btn-primary d-block mb-2 text-bold"
-                type="button"
-            >
+            <button id="btnAbrirUbicaciones" class="btn btn-primary d-block mb-2 text-bold" type="button">
                 ☰ Ver Ubicaciones / Salones
             </button>
 
         </section>
 
-
-        <section
-            class="barralateral-ubicaciones"
-            id="barraLateralSalones"
-        >
+        <section class="barralateral-ubicaciones" id="barraLateralSalones">
 
             <div class="barralateral-header">
-
                 <h3>
                     Ubicaciones
                 </h3>
 
-                <button
-                    id="btnCerrarUbicaciones"
-                    class="btn-cerrar-lateral"
-                    type="button"
-                >
+                <button id="btnCerrarUbicaciones" class="btn-cerrar-lateral" type="button">
                     X
                 </button>
 
@@ -231,14 +161,9 @@
                     Laboratorios
                 </h4>
 
-                <ul id="listaLaboratorios">
-                </ul>
+                <ul id="listaLaboratorios"></ul>
 
-                <button
-                    class="btn-agregar-salon d-none"
-                    id="btnAgregarLaboratorio"
-                    type="button"
-                >
+                <button class="btn-agregar-salon d-none" id="btnAgregarLaboratorio" type="button">
                     + Añadir Laboratorio
                 </button>
 
@@ -247,14 +172,9 @@
                     Talleres
                 </h4>
 
-                <ul id="listaTalleres">
-                </ul>
+                <ul id="listaTalleres"></ul>
 
-                <button
-                    class="btn-agregar-salon d-none"
-                    id="btnAgregarTaller"
-                    type="button"
-                >
+                <button class="btn-agregar-salon d-none" id="btnAgregarTaller" type="button" >
                     + Añadir Taller
                 </button>
 
@@ -264,33 +184,20 @@
                 </h4>
 
                 <ul>
-
                     <li>
-                        <a
-                            href="#"
-                            id="filtroPrestamo"
-                            data-tipo-ubicacion="prestamo"
-                        >
+                        <a href="#" id="filtroPrestamo" data-tipo-ubicacion="prestamo">
                             Dispositivos para prestar
                         </a>
                     </li>
 
                     <li>
-                        <a
-                            href="#"
-                            id="filtroTodosEquipos"
-                            data-tipo-ubicacion="todos"
-                        >
+                        <a href="#" id="filtroTodosEquipos" data-tipo-ubicacion="todos">
                             Todos los Dispositivos
                         </a>
                     </li>
-
                 </ul>
-
             </div>
-
         </section>
-
 
         <h2 class="centro mt-3 text-warning">
             Gestion de Equipos Tecnologicos
@@ -300,38 +207,19 @@
             A continuacion se muestran los equipos registrados en el sistema
         </span>
 
-
-        <span
-            id="mensajeExito"
-            class="alert alert-success d-table text-center mx-auto my-2 d-none"
-        >
-        </span>
-
-        <span
-            id="mensajeError"
-            class="alert alert-danger d-table text-center mx-auto my-2 d-none"
-        >
-        </span>
+        <span id="mensajeExito" class="alert alert-success d-table text-center mx-auto my-2 d-none"></span>
+        <span id="mensajeError" class="alert alert-danger d-table text-center mx-auto my-2 d-none"></span>
 
 
         <section class="filtros">
-
             <form id="formFiltroEquipos">
 
-                <div
-                    id="filtroEstadoAdministrador"
-                    class="d-none"
-                >
-
+                <div id="filtroEstadoAdministrador" class="d-none" >
                     <label for="estado">
                         Estado:
                     </label>
 
-                    <select
-                        id="estado"
-                        name="estado"
-                    >
-
+                    <select id="estado" name="estado">
                         <option value="">
                             Todos
                         </option>
@@ -343,9 +231,7 @@
                         <option value="inactivo">
                             Inactivo
                         </option>
-
                     </select>
-
                 </div>
 
 
@@ -353,26 +239,16 @@
                     Ordenar por:
                 </label>
 
-                <select
-                    id="orden"
-                    name="orden"
-                >
-
+                <select id="orden" name="orden">
                     <option value="">
                         ID
                     </option>
 
-                    <option
-                        value="masincidencias"
-                        class="opcionAdministrador d-none"
-                    >
+                    <option value="masincidencias" class="opcionAdministrador d-none" >
                         Incidencias (Más)
                     </option>
 
-                    <option
-                        value="menosincidencias"
-                        class="opcionAdministrador d-none"
-                    >
+                    <option value="menosincidencias" class="opcionAdministrador d-none">
                         Incidencias (Menos)
                     </option>
 
@@ -383,60 +259,30 @@
                     <option value="antiguo">
                         Intervenciones (Antiguas)
                     </option>
-
                 </select>
 
+                <input type="hidden" id="filtroUbicacion" name="ubicacion" value="">
 
-                <input
-                    type="hidden"
-                    id="filtroUbicacion"
-                    name="ubicacion"
-                    value=""
-                >
-
-                <input
-                    type="hidden"
-                    id="filtroTipoUbicacion"
-                    name="tipoUbicacion"
-                    value=""
-                >
-
+                <input type="hidden" id="filtroTipoUbicacion" name="tipoUbicacion" value="">
 
                 <label for="idEquipoFiltro">
                     Filtrar por ID:
                 </label>
 
-                <input
-                    type="text"
-                    id="idEquipoFiltro"
-                    name="id"
-                >
+                <input type="text" id="idEquipoFiltro" name="id">
 
-
-                <button
-                    type="submit"
-                    id="btnFiltrarEquipos"
-                    class="btn btn-primary text-bold"
-                >
+                <button type="submit" id="btnFiltrarEquipos" class="btn btn-primary text-bold" >
                     Filtrar
                 </button>
-
             </form>
-
         </section>
 
 
         <section class="table-responsive w-100 m-0 overflow-x-auto">
-
-            <table
-                class="tabla-contenedor m-0 text-bold"
-                id="tablaEquipos"
-            >
+            <table class="tabla-contenedor m-0 text-bold" id="tablaEquipos">
 
                 <thead>
-
                     <tr>
-
                         <th>
                             Codigo (ID Global)
                         </th>
@@ -460,121 +306,57 @@
                         <th>
                             Acciones
                         </th>
-
                     </tr>
-
                 </thead>
 
-
-                <tbody id="cuerpoTablaEquipos">
-                </tbody>
-
+               <tbody id="cuerpoTablaEquipos"></tbody>
             </table>
-
         </section>
 
 
         <section class="w-100 d-flex px-3 mt-4">
-
-            <a
-                href="#"
-                id="btnHistorialEquipos"
-                class="btn btn-warning me-2 text-bold"
-            >
+            <a href="#" id="btnHistorialEquipos" class="btn btn-warning me-2 text-bold">
                 Historial de Equipos
             </a>
 
-            <a
-                href="#"
-                id="btnHistorialSalones"
-                class="btn btn-warning me-2 text-bold"
-            >
+            <a href="#" id="btnHistorialSalones" class="btn btn-warning me-2 text-bold">
                 Historial de Salones
             </a>
 
-
-            <button
-                id="btnRegistrarEquipo"
-                class="btn btn-success ms-auto text-bold d-none"
-                type="button"
-            >
+            <button id="btnRegistrarEquipo" class="btn btn-success ms-auto text-bold d-none" type="button">
                 Registrar PC
             </button>
 
         </section>
 
+        <div id="modalEquipo" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
 
-        <div
-            id="modalEquipo"
-            class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center"
-        >
+            <form id="formEquipo" class="bg-white p-4 rounded shadow w-100 max-450">
 
-            <form
-                id="formEquipo"
-                class="bg-white p-4 rounded shadow w-100 max-450"
-            >
-
-                <h2
-                    id="tituloFormEquipo"
-                    class="text-primary border-bottom pb-3"
-                >
+                <h2 id="tituloFormEquipo" class="text-primary border-bottom pb-3">
                     Registro de PC
                 </h2>
 
 
                 <fieldset class="tarjeta">
 
-                    <label
-                        class="form-label fw-semibold mb-2"
-                        for="idPC"
-                    >
+                    <label class="form-label fw-semibold mb-2" for="idPC">
                         Código de identificación:
                     </label>
 
-                    <input
-                        class="form-control mb-3"
-                        name="idEquipo"
-                        type="text"
-                        inputmode="numeric"
-                        id="idPC"
-                        placeholder="ej: 123456"
-                        maxlength="6"
-                        required
-                    >
+                    <input class="form-control mb-3" name="idEquipo" type="text" inputmode="numeric" id="idPC" placeholder="ej: 123456" maxlength="6" required>
 
 
-                    <label
-                        class="form-label fw-semibold mb-2"
-                        for="ubicacionEquipo"
-                    >
+                    <label class="form-label fw-semibold mb-2" for="ubicacionEquipo" >
                         Ubicacion del Dispositivo
                     </label>
 
-                    <select
-                        id="ubicacionEquipo"
-                        name="ubicacion"
-                        class="form-select mb-3"
-                        required
-                    >
+                    <select id="ubicacionEquipo"  name="ubicacion" class="form-select mb-3" required>
+                        <option value=""> Elegir ubicacion</option>
 
-                        <option value="">
-                            Elegir ubicacion
-                        </option>
+                        <optgroup label="Laboratorios" id="grupoLaboratorios"></optgroup>
 
-
-                        <optgroup
-                            label="Laboratorios"
-                            id="grupoLaboratorios"
-                        >
-                        </optgroup>
-
-
-                        <optgroup
-                            label="Talleres"
-                            id="grupoTalleres"
-                        >
-                        </optgroup>
-
+                        <optgroup label="Talleres" id="grupoTalleres" ></optgroup>
 
                         <optgroup label="Otros">
 
@@ -587,51 +369,27 @@
                             </option>
 
                         </optgroup>
-
                     </select>
 
 
-                    <div
-                        id="contenedorLugar"
-                        class="d-none"
-                    >
+                    <div id="contenedorLugar" class="d-none">
 
-                        <label
-                            class="form-label fw-semibold mb-2"
-                            for="posicionPC"
-                        >
+                        <label class="form-label fw-semibold mb-2" for="posicionPC">
                             Lugar de la PC:
                         </label>
 
-                        <input
-                            class="form-control mb-3"
-                            name="posicion"
-                            type="number"
-                            id="posicionPC"
-                            min="1"
-                            placeholder="ej: 5"
-                        >
-
+                        <input  class="form-control mb-3" name="posicion" type="number" id="posicionPC"  min="1"  placeholder="ej: 5">
                     </div>
 
                 </fieldset>
 
-
                 <div class="d-flex justify-content-end gap-2 mt-3">
 
-                    <button
-                        type="submit"
-                        class="btn btn-success text-bold"
-                        id="btnGuardarEquipo"
-                    >
+                    <button type="submit"  class="btn btn-success text-bold" id="btnGuardarEquipo">
                         Guardar PC
                     </button>
 
-                    <button
-                        type="button"
-                        id="btnCancelarEquipo"
-                        class="btn btn-danger text-bold"
-                    >
+                    <button type="button" id="btnCancelarEquipo" class="btn btn-danger text-bold">
                         Volver
                     </button>
 
@@ -645,21 +403,18 @@
 
 
     <footer>
-
         <span class="footer-bold">
             Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática
         </span>
-
     </footer>
 
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../assets/js/btnMenuCelular.js"></script>
     <script src="../assets/js/verificarSesion.js"></script>
     <script src="../assets/js/cerrarSesion.js"></script>
+    <script src="../assets/js/gestionEquipos.js"></script>
 
 </body>
 
