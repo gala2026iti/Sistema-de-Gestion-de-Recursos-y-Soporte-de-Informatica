@@ -1,104 +1,99 @@
 <?php
 
-/**
- * @brief Gestiona el acceso a datos de las solicitudes.
- *
- * Permite registrar, consultar y modificar el estado
- * de las solicitudes almacenadas en la base de datos.
- */
 class SolicitudDAO
 {
-    /** @brief Conexión con la base de datos. */
     private PDO $conexion;
 
-    /**
-     * @brief Construye el acceso a datos de solicitudes.
-     *
-     * @param PDO $conexion Conexión PDO con la base de datos.
-     */
     public function __construct(PDO $conexion)
     {
         $this->conexion = $conexion;
     }
 
-    /**
-     * @brief Registra una nueva solicitud.
-     *
-     * Registra la solicitud y su relación con el docente
-     * que la ingresó dentro de una transacción.
-     *
-     * @param string $id Identificador de la solicitud.
-     * @param string $asunto Asunto de la solicitud.
-     * @param string $descripcion Descripción de la solicitud.
-     * @param string $fechaLimite Fecha límite.
-     * @param string $horaLimite Hora límite.
-     * @param string $ciDocente Cédula del docente.
-     * @param string $fecha Fecha de registro.
-     * @param string $hora Hora de registro.
-     *
-     * @return bool true si se registró correctamente; false si ocurrió un error.
-     */
+
     public function registrarSolicitud(
-        string $id,
+        string $ciDocente,
         string $asunto,
         string $descripcion,
         string $fechaLimite,
-        string $horaLimite,
-        string $ciDocente,
-        string $fecha,
-        string $hora
+        string $horaLimite
     ): bool {
         try {
             $this->conexion->beginTransaction();
 
             $sqlSolicitud = "
-                INSERT INTO SOLICITUD (id, asunto, descripcion, fechaLimite, horaLimite, finalizada)
-                VALUES (:idSolicitud, :asunto, :descripcion, :fechaLimite, :horaLimite, FALSE)
+                INSERT INTO SOLICITUD (
+                    asunto,
+                    descripcion,
+                    fechaLimite,
+                    horaLimite,
+                    finalizada
+                )
+                VALUES (
+                    :asunto,
+                    :descripcion,
+                    :fechaLimite,
+                    :horaLimite,
+                    0
+                )
             ";
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
+
             $consultaSolicitud->execute([
-                "idSolicitud" => $id,
                 "asunto" => $asunto,
                 "descripcion" => $descripcion,
                 "fechaLimite" => $fechaLimite,
                 "horaLimite" => $horaLimite
             ]);
 
+            $idSolicitud = $this->conexion->lastInsertId();
+
+            $consultaSolicitud->closeCursor();
+
+
             $sqlDocente = "
-                INSERT INTO docente_ingresa_solicitud (ciDocente, idSolicitud, fecha, hora)
-                VALUES (:ciDocente, :idSolicitud, :fecha, :hora)
+                INSERT INTO docente_ingresa_solicitud (
+                    ciDocente,
+                    idSolicitud,
+                    fecha,
+                    hora
+                )
+                VALUES (
+                    :ciDocente,
+                    :idSolicitud,
+                    CURDATE(),
+                    CURTIME()
+                )
             ";
 
             $consultaDocente = $this->conexion->prepare($sqlDocente);
+
             $consultaDocente->execute([
                 "ciDocente" => $ciDocente,
-                "idSolicitud" => $id,
-                "fecha" => $fecha,
-                "hora" => $hora
+                "idSolicitud" => $idSolicitud
             ]);
 
+            $consultaDocente->closeCursor();
+
             $this->conexion->commit();
+
             return true;
+
         } catch (PDOException $error) {
+
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }
+
             return false;
         }
     }
 
-    /**
-     * @brief Obtiene las solicitudes registradas.
-     *
-     * Permite filtrar por solicitudes pendientes o finalizadas.
-     *
-     * @param string $estado Estado por el cual filtrar.
-     *
-     * @return array Lista de solicitudes encontradas.
-     */
-    public function listarSolicitudes(string $estado = ""): array
-    {
+
+    public function listarSolicitudes(
+        ?string $estado,
+        ?string $id
+    ): array {
         $sql = "
             SELECT
                 s.id,
@@ -107,66 +102,149 @@ class SolicitudDAO
                 s.fechaLimite,
                 s.horaLimite,
                 s.finalizada,
+
                 dis.ciDocente,
-                u.nombre
+                uDocente.nombre AS nombreDocente,
+                dis.fecha AS fechaIngreso,
+                dis.hora AS horaIngreso,
+
+                tfs.ciTecnico,
+                uTecnico.nombre AS nombreTecnico,
+                tfs.fecha AS fechaFinalizacion,
+                tfs.hora AS horaFinalizacion
+
             FROM SOLICITUD AS s
+
             INNER JOIN docente_ingresa_solicitud AS dis
                 ON dis.idSolicitud = s.id
-            INNER JOIN USUARIO AS u
-                ON u.ci = dis.ciDocente
+
+            INNER JOIN USUARIO AS uDocente
+                ON uDocente.ci = dis.ciDocente
+
+            LEFT JOIN tecnico_finaliza_solicitud AS tfs
+                ON tfs.idSolicitud = s.id
+
+            LEFT JOIN USUARIO AS uTecnico
+                ON uTecnico.ci = tfs.ciTecnico
         ";
 
         $condiciones = [];
         $parametros = [];
 
-        if ($estado === "finalizado") {
-            $condiciones[] = "s.finalizada = :finalizada";
-            $parametros["finalizada"] = 1;
-        } elseif ($estado === "pendiente") {
-            $condiciones[] = "s.finalizada = :finalizada";
-            $parametros["finalizada"] = 0;
+        if ($estado === "pendiente") {
+            $condiciones[] = "s.finalizada = 0";
+        }
+
+        if ($estado === "finalizada") {
+            $condiciones[] = "s.finalizada = 1";
+        }
+
+        if (!empty($id)) {
+            $condiciones[] = "s.id = :id";
+            $parametros["id"] = $id;
         }
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
 
-        $sql .= " ORDER BY s.id";
+        $sql .= " ORDER BY s.id DESC";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
 
         $solicitudes = $consulta->fetchAll(PDO::FETCH_ASSOC);
-        $consulta = null;
+
+        $consulta->closeCursor();
 
         return $solicitudes;
     }
 
-    /**
-     * @brief Cambia el estado de una solicitud.
-     *
-     * @param string $idSolicitud Identificador de la solicitud.
-     * @param bool $finalizada Nuevo estado de finalización.
-     *
-     * @return bool true si fue actualizada; false si ocurrió un error.
-     */
-    public function cambiarEstadoSolicitud(string $idSolicitud, bool $finalizada): bool
+
+    public function obtenerEstadoSolicitud(string $idSolicitud): ?bool
     {
         $sql = "
-            UPDATE SOLICITUD
-            SET finalizada = :finalizada
+            SELECT finalizada
+            FROM SOLICITUD
             WHERE id = :idSolicitud
         ";
 
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute(["idSolicitud" => $idSolicitud]);
+
+        $estado = $consulta->fetchColumn();
+
+        $consulta->closeCursor();
+
+        if ($estado === false) {
+            return null;
+        }
+
+        return (bool) $estado;
+    }
+
+
+    public function finalizarSolicitud(
+        string $idSolicitud,
+        string $ciTecnico
+    ): bool {
         try {
-            $consulta = $this->conexion->prepare($sql);
-            $consulta->execute([
-                "finalizada" => $finalizada,
+            $this->conexion->beginTransaction();
+
+            $sqlSolicitud = "
+                UPDATE SOLICITUD
+                SET finalizada = 1
+                WHERE id = :idSolicitud
+                AND finalizada = 0
+            ";
+
+            $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
+            $consultaSolicitud->execute(["idSolicitud" => $idSolicitud]);
+
+            if ($consultaSolicitud->rowCount() === 0) {
+                $consultaSolicitud->closeCursor();
+                $this->conexion->rollBack();
+
+                return false;
+            }
+
+            $consultaSolicitud->closeCursor();
+
+
+            $sqlTecnico = "
+                INSERT INTO tecnico_finaliza_solicitud (
+                    ciTecnico,
+                    idSolicitud,
+                    fecha,
+                    hora
+                )
+                VALUES (
+                    :ciTecnico,
+                    :idSolicitud,
+                    CURDATE(),
+                    CURTIME()
+                )
+            ";
+
+            $consultaTecnico = $this->conexion->prepare($sqlTecnico);
+
+            $consultaTecnico->execute([
+                "ciTecnico" => $ciTecnico,
                 "idSolicitud" => $idSolicitud
             ]);
 
-            return $consulta->rowCount() > 0;
+            $consultaTecnico->closeCursor();
+
+            $this->conexion->commit();
+
+            return true;
+
         } catch (PDOException $error) {
+
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+
             return false;
         }
     }

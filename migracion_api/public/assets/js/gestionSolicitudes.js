@@ -1,24 +1,22 @@
-/**
- * CONSTANTES NECESARIAS
- */
+const API_SOLICITUDES = "../index.php?ruta=solicitudes";
 
-// Ruta de la API de solicitudes.
-// La ruta es relativa al HTML desde donde se carga este archivo.
-const API_SOLICITUDES = "../../api/solicitud.php";
 
-// Cuerpo de la tabla donde se cargarán las solicitudes.
+// ELEMENTOS DEL DOM
+
+const formFiltros = document.getElementById("formFiltros");
+
+const filtroEstado = document.getElementById("estado");
+const filtroId = document.getElementById("idSolicitud");
+
+const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
+
 const cuerpoTablaSolicitudes = document.getElementById("cuerpoTablaSolicitudes");
 
-// Formulario utilizado para filtrar las solicitudes.
-const formularioFiltroSolicitudes = document.getElementById("formFiltroSolicitudes");
 
-// Select utilizado para seleccionar el estado.
-const entradaEstado = document.getElementById("estado");
+// RESPUESTAS DE LA API
 
-/**
- * Lee la respuesta recibida desde la API.
- */
-async function leerRespuestaAPI(respuesta) {
+async function leerRespuestaAPI(respuesta)
+{
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
@@ -26,10 +24,12 @@ async function leerRespuestaAPI(respuesta) {
             `La API respondió sin cuerpo (HTTP ${respuesta.status}).`
         );
     }
+
     let json;
 
     try {
         json = JSON.parse(texto);
+
     } catch {
         throw new Error(
             `HTTP ${respuesta.status}: La API no devolvió JSON.`
@@ -38,153 +38,258 @@ async function leerRespuestaAPI(respuesta) {
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${json.mensaje ?? "La solicitud no se pudo completar."}`
+            `HTTP ${respuesta.status}: ${
+                json.mensaje ??
+                "La solicitud no se pudo completar."
+            }`
         );
     }
 
-    // RespuestaJson devuelve los datos dentro de la clave "datos".
     return json.datos;
 }
 
 
-/**
- * GET - Obtiene las solicitudes registradas.
- *
- * Si se recibe un estado, se agrega a la URL
- * para que la API filtre las solicitudes.
- */
-async function obtenerSolicitudes(estado = "") {
+// PETICIONES
+
+async function obtenerSolicitudes()
+{
+    const parametros = new URLSearchParams();
+
+    if (filtroEstado.value !== "") {
+        parametros.set("estado",filtroEstado.value);
+    }
+
+    if (filtroId.value.trim() !== "") {
+        parametros.set("id",filtroId.value.trim());
+    }
+
     let url = API_SOLICITUDES;
 
-    if (estado !== "") {
-        url += `?estado=${encodeURIComponent(estado)}`;
+    if (parametros.toString() !== "") {
+        url += "&" + parametros.toString();
     }
 
     const respuesta = await fetch(url);
 
-    return await leerRespuestaAPI(respuesta);
-}
-
-/**
- * Crea una fila de la tabla a partir de una solicitud.
- */
-function agregarFilaSolicitud(solicitud) {
-    const fila = document.createElement("tr");
-
-    const campoId = document.createElement("td");
-    campoId.textContent = solicitud.id;
-
-    const campoAsunto = document.createElement("td");
-    campoAsunto.textContent = solicitud.asunto;
-
-    const campoFechaLimite = document.createElement("td");
-    campoFechaLimite.textContent =
-        solicitud.fechaLimite + " - " + solicitud.horaLimite;
-
-    const campoDescripcion = document.createElement("td");
-    campoDescripcion.textContent = solicitud.descripcion;
-
-    const campoDocente = document.createElement("td");
-    campoDocente.textContent =
-        solicitud.nombre + " - ( " + solicitud.ciDocente + " )";
-
-    const campoFinalizacion = document.createElement("td");
-
-    if (Number(solicitud.finalizada) === 1) {
-        campoFinalizacion.textContent = "Finalizada";
-    } else {
-        campoFinalizacion.textContent = "Pendiente";
-    }
-
-    fila.appendChild(campoId);
-    fila.appendChild(campoAsunto);
-    fila.appendChild(campoFechaLimite);
-    fila.appendChild(campoDescripcion);
-    fila.appendChild(campoDocente);
-    fila.appendChild(campoFinalizacion);
-
-    cuerpoTablaSolicitudes.appendChild(fila);
+    return leerRespuestaAPI(respuesta);
 }
 
 
-/**
- * Muestra un mensaje cuando la API no devuelve solicitudes.
- */
-function mostrarSinSolicitudes() {
-    const fila = document.createElement("tr");
+async function finalizarSolicitud(idSolicitud)
+{
+    const respuesta = await fetch(
+        API_SOLICITUDES,{
+            method: "PATCH",
 
-    const campoMensaje = document.createElement("td");
-    campoMensaje.colSpan = 6;
-    campoMensaje.textContent = "No se encontraron solicitudes.";
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+            },
 
-    campoMensaje.classList.add(
-        "text-center",
-        "py-4",
-        "text-muted",
-        "text-bold"
+            body: JSON.stringify({
+                idSolicitud: idSolicitud
+            })
+        }
     );
 
-    fila.appendChild(campoMensaje);
-    cuerpoTablaSolicitudes.appendChild(fila);
+    return leerRespuestaAPI(respuesta);
 }
 
 
-/**
- * Solicita nuevamente las solicitudes a la API
- * y genera las filas de la tabla.
- */
-async function actualizarTabla() {
-    // Elimina las filas que haya actualmente.
-    cuerpoTablaSolicitudes.replaceChildren();
+// TABLA
 
-    try {
-        const estado = entradaEstado.value;
+function crearCelda(texto)
+{
+    const celda = document.createElement("td");
 
-        // GET /api/solicitud.php
-        const solicitudes = await obtenerSolicitudes(estado);
+    celda.textContent = texto;
 
-        if (solicitudes.length === 0) {
-            mostrarSinSolicitudes();
+    return celda;
+}
+
+
+function crearBotonFinalizar(solicitud)
+{
+    const boton = document.createElement("button");
+
+    boton.type = "button";
+    boton.classList.add("btn", "btn-primary", "ms-1", "text-bold");
+    boton.textContent = "Finalizar";
+
+    boton.addEventListener("click",async function ()
+    {
+        const confirmar = confirm(
+            "¿Desea marcar esta solicitud como finalizada?"
+        );
+
+        if (!confirmar) {
             return;
         }
 
-        // Genera una fila por cada solicitud recibida.
-        for (const solicitud of solicitudes) {
-            agregarFilaSolicitud(solicitud);
-        }
+        try {
+            const resultado = await finalizarSolicitud(solicitud.id);
 
-    } catch (error) {
-        window.alert(
-            "No se pudieron cargar las solicitudes: " + error.message
+            alert(resultado.mensaje);
+
+            await cargarSolicitudes();
+
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    return boton;
+}
+
+
+function crearFilaSolicitud(solicitud)
+{
+    const fila = document.createElement("tr");
+
+    fila.appendChild(
+        crearCelda(solicitud.id)
+    );
+
+    fila.appendChild(
+        crearCelda(solicitud.asunto)
+    );
+
+    fila.appendChild(
+        crearCelda(
+            solicitud.fechaLimite +
+            " - " +
+            solicitud.horaLimite
+        )
+    );
+
+    fila.appendChild(
+        crearCelda(solicitud.descripcion)
+    );
+
+    fila.appendChild(
+        crearCelda(
+            solicitud.nombreDocente +
+            " - (" +
+            solicitud.ciDocente +
+            ")"
+        )
+    );
+
+    fila.appendChild(
+        crearCelda(
+            solicitud.finalizada == 1 ?
+            "Finalizada" :
+            "Pendiente"
+        )
+    );
+
+
+    const celdaFinalizacion = document.createElement("td");
+
+    if (solicitud.finalizada == 1) {
+
+        celdaFinalizacion.textContent =
+            solicitud.nombreTecnico +
+            " - " +
+            solicitud.fechaFinalizacion +
+            " " +
+            solicitud.horaFinalizacion;
+
+    } else {
+        celdaFinalizacion.textContent = "Sin finalizar";
+    }
+
+    fila.appendChild(celdaFinalizacion);
+
+
+    const celdaAcciones = document.createElement("td");
+
+    if (solicitud.finalizada != 1) {
+        celdaAcciones.appendChild(
+            crearBotonFinalizar(solicitud)
+        );
+    }
+
+    fila.appendChild(celdaAcciones);
+
+    return fila;
+}
+
+
+function mostrarSolicitudes(solicitudes)
+{
+    cuerpoTablaSolicitudes.replaceChildren();
+
+    if (solicitudes.length === 0) {
+        const fila = document.createElement("tr");
+        const celda = document.createElement("td");
+
+        celda.colSpan = 8;
+        celda.classList.add("text-center", "py-4", "text-muted", "text-bold");
+        celda.textContent = "No se encontraron solicitudes.";
+
+        fila.appendChild(celda);
+        cuerpoTablaSolicitudes.appendChild(fila);
+
+        return;
+    }
+
+    for (const solicitud of solicitudes) {
+        cuerpoTablaSolicitudes.appendChild(
+            crearFilaSolicitud(solicitud)
         );
     }
 }
 
 
-/**
- * FILTROS
- */
+// GESTIÓN DE SOLICITUDES
 
-/**
- * Evita que el formulario recargue la página y vuelve
- * a consultar las solicitudes utilizando el estado seleccionado.
- */
-async function filtrarSolicitudes(eventoFormulario) {
-    eventoFormulario.preventDefault();
+async function cargarSolicitudes()
+{
+    try {
+        const solicitudes = await obtenerSolicitudes();
 
-    await actualizarTabla();
+        mostrarSolicitudes(solicitudes);
+
+    } catch (error) {
+        alert(
+            "No se pudieron cargar las solicitudes: " +
+            error.message
+        );
+    }
 }
 
 
-/**
- * EVENTOS
- */
+function aplicarFiltros(evento)
+{
+    evento.preventDefault();
 
-// Al enviar el formulario de filtros.
-formularioFiltroSolicitudes.addEventListener(
-    "submit",
-    filtrarSolicitudes
-);
+    const id = filtroId.value.trim();
 
-// GET inicial de solicitudes.
-actualizarTabla();
+    if (id !== "" && !/^\d+$/.test(id)) {
+        alert("El ID de la solicitud no es válido.");
+        return;
+    }
+
+    cargarSolicitudes();
+}
+
+
+function limpiarFiltros()
+{
+    filtroEstado.value = "";
+    filtroId.value = "";
+
+    cargarSolicitudes();
+}
+
+
+// EVENTOS
+
+formFiltros.addEventListener("submit",aplicarFiltros);
+btnLimpiarFiltros.addEventListener("click",limpiarFiltros);
+
+
+// INICIALIZACIÓN
+
+cargarSolicitudes();

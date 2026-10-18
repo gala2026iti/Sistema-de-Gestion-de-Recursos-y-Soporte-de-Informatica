@@ -1,27 +1,15 @@
 <?php
 
-/**
- * @file ControladorSolicitud.php
- *
- * @brief Gestiona las peticiones relacionadas con las solicitudes.
- *
- * Recibe las peticiones de la API, valida los datos recibidos
- * y utiliza SolicitudDAO para acceder a la base de datos.
- */
-
-require_once RUTA_MODELO . "/ConectorPDO.php";
 require_once RUTA_MODELO . "/SolicitudDAO.php";
+
+require_once RUTA_NUCLEO . "/Conexion.php";
+require_once RUTA_NUCLEO . "/Sesion.php";
+require_once RUTA_NUCLEO . "/Token.php";
+
 require_once RUTA_VISTA . "/RespuestaJson.php";
 
-class ControladorSolicitud
+class SolicitudController
 {
-    /**
-     * @brief Gestiona las peticiones recibidas por la API.
-     *
-     * @param string $metodo Método HTTP recibido.
-     *
-     * @return void
-     */
     public function gestionar(string $metodo): void
     {
         if (!isset($_SESSION["cedula"])) {
@@ -32,145 +20,188 @@ class ControladorSolicitud
             "GET" => $this->listar(),
             "POST" => $this->alta(),
             "PATCH" => $this->finalizar(),
-            default => RespuestaJson::error("Método no permitido", 405),
+            default => RespuestaJson::error("Método no permitido", 405)
         };
     }
 
-    /**
-     * @brief Obtiene las solicitudes registradas.
-     *
-     * @return void
-     */
+
     private function listar(): void
     {
-        if (!($_SESSION["tecnico"] ?? false) && !($_SESSION["docente"] ?? false)) {
+        Sesion::verificarRol("tecnico");
+
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
         $estado = strtolower(trim($_GET["estado"] ?? ""));
+        $idSolicitud = trim($_GET["id"] ?? "");
 
-        $conexion = $this->conectar();
+        if (
+            $estado !== "" &&
+            $estado !== "pendiente" &&
+            $estado !== "finalizada"
+        ) {
+            RespuestaJson::error("El estado de la solicitud no es válido.", 422);
+        }
+
+        if ($idSolicitud !== "" && !ctype_digit($idSolicitud)) {
+            RespuestaJson::error("El ID de la solicitud no es válido.", 422);
+        }
+
+        $conexion = Conexion::conectar();
         $dao = new SolicitudDAO($conexion);
 
-        RespuestaJson::exito($dao->listarSolicitudes($estado));
+        $solicitudes = $dao->listarSolicitudes(
+            $estado,
+            $idSolicitud
+        );
+
+        unset($dao, $conexion);
+        Conexion::desconectar();
+
+        RespuestaJson::exito($solicitudes);
     }
 
-    /**
-     * @brief Registra una nueva solicitud.
-     *
-     * @return void
-     */
+
     private function alta(): void
     {
-        if (!($_SESSION["docente"] ?? false)) {
+        Sesion::verificarRol("docente");
+
+        if (($_SESSION["rolActual"] ?? "") !== "docente") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-        $this->verificarCsrf();
+        Token::verificarCSRF();
 
-        $datos = json_decode(file_get_contents("php://input"), true) ?? [];
+        $datos = json_decode(file_get_contents("php://input"), true);
 
-        $id = trim($datos["id"] ?? "");
+        if (!is_array($datos)) {
+            RespuestaJson::error("JSON inválido", 400);
+        }
+
         $asunto = trim($datos["asunto"] ?? "");
         $descripcion = trim($datos["descripcion"] ?? "");
         $fechaLimite = trim($datos["fechaLimite"] ?? "");
         $horaLimite = trim($datos["horaLimite"] ?? "");
 
-        if ($id === "" || $asunto === "" || $descripcion === "" || $fechaLimite === "" || $horaLimite === "") {
-            RespuestaJson::error("Existen campos vacíos", 422);
+        if ($asunto === "") {
+            RespuestaJson::error("Debe ingresar un asunto.", 422);
         }
 
-        $ciDocente = $_SESSION["cedula"];
-        $fecha = date("Y-m-d");
-        $hora = date("H:i:s");
+        if (strlen($asunto) < 10 || strlen($asunto) > 30) {
+            RespuestaJson::error("El asunto debe tener entre 10 y 30 caracteres.", 422);
+        }
 
-        $conexion = $this->conectar();
+        if ($descripcion === "") {
+            RespuestaJson::error("Debe ingresar una descripción.", 422);
+        }
+
+        if (strlen($descripcion) < 10 || strlen($descripcion) > 200) {
+            RespuestaJson::error("La descripción debe tener entre 10 y 200 caracteres.", 422);
+        }
+
+        $fechaHora = DateTime::createFromFormat(
+            "Y-m-d H:i",
+            $fechaLimite . " " . $horaLimite
+        );
+
+        if (!$fechaHora) {
+            RespuestaJson::error("La fecha u hora ingresadas no son válidas.", 422);
+        }
+
+        if (
+            $fechaHora->format("Y-m-d") !== $fechaLimite ||
+            $fechaHora->format("H:i") !== $horaLimite
+        ) {
+            RespuestaJson::error("La fecha u hora ingresadas no son válidas.", 422);
+        }
+
+        $ahora = new DateTime();
+
+        if ($fechaHora <= $ahora) {
+            RespuestaJson::error("La fecha y hora deben ser posteriores al momento actual.", 422);
+        }
+
+        $conexion = Conexion::conectar();
         $dao = new SolicitudDAO($conexion);
 
         $resultado = $dao->registrarSolicitud(
-            $id,
+            $_SESSION["cedula"],
             $asunto,
             $descripcion,
             $fechaLimite,
-            $horaLimite,
-            $ciDocente,
-            $fecha,
-            $hora
+            $horaLimite
         );
 
+        unset($dao, $conexion);
+        Conexion::desconectar();
+
         if (!$resultado) {
-            RespuestaJson::error("No se pudo registrar la solicitud", 400);
+            RespuestaJson::error("No se pudo registrar la solicitud.", 400);
         }
 
-        RespuestaJson::exito(["mensaje" => "Solicitud registrada exitosamente"], 201);
+        RespuestaJson::exito(
+            ["mensaje" => "Solicitud registrada correctamente."],
+            201
+        );
     }
 
-    /**
-     * @brief Finaliza una solicitud.
-     *
-     * @return void
-     */
+
     private function finalizar(): void
     {
-        if (!($_SESSION["tecnico"] ?? false)) {
+        Sesion::verificarRol("tecnico");
+
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-        $this->verificarCsrf();
+        Token::verificarCSRF();
 
-        $datos = json_decode(file_get_contents("php://input"), true) ?? [];
+        $datos = json_decode(file_get_contents("php://input"), true);
+
+        if (!is_array($datos)) {
+            RespuestaJson::error("JSON inválido", 400);
+        }
+
         $idSolicitud = trim($datos["idSolicitud"] ?? "");
 
-        if ($idSolicitud === "") {
-            RespuestaJson::error("Falta el identificador de la solicitud", 422);
+        if ($idSolicitud === "" || !ctype_digit($idSolicitud)) {
+            RespuestaJson::error("El ID de la solicitud no es válido.", 422);
         }
 
-        $conexion = $this->conectar();
+        $conexion = Conexion::conectar();
         $dao = new SolicitudDAO($conexion);
 
-        $resultado = $dao->cambiarEstadoSolicitud($idSolicitud, true);
+        $estadoSolicitud = $dao->obtenerEstadoSolicitud($idSolicitud);
 
-        if (!$resultado) {
-            RespuestaJson::error("No se pudo finalizar la solicitud", 400);
+        if ($estadoSolicitud === null) {
+            unset($dao, $conexion);
+            Conexion::desconectar();
+
+            RespuestaJson::error("La solicitud no existe.", 404);
         }
 
-        RespuestaJson::exito(["mensaje" => "Solicitud finalizada exitosamente"]);
-    }
+        if ($estadoSolicitud) {
+            unset($dao, $conexion);
+            Conexion::desconectar();
 
-    /**
-     * @brief Verifica el token CSRF recibido.
-     *
-     * @return void
-     */
-    private function verificarCsrf(): void
-    {
-        $token = $_SERVER["HTTP_X_CSRF_TOKEN"] ?? "";
-
-        if (!isset($_SESSION["csrfToken"]) || !hash_equals($_SESSION["csrfToken"], $token)) {
-            RespuestaJson::error("Solicitud rechazada", 403);
+            RespuestaJson::error("La solicitud ya se encuentra finalizada.", 409);
         }
-    }
 
-    /**
-     * @brief Establece una conexión con la base de datos.
-     *
-     * @return PDO Conexión establecida.
-     */
-    private function conectar(): PDO
-    {
-        $conector = new ConectorPDO(
-            $_ENV["DB_HOST"] . ":" . $_ENV["DB_PUERTO"],
-            $_ENV["DB_USUARIO"],
-            $_ENV["DB_CLAVE"],
-            $_ENV["DB_NOMBRE"]
+        $resultado = $dao->finalizarSolicitud(
+            $idSolicitud,
+            $_SESSION["cedula"]
         );
 
-        $conexion = $conector->establecerConexion();
+        unset($dao, $conexion);
+        Conexion::desconectar();
 
-        if ($conexion === null) {
-            RespuestaJson::error("Error de conexión con la base de datos", 500);
+        if (!$resultado) {
+            RespuestaJson::error("No se pudo finalizar la solicitud.", 400);
         }
 
-        return $conexion;
+        RespuestaJson::exito(
+            ["mensaje" => "Solicitud finalizada correctamente."]
+        );
     }
 }

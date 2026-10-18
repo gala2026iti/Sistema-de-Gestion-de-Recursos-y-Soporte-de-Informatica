@@ -365,9 +365,7 @@ async function gestionarRegistroUbicacion(tipo)
 
 async function gestionarEliminarUbicacion(ubicacion)
 {
-    const confirmar = confirm(
-        `¿Seguro que deseas eliminar ${ubicacion.tipo} ${ubicacion.id}?`
-    );
+    const confirmar = confirm(`¿Seguro que deseas eliminar ${ubicacion.tipo} ${ubicacion.id}?`);
 
     if (!confirmar) {
         return;
@@ -377,18 +375,13 @@ async function gestionarEliminarUbicacion(ubicacion)
 
     try {
         const resultado = await eliminarUbicacion(ubicacion);
-
-        if (
-            filtroTipoUbicacion.value === ubicacion.tipo &&
-            filtroUbicacion.value === String(ubicacion.id)
-        ) {
+        if ( filtroTipoUbicacion.value === ubicacion.tipo && filtroUbicacion.value === String(ubicacion.id)) 
+            {
             filtroTipoUbicacion.value = "";
             filtroUbicacion.value = "";
         }
-
         await cargarUbicaciones();
         await actualizarTablaEquipos();
-
         mostrarMensajeExito(resultado.mensaje);
 
     } catch (error) {
@@ -409,10 +402,7 @@ function obtenerTextoUbicacion(equipo)
         return "Equipo de Préstamo";
     }
 
-    const tipo =
-        equipo.tipoUbicacion.charAt(0).toUpperCase() +
-        equipo.tipoUbicacion.slice(1);
-
+    const tipo = equipo.tipoUbicacion.charAt(0).toUpperCase() + equipo.tipoUbicacion.slice(1);
     return tipo + " " + equipo.idUbicacion + " (PC-" + equipo.posicion + ")";
 }
 
@@ -433,7 +423,6 @@ function agregarFilaEquipo(equipo)
     if (rolActualEquipos === "administrador") {
         const campoEstado = document.createElement("td");
         campoEstado.textContent = Number(equipo.activo) === 1 ? "Activo" : "Inactivo";
-
         const campoIncidencias = document.createElement("td");
         campoIncidencias.textContent = equipo.totalIncidencias ?? 0;
 
@@ -443,7 +432,6 @@ function agregarFilaEquipo(equipo)
 
     const campoIntervencion = document.createElement("td");
     campoIntervencion.textContent = equipo.ultimaIntervencion ?? "Sin intervenciones previas";
-
     const campoAcciones = document.createElement("td");
 
     if (rolActualEquipos === "administrador") {
@@ -452,14 +440,12 @@ function agregarFilaEquipo(equipo)
         botonUbicacion.type = "button";
         botonUbicacion.textContent = "Cambiar ubicación";
         botonUbicacion.classList.add("btn", "btn-warning", "text-bold", "me-2");
-
         botonUbicacion.addEventListener("click", function () {
             abrirFormularioModificarEquipo(equipo);
         });
 
 
         const botonEstado = document.createElement("button");
-
         botonEstado.type = "button";
         botonEstado.classList.add("btn", "text-bold");
 
@@ -511,7 +497,6 @@ function mostrarSinEquipos()
 async function actualizarTablaEquipos()
 {
     cuerpoTablaEquipos.replaceChildren();
-
     try {
         const equipos = await obtenerEquipos();
 
@@ -526,9 +511,7 @@ async function actualizarTablaEquipos()
 
     } catch (error) {
         mostrarMensajeError(
-            "No se pudieron cargar los equipos: " +
-            error.message
-        );
+            "No se pudieron cargar los equipos: " + error.message);
     }
 }
 
@@ -538,7 +521,6 @@ async function actualizarTablaEquipos()
 async function filtrarEquipos(evento)
 {
     evento.preventDefault();
-
     await actualizarTablaEquipos();
 }
 
@@ -549,7 +531,6 @@ async function mostrarEquiposPrestamo(evento)
 
     filtroUbicacion.value = "";
     filtroTipoUbicacion.value = "prestamo";
-
     cerrarMenuUbicaciones();
     await actualizarTablaEquipos();
 }
@@ -561,7 +542,6 @@ async function mostrarTodosEquipos(evento)
 
     filtroUbicacion.value = "";
     filtroTipoUbicacion.value = "";
-
     cerrarMenuUbicaciones();
     await actualizarTablaEquipos();
 }
@@ -584,7 +564,6 @@ function abrirFormularioEquipo()
 
     tituloFormEquipo.textContent = "Registro de PC";
     botonGuardarEquipo.textContent = "Guardar PC";
-
     entradaIdEquipo.readOnly = false;
     entradaPosicion.required = false;
     entradaPosicion.value = "";
@@ -690,7 +669,7 @@ async function gestionarFormularioEquipo(evento)
 
     const ubicacion = obtenerDatosUbicacion();
 
-    const equipo = {
+    const equipo = {  
         idEquipo: entradaIdEquipo.value.trim(),
         tipoUbicacion: ubicacion.tipoUbicacion,
         idUbicacion: ubicacion.idUbicacion,
@@ -749,10 +728,7 @@ async function inicializarGestionEquipos()
         await actualizarTablaEquipos();
 
     } catch (error) {
-        mostrarMensajeError(
-            "No se pudo cargar el inventario: " +
-            error.message
-        );
+        mostrarMensajeError( "No se pudo cargar el inventario: " + error.message);
     }
 }
 

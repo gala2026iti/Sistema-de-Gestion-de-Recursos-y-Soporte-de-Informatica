@@ -48,12 +48,9 @@
                                     Cerrar Sesion
                                 </a>
                             </li>
-
                         </ul>
                     </li>
-
                 </ul>
-
             </section>
 
 
@@ -74,7 +71,7 @@
                         </li>
 
                         <li>
-                            <a href="#">
+                            <a href="./ticketsAsignados.html">
                                 Tickets asignados
                             </a>
                         </li>
@@ -82,13 +79,11 @@
                     </ul>
                 </li>
 
-
                 <li>
-                    <a href="#">
+                    <a href="./tablaPrestamos.html">
                         Tabla de prestamos
                     </a>
                 </li>
-
 
                 <li>
                     <a href="./gestionSolicitudes.html">
@@ -96,270 +91,209 @@
                     </a>
                 </li>
 
-
                 <li>
-                    <a href="#">
+                    <a href="./gestionEquipos.html">
                         Inventario de equipos
                     </a>
                 </li>
 
             </ul>
-
         </section>
-
     </nav>
 
 
-   <main class="container py-4">
+    <main class="container py-4">
 
-    <section class="border-bottom pb-3 mb-4">
+        <section class="border-bottom pb-3 mb-4">
 
-        <h2 class="text-primary" id="tituloTicket">
-            Detalle del ticket
-        </h2>
+            <h2 class="text-primary" id="tituloTicket">
+                Detalle del ticket
+            </h2>
 
-        <a href="./homeTecnico.html"
-           class="btn btn-secondary fw-bold">
-            Volver a Tickets
-        </a>
+            <a href="./homeTecnico.html" class="btn btn-secondary fw-bold">
+                Volver a Tickets
+            </a>
 
-    </section>
-
-
-    <form id="formDetalleTicket"
-          class="bg-light p-4 rounded-3 border mb-5">
-
-        <fieldset>
-
-            <legend class="h5 fw-bold text-dark mb-4">
-                Información del ticket
-            </legend>
-
-
-            <input type="hidden"
-                   id="idTicket"
-                   name="idTicket">
-
-
-            <label for="infoDocente"
-                   class="form-label fw-bold">
-                Docente Emisor
-            </label>
-
-            <input type="text"
-                   id="infoDocente"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoFecha"
-                   class="form-label fw-bold">
-                Fecha de Apertura
-            </label>
-
-            <input type="text"
-                   id="infoFecha"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoSalon"
-                   class="form-label fw-bold">
-                Ubicación Física
-            </label>
-
-            <input type="text"
-                   id="infoSalon"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoPC"
-                   class="form-label fw-bold">
-                Código del Equipo
-            </label>
-
-            <input type="text"
-                   id="infoPC"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoPersona"
-                   class="form-label fw-bold">
-                Persona que utilizaba la PC
-            </label>
-
-            <input type="text"
-                   id="infoPersona"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoCategoria"
-                   class="form-label fw-bold">
-                Categoría del Incidente
-            </label>
-
-            <input type="text"
-                   id="infoCategoria"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoAsunto"
-                   class="form-label fw-bold">
-                Asunto
-            </label>
-
-            <input type="text"
-                   id="infoAsunto"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="infoDescripcion"
-                   class="form-label fw-bold">
-                Descripción Original del Problema
-            </label>
-
-            <textarea id="infoDescripcion"
-                      class="form-control mb-3"
-                      rows="4"
-                      readonly></textarea>
-
-
-            <label for="infoEncargados"
-                   class="form-label fw-bold">
-                Técnicos Asignados
-            </label>
-
-            <input type="text"
-                   id="infoEncargados"
-                   class="form-control mb-3"
-                   readonly>
-
-
-            <label for="gravedadTicket"
-                   class="form-label fw-bold">
-                Gravedad
-            </label>
-
-            <select id="gravedadTicket"
-                    name="gravedad"
-                    class="form-select mb-3">
-
-                <option value="ligera">
-                    Ligera
-                </option>
-
-                <option value="media">
-                    Media
-                </option>
-
-                <option value="grave">
-                    Grave
-                </option>
-
-            </select>
-
-
-            <label for="estadoTicket"
-                   class="form-label fw-bold">
-                Estado
-            </label>
-
-            <select id="estadoTicket"
-                    name="estado"
-                    class="form-select mb-3">
-
-                <option value="pendiente">
-                    Pendiente
-                </option>
-
-                <option value="en proceso">
-                    En proceso
-                </option>
-
-                <option value="resuelto">
-                    Resuelto
-                </option>
-
-            </select>
-
-
-            <fieldset id="bloqueJustificacion"
-                      class="d-none">
-
-                <legend class="h6 fw-bold">
-                    Resolución Técnica e Informe de Cierre
-                </legend>
-
-                <textarea id="infoJustificacion"
-                          class="form-control mb-3"
-                          rows="4"
-                          readonly></textarea>
-
-            </fieldset>
-
-
-            <button type="button"
-                    id="btnGuardarCambiosTicket"
-                    class="btn btn-primary">
-                Guardar cambios
-            </button>
-
-        </fieldset>
-
-    </form>
-
-
-    <section class="border-top pt-4">
-
-        <h3 class="text-primary h4">
-            Comentarios
-        </h3>
-
-
-        <section id="contenedorComentarios">
         </section>
 
 
-        <form id="formComentario"
-              class="bg-light border rounded-3 p-3 mt-4">
+        <form id="formDetalleTicket" class="bg-light p-4 rounded-3 border mb-5">
 
             <fieldset>
 
-                <legend class="h5">
-                    Agregar comentario
+                <legend class="h5 fw-bold text-dark mb-4">
+                    Información del ticket
                 </legend>
 
 
-                <label for="textoComentario"
-                       class="form-label fw-bold">
-                    Comentario
+                <input type="hidden" id="idTicket" name="idTicket">
+
+
+                <label for="infoDocente" class="form-label fw-bold">
+                    Docente Emisor
                 </label>
 
-                <textarea id="textoComentario"
-                          name="textoComentario"
-                          class="form-control mb-3"
-                          rows="3"
-                          maxlength="500"></textarea>
+                <input type="text" id="infoDocente" class="form-control mb-3" readonly>
 
 
-                <button type="button"
-                        id="btnAgregarComentario"
-                        class="btn btn-primary">
-                    Comentar
+                <label for="infoFecha" class="form-label fw-bold">
+                    Fecha de Apertura
+                </label>
+
+                <input type="text" id="infoFecha" class="form-control mb-3" readonly>
+
+
+                <label for="infoSalon" class="form-label fw-bold">
+                    Ubicación Física
+                </label>
+
+                <input type="text" id="infoSalon" class="form-control mb-3" readonly>
+
+
+                <label for="infoPC" class="form-label fw-bold">
+                    Código del Equipo
+                </label>
+
+                <input type="text" id="infoPC" class="form-control mb-3" readonly>
+
+
+                <label for="infoPersona" class="form-label fw-bold">
+                    Persona que utilizaba la PC
+                </label>
+
+                <input type="text" id="infoPersona" class="form-control mb-3" readonly>
+
+
+                <label for="infoCategoria" class="form-label fw-bold">
+                    Categoría del Incidente
+                </label>
+
+                <input type="text" id="infoCategoria" class="form-control mb-3" readonly>
+
+
+                <label for="infoAsunto" class="form-label fw-bold">
+                    Asunto
+                </label>
+
+                <input type="text" id="infoAsunto" class="form-control mb-3" readonly>
+
+
+                <label for="infoDescripcion" class="form-label fw-bold">
+                    Descripción Original del Problema
+                </label>
+
+                <textarea id="infoDescripcion" class="form-control mb-3" rows="4" readonly></textarea>
+
+
+                <label for="infoEncargados" class="form-label fw-bold">
+                    Técnicos Asignados
+                </label>
+
+                <input type="text" id="infoEncargados" class="form-control mb-3" readonly>
+
+
+                <label for="gravedadTicket" class="form-label fw-bold">
+                    Gravedad
+                </label>
+
+                <select id="gravedadTicket" name="gravedad" class="form-select mb-3">
+
+                    <option value="ligera">
+                        Ligera
+                    </option>
+
+                    <option value="media">
+                        Media
+                    </option>
+
+                    <option value="grave">
+                        Grave
+                    </option>
+
+                </select>
+
+
+                <label for="estadoTicket" class="form-label fw-bold">
+                    Estado
+                </label>
+
+                <select id="estadoTicket" name="estado" class="form-select mb-3">
+
+                    <option value="pendiente">
+                        Pendiente
+                    </option>
+
+                    <option value="en proceso">
+                        En proceso
+                    </option>
+
+                    <option value="resuelto">
+                        Resuelto
+                    </option>
+
+                </select>
+
+
+                <fieldset id="bloqueJustificacion" class="d-none">
+
+                    <legend class="h6 fw-bold">
+                        Resolución Técnica e Informe de Cierre
+                    </legend>
+
+                    <textarea id="infoJustificacion" class="form-control mb-3" rows="4" maxlength="255"
+                        placeholder="Describa cómo fue resuelto el problema"></textarea>
+
+                </fieldset>
+
+
+                <button type="button" id="btnGuardarCambiosTicket" class="btn btn-primary">
+                    Guardar cambios
                 </button>
 
             </fieldset>
 
         </form>
 
-    </section>
 
-</main>
+        <section class="border-top pt-4">
+
+            <h3 class="text-primary h4">
+                Comentarios
+            </h3>
+
+
+            <section id="contenedorComentarios">
+            </section>
+
+
+            <form id="formComentario" class="bg-light border rounded-3 p-3 mt-4">
+
+                <fieldset>
+
+                    <legend class="h5">
+                        Agregar comentario
+                    </legend>
+
+
+                    <label for="textoComentario" class="form-label fw-bold">
+                        Comentario
+                    </label>
+
+                    <textarea id="textoComentario" name="textoComentario" class="form-control mb-3" rows="3"
+                        maxlength="500"></textarea>
+
+
+                    <button type="button" id="btnAgregarComentario" class="btn btn-primary">
+                        Comentar
+                    </button>
+
+                </fieldset>
+
+            </form>
+
+        </section>
+
+    </main>
 
 
     <footer>

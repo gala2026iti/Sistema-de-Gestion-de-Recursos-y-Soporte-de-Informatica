@@ -115,7 +115,6 @@
         </span>
 
         <span id="mensajeExito" class="alert alert-success d-table text-center mx-auto my-2 d-none"> </span>
-
         <span id="mensajeError" class="alert alert-danger d-table text-center mx-auto my-2 d-none"></span>
 
 
@@ -190,12 +189,13 @@
 
         <section class="d-flex justify-content-end px-3 mt-4">
 
-            <button id="btnRegistrarUsuario" class="btn btn-success text-bold"type="button">
+            <button id="btnRegistrarUsuario" class="btn btn-success text-bold" type="button">
                 Registrar usuario
             </button>
         </section>
 
-        <section id="modalUsuario" class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
+        <section id="modalUsuario"
+            class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">
 
             <form id="formUsuario">
 
@@ -208,31 +208,36 @@
                         Usuario / Cédula
                     </label>
 
-                    <input type="text" inputmode="numeric" id="usuario" name="cedula" class="form-control" placeholder="ej: 12345678" minlength="8" maxlength="8" pattern="[1-9][0-9]{7}" required>
+                    <input type="text" inputmode="numeric" id="usuario" name="cedula" class="form-control"
+                        placeholder="ej: 12345678" minlength="8" maxlength="8" pattern="[1-9][0-9]{7}" required>
 
                     <label for="nombre" class="form-label mt-3">
                         Nombre completo
                     </label>
 
-                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="ej: Javier Martinez" maxlength="100" required>
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="ej: Javier Martinez"
+                        maxlength="100" required>
 
                     <label for="correo" class="form-label mt-3">
                         Correo electrónico
                     </label>
 
-                    <input type="email" id="correo" name="correo" class="form-control" placeholder="ej: javierM1998@gmail.com" maxlength="100" autocomplete="email" required>
+                    <input type="email" id="correo" name="correo" class="form-control"
+                        placeholder="ej: javierM1998@gmail.com" maxlength="100" autocomplete="email" required>
 
                     <label for="clave" class="form-label mt-3" id="labelContra">
                         Contraseña
                     </label>
 
-                    <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese contraseña"  minlength="12" required>
+                    <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese contraseña"
+                        minlength="12" required>
 
                     <label for="confirmarClave" class="form-label mt-3" id="labelConfirmarContra">
                         Confirmar contraseña
                     </label>
 
-                    <input type="password" id="confirmarClave" name="confirmarClave" class="form-control" placeholder="Repita la contraseña" minlength="12" required>
+                    <input type="password" id="confirmarClave" name="confirmarClave" class="form-control"
+                        placeholder="Repita la contraseña" minlength="12" required>
 
                     <button type="button" class="btn btn-outline-secondary mt-2 text-bold" id="btnMostrarClave">
                         Mostrar contraseña
@@ -259,7 +264,8 @@
                             Administrador
                         </label>
 
-                        <input class="form-check-input" type="checkbox" id="rolAdministrador" name="roles[]" value="administrador">
+                        <input class="form-check-input" type="checkbox" id="rolAdministrador" name="roles[]"
+                            value="administrador">
                     </div>
                 </fieldset>
 
@@ -287,4 +293,5 @@
     <script src="../assets/js/cerrarSesion.js"></script>
     <script src="../assets/js/gestionUsuarios.js"></script>
 </body>
+
 </html>

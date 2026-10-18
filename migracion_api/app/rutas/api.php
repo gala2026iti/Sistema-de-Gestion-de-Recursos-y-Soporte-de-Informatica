@@ -5,6 +5,8 @@ require_once RUTA_CONTROLADOR . "/UsuarioController.php";
 require_once RUTA_CONTROLADOR . "/EquipoController.php";
 require_once RUTA_CONTROLADOR . "/UbicacionController.php";
 require_once RUTA_CONTROLADOR . "/TicketController.php";
+require_once RUTA_CONTROLADOR . "/SolicitudController.php";
+require_once RUTA_CONTROLADOR . "/PrestamoController.php";
 
 switch ($ruta) {
 
@@ -37,10 +39,22 @@ switch ($ruta) {
         $controlador = new UbicacionController();
         $controlador->gestionar($metodo);
         break;
-        case "tickets":
+
+    case "tickets":
         $controlador = new TicketController();
         $controlador->gestionar($metodo);
         break;
+
+    case "solicitudes":
+        $controlador = new SolicitudController();
+        $controlador->gestionar($metodo);
+        break;
+
+    case "prestamos":
+        $controlador = new PrestamoController();
+        $controlador->gestionar($metodo);
+        break;
+
     default:
-        RespuestaJson::error("Ruta no encontrada", 404);
+        RespuestaJson::error("Recurso no encontrado", 404);
 }

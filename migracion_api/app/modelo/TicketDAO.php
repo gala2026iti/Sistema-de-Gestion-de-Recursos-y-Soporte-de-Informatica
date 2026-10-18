@@ -65,15 +65,16 @@ class TicketDAO
         }
     }
 
-    public function listarTickets(
-        string $ciTecnico,
-        ?string $orden,
-        ?string $gravedad,
-        ?string $tipo,
-        ?string $estado,
-        ?string $idTicket,
-        ?string $idEquipo
-    ): array {
+   public function listarTickets(
+    string $ciTecnico,
+    ?string $orden,
+    ?string $gravedad,
+    ?string $tipo,
+    ?string $estado,
+    ?string $idTicket,
+    ?string $idEquipo,
+    bool $soloAsignados = false
+): array {
         $sql = "
             SELECT
                 t.id,
@@ -128,50 +129,65 @@ class TicketDAO
                 ON eugt.idTicket = t.id
         ";
 
-        $condiciones = [];
-        $parametros = ["ciTecnico" => $ciTecnico];
+     $condiciones = [];
+$parametros = ["ciTecnico" => $ciTecnico];
 
-        if (!empty($gravedad)) {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = $gravedad;
-        }
+if (!empty($gravedad)) {
+    $condiciones[] = "t.gravedad = :gravedad";
+    $parametros["gravedad"] = $gravedad;
+}
 
-        if (!empty($tipo)) {
-            $condiciones[] = "t.tipo = :tipo";
-            $parametros["tipo"] = $tipo;
-        }
+if (!empty($tipo)) {
+    $condiciones[] = "t.tipo = :tipo";
+    $parametros["tipo"] = $tipo;
+}
 
-        if (!empty($estado)) {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = $estado;
-        }
+if (!empty($estado)) {
+    $condiciones[] = "t.estado = :estado";
+    $parametros["estado"] = $estado;
 
-        if (!empty($idTicket)) {
-            $condiciones[] = "t.id = :idTicket";
-            $parametros["idTicket"] = $idTicket;
-        }
+} elseif (empty($idTicket) && !$soloAsignados) {
+    $condiciones[] = "t.estado <> 'resuelto'";
+}
 
-        if (!empty($idEquipo)) {
-            $condiciones[] = "eugt.idEquipo = :idEquipo";
-            $parametros["idEquipo"] = $idEquipo;
-        }
+if (!empty($idTicket)) {
+    $condiciones[] = "t.id = :idTicket";
+    $parametros["idTicket"] = $idTicket;
+}
 
-        if (!empty($condiciones)) {
-            $sql .= " WHERE " . implode(" AND ", $condiciones);
-        }
+if (!empty($idEquipo)) {
+    $condiciones[] = "eugt.idEquipo = :idEquipo";
+    $parametros["idEquipo"] = $idEquipo;
+}
 
-        if ($orden === "antiguo") {
-            $sql .= "
-                ORDER BY
-                    t.fechaCreacion ASC,
-                    t.horaCreacion ASC";
-        } else {
-            $sql .= "
-                ORDER BY
-                    t.fechaCreacion DESC,
-                    t.horaCreacion DESC";
-        }
+if ($soloAsignados) {
+    $condiciones[] = "
+        EXISTS (
+            SELECT 1
+            FROM COLABORADOR AS ca
+            WHERE ca.idTicket = t.id
+            AND ca.ciTecnico = :ciTecnicoAsignado
+        )
+    ";
 
+    $parametros["ciTecnicoAsignado"] = $ciTecnico;
+}
+
+if (!empty($condiciones)) {
+    $sql .= " WHERE " . implode(" AND ", $condiciones);
+}
+
+if ($orden === "antiguo") {
+    $sql .= "
+        ORDER BY
+            t.fechaCreacion ASC,
+            t.horaCreacion ASC";
+} else {
+    $sql .= "
+        ORDER BY
+            t.fechaCreacion DESC,
+            t.horaCreacion DESC";
+}
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
 
@@ -181,6 +197,103 @@ class TicketDAO
 
         return $tickets;
     }
+
+public function modificarTicket(
+    string $idTicket,
+    string $gravedad,
+    string $estado,
+    ?string $justificacion
+): bool {
+    try {
+        $sql = "
+            UPDATE TICKET
+            SET
+                gravedad = :gravedad,
+                estado = :estado,
+                justificacion = :justificacion
+            WHERE id = :idTicket
+        ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $resultado = $consulta->execute([
+            "gravedad" => $gravedad,
+            "estado" => $estado,
+            "justificacion" => $justificacion,
+            "idTicket" => $idTicket
+        ]);
+
+        $consulta->closeCursor();
+
+        return $resultado;
+
+    } catch (PDOException $error) {
+        return false;
+    }
+}
+
+
+public function listarComentarios(string $idTicket): array
+{
+    $sql = "
+        SELECT
+            tct.id,
+            tct.ciTecnico,
+            u.nombre,
+            tct.fecha,
+            tct.hora,
+            tct.texto
+
+        FROM tecnico_comenta_ticket AS tct
+
+        LEFT JOIN USUARIO AS u
+            ON u.ci = tct.ciTecnico
+
+        WHERE tct.idTicket = :idTicket
+
+        ORDER BY
+            tct.fecha ASC,
+            tct.hora ASC,
+            tct.id ASC
+    ";
+
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute(["idTicket" => $idTicket]);
+
+    $comentarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+    $consulta->closeCursor();
+
+    return $comentarios;
+}
+
+
+public function registrarComentario(string $idTicket, string $ciTecnico, string $texto): bool
+{
+    try {
+        $sql = "
+            INSERT INTO tecnico_comenta_ticket (ciTecnico,idTicket,fecha,hora,texto)
+            VALUES (:ciTecnico,:idTicket,CURDATE(),CURTIME(),:texto)
+        ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "ciTecnico" => $ciTecnico,
+            "idTicket" => $idTicket,
+            "texto" => $texto
+        ]);
+
+        $resultado = $consulta->rowCount() > 0;
+
+        $consulta->closeCursor();
+
+        return $resultado;
+
+    } catch (PDOException $error) {
+        return false;
+    }
+}
 
     public function asignarTecnico(string $idTicket, string $ciTecnico): bool
     {
@@ -227,4 +340,28 @@ class TicketDAO
             return false;
         }
     }
+
+    public function obtenerEstadoTicket(string $idTicket): ?string
+{
+    $sql = "
+        SELECT estado
+        FROM TICKET
+        WHERE id = :idTicket
+    ";
+
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute(["idTicket" => $idTicket]);
+
+    $estado = $consulta->fetchColumn();
+
+    $consulta->closeCursor();
+
+    if ($estado === false) {
+        return null;
+    }
+
+    return $estado;
+}
+
+    
 }
