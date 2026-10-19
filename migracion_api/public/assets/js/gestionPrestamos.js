@@ -1,4 +1,4 @@
-const API_PRESTAMOS = "../index.php?ruta=prestamos";
+const API_PRESTAMOS = "../index.php/prestamos";
 
 
 // ELEMENTOS DEL DOM
@@ -70,7 +70,7 @@ async function obtenerPrestamos()
     let url = API_PRESTAMOS;
 
     if (parametros.toString() !== "") {
-        url += "&" + parametros.toString();
+        url += "?" + parametros.toString();
     }
 
     const respuesta = await fetch(url);
@@ -79,10 +79,9 @@ async function obtenerPrestamos()
 
 async function obtenerEquiposDisponibles()
 {
-    const respuesta = await fetch(API_PRESTAMOS + "&disponibles=1");
+    const respuesta = await fetch(API_PRESTAMOS + "?disponibles=1");
     return leerRespuestaAPI(respuesta);
 }
-
 
 async function registrarPrestamo(prestamo)
 {
@@ -102,17 +101,11 @@ async function registrarPrestamo(prestamo)
 async function devolverPrestamo(idPrestamo)
 {
     const respuesta = await fetch(
-        API_PRESTAMOS,{
+        API_PRESTAMOS + "/" + encodeURIComponent(idPrestamo),{
             method: "PATCH",
-
             headers: {
-                "Content-Type": "application/json",
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
-
-            body: JSON.stringify({
-                idPrestamo: idPrestamo
-            })
+            }
         });
     return leerRespuestaAPI(respuesta);
 }

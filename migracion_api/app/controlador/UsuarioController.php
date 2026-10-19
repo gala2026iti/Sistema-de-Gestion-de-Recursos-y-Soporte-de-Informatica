@@ -10,22 +10,21 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class UsuarioController
 {
-    public function gestionar(string $metodo): void
-    {
-        Sesion::verificarRol("administrador");
-
-        if (($_SESSION["rolActual"] ?? "") !== "administrador") {
-            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-        }
-
-        match ($metodo) {
-            "GET" => $this->listar(),
-            "POST" => $this->alta(),
-            "PUT" => $this->modificar(),
-            "PATCH" => $this->cambiarEstado(),
-            default => RespuestaJson::error( "Método no permitido", 405)
-        };
+   public function gestionar(string $metodo, ?string $idRecurso = null): void
+{
+    Sesion::verificarRol("administrador");
+    if (($_SESSION["rolActual"] ?? "") !== "administrador") {
+        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
     }
+
+    match ($metodo) {
+        "GET" => $this->listar(),
+        "POST" => $this->alta(),
+        "PUT" => $this->modificar($idRecurso),
+        "PATCH" => $this->cambiarEstado($idRecurso),
+        default => RespuestaJson::error("Método no permitido", 405)
+    };
+}
 
 
     private function listar(): void
@@ -123,7 +122,7 @@ class UsuarioController
     }
 
 
-    private function modificar(): void
+    private function modificar(?string $cedula): void
     {
         Token::verificarCSRF();
         $datos = json_decode( file_get_contents("php://input"), true);
@@ -132,7 +131,6 @@ class UsuarioController
             RespuestaJson::error("JSON inválido", 400);
         }
 
-        $cedula = trim($datos["cedula"] ?? "");
         $nombre = trim($datos["nombre"] ?? "");
         $correo = trim($datos["correo"] ?? "");
         $clave = $datos["clave"] ?? "";
@@ -150,12 +148,8 @@ class UsuarioController
 
         $roles = array_unique($roles);
 
-        if ( $cedula === "" || $nombre === "" || $correo === "") {
+        if ($nombre === "" || $correo === "") {
             RespuestaJson::error( "Existen campos vacíos.", 422);
-        }
-
-        if (!preg_match("/^[1-9][0-9]{7}$/", $cedula)) {
-            RespuestaJson::error("La cédula debe contener exactamente 8 dígitos.", 422);
         }
 
         if (!preg_match( "/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,100}$/u", $nombre)) {
@@ -211,52 +205,53 @@ class UsuarioController
     }
 
 
-    private function cambiarEstado(): void
-    {
-        Token::verificarCSRF();
+  private function cambiarEstado(?string $cedula): void
+{
+    Token::verificarCSRF();
 
-        $datos = json_decode(file_get_contents("php://input"), true);
+    $datos = json_decode(file_get_contents("php://input"), true);
 
-        if (!is_array($datos)) { RespuestaJson::error("JSON inválido", 400);
-        }
-
-        $cedula = trim($datos["cedula"] ?? "");
-        $accion = strtolower( trim($datos["accion"] ?? ""));
-
-        if ($cedula === "" || $accion === "") {
-            RespuestaJson::error(
-                "No se recibieron los datos necesarios.",422);
-        }
-
-        if (!preg_match("/^[1-9][0-9]{7}$/", $cedula)) {
-            RespuestaJson::error("La cédula no es válida.",422);
-        }
-
-        if ($accion === "activar") {
-            $activo = true;
-
-        } elseif ($accion === "desactivar") {
-            $activo = false;
-
-        } else {
-            RespuestaJson::error(
-                "La acción solicitada no es válida.",422);
-        }
-
-        $conexion = Conexion::conectar();
-        $dao = new UsuarioDAO($conexion);
-
-        $resultado = $dao->cambiarEstadoUsuario($cedula, $activo );
-
-        unset($dao, $conexion);
-        Conexion::desconectar();
-
-        if (!$resultado) {
-            RespuestaJson::error( "No se pudo modificar el estado del usuario.",400);
-        }
-
-        $mensaje = $activo ? "Usuario activado correctamente." : "Usuario desactivado correctamente.";
-
-        RespuestaJson::exito([ "mensaje" => $mensaje]);
+    if (!is_array($datos)) {
+        RespuestaJson::error("JSON inválido", 400);
     }
+
+    if (
+        $cedula === null ||
+        !preg_match("/^[1-9][0-9]{7}$/", $cedula)
+    ) {
+        RespuestaJson::error("La cédula no es válida.", 422);
+    }
+
+    $accion = strtolower(trim($datos["accion"] ?? ""));
+
+    if ($accion === "") {
+        RespuestaJson::error("No se recibieron los datos necesarios.", 422);
+    }
+
+    if ($accion === "activar") {
+        $activo = true;
+
+    } elseif ($accion === "desactivar") {
+        $activo = false;
+
+    } else {
+        RespuestaJson::error("La acción solicitada no es válida.", 422);
+    }
+
+    $conexion = Conexion::conectar();
+    $dao = new UsuarioDAO($conexion);
+
+    $resultado = $dao->cambiarEstadoUsuario($cedula, $activo);
+
+    unset($dao, $conexion);
+    Conexion::desconectar();
+
+    if (!$resultado) {
+        RespuestaJson::error( "No se pudo modificar el estado del usuario.", 400);
+    }
+
+    $mensaje = $activo ? "Usuario activado correctamente." : "Usuario desactivado correctamente.";
+
+    RespuestaJson::exito([ "mensaje" => $mensaje]);
+}
 }

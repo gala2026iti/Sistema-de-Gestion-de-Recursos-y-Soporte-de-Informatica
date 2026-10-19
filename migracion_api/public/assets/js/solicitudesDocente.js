@@ -1,4 +1,4 @@
-const API_SOLICITUDES = "../index.php?ruta=solicitudes";
+const API_SOLICITUDES = "../index.php/solicitudes";
 
 
 // ELEMENTOS DEL DOM

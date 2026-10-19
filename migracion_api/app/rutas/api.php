@@ -9,7 +9,6 @@ require_once RUTA_CONTROLADOR . "/SolicitudController.php";
 require_once RUTA_CONTROLADOR . "/PrestamoController.php";
 
 switch ($ruta) {
-
     case "login":
         $controlador = new LoginController();
         $controlador->autenticar($metodo);
@@ -17,42 +16,37 @@ switch ($ruta) {
 
     case "sesion":
         $controlador = new LoginController();
-        $controlador->obtenerSesion($metodo);
-        break;
-
-    case "logout":
-        $controlador = new LoginController();
-        $controlador->cerrarSesion($metodo);
+        $controlador->gestionarSesion($metodo);
         break;
 
     case "usuarios":
         $controlador = new UsuarioController();
-        $controlador->gestionar($metodo);
+        $controlador->gestionar($metodo, $idRecurso);
         break;
 
     case "equipos":
         $controlador = new EquipoController();
-        $controlador->gestionar($metodo);
+        $controlador->gestionar($metodo, $idRecurso, $subrecurso);
         break;
 
-    case "ubicaciones":
-        $controlador = new UbicacionController();
-        $controlador->gestionar($metodo);
-        break;
+   case "ubicaciones":
+    $controlador = new UbicacionController();
+    $controlador->gestionar($metodo, $idRecurso, $subrecurso);
+    break;
 
     case "tickets":
         $controlador = new TicketController();
-        $controlador->gestionar($metodo);
+        $controlador->gestionar($metodo, $idRecurso, $subrecurso);
         break;
 
     case "solicitudes":
         $controlador = new SolicitudController();
-        $controlador->gestionar($metodo);
+        $controlador->gestionar($metodo, $idRecurso);
         break;
 
     case "prestamos":
         $controlador = new PrestamoController();
-        $controlador->gestionar($metodo);
+        $controlador->gestionar($metodo, $idRecurso);
         break;
 
     default:

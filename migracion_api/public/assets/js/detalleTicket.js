@@ -1,4 +1,4 @@
-const API_TICKETS = "../index.php?ruta=tickets";
+const API_TICKETS = "../index.php/tickets";
 
 
 // ELEMENTOS DEL DOM
@@ -33,67 +33,49 @@ const botonAgregarComentario = document.getElementById("btnAgregarComentario");
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
         throw new Error(
-            `La API respondió sin cuerpo (HTTP ${respuesta.status}).`
-        );
+            `La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
     }
 
     let json;
-
     try {
         json = JSON.parse(texto);
 
     } catch {
         throw new Error(
-            `HTTP ${respuesta.status}: La API no devolvió JSON.`
-        );
+            `HTTP ${respuesta.status}: La API no devolvió JSON.`);
     }
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar."
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
             }`
         );
     }
-
     return json.datos;
 }
 
-
 // PETICIONES
-
-async function obtenerTicket(id)
-{
-    const respuesta = await fetch(
-        API_TICKETS + "&id=" + encodeURIComponent(id)
-    );
-
+async function obtenerTicket(id) {
+    const respuesta = await fetch(API_TICKETS + "/" + encodeURIComponent(id));
     return leerRespuestaAPI(respuesta);
 }
 
-
-async function modificarTicket(ticket)
-{
+async function modificarTicket(ticket) {
     const respuesta = await fetch(
-        API_TICKETS,{
-            method: "PATCH",
-
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
-
-            body: JSON.stringify(ticket)
-        }
-    );
-
+        API_TICKETS + "/" + ticket.idTicket, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
+        body: JSON.stringify(ticket)
+    });
     return leerRespuestaAPI(respuesta);
 }
 
@@ -101,7 +83,10 @@ async function modificarTicket(ticket)
 async function registrarComentario(comentario)
 {
     const respuesta = await fetch(
-        API_TICKETS,{
+        API_TICKETS +
+        "/" +
+        encodeURIComponent(comentario.idTicket) +
+        "/comentarios",{
             method: "POST",
 
             headers: {
@@ -109,7 +94,9 @@ async function registrarComentario(comentario)
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
             },
 
-            body: JSON.stringify(comentario)
+            body: JSON.stringify({
+                texto: comentario.texto
+            })
         }
     );
 
@@ -118,9 +105,7 @@ async function registrarComentario(comentario)
 
 
 // COMENTARIOS
-
-function agregarComentario(comentario)
-{
+function agregarComentario(comentario) {
     const articulo = document.createElement("article");
     articulo.classList.add("border", "rounded-3", "p-3", "mb-3");
 
@@ -148,8 +133,7 @@ function agregarComentario(comentario)
 }
 
 
-function mostrarComentarios(comentarios)
-{
+function mostrarComentarios(comentarios) {
     contenedorComentarios.replaceChildren();
 
     if (comentarios.length === 0) {
@@ -159,7 +143,6 @@ function mostrarComentarios(comentarios)
         mensaje.textContent = "Este ticket todavía no tiene comentarios.";
 
         contenedorComentarios.appendChild(mensaje);
-
         return;
     }
 
@@ -171,8 +154,7 @@ function mostrarComentarios(comentarios)
 
 // DETALLE DEL TICKET
 
-function mostrarTicket(ticket)
-{
+function mostrarTicket(ticket) {
     tituloTicket.textContent = "Ticket #" + ticket.id;
 
     idTicket.value = ticket.id;
@@ -200,46 +182,42 @@ function mostrarTicket(ticket)
         infoEncargados.value = "Sin técnicos asignados";
     }
 
-if (ticket.estado === "resuelto") {
-    gravedadTicket.disabled = true;
-    estadoTicket.disabled = true;
+    if (ticket.estado === "resuelto") {
+        gravedadTicket.disabled = true;
+        estadoTicket.disabled = true;
 
-    botonGuardarCambiosTicket.classList.add("d-none");
+        botonGuardarCambiosTicket.classList.add("d-none");
 
-    textoComentario.disabled = true;
-    botonAgregarComentario.classList.add("d-none");
+        textoComentario.disabled = true;
+        botonAgregarComentario.classList.add("d-none");
 
-} else {
-    gravedadTicket.disabled = false;
-    estadoTicket.disabled = false;
+    } else {
+        gravedadTicket.disabled = false;
+        estadoTicket.disabled = false;
 
-    botonGuardarCambiosTicket.classList.remove("d-none");
+        botonGuardarCambiosTicket.classList.remove("d-none");
 
-    textoComentario.disabled = false;
-    botonAgregarComentario.classList.remove("d-none");
-}
+        textoComentario.disabled = false;
+        botonAgregarComentario.classList.remove("d-none");
+    }
 
     gravedadTicket.value = ticket.gravedad;
     estadoTicket.value = ticket.estado;
 
     infoJustificacion.value = ticket.justificacion ?? "";
-
-actualizarCampoJustificacion();
+    actualizarCampoJustificacion();
 
     mostrarComentarios(ticket.comentarios ?? []);
 }
 
 
-function obtenerIdTicket()
-{
+function obtenerIdTicket() {
     const parametros = new URLSearchParams(window.location.search);
-
     return parametros.get("id");
 }
 
 
-async function cargarDetalleTicket()
-{
+async function cargarDetalleTicket() {
     const id = obtenerIdTicket();
 
     if (id === null || id.trim() === "") {
@@ -265,8 +243,7 @@ async function cargarDetalleTicket()
 
 // GESTIÓN DEL TICKET
 
-async function gestionarModificacionTicket()
-{
+async function gestionarModificacionTicket() {
     const justificacion = infoJustificacion.value.trim();
 
     if (estadoTicket.value === "resuelto" && justificacion === "") {
@@ -294,8 +271,7 @@ async function gestionarModificacionTicket()
 }
 
 
-async function gestionarComentario()
-{
+async function gestionarComentario() {
     const texto = textoComentario.value.trim();
 
     if (texto === "") {
@@ -322,8 +298,7 @@ async function gestionarComentario()
     }
 }
 
-function actualizarCampoJustificacion()
-{
+function actualizarCampoJustificacion() {
     if (estadoTicket.value === "resuelto") {
         bloqueJustificacion.classList.remove("d-none");
         infoJustificacion.required = true;
@@ -337,13 +312,9 @@ function actualizarCampoJustificacion()
 
 // EVENTOS
 
-estadoTicket.addEventListener("change",actualizarCampoJustificacion);
+estadoTicket.addEventListener("change", actualizarCampoJustificacion);
 
-botonGuardarCambiosTicket.addEventListener("click",gestionarModificacionTicket);
-botonAgregarComentario.addEventListener("click",gestionarComentario);
-
-botonGuardarCambiosTicket.addEventListener("click",gestionarModificacionTicket);
-botonAgregarComentario.addEventListener("click",gestionarComentario);
-
+botonGuardarCambiosTicket.addEventListener("click", gestionarModificacionTicket);
+botonAgregarComentario.addEventListener("click", gestionarComentario);
 
 cargarDetalleTicket();

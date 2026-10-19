@@ -21,10 +21,7 @@ class Conexion
         } catch (PDOException $error) {
             error_log($error->getMessage());
 
-            RespuestaJson::error(
-                "Error de conexión con la base de datos.",
-                500
-            );
+            RespuestaJson::error("Error de conexión con la base de datos.", 500);
         }
     }
 

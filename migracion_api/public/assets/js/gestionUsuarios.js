@@ -1,4 +1,4 @@
-const API_USUARIOS = "../index.php?ruta=usuarios";
+const API_USUARIOS = "../index.php/usuarios";
 
 // ELEMENTOS DEL DOM
 const cuerpoTablaUsuarios = document.getElementById("cuerpoTablaUsuarios");
@@ -105,14 +105,21 @@ async function registrarUsuario(usuario)
 async function modificarUsuario(usuario)
 {
     const respuesta = await fetch(
-        API_USUARIOS,
-        {
-            method: "PUT",
-
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? "" },
-                 body: JSON.stringify(usuario) });
+    API_USUARIOS + "/" + encodeURIComponent(usuario.cedula),{
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
+        body: JSON.stringify({
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            clave: usuario.clave,
+            confirmarClave: usuario.confirmarClave,
+            roles: usuario.roles
+        })
+    }
+);
 
     return leerRespuestaAPI(respuesta);
 }
@@ -121,16 +128,17 @@ async function modificarUsuario(usuario)
 async function cambiarEstadoUsuario(cedula, accion)
 {
     const respuesta = await fetch(
-        API_USUARIOS,
-        {
-            method: "PATCH",
-
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""},
-            body: JSON.stringify({cedula: cedula, accion: accion})
-        }
-    );
+    API_USUARIOS + "/" + encodeURIComponent(cedula),{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
+        body: JSON.stringify({
+            accion: accion
+        })
+    }
+);
 
     return leerRespuestaAPI(respuesta);
 }
@@ -381,12 +389,9 @@ async function actualizarTablaUsuarios()
 
     } catch (error) {
         window.alert(
-            "No se pudieron cargar los usuarios: " +
-            error.message
-        );
+            "No se pudieron cargar los usuarios: " + error.message );
     }
 }
-
 
 
 // GESTIÓN DE USUARIOS

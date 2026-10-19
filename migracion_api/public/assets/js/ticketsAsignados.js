@@ -9,8 +9,7 @@ const ticketsResueltos = document.getElementById("ticketsResueltos");
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
@@ -27,9 +26,8 @@ async function leerRespuestaAPI(respuesta)
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar."
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
             }`
         );
     }
@@ -40,17 +38,15 @@ async function leerRespuestaAPI(respuesta)
 
 // PETICIONES
 
-async function obtenerTicketsAsignados()
-{
-    const respuesta = await fetch( API_TICKETS + "&asignados=1");
+async function obtenerTicketsAsignados() {
+    const respuesta = await fetch(API_TICKETS + "&asignados=1");
     return leerRespuestaAPI(respuesta);
 }
 
 
 // TICKETS
 
-function crearTarjetaTicket(ticket)
-{
+function crearTarjetaTicket(ticket) {
     const articulo = document.createElement("article");
     articulo.classList.add("border", "rounded-3", "bg-white", "p-3", "mb-3");
 
@@ -78,8 +74,7 @@ function crearTarjetaTicket(ticket)
 }
 
 
-function mostrarSinTickets(contenedor)
-{
+function mostrarSinTickets(contenedor) {
     const mensaje = document.createElement("p");
 
     mensaje.classList.add("text-center", "text-muted", "py-3");
@@ -89,8 +84,7 @@ function mostrarSinTickets(contenedor)
 }
 
 
-function mostrarTickets(tickets)
-{
+function mostrarTickets(tickets) {
     ticketsPendientes.replaceChildren();
     ticketsEnProceso.replaceChildren();
     ticketsResueltos.replaceChildren();
@@ -133,8 +127,7 @@ function mostrarTickets(tickets)
 
 // INICIALIZACIÓN
 
-async function cargarTicketsAsignados()
-{
+async function cargarTicketsAsignados() {
     try {
         const tickets = await obtenerTicketsAsignados();
         mostrarTickets(tickets);

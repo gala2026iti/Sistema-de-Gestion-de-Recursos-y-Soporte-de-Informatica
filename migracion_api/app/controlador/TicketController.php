@@ -10,37 +10,38 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class TicketController
 {
-    public function gestionar(string $metodo): void
-    {
+    public function gestionar(
+        string $metodo,
+        ?string $idRecurso = null,
+        ?string $subrecurso = null
+    ): void {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
+        if ($subrecurso !== null) {
+
+            if ($subrecurso === "comentarios") {
+
+                if ($metodo !== "POST") {
+                    RespuestaJson::error("Método no permitido", 405);
+                }
+
+                $this->registrarComentario($idRecurso);
+                return;
+            }
+
+            RespuestaJson::error("Subrecurso no encontrado", 404);
+        }
+
         match ($metodo) {
-    "GET" => $this->listar(),
-    "POST" => $this->registrar(),
-    "PUT" => $this->modificarAsignacion(),
-    "PATCH" => $this->modificarTicket(),
-    default => RespuestaJson::error("Método no permitido", 405)
-};
+            "GET" => $this->listar(),
+            "POST" => $this->alta(),
+            "PUT" => $this->modificarAsignacion(),
+            "PATCH" => $this->modificarTicket(),
+            default => RespuestaJson::error("Método no permitido", 405)
+        };
     }
-
-    private function registrar(): void
-{
-    $rolActual = $_SESSION["rolActual"] ?? "";
-
-    if ($rolActual === "docente") {
-        $this->alta();
-        return;
-    }
-
-    if ($rolActual === "tecnico") {
-        $this->registrarComentario();
-        return;
-    }
-
-    RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-}
 
     private function listar(): void
     {
@@ -50,8 +51,8 @@ class TicketController
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-        
-$asignados = trim($_GET["asignados"] ?? "");
+
+        $asignados = trim($_GET["asignados"] ?? "");
         $orden = strtolower(trim($_GET["orden"] ?? ""));
         $gravedad = strtolower(trim($_GET["gravedad"] ?? ""));
         $tipo = strtolower(trim($_GET["tipo"] ?? ""));
@@ -60,8 +61,8 @@ $asignados = trim($_GET["asignados"] ?? "");
         $idEquipo = trim($_GET["idEquipo"] ?? "");
 
         if ($asignados !== "" && $asignados !== "1") {
-    RespuestaJson::error("El filtro de tickets asignados no es válido.", 422);
-}
+            RespuestaJson::error("El filtro de tickets asignados no es válido.", 422);
+        }
         if ($idTicket !== "" && !ctype_digit($idTicket)) {
             RespuestaJson::error("El ID del ticket no es válido.", 422);
         }
@@ -83,30 +84,30 @@ $asignados = trim($_GET["asignados"] ?? "");
         }
 
         if (
-    $estado !== "" &&
-    $estado !== "pendiente" &&
-    $estado !== "en proceso" &&
-    $estado !== "resuelto"
-) {
-    RespuestaJson::error("El estado seleccionado no es válido.", 422);
-}
-        
+            $estado !== "" &&
+            $estado !== "pendiente" &&
+            $estado !== "en proceso" &&
+            $estado !== "resuelto"
+        ) {
+            RespuestaJson::error("El estado seleccionado no es válido.", 422);
+        }
+
         $conexion = Conexion::conectar();
         $dao = new TicketDAO($conexion);
 
-       $tickets = $dao->listarTickets(
-    $_SESSION["cedula"],
-    $orden,
-    $gravedad,
-    $tipo,
-    $estado,
-    $idTicket,
-    $idEquipo,
-    $asignados === "1"
-);
-if ($idTicket !== "" && count($tickets) > 0) {
-    $tickets[0]["comentarios"] = $dao->listarComentarios($idTicket);
-}
+        $tickets = $dao->listarTickets(
+            $_SESSION["cedula"],
+            $orden,
+            $gravedad,
+            $tipo,
+            $estado,
+            $idTicket,
+            $idEquipo,
+            $asignados === "1"
+        );
+        if ($idTicket !== "" && count($tickets) > 0) {
+            $tickets[0]["comentarios"] = $dao->listarComentarios($idTicket);
+        }
         unset($dao, $conexion);
         Conexion::desconectar();
 
@@ -254,21 +255,21 @@ if ($idTicket !== "" && count($tickets) > 0) {
         $conexion = Conexion::conectar();
         $dao = new TicketDAO($conexion);
 
-$estadoTicket = $dao->obtenerEstadoTicket($idTicket);
+        $estadoTicket = $dao->obtenerEstadoTicket($idTicket);
 
-if ($estadoTicket === null) {
-    unset($dao, $conexion);
-    Conexion::desconectar();
+        if ($estadoTicket === null) {
+            unset($dao, $conexion);
+            Conexion::desconectar();
 
-    RespuestaJson::error("El ticket no existe.", 404);
-}
+            RespuestaJson::error("El ticket no existe.", 404);
+        }
 
-if ($estadoTicket === "resuelto") {
-    unset($dao, $conexion);
-    Conexion::desconectar();
+        if ($estadoTicket === "resuelto") {
+            unset($dao, $conexion);
+            Conexion::desconectar();
 
-    RespuestaJson::error("El ticket está cerrado y no puede modificarse su asignación.", 409);
-}
+            RespuestaJson::error("El ticket está cerrado y no puede modificarse su asignación.", 409);
+        }
 
         if ($accion === "asignarse") {
             $resultado = $dao->asignarTecnico($idTicket, $_SESSION["cedula"]);
@@ -298,145 +299,151 @@ if ($estadoTicket === "resuelto") {
     }
 
     private function modificarTicket(): void
-{
-    Sesion::verificarRol("tecnico");
+    {
+        Sesion::verificarRol("tecnico");
 
-    if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
-        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        }
+
+        Token::verificarCSRF();
+
+        $datos = json_decode(file_get_contents("php://input"), true);
+
+        if (!is_array($datos)) {
+            RespuestaJson::error("JSON inválido", 400);
+        }
+
+        $idTicket = trim($datos["idTicket"] ?? "");
+        $gravedad = strtolower(trim($datos["gravedad"] ?? ""));
+        $estado = strtolower(trim($datos["estado"] ?? ""));
+        $justificacion = trim($datos["justificacion"] ?? "");
+
+        if ($idTicket === "" || !ctype_digit($idTicket)) {
+            RespuestaJson::error("El ID del ticket no es válido.", 422);
+        }
+
+        if ($gravedad !== "ligera" && $gravedad !== "media" && $gravedad !== "grave") {
+            RespuestaJson::error("La gravedad no es válida.", 422);
+        }
+
+        if ($estado !== "pendiente" && $estado !== "en proceso" && $estado !== "resuelto") {
+            RespuestaJson::error("El estado no es válido.", 422);
+        }
+
+        if ($estado === "resuelto" && $justificacion === "") {
+            RespuestaJson::error("Debe ingresar una justificación para resolver el ticket.", 422);
+        }
+
+        if (strlen($justificacion) > 255) {
+            RespuestaJson::error("La justificación no puede superar los 255 caracteres.", 422);
+        }
+
+        if ($estado !== "resuelto") {
+            $justificacion = null;
+        }
+
+        $conexion = Conexion::conectar();
+        $dao = new TicketDAO($conexion);
+
+        $estadoActual = $dao->obtenerEstadoTicket($idTicket);
+
+        if ($estadoActual === null) {
+            unset($dao, $conexion);
+            Conexion::desconectar();
+
+            RespuestaJson::error("El ticket no existe.", 404);
+        }
+
+        if ($estadoActual === "resuelto") {
+            unset($dao, $conexion);
+            Conexion::desconectar();
+
+            RespuestaJson::error("El ticket ya se encuentra cerrado.", 409);
+        }
+
+        $resultado = $dao->modificarTicket(
+            $idTicket,
+            $gravedad,
+            $estado,
+            $justificacion
+        );
+
+        unset($dao, $conexion);
+        Conexion::desconectar();
+
+        if (!$resultado) {
+            RespuestaJson::error("No se pudo modificar el ticket.", 400);
+        }
+
+        RespuestaJson::exito(["mensaje" => "Ticket modificado correctamente."]);
     }
 
-    Token::verificarCSRF();
+    private function registrarComentario(?string $idTicket): void
+    {
+        Sesion::verificarRol("tecnico");
 
-    $datos = json_decode(file_get_contents("php://input"), true);
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        }
 
-    if (!is_array($datos)) {
-        RespuestaJson::error("JSON inválido", 400);
+        Token::verificarCSRF();
+
+        if (
+            $idTicket === null ||
+            $idTicket === "" ||
+            !ctype_digit($idTicket)
+        ) {
+            RespuestaJson::error("El ID del ticket no es válido.", 422);
+        }
+
+        $datos = json_decode(file_get_contents("php://input"), true);
+
+        if (!is_array($datos)) {
+            RespuestaJson::error("JSON inválido", 400);
+        }
+
+        $texto = trim($datos["texto"] ?? "");
+
+        if ($texto === "") {
+            RespuestaJson::error("Debe ingresar un comentario.", 422);
+        }
+
+        if (strlen($texto) > 500) {
+            RespuestaJson::error("El comentario no puede superar los 500 caracteres.", 422);
+        }
+
+        $conexion = Conexion::conectar();
+        $dao = new TicketDAO($conexion);
+
+        $estadoTicket = $dao->obtenerEstadoTicket($idTicket);
+
+        if ($estadoTicket === null) {
+            unset($dao, $conexion);
+            Conexion::desconectar();
+
+            RespuestaJson::error("El ticket no existe.", 404);
+        }
+
+        if ($estadoTicket === "resuelto") {
+            unset($dao, $conexion);
+            Conexion::desconectar();
+
+            RespuestaJson::error( "El ticket está cerrado y no admite nuevos comentarios.", 409);
+        }
+
+        $resultado = $dao->registrarComentario(
+            $idTicket,
+            $_SESSION["cedula"],
+            $texto
+        );
+        unset($dao, $conexion);
+        Conexion::desconectar();
+
+        if (!$resultado) {
+            RespuestaJson::error("No se pudo registrar el comentario.",400);
+        }
+
+        RespuestaJson::exito(["mensaje" => "Comentario registrado correctamente."], 201);
     }
-
-    $idTicket = trim($datos["idTicket"] ?? "");
-    $gravedad = strtolower(trim($datos["gravedad"] ?? ""));
-    $estado = strtolower(trim($datos["estado"] ?? ""));
-    $justificacion = trim($datos["justificacion"] ?? "");
-
-    if ($idTicket === "" || !ctype_digit($idTicket)) {
-        RespuestaJson::error("El ID del ticket no es válido.", 422);
-    }
-
-    if ($gravedad !== "ligera" && $gravedad !== "media" && $gravedad !== "grave") {
-        RespuestaJson::error("La gravedad no es válida.", 422);
-    }
-
-    if ($estado !== "pendiente" && $estado !== "en proceso" && $estado !== "resuelto") {
-        RespuestaJson::error("El estado no es válido.", 422);
-    }
-
-    if ($estado === "resuelto" && $justificacion === "") {
-        RespuestaJson::error("Debe ingresar una justificación para resolver el ticket.", 422);
-    }
-
-    if (strlen($justificacion) > 255) {
-        RespuestaJson::error("La justificación no puede superar los 255 caracteres.", 422);
-    }
-
-    if ($estado !== "resuelto") {
-        $justificacion = null;
-    }
-
-    $conexion = Conexion::conectar();
-    $dao = new TicketDAO($conexion);
-
-$estadoActual = $dao->obtenerEstadoTicket($idTicket);
-
-if ($estadoActual === null) {
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    RespuestaJson::error("El ticket no existe.", 404);
-}
-
-if ($estadoActual === "resuelto") {
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    RespuestaJson::error("El ticket ya se encuentra cerrado.", 409);
-}
-
-    $resultado = $dao->modificarTicket(
-        $idTicket,
-        $gravedad,
-        $estado,
-        $justificacion
-    );
-
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    if (!$resultado) {
-        RespuestaJson::error("No se pudo modificar el ticket.", 400);
-    }
-
-    RespuestaJson::exito(["mensaje" => "Ticket modificado correctamente."]);
-}
-
-private function registrarComentario(): void
-{
-    Sesion::verificarRol("tecnico");
-
-    if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
-        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-    }
-
-    Token::verificarCSRF();
-
-    $datos = json_decode(file_get_contents("php://input"), true);
-
-    if (!is_array($datos)) {
-        RespuestaJson::error("JSON inválido", 400);
-    }
-
-    $idTicket = trim($datos["idTicket"] ?? "");
-    $texto = trim($datos["texto"] ?? "");
-
-    if ($idTicket === "" || !ctype_digit($idTicket)) {
-        RespuestaJson::error("El ID del ticket no es válido.", 422);
-    }
-
-    if ($texto === "") {
-        RespuestaJson::error("Debe ingresar un comentario.", 422);
-    }
-
-    if (strlen($texto) > 500) {
-        RespuestaJson::error("El comentario no puede superar los 500 caracteres.", 422);
-    }
-
-    $conexion = Conexion::conectar();
-    $dao = new TicketDAO($conexion);
-
-$estadoTicket = $dao->obtenerEstadoTicket($idTicket);
-
-if ($estadoTicket === null) {
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    RespuestaJson::error("El ticket no existe.", 404);
-}
-
-if ($estadoTicket === "resuelto") {
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    RespuestaJson::error("El ticket está cerrado y no admite nuevos comentarios.", 409);
-}
-
-    $resultado = $dao->registrarComentario( $idTicket, $_SESSION["cedula"], $texto);
-
-    unset($dao, $conexion);
-    Conexion::desconectar();
-
-    if (!$resultado) {
-        RespuestaJson::error("No se pudo registrar el comentario.", 400);
-    }
-
-    RespuestaJson::exito(["mensaje" => "Comentario registrado correctamente."], 201);
-}
 }

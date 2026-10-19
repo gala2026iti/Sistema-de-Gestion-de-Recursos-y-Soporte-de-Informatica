@@ -10,22 +10,21 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class PrestamoController
 {
-    public function gestionar(string $metodo): void
-    {
+    public function gestionar( string $metodo, ?string $idRecurso = null): void {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
         match ($metodo) {
-            "GET" => $this->listar(),
+            "GET" => $this->listar($idRecurso),
             "POST" => $this->alta(),
-            "PATCH" => $this->devolver(),
+            "PATCH" => $this->devolver($idRecurso),
             default => RespuestaJson::error("Método no permitido", 405)
         };
     }
 
 
-    private function listar(): void
+    private function listar(?string $idRecurso): void
     {
         Sesion::verificarRol("tecnico");
 
@@ -34,7 +33,7 @@ class PrestamoController
         }
 
         $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $idPrestamo = trim($_GET["id"] ?? "");
+        $idPrestamo = trim($idRecurso ?? "");
         $disponibles = trim($_GET["disponibles"] ?? "");
 
         if ($estado !== "" && $estado !== "prestado" && $estado !== "devuelto") {
@@ -166,27 +165,18 @@ class PrestamoController
     }
 
 
-    private function devolver(): void
+    private function devolver(?string $idPrestamo): void
     {
-        Sesion::verificarRol("tecnico");
+    Sesion::verificarRol("tecnico");
 
-        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
-            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-        }
+    if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+    }
 
-        Token::verificarCSRF();
-
-        $datos = json_decode(file_get_contents("php://input"), true);
-
-        if (!is_array($datos)) {
-            RespuestaJson::error("JSON inválido", 400);
-        }
-
-        $idPrestamo = trim($datos["idPrestamo"] ?? "");
-
-        if ($idPrestamo === "" || !ctype_digit($idPrestamo)) {
-            RespuestaJson::error("El ID del préstamo no es válido.", 422);
-        }
+    Token::verificarCSRF();
+    if ( $idPrestamo === null || $idPrestamo === "" || !ctype_digit($idPrestamo)) {
+        RespuestaJson::error("El ID del préstamo no es válido.", 422);
+    }
 
         $conexion = Conexion::conectar();
         $dao = new PrestamoDAO($conexion);

@@ -1,5 +1,5 @@
-const API_EQUIPOS = "../index.php?ruta=equipos";
-const API_UBICACIONES = "../index.php?ruta=ubicaciones";
+const API_EQUIPOS = "../index.php/equipos";
+const API_UBICACIONES = "../index.php/ubicaciones";
 
 
 // ELEMENTOS DEL DOM
@@ -106,7 +106,7 @@ async function obtenerEquipos()
     const consulta = parametros.toString();
 
     if (consulta !== "") {
-        url += "&" + consulta;
+        url += "?" + consulta;
     }
 
     const respuesta = await fetch(url);
@@ -135,7 +135,10 @@ async function registrarEquipo(equipo)
 async function modificarUbicacionEquipo(equipo)
 {
     const respuesta = await fetch(
-        API_EQUIPOS,{
+        API_EQUIPOS +
+        "/" +
+        encodeURIComponent(equipo.idEquipo) +
+        "/ubicacion",{
             method: "PUT",
 
             headers: {
@@ -143,30 +146,32 @@ async function modificarUbicacionEquipo(equipo)
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
             },
 
-            body: JSON.stringify(equipo)
-        });
+            body: JSON.stringify({
+                tipoUbicacion: equipo.tipoUbicacion,
+                idUbicacion: equipo.idUbicacion,
+                posicion: equipo.posicion
+            })
+        }
+    );
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function cambiarEstadoEquipo(idEquipo, accion)
+async function cambiarEstadoEquipo(idEquipo,accion)
 {
     const respuesta = await fetch(
-        API_EQUIPOS,{
+        API_EQUIPOS + "/" + encodeURIComponent(idEquipo),{
             method: "PATCH",
-
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
             },
 
             body: JSON.stringify({
-                idEquipo,
-                accion
+                accion: accion
             })
         });
-
     return leerRespuestaAPI(respuesta);
 }
 
@@ -203,19 +208,16 @@ async function registrarUbicacion(tipo)
 async function eliminarUbicacion(ubicacion)
 {
     const respuesta = await fetch(
-        API_UBICACIONES,{
+        API_UBICACIONES +
+        "/" +
+        encodeURIComponent(ubicacion.tipo) +
+        "/" +
+        encodeURIComponent(ubicacion.id),{
             method: "DELETE",
-
             headers: {
-                "Content-Type": "application/json",
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
-            body: JSON.stringify({
-                id: ubicacion.id,
-                tipo: ubicacion.tipo
-            })
+            }
         });
-
     return leerRespuestaAPI(respuesta);
 }
 

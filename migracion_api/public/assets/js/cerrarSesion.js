@@ -1,55 +1,39 @@
-const API_LOGOUT = "../index.php?ruta=logout";
+const API_SESION_CIERRE = "../index.php/sesion";
 
-const botonCerrarSesion =
-    document.getElementById("cerrarSesion");
+const botonCerrarSesion = document.getElementById("cerrarSesion");
 
 
-async function cerrarSesion() {
-
+async function cerrarSesion()
+{
     const respuesta = await fetch(
-        API_LOGOUT,
-        {
-            method: "POST",
+        API_SESION_CIERRE,{
+            method: "DELETE",
+
             headers: {
-                "X-CSRF-Token":
-                    sessionStorage.getItem("csrfToken") ?? ""
+                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
             }
-        }
-    );
+        });
 
     const json = await respuesta.json();
 
     if (!respuesta.ok) {
-        throw new Error(
-            json.mensaje ??
-            "No se pudo cerrar la sesión."
-        );
+        throw new Error(json.mensaje ?? "No se pudo cerrar la sesión.");
     }
 
     return json.datos;
 }
 
 
-async function gestionarCierreSesion(evento) {
-
+async function gestionarCierreSesion(evento)
+{
     evento.preventDefault();
-
     try {
-
         await cerrarSesion();
-
         sessionStorage.removeItem("csrfToken");
-
         window.location.replace("../index.html");
-
     } catch (error) {
-
         window.alert(error.message);
     }
 }
 
-
-botonCerrarSesion.addEventListener(
-    "click",
-    gestionarCierreSesion
-);
+botonCerrarSesion.addEventListener("click",gestionarCierreSesion);

@@ -1,5 +1,4 @@
-const API_SOLICITUDES = "../index.php?ruta=solicitudes";
-
+const API_SOLICITUDES = "../index.php/solicitudes";
 
 // ELEMENTOS DEL DOM
 
@@ -9,7 +8,6 @@ const filtroEstado = document.getElementById("estado");
 const filtroId = document.getElementById("idSolicitud");
 
 const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
-
 const cuerpoTablaSolicitudes = document.getElementById("cuerpoTablaSolicitudes");
 
 
@@ -20,20 +18,15 @@ async function leerRespuestaAPI(respuesta)
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
-        throw new Error(
-            `La API respondió sin cuerpo (HTTP ${respuesta.status}).`
-        );
+        throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
     }
 
     let json;
-
     try {
         json = JSON.parse(texto);
 
     } catch {
-        throw new Error(
-            `HTTP ${respuesta.status}: La API no devolvió JSON.`
-        );
+        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.`);
     }
 
     if (!respuesta.ok) {
@@ -44,7 +37,6 @@ async function leerRespuestaAPI(respuesta)
             }`
         );
     }
-
     return json.datos;
 }
 
@@ -54,7 +46,6 @@ async function leerRespuestaAPI(respuesta)
 async function obtenerSolicitudes()
 {
     const parametros = new URLSearchParams();
-
     if (filtroEstado.value !== "") {
         parametros.set("estado",filtroEstado.value);
     }
@@ -64,13 +55,11 @@ async function obtenerSolicitudes()
     }
 
     let url = API_SOLICITUDES;
-
     if (parametros.toString() !== "") {
         url += "&" + parametros.toString();
     }
 
     const respuesta = await fetch(url);
-
     return leerRespuestaAPI(respuesta);
 }
 
@@ -78,32 +67,20 @@ async function obtenerSolicitudes()
 async function finalizarSolicitud(idSolicitud)
 {
     const respuesta = await fetch(
-        API_SOLICITUDES,{
+        API_SOLICITUDES + "/" + encodeURIComponent(idSolicitud),{
             method: "PATCH",
-
             headers: {
-                "Content-Type": "application/json",
                 "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
-
-            body: JSON.stringify({
-                idSolicitud: idSolicitud
-            })
-        }
-    );
-
+            }
+        });
     return leerRespuestaAPI(respuesta);
 }
-
-
 // TABLA
 
 function crearCelda(texto)
 {
     const celda = document.createElement("td");
-
     celda.textContent = texto;
-
     return celda;
 }
 
@@ -111,26 +88,19 @@ function crearCelda(texto)
 function crearBotonFinalizar(solicitud)
 {
     const boton = document.createElement("button");
-
     boton.type = "button";
     boton.classList.add("btn", "btn-primary", "ms-1", "text-bold");
     boton.textContent = "Finalizar";
-
     boton.addEventListener("click",async function ()
     {
-        const confirmar = confirm(
-            "¿Desea marcar esta solicitud como finalizada?"
-        );
-
+        const confirmar = confirm("¿Desea marcar esta solicitud como finalizada?");
         if (!confirmar) {
             return;
         }
 
         try {
             const resultado = await finalizarSolicitud(solicitud.id);
-
             alert(resultado.mensaje);
-
             await cargarSolicitudes();
 
         } catch (error) {
@@ -146,72 +116,29 @@ function crearFilaSolicitud(solicitud)
 {
     const fila = document.createElement("tr");
 
-    fila.appendChild(
-        crearCelda(solicitud.id)
-    );
-
-    fila.appendChild(
-        crearCelda(solicitud.asunto)
-    );
-
-    fila.appendChild(
-        crearCelda(
-            solicitud.fechaLimite +
-            " - " +
-            solicitud.horaLimite
-        )
-    );
-
-    fila.appendChild(
-        crearCelda(solicitud.descripcion)
-    );
-
-    fila.appendChild(
-        crearCelda(
-            solicitud.nombreDocente +
-            " - (" +
-            solicitud.ciDocente +
-            ")"
-        )
-    );
-
-    fila.appendChild(
-        crearCelda(
-            solicitud.finalizada == 1 ?
-            "Finalizada" :
-            "Pendiente"
-        )
-    );
-
+    fila.appendChild(crearCelda(solicitud.id));
+    fila.appendChild(crearCelda(solicitud.asunto));
+    fila.appendChild(crearCelda( solicitud.fechaLimite + " - " + solicitud.horaLimite));
+    fila.appendChild(crearCelda(solicitud.descripcion));
+    fila.appendChild(crearCelda( solicitud.nombreDocente + " - (" + solicitud.ciDocente + ")"));
+    fila.appendChild(crearCelda( solicitud.finalizada == 1 ? "Finalizada" : "Pendiente"));
 
     const celdaFinalizacion = document.createElement("td");
 
     if (solicitud.finalizada == 1) {
-
-        celdaFinalizacion.textContent =
-            solicitud.nombreTecnico +
-            " - " +
-            solicitud.fechaFinalizacion +
-            " " +
-            solicitud.horaFinalizacion;
-
+        celdaFinalizacion.textContent =solicitud.nombreTecnico + " - " + solicitud.fechaFinalizacion + " " + solicitud.horaFinalizacion;
     } else {
         celdaFinalizacion.textContent = "Sin finalizar";
     }
 
     fila.appendChild(celdaFinalizacion);
-
-
     const celdaAcciones = document.createElement("td");
 
     if (solicitud.finalizada != 1) {
-        celdaAcciones.appendChild(
-            crearBotonFinalizar(solicitud)
-        );
+        celdaAcciones.appendChild(crearBotonFinalizar(solicitud));
     }
 
     fila.appendChild(celdaAcciones);
-
     return fila;
 }
 
@@ -230,14 +157,11 @@ function mostrarSolicitudes(solicitudes)
 
         fila.appendChild(celda);
         cuerpoTablaSolicitudes.appendChild(fila);
-
         return;
     }
 
     for (const solicitud of solicitudes) {
-        cuerpoTablaSolicitudes.appendChild(
-            crearFilaSolicitud(solicitud)
-        );
+        cuerpoTablaSolicitudes.appendChild(crearFilaSolicitud(solicitud));
     }
 }
 
@@ -248,14 +172,10 @@ async function cargarSolicitudes()
 {
     try {
         const solicitudes = await obtenerSolicitudes();
-
         mostrarSolicitudes(solicitudes);
 
     } catch (error) {
-        alert(
-            "No se pudieron cargar las solicitudes: " +
-            error.message
-        );
+        alert( "No se pudieron cargar las solicitudes: " + error.message);
     }
 }
 
@@ -263,7 +183,6 @@ async function cargarSolicitudes()
 function aplicarFiltros(evento)
 {
     evento.preventDefault();
-
     const id = filtroId.value.trim();
 
     if (id !== "" && !/^\d+$/.test(id)) {
@@ -274,12 +193,10 @@ function aplicarFiltros(evento)
     cargarSolicitudes();
 }
 
-
 function limpiarFiltros()
 {
     filtroEstado.value = "";
     filtroId.value = "";
-
     cargarSolicitudes();
 }
 
@@ -288,8 +205,6 @@ function limpiarFiltros()
 
 formFiltros.addEventListener("submit",aplicarFiltros);
 btnLimpiarFiltros.addEventListener("click",limpiarFiltros);
-
-
 // INICIALIZACIÓN
 
 cargarSolicitudes();

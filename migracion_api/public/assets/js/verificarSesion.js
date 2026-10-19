@@ -1,4 +1,4 @@
-const API_SESION = "../index.php?ruta=sesion";
+const API_SESION = "../index.php/sesion";
 
 const datosUsuario = document.getElementById("datosUsuario");
 
@@ -16,6 +16,130 @@ async function obtenerSesion() {
     return json.datos;
 }
 
+async function cambiarRol(rol) {
+    const respuesta = await fetch(
+        API_SESION, {
+        method: "PATCH",
+
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
+
+        body: JSON.stringify({
+            rol: rol
+        })
+    }
+    );
+
+    const json = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(
+            json.mensaje ??
+            "No se pudo cambiar el rol."
+        );
+    }
+
+    return json.datos;
+}
+
+function redirigirSegunRol(rol) {
+    switch (rol) {
+
+        case "administrador":
+            window.location.replace("./homeAdmin.html");
+            break;
+
+        case "tecnico":
+            window.location.replace("./homeTecnico.html");
+            break;
+
+        case "docente":
+            window.location.replace("./homeDocente.html");
+            break;
+    }
+}
+
+
+function crearOpcionRol(rol) {
+    const item = document.createElement("li");
+
+    const enlace = document.createElement("a");
+
+    enlace.href = "#";
+    enlace.classList.add("opcion-cambio-rol");
+    enlace.textContent = "Cambiar a " + nombreRol(rol);
+
+    enlace.addEventListener("click", async function (evento) {
+        evento.preventDefault();
+
+        try {
+            const resultado = await cambiarRol(rol);
+
+            redirigirSegunRol(resultado.rolActual);
+
+        } catch (error) {
+            window.alert(error.message);
+        }
+    });
+
+    item.appendChild(enlace);
+
+    return item;
+}
+
+function configurarOpcionesRoles(sesion) {
+    const opcionesRoles =
+        document.getElementById("opcionesRoles");
+
+    const cerrarSesion =
+        document.getElementById("cerrarSesion");
+
+    if (!opcionesRoles || !cerrarSesion) {
+        return;
+    }
+
+    const itemCerrarSesion =
+        cerrarSesion.closest("li");
+
+
+    document
+        .querySelectorAll(".opcion-cambio-rol")
+        .forEach(function (opcion) {
+            opcion.closest("li")?.remove();
+        });
+
+
+    const roles = [
+        {
+            nombre: "administrador",
+            disponible: Boolean(sesion.administrador)
+        },
+        {
+            nombre: "tecnico",
+            disponible: Boolean(sesion.tecnico)
+        },
+        {
+            nombre: "docente",
+            disponible: Boolean(sesion.docente)
+        }
+    ];
+
+
+    for (const rol of roles) {
+
+        if (
+            rol.disponible &&
+            rol.nombre !== sesion.rolActual
+        ) {
+            opcionesRoles.insertBefore(
+                crearOpcionRol(rol.nombre),
+                itemCerrarSesion
+            );
+        }
+    }
+}
 
 function nombreRol(rol) {
     switch (rol) {
@@ -130,21 +254,13 @@ async function verificarSesion() {
         }
 
         if (datosUsuario) {
-            datosUsuario.textContent =
-                sesion.nombre +
-                " - " +
-                nombreRol(sesion.rolActual) +
-                " 🡻";
+            datosUsuario.textContent = sesion.nombre + " - " + nombreRol(sesion.rolActual) + " 🡻";
         }
-
-        configurarVistaSegunRol(
-            sesion.rolActual
-        );
+        configurarOpcionesRoles(sesion);
+        configurarVistaSegunRol(sesion.rolActual);
 
     } catch (error) {
         window.location.replace("../index.html");
     }
 }
-
-
 verificarSesion();
