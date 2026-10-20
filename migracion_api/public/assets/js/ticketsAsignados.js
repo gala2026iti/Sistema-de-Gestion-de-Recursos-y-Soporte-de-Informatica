@@ -1,4 +1,4 @@
-const API_TICKETS = "../index.php?ruta=tickets";
+const API_TICKETS = "../index.php/tickets";
 
 
 // ELEMENTOS DEL DOM
@@ -38,8 +38,9 @@ async function leerRespuestaAPI(respuesta) {
 
 // PETICIONES
 
-async function obtenerTicketsAsignados() {
-    const respuesta = await fetch(API_TICKETS + "&asignados=1");
+async function obtenerTicketsAsignados()
+{
+    const respuesta = await fetch(API_TICKETS + "?asignados=1");
     return leerRespuestaAPI(respuesta);
 }
 

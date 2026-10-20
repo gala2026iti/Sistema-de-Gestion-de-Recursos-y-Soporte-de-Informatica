@@ -50,12 +50,11 @@ let modoFormularioEquipo = "registro";
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
-        throw new Error( `La API respondió sin cuerpo (HTTP ${respuesta.status}).` );
+        throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
     }
 
     let json;
@@ -64,11 +63,11 @@ async function leerRespuestaAPI(respuesta)
         json = JSON.parse(texto);
 
     } catch {
-        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.` );
+        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.`);
     }
 
     if (!respuesta.ok) {
-        throw new Error( `HTTP ${respuesta.status}: ${json.mensaje ?? "La solicitud no se pudo completar."}`);
+        throw new Error(`HTTP ${respuesta.status}: ${json.mensaje ?? "La solicitud no se pudo completar."}`);
     }
 
     return json.datos;
@@ -77,8 +76,7 @@ async function leerRespuestaAPI(respuesta)
 
 // PETICIONES DE EQUIPOS
 
-async function obtenerEquipos()
-{
+async function obtenerEquipos() {
     let url = API_EQUIPOS;
 
     const parametros = new URLSearchParams();
@@ -92,7 +90,7 @@ async function obtenerEquipos()
     }
 
     if (entradaIdEquipoFiltro.value.trim() !== "") {
-        parametros.append("id", entradaIdEquipoFiltro.value.trim());
+        parametros.append("idEquipo", entradaIdEquipoFiltro.value.trim());
     }
 
     if (filtroUbicacion.value !== "") {
@@ -114,118 +112,111 @@ async function obtenerEquipos()
     return leerRespuestaAPI(respuesta);
 }
 
-async function registrarEquipo(equipo)
-{
+async function registrarEquipo(equipo) {
     const respuesta = await fetch(
-        API_EQUIPOS,{
-            method: "POST",
+        API_EQUIPOS, {
+        method: "POST",
 
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
 
-            body: JSON.stringify(equipo)
-        });
+        body: JSON.stringify(equipo)
+    });
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function modificarUbicacionEquipo(equipo)
-{
+async function modificarUbicacionEquipo(equipo) {
     const respuesta = await fetch(
         API_EQUIPOS +
         "/" +
         encodeURIComponent(equipo.idEquipo) +
-        "/ubicacion",{
-            method: "PUT",
+        "/ubicacion", {
+        method: "PUT",
 
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
 
-            body: JSON.stringify({
-                tipoUbicacion: equipo.tipoUbicacion,
-                idUbicacion: equipo.idUbicacion,
-                posicion: equipo.posicion
-            })
-        }
+        body: JSON.stringify({
+            tipoUbicacion: equipo.tipoUbicacion,
+            idUbicacion: equipo.idUbicacion,
+            posicion: equipo.posicion
+        })
+    }
     );
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function cambiarEstadoEquipo(idEquipo,accion)
-{
+async function cambiarEstadoEquipo(idEquipo, accion) {
     const respuesta = await fetch(
-        API_EQUIPOS + "/" + encodeURIComponent(idEquipo),{
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
+        API_EQUIPOS + "/" + encodeURIComponent(idEquipo), {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
 
-            body: JSON.stringify({
-                accion: accion
-            })
-        });
+        body: JSON.stringify({
+            accion: accion
+        })
+    });
     return leerRespuestaAPI(respuesta);
 }
 
 // PETICIONES DE UBICACIONES
 
-async function obtenerUbicaciones()
-{
+async function obtenerUbicaciones() {
     const respuesta = await fetch(API_UBICACIONES);
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function registrarUbicacion(tipo)
-{
+async function registrarUbicacion(tipo) {
     const respuesta = await fetch(
-        API_UBICACIONES,{
-            method: "POST",
+        API_UBICACIONES, {
+        method: "POST",
 
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
 
-            body: JSON.stringify({
-                tipo
-            })
-        });
+        body: JSON.stringify({
+            tipo
+        })
+    });
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function eliminarUbicacion(ubicacion)
-{
+async function eliminarUbicacion(ubicacion) {
     const respuesta = await fetch(
         API_UBICACIONES +
         "/" +
         encodeURIComponent(ubicacion.tipo) +
         "/" +
-        encodeURIComponent(ubicacion.id),{
-            method: "DELETE",
-            headers: {
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            }
-        });
+        encodeURIComponent(ubicacion.id), {
+        method: "DELETE",
+        headers: {
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        }
+    });
     return leerRespuestaAPI(respuesta);
 }
 
 
 // MENSAJES
 
-function ocultarMensajes()
-{
+function ocultarMensajes() {
     mensajeExito.textContent = "";
     mensajeError.textContent = "";
 
@@ -234,8 +225,7 @@ function ocultarMensajes()
 }
 
 
-function mostrarMensajeExito(mensaje)
-{
+function mostrarMensajeExito(mensaje) {
     ocultarMensajes();
 
     mensajeExito.textContent = mensaje;
@@ -243,8 +233,7 @@ function mostrarMensajeExito(mensaje)
 }
 
 
-function mostrarMensajeError(mensaje)
-{
+function mostrarMensajeError(mensaje) {
     ocultarMensajes();
 
     mensajeError.textContent = mensaje;
@@ -254,20 +243,17 @@ function mostrarMensajeError(mensaje)
 
 // BARRA LATERAL Y UBICACIONES
 
-function abrirMenuUbicaciones()
-{
+function abrirMenuUbicaciones() {
     barraLateralSalones.classList.add("abierto");
 }
 
 
-function cerrarMenuUbicaciones()
-{
+function cerrarMenuUbicaciones() {
     barraLateralSalones.classList.remove("abierto");
 }
 
 
-function crearEnlaceUbicacion(ubicacion)
-{
+function crearEnlaceUbicacion(ubicacion) {
     const item = document.createElement("li");
     const enlace = document.createElement("a");
 
@@ -308,8 +294,7 @@ function crearEnlaceUbicacion(ubicacion)
 }
 
 
-function crearOpcionUbicacion(ubicacion)
-{
+function crearOpcionUbicacion(ubicacion) {
     const opcion = document.createElement("option");
 
     opcion.value = ubicacion.tipo + " " + ubicacion.id;
@@ -324,8 +309,7 @@ function crearOpcionUbicacion(ubicacion)
 }
 
 
-async function cargarUbicaciones()
-{
+async function cargarUbicaciones() {
     listaLaboratorios.replaceChildren();
     listaTalleres.replaceChildren();
     grupoLaboratorios.replaceChildren();
@@ -348,8 +332,7 @@ async function cargarUbicaciones()
 }
 
 
-async function gestionarRegistroUbicacion(tipo)
-{
+async function gestionarRegistroUbicacion(tipo) {
     ocultarMensajes();
 
     try {
@@ -365,8 +348,7 @@ async function gestionarRegistroUbicacion(tipo)
 }
 
 
-async function gestionarEliminarUbicacion(ubicacion)
-{
+async function gestionarEliminarUbicacion(ubicacion) {
     const confirmar = confirm(`¿Seguro que deseas eliminar ${ubicacion.tipo} ${ubicacion.id}?`);
 
     if (!confirmar) {
@@ -377,8 +359,7 @@ async function gestionarEliminarUbicacion(ubicacion)
 
     try {
         const resultado = await eliminarUbicacion(ubicacion);
-        if ( filtroTipoUbicacion.value === ubicacion.tipo && filtroUbicacion.value === String(ubicacion.id)) 
-            {
+        if (filtroTipoUbicacion.value === ubicacion.tipo && filtroUbicacion.value === String(ubicacion.id)) {
             filtroTipoUbicacion.value = "";
             filtroUbicacion.value = "";
         }
@@ -394,8 +375,7 @@ async function gestionarEliminarUbicacion(ubicacion)
 
 // TABLA DE EQUIPOS
 
-function obtenerTextoUbicacion(equipo)
-{
+function obtenerTextoUbicacion(equipo) {
     if (!equipo.tipoUbicacion) {
         return "Sin ubicación";
     }
@@ -409,8 +389,7 @@ function obtenerTextoUbicacion(equipo)
 }
 
 
-function agregarFilaEquipo(equipo)
-{
+function agregarFilaEquipo(equipo) {
     const fila = document.createElement("tr");
 
     const campoId = document.createElement("td");
@@ -482,8 +461,7 @@ function agregarFilaEquipo(equipo)
 }
 
 
-function mostrarSinEquipos()
-{
+function mostrarSinEquipos() {
     const fila = document.createElement("tr");
     const campoMensaje = document.createElement("td");
 
@@ -496,8 +474,7 @@ function mostrarSinEquipos()
 }
 
 
-async function actualizarTablaEquipos()
-{
+async function actualizarTablaEquipos() {
     cuerpoTablaEquipos.replaceChildren();
     try {
         const equipos = await obtenerEquipos();
@@ -520,15 +497,13 @@ async function actualizarTablaEquipos()
 
 // FILTROS
 
-async function filtrarEquipos(evento)
-{
+async function filtrarEquipos(evento) {
     evento.preventDefault();
     await actualizarTablaEquipos();
 }
 
 
-async function mostrarEquiposPrestamo(evento)
-{
+async function mostrarEquiposPrestamo(evento) {
     evento.preventDefault();
 
     filtroUbicacion.value = "";
@@ -538,8 +513,7 @@ async function mostrarEquiposPrestamo(evento)
 }
 
 
-async function mostrarTodosEquipos(evento)
-{
+async function mostrarTodosEquipos(evento) {
     evento.preventDefault();
 
     filtroUbicacion.value = "";
@@ -551,15 +525,13 @@ async function mostrarTodosEquipos(evento)
 
 // FORMULARIO DE EQUIPO
 
-function mostrarModalEquipo()
-{
+function mostrarModalEquipo() {
     modalEquipo.classList.remove("d-none");
     modalEquipo.classList.add("d-flex");
 }
 
 
-function abrirFormularioEquipo()
-{
+function abrirFormularioEquipo() {
     modoFormularioEquipo = "registro";
 
     formularioEquipo.reset();
@@ -576,8 +548,7 @@ function abrirFormularioEquipo()
 }
 
 
-function abrirFormularioModificarEquipo(equipo)
-{
+function abrirFormularioModificarEquipo(equipo) {
     modoFormularioEquipo = "modificacion";
 
     formularioEquipo.reset();
@@ -609,8 +580,7 @@ function abrirFormularioModificarEquipo(equipo)
 }
 
 
-function cerrarFormularioEquipo()
-{
+function cerrarFormularioEquipo() {
     formularioEquipo.reset();
 
     modoFormularioEquipo = "registro";
@@ -624,8 +594,7 @@ function cerrarFormularioEquipo()
 }
 
 
-function actualizarCampoPosicion()
-{
+function actualizarCampoPosicion() {
     const tipoUbicacion = entradaUbicacionEquipo.value.trim().split(" ")[0];
 
     if (tipoUbicacion === "laboratorio" || tipoUbicacion === "taller") {
@@ -641,8 +610,7 @@ function actualizarCampoPosicion()
 }
 
 
-function obtenerDatosUbicacion()
-{
+function obtenerDatosUbicacion() {
     const valor = entradaUbicacionEquipo.value.trim();
 
     if (valor === "prestamo" || valor === "ninguna") {
@@ -663,15 +631,14 @@ function obtenerDatosUbicacion()
 
 // ACCIONES DE EQUIPOS
 
-async function gestionarFormularioEquipo(evento)
-{
+async function gestionarFormularioEquipo(evento) {
     evento.preventDefault();
 
     ocultarMensajes();
 
     const ubicacion = obtenerDatosUbicacion();
 
-    const equipo = {  
+    const equipo = {
         idEquipo: entradaIdEquipo.value.trim(),
         tipoUbicacion: ubicacion.tipoUbicacion,
         idUbicacion: ubicacion.idUbicacion,
@@ -700,8 +667,7 @@ async function gestionarFormularioEquipo(evento)
 }
 
 
-async function gestionarEstadoEquipo(idEquipo, accion)
-{
+async function gestionarEstadoEquipo(idEquipo, accion) {
     ocultarMensajes();
 
     try {
@@ -719,8 +685,7 @@ async function gestionarEstadoEquipo(idEquipo, accion)
 
 // INICIALIZACIÓN
 
-async function inicializarGestionEquipos()
-{
+async function inicializarGestionEquipos() {
     try {
         const sesion = await obtenerSesion();
 
@@ -730,7 +695,7 @@ async function inicializarGestionEquipos()
         await actualizarTablaEquipos();
 
     } catch (error) {
-        mostrarMensajeError( "No se pudo cargar el inventario: " + error.message);
+        mostrarMensajeError("No se pudo cargar el inventario: " + error.message);
     }
 }
 
@@ -745,19 +710,19 @@ botonAgregarTaller.addEventListener("click", function () {
     gestionarRegistroUbicacion("taller");
 });
 
-formularioFiltroEquipos.addEventListener("submit",filtrarEquipos);
+formularioFiltroEquipos.addEventListener("submit", filtrarEquipos);
 
-filtroPrestamo.addEventListener("click",mostrarEquiposPrestamo);
-filtroTodosEquipos.addEventListener("click",mostrarTodosEquipos);
+filtroPrestamo.addEventListener("click", mostrarEquiposPrestamo);
+filtroTodosEquipos.addEventListener("click", mostrarTodosEquipos);
 
-botonAbrirUbicaciones.addEventListener("click",abrirMenuUbicaciones);
-botonCerrarUbicaciones.addEventListener("click",cerrarMenuUbicaciones);
+botonAbrirUbicaciones.addEventListener("click", abrirMenuUbicaciones);
+botonCerrarUbicaciones.addEventListener("click", cerrarMenuUbicaciones);
 
-botonRegistrarEquipo.addEventListener("click",abrirFormularioEquipo);
-botonCancelarEquipo.addEventListener("click",cerrarFormularioEquipo);
+botonRegistrarEquipo.addEventListener("click", abrirFormularioEquipo);
+botonCancelarEquipo.addEventListener("click", cerrarFormularioEquipo);
 
-entradaUbicacionEquipo.addEventListener("change",actualizarCampoPosicion);
-formularioEquipo.addEventListener("submit",gestionarFormularioEquipo);
+entradaUbicacionEquipo.addEventListener("change", actualizarCampoPosicion);
+formularioEquipo.addEventListener("submit", gestionarFormularioEquipo);
 
 
 inicializarGestionEquipos();

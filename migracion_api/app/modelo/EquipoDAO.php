@@ -145,7 +145,7 @@ class EquipoDAO
         return $equipos;
     }
 
-    public function registrarEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion, string $posicion): bool {
+  public function registrarEquipo(string $idEquipo,string $idUbicacion,string $tipoUbicacion,string $posicion, string $ciAdmin): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -181,9 +181,14 @@ class EquipoDAO
                 ";
 
                 $consultaUbicacion = $this->conexion->prepare($sqlUbicacion);
-                $consultaUbicacion->execute([ "idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
+                $consultaUbicacion->execute(["idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
                 $consultaUbicacion->closeCursor();
             }
+            $this->registrarHistorialEquipo(
+    $ciAdmin,
+    $idEquipo,
+    "creacion"
+);
 
             $this->conexion->commit();
 
@@ -199,11 +204,12 @@ class EquipoDAO
     }
 
     public function modificarUbicacionEquipo(
-        string $idEquipo,
-        string $idUbicacion,
-        string $tipoUbicacion,
-        string $posicion
-    ): bool {
+    string $idEquipo,
+    string $idUbicacion,
+    string $tipoUbicacion,
+    string $posicion,
+    string $ciAdmin
+): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -251,10 +257,15 @@ class EquipoDAO
                 ";
 
                 $consulta = $this->conexion->prepare($sql);
-                $consulta->execute([ "idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
+                $consulta->execute(["idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
 
                 $consulta->closeCursor();
             }
+$this->registrarHistorialEquipo(
+    $ciAdmin,
+    $idEquipo,
+    "modificacion"
+);
 
             $this->conexion->commit();
             return true;
@@ -267,27 +278,59 @@ class EquipoDAO
         }
     }
 
-    public function cambiarEstadoEquipo(string $idEquipo, bool $activo): bool
-    {
+    public function cambiarEstadoEquipo(
+    string $idEquipo,
+    bool $activo,
+    string $ciAdmin
+): bool {
+    try {
+        $this->conexion->beginTransaction();
+
         $sql = "
             UPDATE EQUIPO
             SET activo = :activo
             WHERE id = :idEquipo
         ";
 
-        try {
-            $consulta = $this->conexion->prepare($sql);
+        $consulta = $this->conexion->prepare($sql);
 
-            $consulta->execute([ "activo" => $activo ? 1 : 0,"idEquipo" => $idEquipo]);
+        $consulta->execute([
+            "activo" => $activo ? 1 : 0,
+            "idEquipo" => $idEquipo
+        ]);
 
-            $actualizado = $consulta->rowCount() > 0;
-            $consulta->closeCursor();
-            return $actualizado;
+        $actualizado = $consulta->rowCount() > 0;
 
-        } catch (PDOException $error) {
+        $consulta->closeCursor();
+
+        if (!$actualizado) {
+            $this->conexion->rollBack();
             return false;
         }
+
+        $tipoInteraccion =
+            $activo
+                ? "activacion"
+                : "desactivacion";
+
+        $this->registrarHistorialEquipo(
+            $ciAdmin,
+            $idEquipo,
+            $tipoInteraccion
+        );
+
+        $this->conexion->commit();
+
+        return true;
+
+    } catch (PDOException $error) {
+        if ($this->conexion->inTransaction()) {
+            $this->conexion->rollBack();
+        }
+
+        return false;
     }
+}
 
     private function obtenerPosicionLibrePrestamo(): string
     {
@@ -313,5 +356,34 @@ class EquipoDAO
         $consulta->closeCursor();
 
         return (string) $posicion;
+    }
+
+    private function registrarHistorialEquipo(
+        string $ciAdmin,
+        string $idEquipo,
+        string $tipoInteraccion
+    ): void {
+        $sql = "
+        INSERT INTO administrador_maneja_equipo (
+            ciAdmin,
+            idEquipo,
+            tipoInteraccion
+        )
+        VALUES (
+            :ciAdmin,
+            :idEquipo,
+            :tipoInteraccion
+        )
+    ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "ciAdmin" => $ciAdmin,
+            "idEquipo" => $idEquipo,
+            "tipoInteraccion" => $tipoInteraccion
+        ]);
+
+        $consulta->closeCursor();
     }
 }

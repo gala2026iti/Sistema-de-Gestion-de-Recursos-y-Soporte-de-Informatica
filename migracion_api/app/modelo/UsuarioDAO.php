@@ -173,7 +173,8 @@ class UsuarioDAO
         string $nombre,
         string $correo,
         string $claveHash,
-        array $roles
+        array $roles,
+        string $ciAdmin
     ): bool {
         try {
             $this->conexion->beginTransaction();
@@ -270,7 +271,11 @@ class UsuarioDAO
 
                 $consultaRol->closeCursor();
             }
-
+            $this->registrarHistorialUsuario(
+                $ciAdmin,
+                $cedula,
+                "creacion"
+            );
             $this->conexion->commit();
 
             return true;
@@ -290,31 +295,54 @@ class UsuarioDAO
      */
     public function cambiarEstadoUsuario(
         string $cedula,
-        bool $activo
+        bool $activo,
+        string $ciAdmin
     ): bool {
-        $sql = "
+        try {
+            $this->conexion->beginTransaction();
+
+            $sql = "
             UPDATE USUARIO
             SET activo = :activo
             WHERE ci = :cedula
         ";
 
-        try {
-            $consulta =
-                $this->conexion->prepare($sql);
+            $consulta = $this->conexion->prepare($sql);
 
             $consulta->execute([
                 "activo" => $activo ? 1 : 0,
                 "cedula" => $cedula
             ]);
 
-            $actualizado =
-                $consulta->rowCount() > 0;
+            $actualizado = $consulta->rowCount() > 0;
 
-            $consulta = null;
+            $consulta->closeCursor();
 
-            return $actualizado;
+            if (!$actualizado) {
+                $this->conexion->rollBack();
+                return false;
+            }
+
+            $tipoInteraccion =
+                $activo
+                ? "activacion"
+                : "desactivacion";
+
+            $this->registrarHistorialUsuario(
+                $ciAdmin,
+                $cedula,
+                $tipoInteraccion
+            );
+
+            $this->conexion->commit();
+
+            return true;
 
         } catch (PDOException $error) {
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+
             return false;
         }
     }
@@ -328,6 +356,7 @@ class UsuarioDAO
         string $nombre,
         string $correo,
         array $roles,
+        string $ciAdmin,
         ?string $claveHash = null
     ): bool {
         try {
@@ -463,7 +492,11 @@ class UsuarioDAO
 
                 $consultaRol->closeCursor();
             }
-
+            $this->registrarHistorialUsuario(
+                $ciAdmin,
+                $cedula,
+                "modificacion"
+            );
             $this->conexion->commit();
 
             return true;
@@ -475,5 +508,34 @@ class UsuarioDAO
 
             return false;
         }
+    }
+
+    private function registrarHistorialUsuario(
+        string $ciAdmin,
+        string $ciUsuario,
+        string $tipoInteraccion
+    ): void {
+        $sql = "
+        INSERT INTO administrador_modifica_usuario (
+            ciAdmin,
+            ciUsuario,
+            tipoInteraccion
+        )
+        VALUES (
+            :ciAdmin,
+            :ciUsuario,
+            :tipoInteraccion
+        )
+    ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "ciAdmin" => $ciAdmin,
+            "ciUsuario" => $ciUsuario,
+            "tipoInteraccion" => $tipoInteraccion
+        ]);
+
+        $consulta->closeCursor();
     }
 }

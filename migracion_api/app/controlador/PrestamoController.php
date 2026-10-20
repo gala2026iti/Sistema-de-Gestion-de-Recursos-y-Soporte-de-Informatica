@@ -10,7 +10,8 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class PrestamoController
 {
-    public function gestionar( string $metodo, ?string $idRecurso = null): void {
+    public function gestionar(string $metodo, ?string $idRecurso = null): void
+    {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
@@ -26,6 +27,9 @@ class PrestamoController
 
     private function listar(?string $idRecurso): void
     {
+
+
+
         Sesion::verificarRol("tecnico");
 
         if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
@@ -35,6 +39,12 @@ class PrestamoController
         $estado = strtolower(trim($_GET["estado"] ?? ""));
         $idPrestamo = trim($idRecurso ?? "");
         $disponibles = trim($_GET["disponibles"] ?? "");
+
+        if ($idRecurso !== null && $idRecurso !== "") {
+            $idPrestamo = trim($idRecurso);
+        } else {
+            $idPrestamo = trim($_GET["idPrestamo"] ?? "");
+        }
 
         if ($estado !== "" && $estado !== "prestado" && $estado !== "devuelto") {
             RespuestaJson::error("El estado del préstamo no es válido.", 422);
@@ -167,16 +177,16 @@ class PrestamoController
 
     private function devolver(?string $idPrestamo): void
     {
-    Sesion::verificarRol("tecnico");
+        Sesion::verificarRol("tecnico");
 
-    if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
-        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-    }
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        }
 
-    Token::verificarCSRF();
-    if ( $idPrestamo === null || $idPrestamo === "" || !ctype_digit($idPrestamo)) {
-        RespuestaJson::error("El ID del préstamo no es válido.", 422);
-    }
+        Token::verificarCSRF();
+        if ($idPrestamo === null || $idPrestamo === "" || !ctype_digit($idPrestamo)) {
+            RespuestaJson::error("El ID del préstamo no es válido.", 422);
+        }
 
         $conexion = Conexion::conectar();
         $dao = new PrestamoDAO($conexion);

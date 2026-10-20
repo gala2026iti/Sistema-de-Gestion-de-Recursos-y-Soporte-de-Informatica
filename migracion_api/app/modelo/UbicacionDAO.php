@@ -11,6 +11,7 @@ class UbicacionDAO
         $this->conexion = $conexion;
     }
 
+
     public function listarUbicaciones(): array
     {
         $sql = "
@@ -18,6 +19,8 @@ class UbicacionDAO
                 u.id,
                 u.tipo
             FROM UBICACION AS u
+            WHERE u.activo = TRUE
+            AND u.tipo IN ('laboratorio', 'taller')
             ORDER BY
                 u.tipo,
                 u.id
@@ -33,70 +36,77 @@ class UbicacionDAO
         return $ubicaciones;
     }
 
-    public function registrarUbicacion(string $tipo): bool
-    {
-        $id = $this->obtenerIdLibre($tipo);
 
-        try {
-            $sql = "
-                INSERT INTO UBICACION (id,tipo)
-                VALUES (:id,:tipo) ";
-
-            $consulta = $this->conexion->prepare($sql);
-
-            $consulta->execute(["id" => $id, "tipo" => $tipo ]);
-
-            $consulta->closeCursor();
-
-            return true;
-
-        } catch (PDOException $error) {
-            return false;
-        }
-    }
-
-    public function eliminarUbicacion( string $id, string $tipo): bool {
+    public function registrarUbicacion(
+        string $tipo,
+        string $ciAdmin
+    ): bool {
         try {
             $this->conexion->beginTransaction();
 
             /*
-             * Primero se elimina la relación de los equipos
-             * con la ubicación que se va a eliminar.
+             * Primero se busca una ubicación inactiva
+             * del mismo tipo para reutilizarla.
              */
-            $sql = "
-                DELETE FROM equipo_reside_ubicacion
-                WHERE idUbicacion = :id
-                AND tipoUbicacion = :tipo
-            ";
+            $idInactivo = $this->obtenerIdInactivo($tipo);
 
-            $consulta = $this->conexion->prepare($sql);
+            if ($idInactivo !== null) {
 
-            $consulta->execute([ "id" => $id, "tipo" => $tipo ]);
+                $sql = "
+                    UPDATE UBICACION
+                    SET activo = TRUE
+                    WHERE id = :id
+                    AND tipo = :tipo
+                ";
 
-            $consulta->closeCursor();
+                $consulta = $this->conexion->prepare($sql);
 
+                $consulta->execute([
+                    "id" => $idInactivo,
+                    "tipo" => $tipo
+                ]);
 
-            /*
-             * Luego se elimina la ubicación.
-             */
-            $sql = "
-                DELETE FROM UBICACION
-                WHERE id = :id
-                AND tipo = :tipo
-            ";
+                $consulta->closeCursor();
 
-            $consulta = $this->conexion->prepare($sql);
+                $this->registrarHistorialUbicacion(
+                    $ciAdmin,
+                    $idInactivo,
+                    $tipo,
+                    "activacion"
+                );
 
-            $consulta->execute(["id" => $id,"tipo" => $tipo]);
+            } else {
 
-            $eliminada = $consulta->rowCount() > 0;
+                $id = $this->obtenerIdLibre($tipo);
 
-            $consulta->closeCursor();
+                $sql = "
+                    INSERT INTO UBICACION (
+                        id,
+                        tipo,
+                        activo
+                    )
+                    VALUES (
+                        :id,
+                        :tipo,
+                        TRUE
+                    )
+                ";
 
-            if (!$eliminada) {
-                $this->conexion->rollBack();
+                $consulta = $this->conexion->prepare($sql);
 
-                return false;
+                $consulta->execute([
+                    "id" => $id,
+                    "tipo" => $tipo
+                ]);
+
+                $consulta->closeCursor();
+
+                $this->registrarHistorialUbicacion(
+                    $ciAdmin,
+                    $id,
+                    $tipo,
+                    "creacion"
+                );
             }
 
             $this->conexion->commit();
@@ -112,6 +122,116 @@ class UbicacionDAO
         }
     }
 
+
+    public function eliminarUbicacion(
+        string $id,
+        string $tipo,
+        string $ciAdmin
+    ): bool {
+        try {
+            $this->conexion->beginTransaction();
+
+            /*
+             * Se eliminan las relaciones de los equipos.
+             * Los equipos siguen existiendo pero quedan
+             * sin ubicación.
+             */
+            $sql = "
+                DELETE FROM equipo_reside_ubicacion
+                WHERE idUbicacion = :id
+                AND tipoUbicacion = :tipo
+            ";
+
+            $consulta = $this->conexion->prepare($sql);
+
+            $consulta->execute([
+                "id" => $id,
+                "tipo" => $tipo
+            ]);
+
+            $consulta->closeCursor();
+
+
+            /*
+             * La ubicación no se elimina físicamente.
+             * Se marca como inactiva.
+             */
+            $sql = "
+                UPDATE UBICACION
+                SET activo = FALSE
+                WHERE id = :id
+                AND tipo = :tipo
+                AND activo = TRUE
+            ";
+
+            $consulta = $this->conexion->prepare($sql);
+
+            $consulta->execute([
+                "id" => $id,
+                "tipo" => $tipo
+            ]);
+
+            $desactivada = $consulta->rowCount() > 0;
+
+            $consulta->closeCursor();
+
+            if (!$desactivada) {
+                $this->conexion->rollBack();
+
+                return false;
+            }
+
+            $this->registrarHistorialUbicacion(
+                $ciAdmin,
+                $id,
+                $tipo,
+                "desactivacion"
+            );
+
+            $this->conexion->commit();
+
+            return true;
+
+        } catch (PDOException $error) {
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+
+            return false;
+        }
+    }
+
+
+    private function obtenerIdInactivo(
+        string $tipo
+    ): ?string {
+        $sql = "
+            SELECT id
+            FROM UBICACION
+            WHERE tipo = :tipo
+            AND activo = FALSE
+            ORDER BY id ASC
+            LIMIT 1
+        ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "tipo" => $tipo
+        ]);
+
+        $id = $consulta->fetchColumn();
+
+        $consulta->closeCursor();
+
+        if ($id === false) {
+            return null;
+        }
+
+        return (string) $id;
+    }
+
+
     private function obtenerIdLibre(string $tipo): string
     {
         for ($id = 1; ; $id++) {
@@ -124,7 +244,10 @@ class UbicacionDAO
 
             $consulta = $this->conexion->prepare($sql);
 
-            $consulta->execute(["id" => $id,"tipo" => $tipo]);
+            $consulta->execute([
+                "id" => $id,
+                "tipo" => $tipo
+            ]);
 
             if (!$consulta->fetch()) {
                 $consulta->closeCursor();
@@ -134,5 +257,39 @@ class UbicacionDAO
 
             $consulta->closeCursor();
         }
+    }
+
+
+    private function registrarHistorialUbicacion(
+        string $ciAdmin,
+        string $idUbicacion,
+        string $tipoUbicacion,
+        string $tipoInteraccion
+    ): void {
+        $sql = "
+            INSERT INTO administrador_controla_ubicacion (
+                ciAdmin,
+                idUbicacion,
+                tipoUbicacion,
+                tipoInteraccion
+            )
+            VALUES (
+                :ciAdmin,
+                :idUbicacion,
+                :tipoUbicacion,
+                :tipoInteraccion
+            )
+        ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "ciAdmin" => $ciAdmin,
+            "idUbicacion" => $idUbicacion,
+            "tipoUbicacion" => $tipoUbicacion,
+            "tipoInteraccion" => $tipoInteraccion
+        ]);
+
+        $consulta->closeCursor();
     }
 }

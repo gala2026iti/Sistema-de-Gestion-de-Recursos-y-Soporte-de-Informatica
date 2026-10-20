@@ -109,8 +109,7 @@ class UsuarioController
         $conexion = Conexion::conectar();
         $dao = new UsuarioDAO($conexion);
 
-        $resultado = $dao->registrarUsuario($cedula, $nombre, $correo, $claveHash, $roles);
-
+      $resultado = $dao->registrarUsuario( $cedula, $nombre, $correo, $claveHash, $roles, $_SESSION["cedula"]);
         unset($dao, $conexion);
         Conexion::desconectar();
 
@@ -124,13 +123,13 @@ class UsuarioController
 
     private function modificar(?string $cedula): void
     {
-        Token::verificarCSRF();
-        $datos = json_decode( file_get_contents("php://input"), true);
+          Token::verificarCSRF();
 
-        if (!is_array($datos)) {
-            RespuestaJson::error("JSON inválido", 400);
-        }
+    if ( $cedula === null || !preg_match("/^[1-9][0-9]{7}$/", $cedula)) {
+        RespuestaJson::error("La cédula no es válida.", 422);
+    }
 
+    $datos = json_decode( file_get_contents("php://input"), true);
         $nombre = trim($datos["nombre"] ?? "");
         $correo = trim($datos["correo"] ?? "");
         $clave = $datos["clave"] ?? "";
@@ -192,7 +191,7 @@ class UsuarioController
 
         $conexion = Conexion::conectar();
         $dao = new UsuarioDAO($conexion);
-        $resultado = $dao->modificarUsuario( $cedula, $nombre, $correo, $roles, $claveHash);
+       $resultado = $dao->modificarUsuario( $cedula, $nombre, $correo, $roles, $_SESSION["cedula"], $claveHash);
 
         unset($dao, $conexion);
         Conexion::desconectar();
@@ -241,7 +240,7 @@ class UsuarioController
     $conexion = Conexion::conectar();
     $dao = new UsuarioDAO($conexion);
 
-    $resultado = $dao->cambiarEstadoUsuario($cedula, $activo);
+   $resultado = $dao->cambiarEstadoUsuario( $cedula, $activo, $_SESSION["cedula"]);
 
     unset($dao, $conexion);
     Conexion::desconectar();

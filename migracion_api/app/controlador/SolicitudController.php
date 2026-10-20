@@ -26,37 +26,43 @@ class SolicitudController
 
 
     private function listar(?string $idRecurso): void
-    {
-        Sesion::verificarRol("tecnico");
+{
+    Sesion::verificarRol("tecnico");
 
-        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
-            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-        }
-
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $idSolicitud = trim($idRecurso ?? "");
-
-        if ( $estado !== "" && $estado !== "pendiente" && $estado !== "finalizada") {
-            RespuestaJson::error("El estado de la solicitud no es válido.", 422);
-        }
-
-        if ($idSolicitud !== "" && !ctype_digit($idSolicitud)) {
-            RespuestaJson::error("El ID de la solicitud no es válido.", 422);
-        }
-
-        $conexion = Conexion::conectar();
-        $dao = new SolicitudDAO($conexion);
-
-        $solicitudes = $dao->listarSolicitudes(
-            $estado,
-            $idSolicitud
-        );
-
-        unset($dao, $conexion);
-        Conexion::desconectar();
-
-        RespuestaJson::exito($solicitudes);
+    if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+        RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
     }
+
+    $estado = strtolower(trim($_GET["estado"] ?? ""));
+
+    if ($idRecurso !== null && $idRecurso !== "") {
+        $idSolicitud = trim($idRecurso);
+    } else {
+        $idSolicitud = trim($_GET["idSolicitud"] ?? "");
+    }
+
+    if (
+        $estado !== "" &&
+        $estado !== "pendiente" &&
+        $estado !== "finalizada"
+    ) {
+        RespuestaJson::error("El estado de la solicitud no es válido.", 422);
+    }
+
+    if ($idSolicitud !== "" && !ctype_digit($idSolicitud)) {
+         RespuestaJson::error("El ID de la solicitud no es válido.", 422);
+    }
+
+    $conexion = Conexion::conectar();
+    $dao = new SolicitudDAO($conexion);
+
+    $solicitudes = $dao->listarSolicitudes($estado, $idSolicitud);
+
+    unset($dao, $conexion);
+    Conexion::desconectar();
+
+    RespuestaJson::exito($solicitudes);
+}
 
 
     private function alta(): void

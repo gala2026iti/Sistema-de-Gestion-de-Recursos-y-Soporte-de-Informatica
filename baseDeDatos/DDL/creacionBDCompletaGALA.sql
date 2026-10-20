@@ -122,13 +122,21 @@ CREATE TABLE administrador_modifica_usuario (
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
-    CONSTRAINT pk_admin_modifica_usuario PRIMARY KEY (id),
-    CONSTRAINT fk_amu_admin FOREIGN KEY (ciAdmin)
-        REFERENCES ADMINISTRADOR (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_amu_usuario FOREIGN KEY (ciUsuario)
+
+    CONSTRAINT pk_admin_modifica_usuario
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_amu_admin
+        FOREIGN KEY (ciAdmin)
         REFERENCES USUARIO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_amu_usuario
+        FOREIGN KEY (ciUsuario)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -152,13 +160,21 @@ CREATE TABLE docente_ingresa_solicitud (
     idSolicitud INT NOT NULL,
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
-    CONSTRAINT pk_docente_ingresa_solicitud PRIMARY KEY (ciDocente, idSolicitud),
-    CONSTRAINT fk_dis_docente FOREIGN KEY (ciDocente)
-        REFERENCES DOCENTE (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_dis_solicitud FOREIGN KEY (idSolicitud)
+
+    CONSTRAINT pk_docente_ingresa_solicitud
+        PRIMARY KEY (ciDocente, idSolicitud),
+
+    CONSTRAINT fk_dis_docente
+        FOREIGN KEY (ciDocente)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_dis_solicitud
+        FOREIGN KEY (idSolicitud)
         REFERENCES SOLICITUD (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -167,15 +183,22 @@ CREATE TABLE tecnico_finaliza_solicitud (
     idSolicitud INT NOT NULL,
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
-    CONSTRAINT pk_tecnico_finaliza_solicitud PRIMARY KEY (ciTecnico, idSolicitud),
-    CONSTRAINT fk_tfs_solicitud FOREIGN KEY (idSolicitud)
-        REFERENCES SOLICITUD (id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tfs_tecnico FOREIGN KEY (ciTecnico)
-        REFERENCES TECNICO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE
-);
 
+    CONSTRAINT pk_tecnico_finaliza_solicitud
+        PRIMARY KEY (ciTecnico, idSolicitud),
+
+    CONSTRAINT fk_tfs_solicitud
+        FOREIGN KEY (idSolicitud)
+        REFERENCES SOLICITUD (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_tfs_tecnico
+        FOREIGN KEY (ciTecnico)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 /*
     SECCION RECURSOS
@@ -184,6 +207,7 @@ CREATE TABLE tecnico_finaliza_solicitud (
 CREATE TABLE UBICACION (
     id INT NOT NULL,
     tipo VARCHAR(50) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_ubicacion PRIMARY KEY (id, tipo)
 );
 
@@ -220,13 +244,21 @@ CREATE TABLE administrador_maneja_equipo (
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
-    CONSTRAINT pk_admin_maneja_equipo PRIMARY KEY (id),
-    CONSTRAINT fk_ame_admin FOREIGN KEY (ciAdmin)
-        REFERENCES ADMINISTRADOR (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_ame_equipo FOREIGN KEY (idEquipo)
+
+    CONSTRAINT pk_admin_maneja_equipo
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_ame_admin
+        FOREIGN KEY (ciAdmin)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_ame_equipo
+        FOREIGN KEY (idEquipo)
         REFERENCES EQUIPO (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -238,13 +270,21 @@ CREATE TABLE administrador_controla_ubicacion (
     fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
     hora TIME NOT NULL DEFAULT (CURRENT_TIME),
     tipoInteraccion VARCHAR(50) NOT NULL,
-    CONSTRAINT pk_admin_controla_ubicacion PRIMARY KEY (id),
-    CONSTRAINT fk_acu_admin FOREIGN KEY (ciAdmin)
-        REFERENCES ADMINISTRADOR (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_acu_ubicacion FOREIGN KEY (idUbicacion, tipoUbicacion)
+
+    CONSTRAINT pk_admin_controla_ubicacion
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_acu_admin
+        FOREIGN KEY (ciAdmin)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_acu_ubicacion
+        FOREIGN KEY (idUbicacion, tipoUbicacion)
         REFERENCES UBICACION (id, tipo)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -283,13 +323,21 @@ CREATE TABLE tecnico_tramita_prestamo (
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
-    CONSTRAINT pk_tecnico_tramita_prestamo PRIMARY KEY (id),
-    CONSTRAINT fk_ttp_prestamo FOREIGN KEY (idPrestamo)
+
+    CONSTRAINT pk_tecnico_tramita_prestamo
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_ttp_prestamo
+        FOREIGN KEY (idPrestamo)
         REFERENCES PRESTAMO (id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_ttp_tecnico FOREIGN KEY (ciTecnico)
-        REFERENCES TECNICO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_ttp_tecnico
+        FOREIGN KEY (ciTecnico)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -315,15 +363,22 @@ CREATE TABLE TICKET (
 CREATE TABLE docente_reporta_ticket (
     ciDocente CHAR(8) NOT NULL,
     idTicket INT NOT NULL,
-    CONSTRAINT pk_docente_reporta_ticket PRIMARY KEY (ciDocente, idTicket),
-    CONSTRAINT fk_drt_docente FOREIGN KEY (ciDocente)
-        REFERENCES DOCENTE (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_drt_ticket FOREIGN KEY (idTicket)
-        REFERENCES TICKET (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
-);
 
+    CONSTRAINT pk_docente_reporta_ticket
+        PRIMARY KEY (ciDocente, idTicket),
+
+    CONSTRAINT fk_drt_docente
+        FOREIGN KEY (ciDocente)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_drt_ticket
+        FOREIGN KEY (idTicket)
+        REFERENCES TICKET (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 CREATE TABLE equipo_ubicacion_genera_ticket (
     idEquipo INT NOT NULL,
@@ -364,13 +419,21 @@ CREATE TABLE tecnico_gestiona_ticket (
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
     tipoInteraccion VARCHAR(50) NOT NULL,
-    CONSTRAINT pk_tecnico_gestiona_ticket PRIMARY KEY (id),
-    CONSTRAINT fk_tgt_tecnico FOREIGN KEY (ciTecnico)
-        REFERENCES TECNICO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tgt_ticket FOREIGN KEY (idTicket)
+
+    CONSTRAINT pk_tecnico_gestiona_ticket
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_tgt_tecnico
+        FOREIGN KEY (ciTecnico)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_tgt_ticket
+        FOREIGN KEY (idTicket)
         REFERENCES TICKET (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 
@@ -381,13 +444,21 @@ CREATE TABLE tecnico_comenta_ticket (
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
     texto TEXT NOT NULL,
-    CONSTRAINT pk_tecnico_comenta_ticket PRIMARY KEY (id),
-    CONSTRAINT fk_tct_tecnico FOREIGN KEY (ciTecnico)
-        REFERENCES TECNICO (ci)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_tct_ticket FOREIGN KEY (idTicket)
+
+    CONSTRAINT pk_tecnico_comenta_ticket
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_tct_tecnico
+        FOREIGN KEY (ciTecnico)
+        REFERENCES USUARIO (ci)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_tct_ticket
+        FOREIGN KEY (idTicket)
         REFERENCES TICKET (id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 

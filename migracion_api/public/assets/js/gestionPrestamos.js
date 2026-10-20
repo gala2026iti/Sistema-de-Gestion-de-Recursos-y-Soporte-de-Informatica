@@ -26,8 +26,7 @@ const fechaFin = document.getElementById("fechaFin");
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
     if (!texto.trim()) {
         throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
@@ -44,9 +43,8 @@ async function leerRespuestaAPI(respuesta)
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar."
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
             }`);
     }
 
@@ -56,15 +54,15 @@ async function leerRespuestaAPI(respuesta)
 
 // PETICIONES
 
-async function obtenerPrestamos()
-{
+async function obtenerPrestamos() {
     const parametros = new URLSearchParams();
+
     if (filtroEstado.value !== "") {
-        parametros.set("estado",filtroEstado.value);
+        parametros.set("estado", filtroEstado.value);
     }
 
     if (filtroId.value.trim() !== "") {
-        parametros.set("id",filtroId.value.trim());
+        parametros.set("idPrestamo", filtroId.value.trim());
     }
 
     let url = API_PRESTAMOS;
@@ -77,60 +75,54 @@ async function obtenerPrestamos()
     return leerRespuestaAPI(respuesta);
 }
 
-async function obtenerEquiposDisponibles()
-{
+async function obtenerEquiposDisponibles() {
     const respuesta = await fetch(API_PRESTAMOS + "?disponibles=1");
     return leerRespuestaAPI(respuesta);
 }
 
-async function registrarPrestamo(prestamo)
-{
+async function registrarPrestamo(prestamo) {
     const respuesta = await fetch(
-        API_PRESTAMOS,{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
+        API_PRESTAMOS, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
 
-            body: JSON.stringify(prestamo)
-        });
+        body: JSON.stringify(prestamo)
+    });
     return leerRespuestaAPI(respuesta);
 }
 
-async function devolverPrestamo(idPrestamo)
-{
+async function devolverPrestamo(idPrestamo) {
     const respuesta = await fetch(
-        API_PRESTAMOS + "/" + encodeURIComponent(idPrestamo),{
-            method: "PATCH",
-            headers: {
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            }
-        });
+        API_PRESTAMOS + "/" + encodeURIComponent(idPrestamo), {
+        method: "PATCH",
+        headers: {
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        }
+    });
     return leerRespuestaAPI(respuesta);
 }
 
 
 // TABLA
 
-function crearCelda(texto)
-{
+function crearCelda(texto) {
     const celda = document.createElement("td");
     celda.textContent = texto;
     return celda;
 }
 
 
-function crearBotonDevolver(prestamo)
-{
+function crearBotonDevolver(prestamo) {
     const boton = document.createElement("button");
 
     boton.type = "button";
     boton.classList.add("btn", "btn-primary", "ms-1", "text-bold");
     boton.textContent = "Finalizar";
 
-    boton.addEventListener("click",async function ()
-    {
+    boton.addEventListener("click", async function () {
         const confirmar = confirm("¿Desea registrar la devolución de este préstamo?");
 
         if (!confirmar) {
@@ -150,20 +142,19 @@ function crearBotonDevolver(prestamo)
 }
 
 
-function crearFilaPrestamo(prestamo)
-{
+function crearFilaPrestamo(prestamo) {
     const fila = document.createElement("tr");
     fila.appendChild(crearCelda(prestamo.id));
     const tecnico = prestamo.nombreTecnico !== null ? prestamo.nombreTecnico + " - (" + prestamo.ciTecnico + ")" : "No disponible";
     fila.appendChild(crearCelda(tecnico));
-    fila.appendChild( crearCelda( prestamo.nombrePrestado + " - (" + prestamo.ciPrestado + ")" ));
+    fila.appendChild(crearCelda(prestamo.nombrePrestado + " - (" + prestamo.ciPrestado + ")"));
     fila.appendChild(crearCelda(prestamo.idEquipo));
-    fila.appendChild(crearCelda( prestamo.fechaFin + " - " + prestamo.horaFin));
+    fila.appendChild(crearCelda(prestamo.fechaFin + " - " + prestamo.horaFin));
 
     const devuelto = Number(prestamo.devuelto) === 1;
 
     fila.appendChild(
-        crearCelda( devuelto ? "Devuelto" : "Pendiente"));
+        crearCelda(devuelto ? "Devuelto" : "Pendiente"));
 
     const celdaAcciones = document.createElement("td");
 
@@ -177,8 +168,7 @@ function crearFilaPrestamo(prestamo)
 }
 
 
-function mostrarPrestamos(prestamos)
-{
+function mostrarPrestamos(prestamos) {
     cuerpoTablaPrestamos.replaceChildren();
 
     if (prestamos.length === 0) {
@@ -203,8 +193,7 @@ function mostrarPrestamos(prestamos)
 
 // EQUIPOS
 
-function mostrarEquiposDisponibles(equipos)
-{
+function mostrarEquiposDisponibles(equipos) {
     listaDispositivos.replaceChildren();
 
     const opcionInicial = document.createElement("option");
@@ -227,8 +216,7 @@ function mostrarEquiposDisponibles(equipos)
 
 // MODAL
 
-async function abrirModalPrestamo()
-{
+async function abrirModalPrestamo() {
     try {
         const equipos = await obtenerEquiposDisponibles();
 
@@ -244,8 +232,7 @@ async function abrirModalPrestamo()
 }
 
 
-function cerrarModalPrestamo()
-{
+function cerrarModalPrestamo() {
     formPrestamo.reset();
 
     modalPrestamo.classList.remove("d-flex");
@@ -255,8 +242,7 @@ function cerrarModalPrestamo()
 
 // GESTIÓN DE PRÉSTAMOS
 
-async function cargarPrestamos()
-{
+async function cargarPrestamos() {
     try {
         const prestamos = await obtenerPrestamos();
 
@@ -264,13 +250,12 @@ async function cargarPrestamos()
 
     } catch (error) {
         alert(
-            "No se pudieron cargar los préstamos: " + error.message );
+            "No se pudieron cargar los préstamos: " + error.message);
     }
 }
 
 
-async function gestionarRegistroPrestamo(evento)
-{
+async function gestionarRegistroPrestamo(evento) {
     evento.preventDefault();
 
     const cedula = ciPrestado.value.trim();
@@ -327,8 +312,7 @@ async function gestionarRegistroPrestamo(evento)
 }
 
 
-function aplicarFiltros(evento)
-{
+function aplicarFiltros(evento) {
     evento.preventDefault();
 
     const id = filtroId.value.trim();
@@ -342,8 +326,7 @@ function aplicarFiltros(evento)
 }
 
 
-function limpiarFiltros()
-{
+function limpiarFiltros() {
     filtroEstado.value = "";
     filtroId.value = "";
     cargarPrestamos();
@@ -352,13 +335,13 @@ function limpiarFiltros()
 
 // EVENTOS
 
-formFiltros.addEventListener("submit",aplicarFiltros);
-btnLimpiarFiltros.addEventListener("click",limpiarFiltros);
+formFiltros.addEventListener("submit", aplicarFiltros);
+btnLimpiarFiltros.addEventListener("click", limpiarFiltros);
 
-btnRegistrarPrestamo.addEventListener("click",abrirModalPrestamo);
-btnCancelarPrestamo.addEventListener("click",cerrarModalPrestamo);
+btnRegistrarPrestamo.addEventListener("click", abrirModalPrestamo);
+btnCancelarPrestamo.addEventListener("click", cerrarModalPrestamo);
 
-formPrestamo.addEventListener("submit",gestionarRegistroPrestamo);
+formPrestamo.addEventListener("submit", gestionarRegistroPrestamo);
 
 
 // INICIALIZACIÓN

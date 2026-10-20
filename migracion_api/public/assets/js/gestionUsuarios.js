@@ -62,26 +62,27 @@ async function leerRespuestaAPI(respuesta)
 }
 
 // PETICIONES
-async function obtenerUsuarios(rol = "", estado = "")
+async function obtenerUsuarios()
 {
     let url = API_USUARIOS;
     const parametros = new URLSearchParams();
 
-    if (rol !== "") {
-        parametros.append("rol", rol);
-    }
+    if (entradaRol.value !== "") {
+    parametros.set("rol", entradaRol.value);
+}
 
-    if (estado !== "") {
-        parametros.append("estado", estado);
-    }
+if (entradaEstado.value !== "") {
+    parametros.set("estado", entradaEstado.value);
+}
 
     const consulta = parametros.toString();
 
     if (consulta !== "") {
-        url += "&" + consulta;
+        url += "?" + consulta;
     }
 
     const respuesta = await fetch(url);
+
     return leerRespuestaAPI(respuesta);
 }
 
@@ -371,12 +372,8 @@ function mostrarSinUsuarios()
 async function actualizarTablaUsuarios()
 {
     cuerpoTablaUsuarios.replaceChildren();
-
     try {
-        const rol = entradaRol.value;
-        const estado = entradaEstado.value;
-
-        const usuarios = await obtenerUsuarios(rol, estado);
+        const usuarios = await obtenerUsuarios();
 
         if (usuarios.length === 0) {
             mostrarSinUsuarios();
@@ -388,8 +385,7 @@ async function actualizarTablaUsuarios()
         }
 
     } catch (error) {
-        window.alert(
-            "No se pudieron cargar los usuarios: " + error.message );
+        window.alert("No se pudieron cargar los usuarios: " + error.message);
     }
 }
 

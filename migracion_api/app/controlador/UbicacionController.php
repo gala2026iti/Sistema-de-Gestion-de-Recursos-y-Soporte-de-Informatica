@@ -64,7 +64,10 @@ class UbicacionController
         $conexion = Conexion::conectar();
         $dao = new UbicacionDAO($conexion);
 
-        $resultado = $dao->registrarUbicacion($tipo);
+        $resultado =$dao->registrarUbicacion(
+    $tipo,
+    $_SESSION["cedula"]
+);
 
         unset($dao, $conexion);
         Conexion::desconectar();
@@ -99,7 +102,11 @@ class UbicacionController
 
     $conexion = Conexion::conectar();
     $dao = new UbicacionDAO($conexion);
-    $resultado = $dao->eliminarUbicacion($id,$tipo);
+    $resultado = $dao->eliminarUbicacion(
+    $id,
+    $tipo,
+    $_SESSION["cedula"]
+);
 
     unset($dao, $conexion);
     Conexion::desconectar();

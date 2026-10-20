@@ -46,17 +46,19 @@ async function leerRespuestaAPI(respuesta)
 async function obtenerSolicitudes()
 {
     const parametros = new URLSearchParams();
+
     if (filtroEstado.value !== "") {
-        parametros.set("estado",filtroEstado.value);
+        parametros.set("estado", filtroEstado.value);
     }
 
     if (filtroId.value.trim() !== "") {
-        parametros.set("id",filtroId.value.trim());
+        parametros.set("idSolicitud", filtroId.value.trim());
     }
 
     let url = API_SOLICITUDES;
+
     if (parametros.toString() !== "") {
-        url += "&" + parametros.toString();
+        url += "?" + parametros.toString();
     }
 
     const respuesta = await fetch(url);

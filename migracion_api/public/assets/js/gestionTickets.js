@@ -60,7 +60,7 @@ async function obtenerTickets() {
     }
 
     if (entradaIdTicket.value.trim() !== "") {
-        parametros.append("id", entradaIdTicket.value.trim());
+        parametros.append("idTicket", entradaIdTicket.value.trim());
     }
 
     const consulta = parametros.toString();
