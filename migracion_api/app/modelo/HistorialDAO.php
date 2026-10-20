@@ -314,9 +314,7 @@ class HistorialDAO
     $parametros = [];
 
     if ($fecha !== "") {
-        $sql .= "
-            WHERE historial.fecha = :fecha
-        ";
+        $sql .= "WHERE historial.fecha = :fecha";
 
         $parametros["fecha"] = $fecha;
     }

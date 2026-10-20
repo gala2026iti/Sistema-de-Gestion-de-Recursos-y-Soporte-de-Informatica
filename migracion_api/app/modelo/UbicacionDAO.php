@@ -28,19 +28,14 @@ class UbicacionDAO
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute();
-
         $ubicaciones = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
         $consulta->closeCursor();
 
         return $ubicaciones;
     }
 
 
-    public function registrarUbicacion(
-        string $tipo,
-        string $ciAdmin
-    ): bool {
+    public function registrarUbicacion(string $tipo, string $ciAdmin): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -60,20 +55,10 @@ class UbicacionDAO
                 ";
 
                 $consulta = $this->conexion->prepare($sql);
-
-                $consulta->execute([
-                    "id" => $idInactivo,
-                    "tipo" => $tipo
-                ]);
-
+                $consulta->execute(["id" => $idInactivo, "tipo" => $tipo]);
                 $consulta->closeCursor();
 
-                $this->registrarHistorialUbicacion(
-                    $ciAdmin,
-                    $idInactivo,
-                    $tipo,
-                    "activacion"
-                );
+                $this->registrarHistorialUbicacion($ciAdmin, $idInactivo, $tipo, "activacion");
 
             } else {
 
@@ -93,20 +78,10 @@ class UbicacionDAO
                 ";
 
                 $consulta = $this->conexion->prepare($sql);
-
-                $consulta->execute([
-                    "id" => $id,
-                    "tipo" => $tipo
-                ]);
+                $consulta->execute(["id" => $id, "tipo" => $tipo]);
 
                 $consulta->closeCursor();
-
-                $this->registrarHistorialUbicacion(
-                    $ciAdmin,
-                    $id,
-                    $tipo,
-                    "creacion"
-                );
+                $this->registrarHistorialUbicacion($ciAdmin, $id, $tipo,"creacion");
             }
 
             $this->conexion->commit();
@@ -122,12 +97,7 @@ class UbicacionDAO
         }
     }
 
-
-    public function eliminarUbicacion(
-        string $id,
-        string $tipo,
-        string $ciAdmin
-    ): bool {
+    public function eliminarUbicacion(string $id, string $tipo, string $ciAdmin): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -143,14 +113,8 @@ class UbicacionDAO
             ";
 
             $consulta = $this->conexion->prepare($sql);
-
-            $consulta->execute([
-                "id" => $id,
-                "tipo" => $tipo
-            ]);
-
+            $consulta->execute(["id" => $id, "tipo" => $tipo]);
             $consulta->closeCursor();
-
 
             /*
              * La ubicación no se elimina físicamente.
@@ -165,14 +129,8 @@ class UbicacionDAO
             ";
 
             $consulta = $this->conexion->prepare($sql);
-
-            $consulta->execute([
-                "id" => $id,
-                "tipo" => $tipo
-            ]);
-
+            $consulta->execute(["id" => $id, "tipo" => $tipo]);
             $desactivada = $consulta->rowCount() > 0;
-
             $consulta->closeCursor();
 
             if (!$desactivada) {
@@ -181,12 +139,7 @@ class UbicacionDAO
                 return false;
             }
 
-            $this->registrarHistorialUbicacion(
-                $ciAdmin,
-                $id,
-                $tipo,
-                "desactivacion"
-            );
+            $this->registrarHistorialUbicacion($ciAdmin, $id, $tipo, "desactivacion");
 
             $this->conexion->commit();
 
@@ -202,9 +155,7 @@ class UbicacionDAO
     }
 
 
-    private function obtenerIdInactivo(
-        string $tipo
-    ): ?string {
+    private function obtenerIdInactivo(string $tipo): ?string {
         $sql = "
             SELECT id
             FROM UBICACION
@@ -215,10 +166,7 @@ class UbicacionDAO
         ";
 
         $consulta = $this->conexion->prepare($sql);
-
-        $consulta->execute([
-            "tipo" => $tipo
-        ]);
+        $consulta->execute(["tipo" => $tipo]);
 
         $id = $consulta->fetchColumn();
 
@@ -243,15 +191,10 @@ class UbicacionDAO
             ";
 
             $consulta = $this->conexion->prepare($sql);
-
-            $consulta->execute([
-                "id" => $id,
-                "tipo" => $tipo
-            ]);
+            $consulta->execute([ "id" => $id, "tipo" => $tipo]);
 
             if (!$consulta->fetch()) {
                 $consulta->closeCursor();
-
                 return (string) $id;
             }
 
@@ -260,12 +203,7 @@ class UbicacionDAO
     }
 
 
-    private function registrarHistorialUbicacion(
-        string $ciAdmin,
-        string $idUbicacion,
-        string $tipoUbicacion,
-        string $tipoInteraccion
-    ): void {
+    private function registrarHistorialUbicacion(string $ciAdmin, string $idUbicacion, string $tipoUbicacion, string $tipoInteraccion): void {
         $sql = "
             INSERT INTO administrador_controla_ubicacion (
                 ciAdmin,
@@ -283,12 +221,7 @@ class UbicacionDAO
 
         $consulta = $this->conexion->prepare($sql);
 
-        $consulta->execute([
-            "ciAdmin" => $ciAdmin,
-            "idUbicacion" => $idUbicacion,
-            "tipoUbicacion" => $tipoUbicacion,
-            "tipoInteraccion" => $tipoInteraccion
-        ]);
+        $consulta->execute(["ciAdmin" => $ciAdmin,"idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "tipoInteraccion" => $tipoInteraccion]);
 
         $consulta->closeCursor();
     }

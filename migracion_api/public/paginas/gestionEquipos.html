@@ -135,13 +135,16 @@
 
 
     <main class="container-fluid px-0 py-3">
-        <section class="px-4 mb-3">
 
-            <button id="btnAbrirUbicaciones" class="btn btn-primary d-block mb-2 text-bold" type="button">
+        <section class="d-flex align-items-center gap-2 px-3 mb-3">
+            <button id="btnAbrirUbicaciones" class="btn btn-primary text-bold" type="button">
                 ☰ Ver Ubicaciones / Salones
             </button>
-
+            <button id="btnRegistrarEquipo" class="btn btn-success text-bold" type="button">
+                Registrar PC
+            </button>
         </section>
+
 
         <section class="barralateral-ubicaciones" id="barraLateralSalones">
 
@@ -212,16 +215,16 @@
         <span id="mensajeExito" class="alert alert-success d-table text-center mx-auto my-2 d-none"></span>
         <span id="mensajeError" class="alert alert-danger d-table text-center mx-auto my-2 d-none"></span>
 
-
         <section class="filtros">
-            <form id="formFiltroEquipos">
+            <form id="formFiltroEquipos" class="form-filtros">
+                <div id="filtroEstadoAdministrador" class="grupo-filtro d-none">
 
-                <div id="filtroEstadoAdministrador" class="d-none">
                     <label for="estado">
                         Estado:
                     </label>
 
                     <select id="estado" name="estado">
+
                         <option value="">
                             Todos
                         </option>
@@ -236,51 +239,58 @@
                     </select>
                 </div>
 
+                <div class="grupo-filtro">
+                    <label for="orden">
+                        Ordenar por:
+                    </label>
 
-                <label for="orden">
-                    Ordenar por:
-                </label>
+                    <select id="orden" name="orden">
+                        <option value="">
+                            ID
+                        </option>
 
-                <select id="orden" name="orden">
-                    <option value="">
-                        ID
-                    </option>
+                        <option value="masincidencias" class="opcionAdministrador d-none">
+                            Incidencias (Más)
+                        </option>
 
-                    <option value="masincidencias" class="opcionAdministrador d-none">
-                        Incidencias (Más)
-                    </option>
+                        <option value="menosincidencias" class="opcionAdministrador d-none">
+                            Incidencias (Menos)
+                        </option>
 
-                    <option value="menosincidencias" class="opcionAdministrador d-none">
-                        Incidencias (Menos)
-                    </option>
+                        <option value="reciente">
+                            Intervenciones (Recientes)
+                        </option>
 
-                    <option value="reciente">
-                        Intervenciones (Recientes)
-                    </option>
-
-                    <option value="antiguo">
-                        Intervenciones (Antiguas)
-                    </option>
-                </select>
+                        <option value="antiguo">
+                            Intervenciones (Antiguas)
+                        </option>
+                    </select>
+                </div>
 
                 <input type="hidden" id="filtroUbicacion" name="ubicacion" value="">
-
                 <input type="hidden" id="filtroTipoUbicacion" name="tipoUbicacion" value="">
 
-                <label for="idEquipoFiltro">
-                    Filtrar por ID:
-                </label>
+                <div class="grupo-filtro">
+                    <label for="idEquipoFiltro">
+                        Filtrar por ID:
+                    </label>
+                    <input type="text" id="idEquipoFiltro" name="id">
+                </div>
 
-                <input type="text" id="idEquipoFiltro" name="id">
+                <div class="grupo-botones-filtro">
+                    <button type="submit" id="btnFiltrarEquipos" class="btn btn-primary text-bold">
+                        Filtrar
+                    </button>
 
-                <button type="submit" id="btnFiltrarEquipos" class="btn btn-primary text-bold">
-                    Filtrar
-                </button>
+                    <button type="button" id="btnLimpiarFiltrosEquipos" class="btn btn-secondary text-bold">
+                        Limpiar filtros
+                    </button>
+                </div>
             </form>
         </section>
 
 
-        <section class="table-responsive w-100 m-0 overflow-x-auto">
+       <section class="table-responsive tabla-scroll w-100 m-0">
             <table class="tabla-contenedor m-0 text-bold" id="tablaEquipos">
 
                 <thead>
@@ -317,7 +327,8 @@
 
 
         <section class="w-100 d-flex px-3 mt-4">
-            <a href="historialGeneral.html?tipo=equipos" id="btnHistorialEquipos" class="btn btn-warning me-2 text-bold">
+            <a href="historialGeneral.html?tipo=equipos" id="btnHistorialEquipos"
+                class="btn btn-warning me-2 text-bold">
                 Historial de Equipos
             </a>
 
@@ -325,9 +336,6 @@
                 Historial de ubicaciones
             </a>
 
-            <button id="btnRegistrarEquipo" class="btn btn-success ms-auto text-bold d-none" type="button">
-                Registrar PC
-            </button>
 
         </section>
 

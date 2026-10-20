@@ -11,7 +11,8 @@ class ConectorPDO
 
     private static ?self $instancia = null;
 
-    private function __construct(string $servername, int $port, string $username, string $password, string $dbname) {
+    private function __construct(string $servername, int $port, string $username, string $password, string $dbname)
+    {
         $this->servername = $servername;
         $this->port = $port;
         $this->username = $username;
@@ -38,9 +39,10 @@ class ConectorPDO
         throw new LogicException("El objeto no puede deserializarse.");
     }
 
-    public static function obtenerInstancia( string $servername, int $port, string $username, string $password, string $dbname): ConectorPDO {
+    public static function obtenerInstancia(string $servername, int $port, string $username, string $password, string $dbname): ConectorPDO
+    {
         if (self::$instancia === null) {
-            self::$instancia = new self( $servername, $port, $username, $password, $dbname);
+            self::$instancia = new self($servername, $port, $username, $password, $dbname);
         }
         return self::$instancia;
     }
@@ -62,11 +64,8 @@ class ConectorPDO
             $dsn,
             $this->username,
             $this->password,
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
-
         return $this->conexion;
     }
 

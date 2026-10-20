@@ -3,6 +3,7 @@ const API_USUARIOS = "../index.php/usuarios";
 // ELEMENTOS DEL DOM
 const cuerpoTablaUsuarios = document.getElementById("cuerpoTablaUsuarios");
 const formularioFiltroUsuarios = document.getElementById("formFiltroUsuarios");
+const botonLimpiarFiltrosUsuarios = document.getElementById("btnLimpiarFiltrosUsuarios");
 const entradaRol = document.getElementById("rol");
 const entradaEstado = document.getElementById("estado");
 
@@ -446,7 +447,10 @@ async function gestionarEstadoUsuario(cedula, accion)
     }
 }
 
-
+botonLimpiarFiltrosUsuarios.addEventListener("click", function () {
+        formularioFiltroUsuarios.reset();
+        formularioFiltroUsuarios.requestSubmit();
+    });
 formularioFiltroUsuarios.addEventListener("submit",filtrarUsuarios);
 botonRegistrarUsuario.addEventListener("click",abrirFormularioRegistro);
 botonCancelarUsuario.addEventListener("click",cerrarFormularioUsuario);

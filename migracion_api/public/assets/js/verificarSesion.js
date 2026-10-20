@@ -8,11 +8,8 @@ async function obtenerSesion() {
     const json = await respuesta.json();
 
     if (!respuesta.ok) {
-        throw new Error(
-            json.mensaje ?? "No se pudo comprobar la sesión."
-        );
+        throw new Error(json.mensaje ?? "No se pudo comprobar la sesión.");
     }
-
     return json.datos;
 }
 
@@ -35,12 +32,8 @@ async function cambiarRol(rol) {
     const json = await respuesta.json();
 
     if (!respuesta.ok) {
-        throw new Error(
-            json.mensaje ??
-            "No se pudo cambiar el rol."
-        );
+        throw new Error(json.mensaje ?? "No se pudo cambiar el rol.");
     }
-
     return json.datos;
 }
 
@@ -90,25 +83,19 @@ function crearOpcionRol(rol) {
 }
 
 function configurarOpcionesRoles(sesion) {
-    const opcionesRoles =
-        document.getElementById("opcionesRoles");
-
-    const cerrarSesion =
-        document.getElementById("cerrarSesion");
+    const opcionesRoles = document.getElementById("opcionesRoles");
+    const cerrarSesion = document.getElementById("cerrarSesion");
 
     if (!opcionesRoles || !cerrarSesion) {
         return;
     }
 
-    const itemCerrarSesion =
-        cerrarSesion.closest("li");
+    const itemCerrarSesion = cerrarSesion.closest("li");
 
 
-    document
-        .querySelectorAll(".opcion-cambio-rol")
-        .forEach(function (opcion) {
-            opcion.closest("li")?.remove();
-        });
+    document.querySelectorAll(".opcion-cambio-rol").forEach(function (opcion) {
+        opcion.closest("li")?.remove();
+    });
 
 
     const roles = [
@@ -129,14 +116,9 @@ function configurarOpcionesRoles(sesion) {
 
     for (const rol of roles) {
 
-        if (
-            rol.disponible &&
-            rol.nombre !== sesion.rolActual
+        if (rol.disponible && rol.nombre !== sesion.rolActual
         ) {
-            opcionesRoles.insertBefore(
-                crearOpcionRol(rol.nombre),
-                itemCerrarSesion
-            );
+            opcionesRoles.insertBefore(crearOpcionRol(rol.nombre), itemCerrarSesion);
         }
     }
 }
@@ -159,17 +141,12 @@ function nombreRol(rol) {
 
 
 function obtenerRolesPermitidos() {
-    const rolPermitido =
-        document.body.dataset.rolPermitido ?? "";
+    const rolPermitido = document.body.dataset.rolPermitido ?? "";
 
-    const rolesPermitidos =
-        document.body.dataset.rolesPermitidos ?? "";
+    const rolesPermitidos = document.body.dataset.rolesPermitidos ?? "";
 
     if (rolesPermitidos !== "") {
-        return rolesPermitidos
-            .split(",")
-            .map(rol => rol.trim())
-            .filter(rol => rol !== "");
+        return rolesPermitidos .split(",") .map(rol => rol.trim()) .filter(rol => rol !== "");
     }
 
     if (rolPermitido !== "") {
@@ -188,26 +165,15 @@ function mostrarElemento(elemento) {
 
 
 function configurarVistaSegunRol(rolActual) {
-    const menuAdministrador =
-        document.getElementById("menuAdministrador");
+    const menuAdministrador = document.getElementById("menuAdministrador");
+    const menuAdministracion = document.getElementById("menuAdministracion");
+    const menuTecnico = document.getElementById("menuTecnico");
 
-    const menuAdministracion =
-        document.getElementById("menuAdministracion");
+    const filtroEstadoAdministrador = document.getElementById("filtroEstadoAdministrador");
 
-    const menuTecnico =
-        document.getElementById("menuTecnico");
-
-    const filtroEstadoAdministrador =
-        document.getElementById("filtroEstadoAdministrador");
-
-    const botonAgregarLaboratorio =
-        document.getElementById("btnAgregarLaboratorio");
-
-    const botonAgregarTaller =
-        document.getElementById("btnAgregarTaller");
-
-    const botonRegistrarEquipo =
-        document.getElementById("btnRegistrarEquipo");
+    const botonAgregarLaboratorio = document.getElementById("btnAgregarLaboratorio");
+    const botonAgregarTaller = document.getElementById("btnAgregarTaller");
+    const botonRegistrarEquipo = document.getElementById("btnRegistrarEquipo");
 
 
     if (rolActual === "administrador") {
@@ -218,13 +184,8 @@ function configurarVistaSegunRol(rolActual) {
         mostrarElemento(botonAgregarTaller);
         mostrarElemento(botonRegistrarEquipo);
 
-        document
-            .querySelectorAll(".opcionAdministrador")
-            .forEach(mostrarElemento);
-
-        document
-            .querySelectorAll(".columnaAdministrador")
-            .forEach(mostrarElemento);
+        document.querySelectorAll(".opcionAdministrador").forEach(mostrarElemento);
+        document.querySelectorAll(".columnaAdministrador").forEach(mostrarElemento);
     }
 
 
@@ -237,18 +198,10 @@ function configurarVistaSegunRol(rolActual) {
 async function verificarSesion() {
     try {
         const sesion = await obtenerSesion();
+        const rolesPermitidos = obtenerRolesPermitidos();
 
-        const rolesPermitidos =
-            obtenerRolesPermitidos();
-
-        if (
-            rolesPermitidos.length > 0 &&
-            !rolesPermitidos.includes(sesion.rolActual)
-        ) {
-            window.alert(
-                "No tiene permiso para acceder a esta página."
-            );
-
+        if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(sesion.rolActual)) {
+            window.alert("No tiene permiso para acceder a esta página.");
             window.location.replace("../index.html");
             return;
         }

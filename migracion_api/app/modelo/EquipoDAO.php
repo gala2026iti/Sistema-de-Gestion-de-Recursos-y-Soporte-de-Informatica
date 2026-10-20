@@ -5,20 +5,12 @@ require_once __DIR__ . "/Equipo.php";
 class EquipoDAO
 {
     private PDO $conexion;
-
     public function __construct(PDO $conexion)
     {
         $this->conexion = $conexion;
     }
 
-    public function listarEquipos(
-        string $rolActual,
-        string $orden = "",
-        string $estado = "",
-        string $ubicacion = "",
-        string $tipoUbicacion = "",
-        string $id = ""
-    ): array {
+    public function listarEquipos(string $rolActual, string $orden = "", string $estado = "", string $ubicacion = "", string $tipoUbicacion = "", string $id = ""): array {
         $condiciones = [];
         $parametros = [];
 
@@ -145,7 +137,8 @@ class EquipoDAO
         return $equipos;
     }
 
-  public function registrarEquipo(string $idEquipo,string $idUbicacion,string $tipoUbicacion,string $posicion, string $ciAdmin): bool {
+    public function registrarEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion, string $posicion, string $ciAdmin): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -184,11 +177,7 @@ class EquipoDAO
                 $consultaUbicacion->execute(["idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
                 $consultaUbicacion->closeCursor();
             }
-            $this->registrarHistorialEquipo(
-    $ciAdmin,
-    $idEquipo,
-    "creacion"
-);
+            $this->registrarHistorialEquipo($ciAdmin, $idEquipo, "creacion");
 
             $this->conexion->commit();
 
@@ -198,18 +187,12 @@ class EquipoDAO
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollBack();
             }
-
             return false;
         }
     }
 
-    public function modificarUbicacionEquipo(
-    string $idEquipo,
-    string $idUbicacion,
-    string $tipoUbicacion,
-    string $posicion,
-    string $ciAdmin
-): bool {
+    public function modificarUbicacionEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion, string $posicion, string $ciAdmin): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -261,11 +244,7 @@ class EquipoDAO
 
                 $consulta->closeCursor();
             }
-$this->registrarHistorialEquipo(
-    $ciAdmin,
-    $idEquipo,
-    "modificacion"
-);
+            $this->registrarHistorialEquipo($ciAdmin, $idEquipo, "modificacion");
 
             $this->conexion->commit();
             return true;
@@ -278,59 +257,44 @@ $this->registrarHistorialEquipo(
         }
     }
 
-    public function cambiarEstadoEquipo(
-    string $idEquipo,
-    bool $activo,
-    string $ciAdmin
-): bool {
-    try {
-        $this->conexion->beginTransaction();
+    public function cambiarEstadoEquipo(string $idEquipo, bool $activo, string $ciAdmin): bool
+    {
+        try {
+            $this->conexion->beginTransaction();
 
-        $sql = "
+            $sql = "
             UPDATE EQUIPO
             SET activo = :activo
             WHERE id = :idEquipo
         ";
 
-        $consulta = $this->conexion->prepare($sql);
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->execute(["activo" => $activo ? 1 : 0, "idEquipo" => $idEquipo]);
 
-        $consulta->execute([
-            "activo" => $activo ? 1 : 0,
-            "idEquipo" => $idEquipo
-        ]);
+            $actualizado = $consulta->rowCount() > 0;
+            $consulta->closeCursor();
 
-        $actualizado = $consulta->rowCount() > 0;
+            if (!$actualizado) {
+                $this->conexion->rollBack();
+                return false;
+            }
 
-        $consulta->closeCursor();
+            $tipoInteraccion = $activo ? "activacion" : "desactivacion";
 
-        if (!$actualizado) {
-            $this->conexion->rollBack();
+            $this->registrarHistorialEquipo($ciAdmin, $idEquipo, $tipoInteraccion);
+
+            $this->conexion->commit();
+
+            return true;
+
+        } catch (PDOException $error) {
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+
             return false;
         }
-
-        $tipoInteraccion =
-            $activo
-                ? "activacion"
-                : "desactivacion";
-
-        $this->registrarHistorialEquipo(
-            $ciAdmin,
-            $idEquipo,
-            $tipoInteraccion
-        );
-
-        $this->conexion->commit();
-
-        return true;
-
-    } catch (PDOException $error) {
-        if ($this->conexion->inTransaction()) {
-            $this->conexion->rollBack();
-        }
-
-        return false;
     }
-}
 
     private function obtenerPosicionLibrePrestamo(): string
     {
@@ -352,17 +316,13 @@ $this->registrarHistorialEquipo(
         while (in_array($posicion, $posicionesOcupadas)) {
             $posicion++;
         }
-
         $consulta->closeCursor();
 
         return (string) $posicion;
     }
 
-    private function registrarHistorialEquipo(
-        string $ciAdmin,
-        string $idEquipo,
-        string $tipoInteraccion
-    ): void {
+    private function registrarHistorialEquipo(string $ciAdmin, string $idEquipo, string $tipoInteraccion): void
+    {
         $sql = "
         INSERT INTO administrador_maneja_equipo (
             ciAdmin,
@@ -377,13 +337,7 @@ $this->registrarHistorialEquipo(
     ";
 
         $consulta = $this->conexion->prepare($sql);
-
-        $consulta->execute([
-            "ciAdmin" => $ciAdmin,
-            "idEquipo" => $idEquipo,
-            "tipoInteraccion" => $tipoInteraccion
-        ]);
-
+        $consulta->execute(["ciAdmin" => $ciAdmin, "idEquipo" => $idEquipo, "tipoInteraccion" => $tipoInteraccion]);
         $consulta->closeCursor();
     }
 }

@@ -11,11 +11,6 @@ class UsuarioDAO
         $this->conexion = $conexion;
     }
 
-
-    /**
-     * Busca un usuario por cédula.
-     * Se utiliza principalmente durante el inicio de sesión.
-     */
     public function buscarUsuario(string $cedula): ?Usuario
     {
         $sql = "
@@ -55,10 +50,7 @@ class UsuarioDAO
         ";
 
         $consulta = $this->conexion->prepare($sql);
-        $consulta->execute([
-            "cedula" => $cedula
-        ]);
-
+        $consulta->execute(["cedula" => $cedula]);
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
         $consulta = null;
 
@@ -73,19 +65,10 @@ class UsuarioDAO
             (bool) $usuario["activo"],
             (bool) $usuario["administrador"],
             (bool) $usuario["tecnico"],
-            (bool) $usuario["docente"]
-        );
+            (bool) $usuario["docente"]);
     }
 
-
-    /**
-     * Lista los usuarios registrados.
-     * Permite filtrar opcionalmente por rol y estado.
-     */
-    public function listarUsuarios(
-        string $rol = "",
-        string $estado = ""
-    ): array {
+    public function listarUsuarios(string $rol = "", string $estado = ""): array {
         $sql = "
             SELECT
                 u.ci AS cedula,
@@ -147,38 +130,22 @@ class UsuarioDAO
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " .
-                implode(" AND ", $condiciones);
+            implode(" AND ", $condiciones);
         }
 
         $sql .= " ORDER BY u.ci";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
-
-        $usuarios = $consulta->fetchAll(
-            PDO::FETCH_ASSOC
-        );
-
+        $usuarios = $consulta->fetchAll( PDO::FETCH_ASSOC);
         $consulta = null;
 
         return $usuarios;
     }
 
-
-    /**
-     * Registra un nuevo usuario, su correo y sus roles.
-     */
-    public function registrarUsuario(
-        string $cedula,
-        string $nombre,
-        string $correo,
-        string $claveHash,
-        array $roles,
-        string $ciAdmin
-    ): bool {
+    public function registrarUsuario(string $cedula, string $nombre, string $correo, string $claveHash, array $roles, string $ciAdmin): bool {
         try {
             $this->conexion->beginTransaction();
-
             $sqlUsuario = "
                 INSERT INTO USUARIO (
                     ci,
@@ -194,17 +161,8 @@ class UsuarioDAO
                 )
             ";
 
-            $consultaUsuario =
-                $this->conexion->prepare(
-                    $sqlUsuario
-                );
-
-            $consultaUsuario->execute([
-                "cedula" => $cedula,
-                "nombre" => $nombre,
-                "clave" => $claveHash
-            ]);
-
+            $consultaUsuario = $this->conexion->prepare($sqlUsuario);
+            $consultaUsuario->execute(["cedula" => $cedula, "nombre" => $nombre, "clave" => $claveHash]);
             $consultaUsuario->closeCursor();
 
 
@@ -219,16 +177,8 @@ class UsuarioDAO
                 )
             ";
 
-            $consultaCorreo =
-                $this->conexion->prepare(
-                    $sqlCorreo
-                );
-
-            $consultaCorreo->execute([
-                "cedula" => $cedula,
-                "correo" => $correo
-            ]);
-
+            $consultaCorreo =$this->conexion->prepare($sqlCorreo);
+            $consultaCorreo->execute(["cedula" => $cedula, "correo" => $correo]);
             $consultaCorreo->closeCursor();
 
 
@@ -254,28 +204,16 @@ class UsuarioDAO
                             VALUES (:cedula)
                         ";
                         break;
-
                     default:
                         $this->conexion->rollBack();
                         return false;
                 }
 
-                $consultaRol =
-                    $this->conexion->prepare(
-                        $sqlRol
-                    );
-
-                $consultaRol->execute([
-                    "cedula" => $cedula
-                ]);
-
+                $consultaRol = $this->conexion->prepare($sqlRol);
+                $consultaRol->execute(["cedula" => $cedula]);
                 $consultaRol->closeCursor();
             }
-            $this->registrarHistorialUsuario(
-                $ciAdmin,
-                $cedula,
-                "creacion"
-            );
+            $this->registrarHistorialUsuario($ciAdmin, $cedula, "creacion");
             $this->conexion->commit();
 
             return true;
@@ -289,15 +227,8 @@ class UsuarioDAO
         }
     }
 
-
-    /**
-     * Cambia el estado activo/inactivo de un usuario.
-     */
-    public function cambiarEstadoUsuario(
-        string $cedula,
-        bool $activo,
-        string $ciAdmin
-    ): bool {
+    public function cambiarEstadoUsuario(string $cedula, bool $activo, string $ciAdmin): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -308,14 +239,9 @@ class UsuarioDAO
         ";
 
             $consulta = $this->conexion->prepare($sql);
-
-            $consulta->execute([
-                "activo" => $activo ? 1 : 0,
-                "cedula" => $cedula
-            ]);
+            $consulta->execute(["activo" => $activo ? 1 : 0, "cedula" => $cedula]);
 
             $actualizado = $consulta->rowCount() > 0;
-
             $consulta->closeCursor();
 
             if (!$actualizado) {
@@ -323,16 +249,8 @@ class UsuarioDAO
                 return false;
             }
 
-            $tipoInteraccion =
-                $activo
-                ? "activacion"
-                : "desactivacion";
-
-            $this->registrarHistorialUsuario(
-                $ciAdmin,
-                $cedula,
-                $tipoInteraccion
-            );
+            $tipoInteraccion = $activo ? "activacion" : "desactivacion";
+            $this->registrarHistorialUsuario($ciAdmin, $cedula, $tipoInteraccion);
 
             $this->conexion->commit();
 
@@ -346,19 +264,8 @@ class UsuarioDAO
             return false;
         }
     }
-
-
-    /**
-     * Modifica los datos y roles de un usuario.
-     */
-    public function modificarUsuario(
-        string $cedula,
-        string $nombre,
-        string $correo,
-        array $roles,
-        string $ciAdmin,
-        ?string $claveHash = null
-    ): bool {
+    public function modificarUsuario(string $cedula, string $nombre, string $correo, array $roles, string $ciAdmin, ?string $claveHash = null): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -371,11 +278,7 @@ class UsuarioDAO
                     WHERE ci = :cedula
                 ";
 
-                $parametrosUsuario = [
-                    "nombre" => $nombre,
-                    "clave" => $claveHash,
-                    "cedula" => $cedula
-                ];
+                $parametrosUsuario = ["nombre" => $nombre, "clave" => $claveHash, "cedula" => $cedula];
 
             } else {
                 $sqlUsuario = "
@@ -384,23 +287,14 @@ class UsuarioDAO
                     WHERE ci = :cedula
                 ";
 
-                $parametrosUsuario = [
-                    "nombre" => $nombre,
-                    "cedula" => $cedula
-                ];
+                $parametrosUsuario = ["nombre" => $nombre, "cedula" => $cedula];
             }
 
-            $consultaUsuario =
-                $this->conexion->prepare(
-                    $sqlUsuario
-                );
+            $consultaUsuario = $this->conexion->prepare($sqlUsuario);
 
-            $consultaUsuario->execute(
-                $parametrosUsuario
-            );
+            $consultaUsuario->execute($parametrosUsuario);
 
             $consultaUsuario->closeCursor();
-
 
             $sqlCorreo = "
                 UPDATE CORREO
@@ -408,24 +302,12 @@ class UsuarioDAO
                 WHERE ci = :cedula
             ";
 
-            $consultaCorreo =
-                $this->conexion->prepare(
-                    $sqlCorreo
-                );
+            $consultaCorreo = $this->conexion->prepare($sqlCorreo);
 
-            $consultaCorreo->execute([
-                "correo" => $correo,
-                "cedula" => $cedula
-            ]);
+            $consultaCorreo->execute(["correo" => $correo, "cedula" => $cedula]);
 
             $consultaCorreo->closeCursor();
-
-
-            $tablasRoles = [
-                "ADMINISTRADOR",
-                "TECNICO",
-                "DOCENTE"
-            ];
+            $tablasRoles = ["ADMINISTRADOR", "TECNICO", "DOCENTE"];
 
             foreach ($tablasRoles as $tabla) {
                 $sqlEliminarRol = "
@@ -433,15 +315,8 @@ class UsuarioDAO
                     WHERE ci = :cedula
                 ";
 
-                $consultaEliminarRol =
-                    $this->conexion->prepare(
-                        $sqlEliminarRol
-                    );
-
-                $consultaEliminarRol->execute([
-                    "cedula" => $cedula
-                ]);
-
+                $consultaEliminarRol = $this->conexion->prepare($sqlEliminarRol);
+                $consultaEliminarRol->execute(["cedula" => $cedula]);
                 $consultaEliminarRol->closeCursor();
             }
 
@@ -470,33 +345,18 @@ class UsuarioDAO
                         break;
 
                     default:
-                        if (
-                            $this->conexion
-                                ->inTransaction()
-                        ) {
-                            $this->conexion
-                                ->rollBack();
+                        if ($this->conexion->inTransaction()) {
+                            $this->conexion->rollBack();
                         }
 
                         return false;
                 }
 
-                $consultaRol =
-                    $this->conexion->prepare(
-                        $sqlRol
-                    );
-
-                $consultaRol->execute([
-                    "cedula" => $cedula
-                ]);
-
+                $consultaRol = $this->conexion->prepare($sqlRol);
+                $consultaRol->execute(["cedula" => $cedula]);
                 $consultaRol->closeCursor();
             }
-            $this->registrarHistorialUsuario(
-                $ciAdmin,
-                $cedula,
-                "modificacion"
-            );
+            $this->registrarHistorialUsuario($ciAdmin, $cedula, "modificacion");
             $this->conexion->commit();
 
             return true;
@@ -510,11 +370,8 @@ class UsuarioDAO
         }
     }
 
-    private function registrarHistorialUsuario(
-        string $ciAdmin,
-        string $ciUsuario,
-        string $tipoInteraccion
-    ): void {
+    private function registrarHistorialUsuario(string $ciAdmin, string $ciUsuario, string $tipoInteraccion): void
+    {
         $sql = "
         INSERT INTO administrador_modifica_usuario (
             ciAdmin,
@@ -529,13 +386,7 @@ class UsuarioDAO
     ";
 
         $consulta = $this->conexion->prepare($sql);
-
-        $consulta->execute([
-            "ciAdmin" => $ciAdmin,
-            "ciUsuario" => $ciUsuario,
-            "tipoInteraccion" => $tipoInteraccion
-        ]);
-
+        $consulta->execute(["ciAdmin" => $ciAdmin, "ciUsuario" => $ciUsuario, "tipoInteraccion" => $tipoInteraccion]);
         $consulta->closeCursor();
     }
 }

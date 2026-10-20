@@ -12,6 +12,8 @@ const entradaIdTicket = document.getElementById("idTicket");
 const botonFiltrarTickets = document.getElementById("btnFiltrarTickets");
 const cuerpoTablaTickets = document.getElementById("cuerpoTablaTickets");
 
+const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
+
 
 // RESPUESTAS DE LA API
 
@@ -154,8 +156,7 @@ function agregarFilaTicket(ticket) {
             "click",
             function () {
                 gestionarAsignacion(ticket.id, "desasignarse");
-            }
-        );
+            });
 
     } else {
 
@@ -274,6 +275,10 @@ async function filtrarTickets(evento) {
     await actualizarTablaTickets();
 }
 
+btnLimpiarFiltros.addEventListener("click", async () => {
+    formularioFiltroTickets.reset();
+    await actualizarTablaTickets();
+});
 botonFiltrarTickets.addEventListener("click", filtrarTickets);
 formularioFiltroTickets.addEventListener("submit", filtrarTickets);
 

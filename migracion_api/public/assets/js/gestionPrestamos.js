@@ -226,8 +226,7 @@ async function abrirModalPrestamo() {
         modalPrestamo.classList.add("d-flex");
 
     } catch (error) {
-        alert(
-            "No se pudieron cargar los equipos disponibles: " + error.message);
+        alert("No se pudieron cargar los equipos disponibles: " + error.message);
     }
 }
 
@@ -249,8 +248,7 @@ async function cargarPrestamos() {
         mostrarPrestamos(prestamos);
 
     } catch (error) {
-        alert(
-            "No se pudieron cargar los préstamos: " + error.message);
+        alert("No se pudieron cargar los préstamos: " + error.message);
     }
 }
 

@@ -20,8 +20,7 @@ class Sesion
         $_SESSION["tecnico"] = $usuario->esTecnico();
         $_SESSION["docente"] = $usuario->esDocente();
 
-        $_SESSION["rolActual"] =
-      $_SESSION["administrador"] ? "administrador" : ($_SESSION["tecnico"] ? "tecnico" : "docente");
+        $_SESSION["rolActual"] = $_SESSION["administrador"] ? "administrador" : ($_SESSION["tecnico"] ? "tecnico" : "docente");
     }
 
     public static function cerrar(): void
@@ -52,13 +51,11 @@ class Sesion
     public static function verificarRol(string $rol): void
     {
         if (!isset($_SESSION["cedula"])) {
-            RespuestaJson::error(
-                "Acceso denegado: sesión no iniciada",401);
+            RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
         if (!($_SESSION[$rol] ?? false)) {
-            RespuestaJson::error(
-                "Acceso denegado: rol incorrecto",403);
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
     }
 }

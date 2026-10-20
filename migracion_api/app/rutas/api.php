@@ -56,11 +56,7 @@ switch ($ruta) {
         break;
     case "metricas":
         $controlador = new MetricasController();
-
-        $controlador->gestionar(
-            $metodo,
-            $idRecurso
-        );
+        $controlador->gestionar($metodo, $idRecurso);
         break;
     default:
         RespuestaJson::error("Recurso no encontrado", 404);

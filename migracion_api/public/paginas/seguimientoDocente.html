@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mis registros - SGRSI</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/direccion/panelConsultas.css">
+</head>
+
+<body data-rol-permitido="docente">
+
+    <header class="d-flex justify-content-center align-items-center py-4">
+        <img
+            class="img-logo"
+            src="../assets/img/logo_iti.png"
+            alt="Logo">
+    </header>
+
+
+    <nav class="navbarSGRSI">
+
+        <section class="nav-container">
+
+            <section class="nav-primera-fila">
+
+                <button class="btn-menu" id="btnMenu">
+                    ☰
+                </button>
+
+                <button class="btn-cerrar-lateral" id="btnCerrar">
+                    X
+                </button>
+
+                <ul class="nav-opciones-sistema">
+
+                    <li
+                        class="desplegable desplegable-derecha"
+                        id="menuUsuario">
+
+                        <a href="#" id="datosUsuario">
+                            Usuario 🡻
+                        </a>
+
+                        <ul
+                            class="desplegable-menu"
+                            id="opcionesRoles">
+
+                            <li>
+                                <a href="#" id="cerrarSesion">
+                                    Cerrar Sesion
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <ul class="nav-menu">
+
+                <li>
+                    <a href="homeDocente.html">
+                        Registrar incidencias
+                    </a>
+                </li>
+
+                <li>
+                    <a href="solicitudesDocente.html">
+                        Solicitud de servicios
+                    </a>
+                </li>
+
+                <li>
+                    <a href="seguimientoDocente.html">
+                        Mis tickets y solicitudes
+                    </a>
+                </li>
+
+            </ul>
+
+        </section>
+
+    </nav>
+
+
+    <main class="container py-4">
+
+        <section class="mb-5">
+
+            <h2 class="text-primary">
+                Mis tickets
+            </h2>
+
+            <p class="text-muted">
+                Consultá el estado de las incidencias que registraste.
+            </p>
+
+
+            <section class="mb-3">
+
+                <label
+                    for="filtroEstadoTickets"
+                    class="form-label fw-semibold">
+                    Estado
+                </label>
+
+                <select
+                    id="filtroEstadoTickets"
+                    class="form-select">
+
+                    <option value="">
+                        Todos
+                    </option>
+
+                    <option value="pendiente">
+                        Pendiente
+                    </option>
+
+                    <option value="en proceso">
+                        En proceso
+                    </option>
+
+                    <option value="resuelto">
+                        Resuelto
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Asunto</th>
+                            <th>Equipo</th>
+                            <th>Tipo</th>
+                            <th>Gravedad</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Resolución</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaTickets"></tbody>
+
+                </table>
+
+            </section>
+
+        </section>
+
+
+        <section>
+
+            <h2 class="text-primary">
+                Mis solicitudes
+            </h2>
+
+            <p class="text-muted">
+                Consultá el estado de las solicitudes de servicio que registraste.
+            </p>
+
+
+            <section class="mb-3">
+
+                <label
+                    for="filtroEstadoSolicitudes"
+                    class="form-label fw-semibold">
+                    Estado
+                </label>
+
+                <select
+                    id="filtroEstadoSolicitudes"
+                    class="form-select">
+
+                    <option value="">
+                        Todas
+                    </option>
+
+                    <option value="pendiente">
+                        Pendiente
+                    </option>
+
+                    <option value="finalizada">
+                        Finalizada
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Asunto</th>
+                            <th>Fecha de ingreso</th>
+                            <th>Fecha límite</th>
+                            <th>Estado</th>
+                            <th>Finalizada por</th>
+                            <th>Fecha de finalización</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaSolicitudes"></tbody>
+
+                </table>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <span class="footer-bold">
+            Copyright 2026 - S.G.R.S.I - Instituto Tecnológico de Informática
+        </span>
+
+    </footer>
+
+
+    <script src="../assets/js/btnMenuCelular.js"></script>
+    <script src="../assets/js/verificarSesion.js"></script>
+    <script src="../assets/js/cerrarSesion.js"></script>
+    <script src="../assets/js/seguimientoDocente.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

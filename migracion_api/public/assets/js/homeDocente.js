@@ -1,6 +1,6 @@
-const API_UBICACIONES = "../index.php?ruta=ubicaciones";
-const API_EQUIPOS = "../index.php?ruta=equipos";
-const API_TICKETS = "../index.php?ruta=tickets";
+const API_UBICACIONES = "../index.php/ubicaciones";
+const API_EQUIPOS = "../index.php/equipos";
+const API_TICKETS = "../index.php/tickets";
 
 
 // ELEMENTOS DEL DOM
@@ -35,12 +35,11 @@ const incidencias = {};
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
-        throw new Error( `La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
+        throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
     }
 
     let json;
@@ -49,14 +48,13 @@ async function leerRespuestaAPI(respuesta)
         json = JSON.parse(texto);
 
     } catch {
-        throw new Error( `HTTP ${respuesta.status}: La API no devolvió JSON.` );
+        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.`);
     }
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar."
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
             }`);
     }
 
@@ -66,48 +64,45 @@ async function leerRespuestaAPI(respuesta)
 
 // PETICIONES
 
-async function registrarTickets(datos)
-{
+async function registrarTickets(datos) {
     const respuesta = await fetch(
-        API_TICKETS,{
-            method: "POST",
+        API_TICKETS, {
+        method: "POST",
 
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            }, body: JSON.stringify(datos)
-        });
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        }, body: JSON.stringify(datos)
+    });
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function obtenerUbicaciones()
-{
+async function obtenerUbicaciones() {
     const respuesta = await fetch(API_UBICACIONES);
     const json = await respuesta.json();
 
     if (!respuesta.ok) {
-        throw new Error( json.mensaje || "No se pudieron cargar las ubicaciones." );
+        throw new Error(json.mensaje || "No se pudieron cargar las ubicaciones.");
     }
 
     return json.datos;
 }
 
 
-async function obtenerEquipos(tipoUbicacion, idUbicacion)
-{
+async function obtenerEquipos(tipoUbicacion, idUbicacion) {
     const parametros = new URLSearchParams();
 
     parametros.append("tipoUbicacion", tipoUbicacion);
     parametros.append("ubicacion", idUbicacion);
 
-    const respuesta = await fetch( API_EQUIPOS + "&" + parametros.toString());
+    const respuesta = await fetch(API_EQUIPOS + "?" + parametros.toString());
 
     const json = await respuesta.json();
 
     if (!respuesta.ok) {
-        throw new Error( json.mensaje || "No se pudieron cargar los equipos." );
+        throw new Error(json.mensaje || "No se pudieron cargar los equipos.");
     }
 
     return json.datos;
@@ -116,8 +111,7 @@ async function obtenerEquipos(tipoUbicacion, idUbicacion)
 
 // UBICACIONES
 
-async function cargarUbicaciones()
-{
+async function cargarUbicaciones() {
     try {
         const ubicaciones = await obtenerUbicaciones();
 
@@ -152,8 +146,7 @@ async function cargarUbicaciones()
 
 // EQUIPOS
 
-function crearEquipo(equipo)
-{
+function crearEquipo(equipo) {
     const contenedor = document.createElement("div");
 
     contenedor.className = "espacioEquipo-body d-flex flex-column justify-content-between p-3";
@@ -227,8 +220,7 @@ function crearEquipo(equipo)
 
 
     conProblemas.addEventListener("change",
-        function ()
-        {
+        function () {
             if (conProblemas.checked) {
                 abrirFormularioIncidencia(equipo, botonEditar);
             }
@@ -236,8 +228,7 @@ function crearEquipo(equipo)
 
 
     sinProblemas.addEventListener("change",
-        function ()
-        {
+        function () {
             if (sinProblemas.checked) {
 
                 /*
@@ -252,8 +243,7 @@ function crearEquipo(equipo)
 
 
     botonEditar.addEventListener("click",
-        function ()
-        {
+        function () {
             abrirFormularioIncidencia(equipo, botonEditar);
         });
 
@@ -268,8 +258,7 @@ function crearEquipo(equipo)
 }
 
 
-async function cargarEquipos()
-{
+async function cargarEquipos() {
     contenedorEquipos.innerHTML = "";
 
     /*
@@ -309,7 +298,8 @@ async function cargarEquipos()
 
         equipos.forEach(equipo => {
             const elementoEquipo = crearEquipo(equipo);
-            contenedorEquipos.appendChild(elementoEquipo);});
+            contenedorEquipos.appendChild(elementoEquipo);
+        });
 
     } catch (error) {
         console.error(error);
@@ -319,8 +309,7 @@ async function cargarEquipos()
 
 // INCIDENCIAS
 
-function abrirFormularioIncidencia(equipo, botonEditar)
-{
+function abrirFormularioIncidencia(equipo, botonEditar) {
     equipoSeleccionado = {
         idEquipo: equipo.idEquipo,
         posicion: equipo.posicion,
@@ -341,7 +330,7 @@ function abrirFormularioIncidencia(equipo, botonEditar)
         personaIncidencia.value = incidencia.persona;
         descripcionIncidencia.value = incidencia.descripcion;
 
-        const gravedad = document.querySelector( 'input[name="gravedad"][value="' + incidencia.gravedad + '"]');
+        const gravedad = document.querySelector('input[name="gravedad"][value="' + incidencia.gravedad + '"]');
 
         if (gravedad) {
             gravedad.checked = true;
@@ -360,8 +349,7 @@ function abrirFormularioIncidencia(equipo, botonEditar)
 }
 
 
-function obtenerTicketsRegistrados()
-{
+function obtenerTicketsRegistrados() {
     const tickets = [];
 
     for (const idEquipo in incidencias) {
@@ -381,8 +369,7 @@ function obtenerTicketsRegistrados()
 }
 
 
-async function gestionarRegistroTickets()
-{
+async function gestionarRegistroTickets() {
     const valorUbicacion = ubicacionSalon.value.trim();
 
     if (valorUbicacion === "") {
@@ -438,7 +425,7 @@ async function gestionarRegistroTickets()
         await cargarEquipos();
 
     } catch (error) {
-        alert( "No se pudieron registrar las incidencias: " + error.message );
+        alert("No se pudieron registrar las incidencias: " + error.message);
     }
 }
 
@@ -446,8 +433,7 @@ async function gestionarRegistroTickets()
 // EVENTOS
 
 btnCancelar.addEventListener("click",
-    function ()
-    {
+    function () {
         if (equipoSeleccionado === null) {
             modalIncidencia.close();
             return;
@@ -475,8 +461,7 @@ btnCancelar.addEventListener("click",
 
 
 btnAceptar.addEventListener("click",
-    function ()
-    {
+    function () {
         if (equipoSeleccionado === null) {
             return;
         }
@@ -512,7 +497,7 @@ btnAceptar.addEventListener("click",
     });
 
 
-ubicacionSalon.addEventListener("change",cargarEquipos);
-botonRegistrarEstado.addEventListener("click",gestionarRegistroTickets);
+ubicacionSalon.addEventListener("change", cargarEquipos);
+botonRegistrarEstado.addEventListener("click", gestionarRegistroTickets);
 
-document.addEventListener("DOMContentLoaded",cargarUbicaciones);
+document.addEventListener("DOMContentLoaded", cargarUbicaciones);

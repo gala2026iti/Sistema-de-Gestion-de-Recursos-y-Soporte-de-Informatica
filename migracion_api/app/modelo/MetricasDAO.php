@@ -59,8 +59,7 @@ class MetricasDAO
 
         $consulta->closeCursor();
 
-        return [
-            "ticketsAbiertos" => (int) $resultado["ticketsAbiertos"],
+        return ["ticketsAbiertos" => (int) $resultado["ticketsAbiertos"],
             "ticketsCerrados" => (int) $resultado["ticketsCerrados"],
             "equiposActivos" => (int) $resultado["equiposActivos"],
             "equiposInactivos" => (int) $resultado["equiposInactivos"],
@@ -98,11 +97,11 @@ class MetricasDAO
     }
 
     public function obtenerMetricasEquipos(): array
-{
-    /*
-     * Resumen general de las métricas.
-     */
-    $sql = "
+    {
+        /*
+         * Resumen general de las métricas.
+         */
+        $sql = "
         SELECT
 
             (
@@ -138,19 +137,19 @@ class MetricasDAO
             ) AS incidenciasGraves
     ";
 
-    $consulta = $this->conexion->prepare($sql);
-    $consulta->execute();
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute();
 
-    $resumen = $consulta->fetch(PDO::FETCH_ASSOC);
+        $resumen = $consulta->fetch(PDO::FETCH_ASSOC);
 
-    $consulta->closeCursor();
+        $consulta->closeCursor();
 
 
-    /*
-     * Ranking de equipos según la cantidad
-     * total de tickets registrados.
-     */
-    $sql = "
+        /*
+         * Ranking de equipos según la cantidad
+         * total de tickets registrados.
+         */
+        $sql = "
         SELECT
             equipo.id AS idEquipo,
 
@@ -181,43 +180,43 @@ class MetricasDAO
         LIMIT 10
     ";
 
-    $consulta = $this->conexion->prepare($sql);
-    $consulta->execute();
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute();
 
-    $ranking = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $ranking = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-    $consulta->closeCursor();
+        $consulta->closeCursor();
 
-    foreach ($ranking as &$equipo) {
-        $equipo["idEquipo"] =
-            (int) $equipo["idEquipo"];
+        foreach ($ranking as &$equipo) {
+            $equipo["idEquipo"] =
+                (int) $equipo["idEquipo"];
 
-        $equipo["fallasRegistradas"] =
-            (int) $equipo["fallasRegistradas"];
+            $equipo["fallasRegistradas"] =
+                (int) $equipo["fallasRegistradas"];
 
-        if ($equipo["idUbicacion"] !== null) {
-            $equipo["idUbicacion"] =
-                (int) $equipo["idUbicacion"];
+            if ($equipo["idUbicacion"] !== null) {
+                $equipo["idUbicacion"] =
+                    (int) $equipo["idUbicacion"];
+            }
         }
+
+        unset($equipo);
+
+        return [
+            "totalEquipos" =>
+                (int) $resumen["totalEquipos"],
+
+            "equiposFallados" =>
+                (int) $resumen["equiposFallados"],
+
+            "ultimoIncidente" =>
+                $resumen["ultimoIncidente"],
+
+            "incidenciasGraves" =>
+                (int) $resumen["incidenciasGraves"],
+
+            "rankingEquipos" =>
+                $ranking
+        ];
     }
-
-    unset($equipo);
-
-    return [
-        "totalEquipos" =>
-            (int) $resumen["totalEquipos"],
-
-        "equiposFallados" =>
-            (int) $resumen["equiposFallados"],
-
-        "ultimoIncidente" =>
-            $resumen["ultimoIncidente"],
-
-        "incidenciasGraves" =>
-            (int) $resumen["incidenciasGraves"],
-
-        "rankingEquipos" =>
-            $ranking
-    ];
-}
 }

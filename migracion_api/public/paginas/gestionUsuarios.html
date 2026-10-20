@@ -102,10 +102,14 @@
 
     <main class="container-fluid px-0 py-3">
 
-        <a href="historialGeneral.html?tipo=usuarios"s class="btn btn-primary mx-3 text-bold">
+        <a href="historialGeneral.html?tipo=usuarios" class="btn btn-primary mx-3 text-bold">
             Historial de cambios
         </a>
 
+
+        <button id="btnRegistrarUsuario" class="btn btn-success text-bold" type="button">
+            Registrar usuario
+        </button>
         <h2 class="centro mt-3 text-warning">
             Gestion de usuarios
         </h2>
@@ -119,56 +123,72 @@
 
 
         <section class="filtros">
+            <form id="formFiltroUsuarios" class="form-filtros">
 
-            <form id="formFiltroUsuarios">
+                <div class="grupo-filtro">
 
-                <label for="rol">
-                    Rol:
-                </label>
+                    <label for="rol">
+                        Rol:
+                    </label>
 
-                <select id="rol" name="rol">
-                    <option value="">
-                        Todos
-                    </option>
+                    <select id="rol" name="rol">
 
-                    <option value="administrador">
-                        Administrador
-                    </option>
+                        <option value="">
+                            Todos
+                        </option>
 
-                    <option value="tecnico">
-                        Técnico
-                    </option>
+                        <option value="administrador">
+                            Administrador
+                        </option>
 
-                    <option value="docente">
-                        Docente
-                    </option>
-                </select>
+                        <option value="tecnico">
+                            Técnico
+                        </option>
 
-                <label for="estado">
-                    Estado:
-                </label>
+                        <option value="docente">
+                            Docente
+                        </option>
 
-                <select id="estado" name="estado">
-                    <option value="">
-                        Todos
-                    </option>
+                    </select>
+                </div>
 
-                    <option value="activo">
-                        Activo
-                    </option>
 
-                    <option value="inactivo">
-                        De baja
-                    </option>
-                </select>
+                <div class="grupo-filtro">
+                    <label for="estado">
+                        Estado:
+                    </label>
 
-                <button type="submit" id="btnFiltrarUsuarios" class="btn btn-primary text-bold">
-                    Filtrar
-                </button>
+                    <select id="estado" name="estado">
+
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="activo">
+                            Activo
+                        </option>
+
+                        <option value="inactivo">
+                            De baja
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="grupo-botones-filtro">
+                    <button type="submit" id="btnFiltrarUsuarios" class="btn btn-primary text-bold">
+                        Filtrar
+                    </button>
+
+                    <button type="button" id="btnLimpiarFiltrosUsuarios" class="btn btn-secondary text-bold">
+                        Limpiar filtros
+                    </button>
+                </div>
             </form>
+
         </section>
 
-        <section class="table-responsive w-100 m-0">
+      <section class="table-responsive tabla-scroll w-100 m-0">
 
             <table class="tabla-contenedor m-0 text-bold" id="tablaUsuarios">
 
@@ -187,12 +207,7 @@
             </table>
         </section>
 
-        <section class="d-flex justify-content-end px-3 mt-4">
 
-            <button id="btnRegistrarUsuario" class="btn btn-success text-bold" type="button">
-                Registrar usuario
-            </button>
-        </section>
 
         <section id="modalUsuario"
             class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center">

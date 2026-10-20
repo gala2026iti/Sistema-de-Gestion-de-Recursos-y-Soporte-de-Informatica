@@ -34,8 +34,7 @@ async function leerRespuestaAPI(respuesta)
             `HTTP ${respuesta.status}: ${
                 json.mensaje ??
                 "La solicitud no se pudo completar."
-            }`
-        );
+            }`);
     }
     return json.datos;
 }

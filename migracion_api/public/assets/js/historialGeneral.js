@@ -59,9 +59,7 @@ async function leerRespuestaAPI(respuesta)
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
-        throw new Error(
-            `La API respondió sin cuerpo (HTTP ${respuesta.status}).`
-        );
+        throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
     }
 
     let json;
@@ -70,9 +68,7 @@ async function leerRespuestaAPI(respuesta)
         json = JSON.parse(texto);
 
     } catch {
-        throw new Error(
-            `HTTP ${respuesta.status}: La API no devolvió JSON.`
-        );
+        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.`);
     }
 
     if (!respuesta.ok) {
@@ -92,10 +88,7 @@ async function leerRespuestaAPI(respuesta)
 
 async function obtenerHistorial()
 {
-    let url =
-        API_HISTORIALES +
-        "/" +
-        encodeURIComponent(tipoHistorial);
+    let url = API_HISTORIALES + "/" + encodeURIComponent(tipoHistorial);
 
     const parametros = new URLSearchParams();
 
@@ -124,8 +117,7 @@ function configurarHistorial()
 
     if (!configuracion) {
         tituloHistorial.textContent = "Historial no disponible";
-        descripcionHistorial.textContent =
-            "El historial solicitado no es válido.";
+        descripcionHistorial.textContent = "El historial solicitado no es válido.";
 
         filtroFecha.disabled = true;
 
@@ -142,47 +134,21 @@ function configurarHistorial()
 function crearRegistroHistorial(registro)
 {
     const articulo = document.createElement("article");
-
-    articulo.classList.add(
-        "card",
-        "mb-3",
-        "shadow-sm"
-    );
-
+    articulo.classList.add( "card", "mb-3", "shadow-sm");
 
     const cuerpo = document.createElement("section");
-
     cuerpo.classList.add("card-body");
 
-
     const cabecera = document.createElement("section");
-
-    cabecera.classList.add(
-        "d-flex",
-        "justify-content-between",
-        "align-items-center",
-        "mb-2"
-    );
-
+    cabecera.classList.add( "d-flex", "justify-content-between", "align-items-center", "mb-2");
 
     const actor = document.createElement("strong");
-
-    actor.textContent =
-        registro.nombreActor +
-        " (" +
-        registro.ciActor +
-        ")";
+    actor.textContent = registro.nombreActor + " (" + registro.ciActor + ")";
 
 
     const fechaHora = document.createElement("span");
-
     fechaHora.classList.add("text-muted", "small");
-
-    fechaHora.textContent =
-        registro.fecha +
-        " " +
-        registro.hora;
-
+    fechaHora.textContent =registro.fecha + " " + registro.hora;
 
     cabecera.appendChild(actor);
     cabecera.appendChild(fechaHora);
@@ -201,28 +167,16 @@ function crearRegistroHistorial(registro)
     if (registro.recurso) {
         const recurso = document.createElement("p");
 
-        recurso.classList.add(
-            "mb-1",
-            "text-muted"
-        );
-
-        recurso.textContent =
-            "Recurso: " + registro.recurso;
-
+        recurso.classList.add( "mb-1", "text-muted");
+        recurso.textContent = "Recurso: " + registro.recurso;
         cuerpo.appendChild(recurso);
     }
-
 
     if (registro.detalle) {
         const detalle = document.createElement("p");
 
-        detalle.classList.add(
-            "mb-0",
-            "small"
-        );
-
+        detalle.classList.add( "mb-0", "small");
         detalle.textContent = registro.detalle;
-
         cuerpo.appendChild(detalle);
     }
 
@@ -279,10 +233,7 @@ async function cargarHistorial()
         mostrarHistorial(registros);
 
     } catch (error) {
-        window.alert(
-            "No se pudo cargar el historial: " +
-            error.message
-        );
+        window.alert( "No se pudo cargar el historial: " + error.message);
     }
 }
 
@@ -306,10 +257,7 @@ function volver()
 
 // EVENTOS
 
-filtroFecha.addEventListener(
-    "change",
-    filtrarPorFecha
-);
+filtroFecha.addEventListener("change", filtrarPorFecha);
 
 botonVolverHistorial.addEventListener(
     "click",

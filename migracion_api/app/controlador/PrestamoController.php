@@ -27,9 +27,6 @@ class PrestamoController
 
     private function listar(?string $idRecurso): void
     {
-
-
-
         Sesion::verificarRol("tecnico");
 
         if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
@@ -70,14 +67,10 @@ class PrestamoController
             RespuestaJson::exito($equipos);
         }
 
-        $prestamos = $dao->listarPrestamos(
-            $estado,
-            $idPrestamo
-        );
+        $prestamos = $dao->listarPrestamos($estado, $idPrestamo);
 
         unset($dao, $conexion);
         Conexion::desconectar();
-
         RespuestaJson::exito($prestamos);
     }
 
@@ -120,19 +113,13 @@ class PrestamoController
             RespuestaJson::error("El equipo seleccionado no es válido.", 422);
         }
 
-        $fechaHora = DateTime::createFromFormat(
-            "Y-m-d H:i",
-            $fechaFin . " " . $horaFin
-        );
+        $fechaHora = DateTime::createFromFormat("Y-m-d H:i", $fechaFin . " " . $horaFin);
 
         if (!$fechaHora) {
             RespuestaJson::error("La fecha u hora ingresadas no son válidas.", 422);
         }
 
-        if (
-            $fechaHora->format("Y-m-d") !== $fechaFin ||
-            $fechaHora->format("H:i") !== $horaFin
-        ) {
+        if ($fechaHora->format("Y-m-d") !== $fechaFin || $fechaHora->format("H:i") !== $horaFin) {
             RespuestaJson::error("La fecha u hora ingresadas no son válidas.", 422);
         }
 
@@ -152,14 +139,7 @@ class PrestamoController
             RespuestaJson::error("El equipo seleccionado no está disponible para préstamo.", 409);
         }
 
-        $resultado = $dao->registrarPrestamo(
-            $_SESSION["cedula"],
-            $nombrePrestado,
-            $ciPrestado,
-            $fechaFin,
-            $horaFin,
-            $idEquipo
-        );
+        $resultado = $dao->registrarPrestamo($_SESSION["cedula"], $nombrePrestado, $ciPrestado, $fechaFin, $horaFin, $idEquipo);
 
         unset($dao, $conexion);
         Conexion::desconectar();
@@ -168,10 +148,7 @@ class PrestamoController
             RespuestaJson::error("No se pudo registrar el préstamo.", 400);
         }
 
-        RespuestaJson::exito(
-            ["mensaje" => "Préstamo registrado correctamente."],
-            201
-        );
+        RespuestaJson::exito(["mensaje" => "Préstamo registrado correctamente."], 201);
     }
 
 
@@ -207,10 +184,7 @@ class PrestamoController
             RespuestaJson::error("El préstamo ya fue devuelto.", 409);
         }
 
-        $resultado = $dao->devolverPrestamo(
-            $idPrestamo,
-            $_SESSION["cedula"]
-        );
+        $resultado = $dao->devolverPrestamo($idPrestamo, $_SESSION["cedula"]);
 
         unset($dao, $conexion);
         Conexion::desconectar();
@@ -219,8 +193,6 @@ class PrestamoController
             RespuestaJson::error("No se pudo registrar la devolución.", 400);
         }
 
-        RespuestaJson::exito(
-            ["mensaje" => "Devolución registrada correctamente."]
-        );
+        RespuestaJson::exito(["mensaje" => "Devolución registrada correctamente."]);
     }
 }

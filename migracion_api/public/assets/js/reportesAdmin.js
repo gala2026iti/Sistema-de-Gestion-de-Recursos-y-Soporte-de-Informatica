@@ -1,13 +1,8 @@
 const API_TICKETS = "../index.php/tickets";
 
-const tablaPendiente =
-    document.querySelector("#tablaPendiente tbody");
-
-const tablaEnProceso =
-    document.querySelector("#tablaEnProceso tbody");
-
-const tablaResuelto =
-    document.querySelector("#tablaResuelto tbody");
+const tablaPendiente = document.querySelector("#tablaPendiente tbody");
+const tablaEnProceso = document.querySelector("#tablaEnProceso tbody");
+const tablaResuelto = document.querySelector("#tablaResuelto tbody");
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-async function cargarTickets()
-{
+async function cargarTickets() {
     try {
 
         const respuesta = await fetch(API_TICKETS);
@@ -24,26 +18,18 @@ async function cargarTickets()
         const datos = await respuesta.json();
 
         if (!respuesta.ok) {
-            throw new Error(
-                datos.mensaje ??
-                "No se pudieron cargar los tickets."
-            );
+            throw new Error(datos.mensaje ?? "No se pudieron cargar los tickets.");
         }
-
         mostrarTickets(datos.datos);
 
     } catch (error) {
 
-        console.error(
-            "Error al cargar los tickets:",
-            error
-        );
+        console.error("Error al cargar los tickets:", error);
     }
 }
 
 
-function mostrarTickets(tickets)
-{
+function mostrarTickets(tickets) {
     tablaPendiente.innerHTML = "";
     tablaEnProceso.innerHTML = "";
     tablaResuelto.innerHTML = "";
@@ -71,16 +57,10 @@ function mostrarTickets(tickets)
 }
 
 
-function crearTicket(ticket)
-{
+function crearTicket(ticket) {
     const fila = document.createElement("tr");
-
     const celda = document.createElement("td");
-
-    celda.classList.add(
-        "p-3",
-        "border-bottom"
-    );
+    celda.classList.add("p-3", "border-bottom");
 
     celda.innerHTML = `
         <article class="card shadow-sm border-0 p-3 text-start">

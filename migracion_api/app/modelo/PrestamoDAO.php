@@ -10,10 +10,7 @@ class PrestamoDAO
     }
 
 
-    public function listarPrestamos(
-        ?string $estado,
-        ?string $idPrestamo
-    ): array {
+    public function listarPrestamos( ?string $estado, ?string $idPrestamo): array {
         $sql = "
             SELECT
                 p.id,
@@ -125,9 +122,7 @@ class PrestamoDAO
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute();
-
         $equipos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
         $consulta->closeCursor();
 
         return $equipos;
@@ -177,23 +172,14 @@ class PrestamoDAO
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute(["idEquipo" => $idEquipo]);
-
         $disponible = (int) $consulta->fetchColumn() > 0;
-
         $consulta->closeCursor();
 
         return $disponible;
     }
 
 
-    public function registrarPrestamo(
-        string $ciTecnico,
-        string $nombrePrestado,
-        string $ciPrestado,
-        string $fechaFin,
-        string $horaFin,
-        string $idEquipo
-    ): bool {
+    public function registrarPrestamo(string $ciTecnico, string $nombrePrestado, string $ciPrestado, string $fechaFin, string $horaFin, string $idEquipo): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -215,16 +201,9 @@ class PrestamoDAO
             ";
 
             $consultaPrestamo = $this->conexion->prepare($sqlPrestamo);
-
-            $consultaPrestamo->execute([
-                "nombrePrestado" => $nombrePrestado,
-                "ciPrestado" => $ciPrestado,
-                "fechaFin" => $fechaFin,
-                "horaFin" => $horaFin
-            ]);
+            $consultaPrestamo->execute(["nombrePrestado" => $nombrePrestado, "ciPrestado" => $ciPrestado, "fechaFin" => $fechaFin, "horaFin" => $horaFin]);
 
             $idPrestamo = $this->conexion->lastInsertId();
-
             $consultaPrestamo->closeCursor();
 
 
@@ -240,12 +219,7 @@ class PrestamoDAO
             ";
 
             $consultaEquipo = $this->conexion->prepare($sqlEquipo);
-
-            $consultaEquipo->execute([
-                "idPrestamo" => $idPrestamo,
-                "idEquipo" => $idEquipo
-            ]);
-
+            $consultaEquipo->execute(["idPrestamo" => $idPrestamo, "idEquipo" => $idEquipo]);
             $consultaEquipo->closeCursor();
 
 
@@ -267,12 +241,7 @@ class PrestamoDAO
             ";
 
             $consultaTecnico = $this->conexion->prepare($sqlTecnico);
-
-            $consultaTecnico->execute([
-                "ciTecnico" => $ciTecnico,
-                "idPrestamo" => $idPrestamo
-            ]);
-
+            $consultaTecnico->execute([ "ciTecnico" => $ciTecnico, "idPrestamo" => $idPrestamo]);
             $consultaTecnico->closeCursor();
 
             $this->conexion->commit();
@@ -358,16 +327,9 @@ class PrestamoDAO
             ";
 
             $consultaTecnico = $this->conexion->prepare($sqlTecnico);
-
-            $consultaTecnico->execute([
-                "ciTecnico" => $ciTecnico,
-                "idPrestamo" => $idPrestamo
-            ]);
-
+            $consultaTecnico->execute(["ciTecnico" => $ciTecnico, "idPrestamo" => $idPrestamo]);
             $consultaTecnico->closeCursor();
-
             $this->conexion->commit();
-
             return true;
 
         } catch (PDOException $error) {

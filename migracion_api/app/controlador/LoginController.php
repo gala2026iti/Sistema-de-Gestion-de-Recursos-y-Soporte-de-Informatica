@@ -16,10 +16,7 @@ class LoginController
             RespuestaJson::error("Método no permitido", 405);
         }
 
-        $datos = json_decode(
-            file_get_contents("php://input"),
-            true
-        );
+        $datos = json_decode(file_get_contents("php://input"), true);
 
         if (!is_array($datos)) {
             RespuestaJson::error("JSON inválido", 400);
@@ -65,20 +62,10 @@ class LoginController
     private function obtenerSesion(): void
     {
         if (!isset($_SESSION["cedula"])) {
-            RespuestaJson::error(
-                "Acceso denegado: sesión no iniciada",
-                401
-            );
+            RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
-        RespuestaJson::exito([
-            "cedula" => $_SESSION["cedula"],
-            "nombre" => $_SESSION["nombre"],
-            "rolActual" => $_SESSION["rolActual"],
-            "administrador" => $_SESSION["administrador"],
-            "tecnico" => $_SESSION["tecnico"],
-            "docente" => $_SESSION["docente"]
-        ]);
+        RespuestaJson::exito([ "cedula" => $_SESSION["cedula"], "nombre" => $_SESSION["nombre"], "rolActual" => $_SESSION["rolActual"], "administrador" => $_SESSION["administrador"], "tecnico" => $_SESSION["tecnico"], "docente" => $_SESSION["docente"]]);
     }
 
 

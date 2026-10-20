@@ -1,33 +1,14 @@
-const API_METRICAS =
-    "../index.php/metricas/equipos";
+const API_METRICAS = "../index.php/metricas/equipos";
+const API_USUARIOS = "../index.php/usuarios";
 
-const API_USUARIOS =
-    "../index.php/usuarios";
-
-
-const cantTotalEquipos =
-    document.getElementById("cantTotalEquipos");
-
-const cantEquiposFallados =
-    document.getElementById("cantEquiposFallados");
-
-const fechaUltimoIncidente =
-    document.getElementById("fechaUltimoIncidente");
-
-const tablaFallas =
-    document.getElementById("tablaFallas");
-
-const equipoMasFallado =
-    document.getElementById("equipoMasFallado");
-
-const cantEquipoMasFallado =
-    document.getElementById("cantEquipoMasFallado");
-
-const cantIncidencias =
-    document.getElementById("cantIncidencias");
-
-const tablaUsuarios =
-    document.getElementById("tablaUsuarios");
+const cantTotalEquipos = document.getElementById("cantTotalEquipos");
+const cantEquiposFallados = document.getElementById("cantEquiposFallados");
+const fechaUltimoIncidente = document.getElementById("fechaUltimoIncidente");
+const tablaFallas = document.getElementById("tablaFallas");
+const equipoMasFallado = document.getElementById("equipoMasFallado");
+const cantEquipoMasFallado = document.getElementById("cantEquipoMasFallado");
+const cantIncidencias = document.getElementById("cantIncidencias");
+const tablaUsuarios = document.getElementById("tablaUsuarios");
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,112 +16,58 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-async function cargarDatos()
-{
+async function cargarDatos() {
     try {
 
-        const [
-            respuestaMetricas,
-            respuestaUsuarios
-        ] = await Promise.all([
-            fetch(API_METRICAS),
-            fetch(API_USUARIOS)
-        ]);
-
-
-        const datosMetricas =
-            await respuestaMetricas.json();
-
-        const datosUsuarios =
-            await respuestaUsuarios.json();
+        const [respuestaMetricas, respuestaUsuarios] = await Promise.all([fetch(API_METRICAS), fetch(API_USUARIOS)]);
+        const datosMetricas = await respuestaMetricas.json();
+        const datosUsuarios = await respuestaUsuarios.json();
 
 
         if (!respuestaMetricas.ok) {
-            throw new Error(
-                datosMetricas.mensaje ??
-                "No se pudieron cargar las métricas."
-            );
+            throw new Error(datosMetricas.mensaje ?? "No se pudieron cargar las métricas.");
         }
-
 
         if (!respuestaUsuarios.ok) {
-            throw new Error(
-                datosUsuarios.mensaje ??
-                "No se pudieron cargar los usuarios."
-            );
+            throw new Error(datosUsuarios.mensaje ?? "No se pudieron cargar los usuarios.");
         }
 
-
-        mostrarMetricas(
-            datosMetricas.datos
-        );
-
-        mostrarUsuarios(
-            datosUsuarios.datos
-        );
+        mostrarMetricas(datosMetricas.datos);
+        mostrarUsuarios(datosUsuarios.datos);
 
     } catch (error) {
-
-        console.error(
-            "Error al cargar las métricas:",
-            error
-        );
+        console.error("Error al cargar las métricas:", error);
     }
 }
 
 
-function mostrarMetricas(metricas)
-{
-    cantTotalEquipos.textContent =
-        metricas.totalEquipos;
+function mostrarMetricas(metricas) {
+    cantTotalEquipos.textContent = metricas.totalEquipos;
+    cantEquiposFallados.textContent = metricas.equiposFallados;
+    fechaUltimoIncidente.textContent = formatearFechaHora(metricas.ultimoIncidente);
 
-    cantEquiposFallados.textContent =
-        metricas.equiposFallados;
-
-    fechaUltimoIncidente.textContent =
-        formatearFechaHora(
-            metricas.ultimoIncidente
-        );
-
-    cantIncidencias.textContent =
-        metricas.incidenciasGraves;
-
-
-    mostrarRanking(
-        metricas.rankingEquipos
-    );
-
+    cantIncidencias.textContent = metricas.incidenciasGraves;
+    mostrarRanking( metricas.rankingEquipos);
 
     if (metricas.rankingEquipos.length > 0) {
 
-        const primerEquipo =
-            metricas.rankingEquipos[0];
-
-        equipoMasFallado.textContent =
-            `Equipo #${primerEquipo.idEquipo}`;
-
-        cantEquipoMasFallado.textContent =
-            primerEquipo.fallasRegistradas;
+        const primerEquipo = metricas.rankingEquipos[0];
+        equipoMasFallado.textContent = `Equipo #${primerEquipo.idEquipo}`;
+        cantEquipoMasFallado.textContent = primerEquipo.fallasRegistradas;
 
     } else {
 
-        equipoMasFallado.textContent =
-            "Ninguno";
-
-        cantEquipoMasFallado.textContent =
-            "0";
+        equipoMasFallado.textContent = "Ninguno";
+        cantEquipoMasFallado.textContent = "0";
     }
 }
 
 
-function mostrarRanking(equipos)
-{
+function mostrarRanking(equipos) {
     tablaFallas.innerHTML = "";
 
     if (equipos.length === 0) {
-
-        const fila =
-            document.createElement("tr");
+        const fila = document.createElement("tr");
 
         fila.innerHTML = `
             <td colspan="3" class="text-center text-muted py-4">
@@ -155,28 +82,16 @@ function mostrarRanking(equipos)
 
 
     equipos.forEach(equipo => {
+        const fila = document.createElement("tr");
+        let ubicacion = "Sin ubicación";
 
-        const fila =
-            document.createElement("tr");
-
-
-        let ubicacion =
-            "Sin ubicación";
-
-
-        if (
-            equipo.idUbicacion !== null &&
-            equipo.tipoUbicacion !== null
-        ) {
+        if (equipo.idUbicacion !== null && equipo.tipoUbicacion !== null) {
 
             if (equipo.tipoUbicacion === "prestamo") {
-
                 ubicacion = "Préstamo";
-
             } else {
 
-                ubicacion =
-                    `${capitalizar(equipo.tipoUbicacion)} ${equipo.idUbicacion}`;
+                ubicacion = `${capitalizar(equipo.tipoUbicacion)} ${equipo.idUbicacion}`;
             }
         }
 
@@ -201,21 +116,13 @@ function mostrarRanking(equipos)
 }
 
 
-function mostrarUsuarios(usuarios)
-{
+function mostrarUsuarios(usuarios) {
     tablaUsuarios.innerHTML = "";
-
 
     usuarios.forEach(usuario => {
 
-        const fila =
-            document.createElement("tr");
-
-
-        const activo =
-            usuario.activo === true ||
-            usuario.activo === 1 ||
-            usuario.activo === "1";
+        const fila = document.createElement("tr");
+        const activo = usuario.activo === true || usuario.activo === 1 || usuario.activo === "1";
 
 
         fila.innerHTML = `
@@ -232,11 +139,10 @@ function mostrarUsuarios(usuarios)
             </td>
 
             <td class="text-center pe-4">
-                ${
-                    activo
-                        ? "Activo"
-                        : "Inactivo"
-                }
+                ${activo
+                ? "Activo"
+                : "Inactivo"
+            }
             </td>
         `;
 
@@ -246,33 +152,24 @@ function mostrarUsuarios(usuarios)
 }
 
 
-function obtenerRoles(usuario)
-{
+function obtenerRoles(usuario) {
     if (Array.isArray(usuario.roles)) {
         return usuario.roles
             .map(rol => capitalizar(rol))
             .join(", ");
     }
 
-
-    if (
-        typeof usuario.roles === "string" &&
-        usuario.roles !== ""
-    ) {
+    if (typeof usuario.roles === "string" && usuario.roles !== "") {
         return usuario.roles;
     }
 
 
-    if (
-        typeof usuario.rol === "string" &&
-        usuario.rol !== ""
-    ) {
+    if (typeof usuario.rol === "string" && usuario.rol !== "") {
         return capitalizar(usuario.rol);
     }
 
 
     const roles = [];
-
 
     if (usuario.administrador) {
         roles.push("Administrador");
@@ -291,33 +188,20 @@ function obtenerRoles(usuario)
         return "Sin rol";
     }
 
-
     return roles.join(", ");
 }
 
 
-function formatearFechaHora(valor)
-{
+function formatearFechaHora(valor) {
     if (!valor) {
         return "N/A";
     }
 
 
-    const partes =
-        valor.split(" ");
-
-    const fecha =
-        partes[0];
-
-    const hora =
-        partes[1] ?? "";
-
-
-    const [
-        anio,
-        mes,
-        dia
-    ] = fecha.split("-");
+    const partes = valor.split(" ");
+    const fecha = partes[0];
+    const hora = partes[1] ?? "";
+    const [anio, mes, dia] = fecha.split("-");
 
 
     if (!anio || !mes || !dia) {
@@ -329,17 +213,13 @@ function formatearFechaHora(valor)
         return `${dia}/${mes}/${anio}`;
     }
 
-
     return `${dia}/${mes}/${anio} ${hora.substring(0, 5)}`;
 }
 
 
-function capitalizar(texto)
-{
+function capitalizar(texto) {
     if (!texto) {
         return "";
     }
-
-    return texto.charAt(0).toUpperCase() +
-        texto.slice(1);
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
 }

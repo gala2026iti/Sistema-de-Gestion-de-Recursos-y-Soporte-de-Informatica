@@ -42,7 +42,7 @@
               Usuario 🡻
             </a>
 
-            <ul class="desplegable-menu" id="opcionesRoles" >
+            <ul class="desplegable-menu" id="opcionesRoles">
 
               <li>
                 <a href="#" id="cerrarSesion">
@@ -63,21 +63,21 @@
             Gestión de tickets 🡻
           </a>
 
-             <ul class="desplegable-menu">
+          <ul class="desplegable-menu">
 
-                        <li>
-                            <a href="./homeTecnico.html">
-                                Tickets registrados
-                            </a>
-                        </li>
+            <li>
+              <a href="./homeTecnico.html">
+                Tickets registrados
+              </a>
+            </li>
 
-                        <li>
-                            <a href="#">
-                                Tickets asignados
-                            </a>
-                        </li>
+            <li>
+              <a href="#">
+                Tickets asignados
+              </a>
+            </li>
 
-                    </ul>
+          </ul>
         </li>
 
         <li>
@@ -103,206 +103,168 @@
   </nav>
 
 
- <main class="container-fluid px-0 py-3">
- <a href="historialGeneral.html?tipo=prestamos" class="btn btn-primary ms-3">
+  <main class="container-fluid px-0 py-3">
+    <a href="historialGeneral.html?tipo=prestamos" class="btn btn-primary ms-3">
       Historial de prestamo
     </a>
     <section class="text-center mb-4">
 
-        <h2 class="text-primary">
-            Tabla de préstamos
-        </h2>
+      <h2 class="text-primary">
+        Tabla de préstamos
+      </h2>
 
-        <span>
-            A continuación se muestran los préstamos de equipos ingresados al sistema
-        </span>
+      <span>
+        A continuación se muestran los préstamos de equipos ingresados al sistema
+      </span>
 
     </section>
 
 
     <section class="filtros">
 
-        <form id="formFiltros">
+      <form id="formFiltros">
 
-            <label for="estado">
-                Filtrar por Estado:
-            </label>
+        <label for="estado">
+          Filtrar por Estado:
+        </label>
 
-            <select id="estado" name="estado">
+        <select id="estado" name="estado">
 
-                <option value="">
-                    Todos
-                </option>
+          <option value="">
+            Todos
+          </option>
 
-                <option value="prestado">
-                    Prestado
-                </option>
+          <option value="prestado">
+            Prestado
+          </option>
 
-                <option value="devuelto">
-                    Devuelto
-                </option>
+          <option value="devuelto">
+            Devuelto
+          </option>
 
-            </select>
-
-
-            <label for="idPrestamo">
-                Filtrar por ID:
-            </label>
-
-            <input type="text"
-                   id="idPrestamo"
-                   name="idPrestamo">
+        </select>
 
 
-            <button type="submit"
-                    class="btn btn-primary text-bold">
-                Filtrar
-            </button>
+        <label for="idPrestamo">
+          Filtrar por ID:
+        </label>
+
+        <input type="text" id="idPrestamo" name="idPrestamo">
 
 
-            <button type="button"
-                    id="btnLimpiarFiltros"
-                    class="btn btn-secondary text-bold">
-                Limpiar
-            </button>
+        <button type="submit" class="btn btn-primary text-bold">
+          Filtrar
+        </button>
 
-        </form>
+
+        <button type="button" id="btnLimpiarFiltros" class="btn btn-secondary text-bold">
+          Limpiar
+        </button>
+
+      </form>
 
     </section>
 
 
-    <section class="table-responsive w-100 m-0">
+    <section class="table-responsive tabla-scroll w-100 m-0">
 
-        <table class="tabla-contenedor m-0"
-               id="tablaPrestamos">
+      <table class="tabla-contenedor m-0" id="tablaPrestamos">
 
-            <thead>
+        <thead>
 
-                <tr>
-                    <th>ID</th>
-                    <th>Técnico</th>
-                    <th>Prestado a</th>
-                    <th>Equipo</th>
-                    <th>Fecha fin</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
+          <tr>
+            <th>ID</th>
+            <th>Técnico</th>
+            <th>Prestado a</th>
+            <th>Equipo</th>
+            <th>Fecha fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
 
-            </thead>
+        </thead>
 
-            <tbody id="cuerpoTablaPrestamos">
-            </tbody>
+        <tbody id="cuerpoTablaPrestamos">
+        </tbody>
 
-        </table>
+      </table>
 
     </section>
 
 
     <section class="contenedor-registrar d-flex justify-content-end px-3 mt-4">
 
-        <button id="btnRegistrarPrestamo"
-                class="btn btn-success mb-4"
-                type="button">
-            Registrar préstamo
-        </button>
+      <button id="btnRegistrarPrestamo" class="btn btn-success mb-4" type="button">
+        Registrar préstamo
+      </button>
 
     </section>
 
 
     <section id="modalPrestamo"
-             class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center"
-             style="z-index: 1050;">
+      class="modal-incidencia d-none fixed-top w-100 h-100 justify-content-center align-items-center"
+      style="z-index: 1050;">
 
-        <section class="modal-contenido bg-white p-4 rounded shadow w-100">
+      <section class="modal-contenido bg-white p-4 rounded shadow w-100">
 
-            <form id="formPrestamo">
+        <form id="formPrestamo">
 
-                <h2 class="text-primary border-bottom pb-3">
-                    Registro de préstamo
-                </h2>
+          <h2 class="text-primary border-bottom pb-3">
+            Registro de préstamo
+          </h2>
 
+          <fieldset>
 
-                <fieldset>
+            <label for="ciPrestado" class="form-label fw-semibold mt-2">
+              CI del solicitante:
+            </label>
 
-                    <label for="ciPrestado"
-                           class="form-label fw-semibold mt-2">
-                        CI del solicitante:
-                    </label>
+            <input type="text" id="ciPrestado" class="form-control" maxlength="8" minlength="8" inputmode="numeric"
+              placeholder="Ej: 12345678" required>
 
-                    <input type="text"
-                           id="ciPrestado"
-                           class="form-control"
-                           maxlength="8"
-                           minlength="8"
-                           inputmode="numeric"
-                           placeholder="Ej: 12345678"
-                           required>
+            <label for="nombrePrestado" class="form-label fw-semibold mt-2">
+              Nombre del solicitante:
+            </label>
 
+            <input type="text" id="nombrePrestado" class="form-control" maxlength="100" placeholder="Ej: Juan Pérez"
+              required>
 
-                    <label for="nombrePrestado"
-                           class="form-label fw-semibold mt-2">
-                        Nombre del solicitante:
-                    </label>
+            <label for="listaDispositivos" class="form-label fw-semibold mt-3">
+              Dispositivo
+            </label>
 
-                    <input type="text"
-                           id="nombrePrestado"
-                           class="form-control"
-                           maxlength="100"
-                           placeholder="Ej: Juan Pérez"
-                           required>
+            <select id="listaDispositivos" class="form-select" required>
 
+              <option value="">
+                Elegir equipo
+              </option>
 
-                    <label for="listaDispositivos"
-                           class="form-label fw-semibold mt-3">
-                        Dispositivo
-                    </label>
+            </select>
 
-                    <select id="listaDispositivos"
-                            class="form-select"
-                            required>
+            <label for="fechaFin" class="form-label fw-semibold mt-3">
+              Cuándo será devuelto el dispositivo
+            </label>
 
-                        <option value="">
-                            Elegir equipo
-                        </option>
+            <input type="datetime-local" id="fechaFin" class="form-control mb-3" required>
 
-                    </select>
+          </fieldset>
 
 
-                    <label for="fechaFin"
-                           class="form-label fw-semibold mt-3">
-                        Cuándo será devuelto el dispositivo
-                    </label>
+          <section class="d-flex justify-content-end gap-2 mt-3">
 
-                    <input type="datetime-local"
-                           id="fechaFin"
-                           class="form-control mb-3"
-                           required>
+            <button type="submit" class="btn btn-success">
+              Registrar préstamo
+            </button>
 
-                </fieldset>
+            <button type="button" id="btnCancelarPrestamo" class="btn btn-danger">
+              Cancelar
+            </button>
 
-
-                <section class="d-flex justify-content-end gap-2 mt-3">
-
-                    <button type="submit"
-                            class="btn btn-success">
-                        Registrar préstamo
-                    </button>
-
-                    <button type="button"
-                            id="btnCancelarPrestamo"
-                            class="btn btn-danger">
-                        Cancelar
-                    </button>
-
-                </section>
-
-            </form>
-
-        </section>
-
+          </section>
+        </form>
+      </section>
     </section>
-
-</main>
+  </main>
 
   <footer>
     <span class="footer-bold">
@@ -310,11 +272,10 @@
     </span>
   </footer>
 
-<script src="../assets/js/btnMenuCelular.js"></script>
-<script src="../assets/js/verificarSesion.js"></script>
-<script src="../assets/js/cerrarSesion.js"></script>
-<script src="../assets/js/gestionPrestamos.js"></script>
+  <script src="../assets/js/btnMenuCelular.js"></script>
+  <script src="../assets/js/verificarSesion.js"></script>
+  <script src="../assets/js/cerrarSesion.js"></script>
+  <script src="../assets/js/gestionPrestamos.js"></script>
 
 </body>
-
 </html>

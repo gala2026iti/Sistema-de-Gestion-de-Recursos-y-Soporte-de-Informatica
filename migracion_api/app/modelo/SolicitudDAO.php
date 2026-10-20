@@ -9,14 +9,7 @@ class SolicitudDAO
         $this->conexion = $conexion;
     }
 
-
-    public function registrarSolicitud(
-        string $ciDocente,
-        string $asunto,
-        string $descripcion,
-        string $fechaLimite,
-        string $horaLimite
-    ): bool {
+    public function registrarSolicitud(string $ciDocente, string $asunto, string $descripcion, string $fechaLimite, string $horaLimite): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -38,16 +31,8 @@ class SolicitudDAO
             ";
 
             $consultaSolicitud = $this->conexion->prepare($sqlSolicitud);
-
-            $consultaSolicitud->execute([
-                "asunto" => $asunto,
-                "descripcion" => $descripcion,
-                "fechaLimite" => $fechaLimite,
-                "horaLimite" => $horaLimite
-            ]);
-
+            $consultaSolicitud->execute(["asunto" => $asunto, "descripcion" => $descripcion, "fechaLimite" => $fechaLimite, "horaLimite" => $horaLimite]);
             $idSolicitud = $this->conexion->lastInsertId();
-
             $consultaSolicitud->closeCursor();
 
 
@@ -67,12 +52,7 @@ class SolicitudDAO
             ";
 
             $consultaDocente = $this->conexion->prepare($sqlDocente);
-
-            $consultaDocente->execute([
-                "ciDocente" => $ciDocente,
-                "idSolicitud" => $idSolicitud
-            ]);
-
+            $consultaDocente->execute(["ciDocente" => $ciDocente, "idSolicitud" => $idSolicitud]);
             $consultaDocente->closeCursor();
 
             $this->conexion->commit();
@@ -90,10 +70,7 @@ class SolicitudDAO
     }
 
 
-    public function listarSolicitudes(
-        ?string $estado,
-        ?string $id
-    ): array {
+  public function listarSolicitudes( ?string $estado, ?string $id, ?string $ciDocente = null): array{
         $sql = "
             SELECT
                 s.id,
@@ -152,7 +129,6 @@ class SolicitudDAO
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
-
         $solicitudes = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
         $consulta->closeCursor();
@@ -183,11 +159,7 @@ class SolicitudDAO
         return (bool) $estado;
     }
 
-
-    public function finalizarSolicitud(
-        string $idSolicitud,
-        string $ciTecnico
-    ): bool {
+    public function finalizarSolicitud(string $idSolicitud, string $ciTecnico): bool {
         try {
             $this->conexion->beginTransaction();
 
@@ -227,12 +199,7 @@ class SolicitudDAO
             ";
 
             $consultaTecnico = $this->conexion->prepare($sqlTecnico);
-
-            $consultaTecnico->execute([
-                "ciTecnico" => $ciTecnico,
-                "idSolicitud" => $idSolicitud
-            ]);
-
+            $consultaTecnico->execute(["ciTecnico" => $ciTecnico, "idSolicitud" => $idSolicitud]);
             $consultaTecnico->closeCursor();
 
             $this->conexion->commit();

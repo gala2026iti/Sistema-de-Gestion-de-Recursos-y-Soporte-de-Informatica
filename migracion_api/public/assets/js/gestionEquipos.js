@@ -4,6 +4,8 @@ const API_UBICACIONES = "../index.php/ubicaciones";
 
 // ELEMENTOS DEL DOM
 
+
+const botonLimpiarFiltrosEquipos = document.getElementById("btnLimpiarFiltrosEquipos");
 const cuerpoTablaEquipos = document.getElementById("cuerpoTablaEquipos");
 const formularioFiltroEquipos = document.getElementById("formFiltroEquipos");
 
@@ -710,6 +712,12 @@ botonAgregarTaller.addEventListener("click", function () {
     gestionarRegistroUbicacion("taller");
 });
 
+botonLimpiarFiltrosEquipos.addEventListener("click",
+    function () {
+        formularioFiltroEquipos.reset();
+        formularioFiltroEquipos.requestSubmit();
+    }
+);
 formularioFiltroEquipos.addEventListener("submit", filtrarEquipos);
 
 filtroPrestamo.addEventListener("click", mostrarEquiposPrestamo);
