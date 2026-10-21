@@ -1,0 +1,10 @@
+Operaciones DML del sistema (INSERT / UPDATE / DELETE), separadas por DAO:
+
+- equipo.sql  <- EquipoDAO.php
+- historial.sql  <- HistorialDAO.php
+- metricas.sql  <- MetricasDAO.php
+- prestamo.sql  <- PrestamoDAO.php
+- solicitud.sql  <- SolicitudDAO.php
+- ticket.sql  <- TicketDAO.php
+- ubicacion.sql  <- UbicacionDAO.php
+- usuario.sql  <- UsuarioDAO.php

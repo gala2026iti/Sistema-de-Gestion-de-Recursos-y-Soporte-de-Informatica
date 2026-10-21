@@ -1,340 +1,285 @@
-// VARIABLES
-const valoresPagina = new URLSearchParams(window.location.search)
-const ticketIdActual = valoresPagina.get("id")
+const API_TICKETS = "../index.php/tickets";
 
-const tituloTicket = document.getElementById("tituloTicket")
+// ELEMENTOS DEL DOM
+const formularioFiltroTickets = document.getElementById("formFiltroTickets");
 
-const estadoPendiente = document.getElementById("pendiente")
-const estadoEnProceso = document.getElementById("proceso")
-const estadoResuelto = document.getElementById("resuelto")
+const entradaOrden = document.getElementById("orden");
+const entradaGravedad = document.getElementById("gravedad");
+const entradaTipo = document.getElementById("tipo");
+const entradaEstado = document.getElementById("estado");
+const entradaIdTicket = document.getElementById("idTicket");
 
-const usuarioAsignado = document.getElementById("usuarioAsignado")
-const btnAutoasignar = document.getElementById("btnAutoasignar")
+const botonFiltrarTickets = document.getElementById("btnFiltrarTickets");
+const cuerpoTablaTickets = document.getElementById("cuerpoTablaTickets");
 
-const selectEstado = document.getElementById("selectorEstado")
-const selectGravedad = document.getElementById("selectorGravedad")
-const inputSalon = document.getElementById("ubicacionSalon")
-const inputPc = document.getElementById("entradaPC")
-const inputCategoria = document.getElementById("entradaCategoria")
-const contenido = document.getElementById("contenido")
+const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
 
-const contenedorJustificacion = document.getElementById("espacioJustificacion")
-const justificacion = document.getElementById("justificacion")
 
-const formControlTicket = document.getElementById("formDetalleTicket")
-const btnFinalizarTicket = document.getElementById("btnFinalizarTicket")
+// RESPUESTAS DE LA API
 
-const contenedorComentarios = document.getElementById("contenedorComentarios")
-const nuevoComentario = document.getElementById("nuevoComentario")
-const btnGuardarComentario = document.getElementById("btnGuardarComentario")
+async function leerRespuestaAPI(respuesta) {
+    const texto = await respuesta.text();
 
-const tarjetaEscribirComentario = nuevoComentario ? nuevoComentario.closest(".card") : null
+    if (!texto.trim()) {
+        throw new Error(`La API respondió sin cuerpo (HTTP ${respuesta.status}).`);
+    }
 
-// FUNCIONES
-const obtenerUsuarioFirmado = () => {
-    const usuario = localStorage.getItem("usuario")
-    if (usuario === null || usuario === undefined || usuario === "") return null
-    return JSON.parse(usuario)
+    let json;
+    try {
+        json = JSON.parse(texto);
+    } catch {
+        throw new Error(`HTTP ${respuesta.status}: La API no devolvió JSON.`);
+    }
 
+    if (!respuesta.ok) {
+        throw new Error(
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
+            }`);
+    }
+    return json.datos;
 }
 
-const cargarTickets = () => {
-    const datos = localStorage.getItem("tickets")
-    if (!datos) return []
-    return JSON.parse(datos)
+// PETICIONES
+async function obtenerTickets() {
+    let url = API_TICKETS;
+    const parametros = new URLSearchParams();
+
+    if (entradaOrden.value !== "") {
+        parametros.append("orden", entradaOrden.value);
+    }
+
+    if (entradaGravedad.value !== "") {
+        parametros.append("gravedad", entradaGravedad.value);
+    }
+
+    if (entradaTipo.value !== "") {
+        parametros.append("tipo", entradaTipo.value);
+    }
+
+    if (entradaEstado.value !== "") {
+        parametros.append("estado", entradaEstado.value);
+    }
+
+    if (entradaIdTicket.value.trim() !== "") {
+        parametros.append("idTicket", entradaIdTicket.value.trim());
+    }
+
+    const consulta = parametros.toString();
+
+    if (consulta !== "") {
+        url += "?" + consulta;
+    }
+
+    const respuesta = await fetch(url);
+
+    return leerRespuestaAPI(respuesta);
 }
 
-const guardarTickets = (lista) => {
-    localStorage.setItem("tickets", JSON.stringify(lista))
-}
+// TABLA
+function agregarFilaTicket(ticket) {
+    const fila = document.createElement("tr");
 
-const registrarHistorial = (detalle, idTicket) => {
-    const datos = localStorage.getItem("registroTickets")
-    let historial = datos ? JSON.parse(datos) : []
+    // ID
+    const campoId = document.createElement("td");
+    campoId.textContent = ticket.id;
 
-    historial.push({
-        id: historial.length + 1,
-        fecha: obtenerFecha("fecha"),
-        hora: obtenerFecha("hora"),
-        detalleTicket: detalle,
-        idTicket: idTicket
-    })
-    localStorage.setItem("registroTickets", JSON.stringify(historial))
-}
+    // Asunto
+    const campoAsunto = document.createElement("td");
+    campoAsunto.textContent = ticket.asunto;
 
-const obtenerFecha = (dato) => {
-    const fechaActual = new Date()
-    const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1) + "/" + fechaActual.getFullYear()
-    const formatoHora = fechaActual.getHours() + ":" + fechaActual.getMinutes()
+    // Tipo
+    const campoTipo = document.createElement("td");
+    campoTipo.textContent = ticket.tipo;
 
-    if(dato === "fecha"){
-        return formatoFecha
+
+    // Gravedad
+    const campoGravedad = document.createElement("td");
+    campoGravedad.textContent = ticket.gravedad;
+
+    // Estado
+    const campoEstado = document.createElement("td");
+    campoEstado.textContent = ticket.estado;
+
+
+    // Información de creación
+    const campoInformacion = document.createElement("td");
+
+    const fecha = document.createElement("span");
+    fecha.textContent = "Fecha: " + ticket.fechaCreacion;
+
+    const hora = document.createElement("span");
+    hora.textContent = "Hora: " + ticket.horaCreacion;
+
+    const docente = document.createElement("span");
+    docente.textContent = "Docente: " + ticket.nombreDocente;
+
+    const equipo = document.createElement("span");
+    equipo.textContent = "Equipo: " + ticket.idEquipo;
+
+    const ubicacion = document.createElement("span");
+    ubicacion.textContent = ticket.tipoUbicacion + " " + ticket.idUbicacion;
+
+
+    campoInformacion.classList.add("d-flex", "flex-column");
+    campoInformacion.appendChild(fecha);
+    campoInformacion.appendChild(hora);
+    campoInformacion.appendChild(docente);
+    campoInformacion.appendChild(equipo);
+    campoInformacion.appendChild(ubicacion);
+
+
+    const campoAsignacion = document.createElement("td");
+
+
+    const botonAsignacion = document.createElement("button");
+
+    botonAsignacion.type = "button";
+
+    // Detalle
+    const campoDetalle = document.createElement("td");
+
+    const enlaceDetalle = document.createElement("a");
+
+    enlaceDetalle.href = "./detalleTicket.html?id=" + ticket.id;
+    enlaceDetalle.textContent = "Ver detalle";
+    enlaceDetalle.classList.add("btn", "btn-primary", "btn-sm");
+    campoDetalle.appendChild(enlaceDetalle);
+
+    if (Number(ticket.esColaborador) === 1) {
+
+        botonAsignacion.textContent = "Desasignarme";
+
+        botonAsignacion.classList.add("btn", "btn-danger");
+
+        botonAsignacion.addEventListener(
+            "click",
+            function () {
+                gestionarAsignacion(ticket.id, "desasignarse");
+            });
+
     } else {
-        return formatoHora
-    }
-}
 
-const mostrarInfoTicket = () => {
-    const lista = cargarTickets()
-    // Se hace pasaje a string para evitar errores de tipo con el igual estricto
-    const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
-
-    if (!ticket) {
-        tituloTicket.innerText = "Ticket no encontrado"
-        return
-    }
-
-    tituloTicket.innerText = ticket.asunto + " "
-    const spanId = document.createElement("span")
-    spanId.className = "fw-bold"
-    spanId.innerText = `#${ticket.id}`
-    tituloTicket.appendChild(spanId)
-
-    const estadoLimpio = ticket.estado ? ticket.estado.toLowerCase() : "pendiente"
-
-    //Se despintan todas las opciones de estado debido a que aun no se sabe cual es el estado del ticket
-    if (estadoResuelto) estadoResuelto.className = "d-none"
-    if (estadoEnProceso) estadoEnProceso.className = "d-none"
-    if (estadoPendiente) estadoPendiente.className = "d-none"
-
-    if (estadoLimpio === "resuelto") {
-        if (estadoResuelto) estadoResuelto.className = "badge bg-success px-2 py-1 fs-6"
-        if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "none")
-        if (selectEstado) selectEstado.disabled = true
-
-        if (contenedorJustificacion) contenedorJustificacion.classList.remove("d-none")
-        if (justificacion) justificacion.value = ticket.justificacion || "Sin justificación registrada."
-
-        if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "none")
-
-    } else {
-        if (tarjetaEscribirComentario) tarjetaEscribirComentario.style.setProperty("display", "block")
-
-        if (estadoLimpio === "en proceso") {
-            if (estadoEnProceso) estadoEnProceso.className = "badge bg-warning px-2 py-1 fs-6"
-            if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "block")
-            if (selectEstado) selectEstado.disabled = false
-            if (contenedorJustificacion) contenedorJustificacion.classList.add("d-none")
-        } else {
-            if (estadoPendiente) estadoPendiente.className = "badge bg-danger px-2 py-1 fs-6"
-            if (btnFinalizarTicket) btnFinalizarTicket.style.setProperty("display", "none")
-            if (selectEstado) selectEstado.disabled = false
-            if (contenedorJustificacion) contenedorJustificacion.classList.add("d-none")
-        }
-    }
-
-    //Se filtran los colaboradores quitando los null y los undefined del array
-    const colaboradoresValidos = (ticket.colaboradores || []).filter(c => c !== null && c !== undefined && c !== "")
-    const encargados = colaboradoresValidos.length > 0 ? colaboradoresValidos.join(", ") : "Ninguno - Sin asignar"
-
-    if (usuarioAsignado) usuarioAsignado.value = encargados
-    if (selectEstado) selectEstado.value = estadoLimpio
-    if (selectGravedad && ticket.gravedad) selectGravedad.value = ticket.gravedad.toLowerCase()
-    if (inputSalon) inputSalon.value = ticket.salon || "No especificado"
-    if (inputPc) inputPc.value = ticket.equipoId || "N/A"
-    if (inputCategoria) inputCategoria.value = ticket.tipo || "General"
-    if (contenido) contenido.value = ticket.descripcion || ""
-
-    contenedorComentarios.innerHTML = ""
-    const comentarios = ticket.comentarios || []
-
-    comentarios.forEach(com => {
-        const articulo = document.createElement("article")
-        articulo.className = "card mb-4 shadow-sm"
-
-        const divHeader = document.createElement("div")
-        divHeader.className = "card-header d-flex justify-content-between align-items-center bg-light"
-
-        const h3User = document.createElement("h3")
-        h3User.className = "h6 m-0 fw-bold text-secondary"
-        h3User.innerText = com.autor
-
-        const spanTiempo = document.createElement("span")
-        spanTiempo.className = "text-muted small"
-        spanTiempo.innerText = `${com.fecha}`
-
-        divHeader.appendChild(h3User)
-        divHeader.appendChild(spanTiempo)
-
-        const divBody = document.createElement("div")
-        divBody.className = "card-body"
-
-        const espacioContenido = document.createElement("p")
-        espacioContenido.className = "card-text text-dark"
-        espacioContenido.innerText = com.texto
-
-        divBody.appendChild(espacioContenido)
-        articulo.appendChild(divHeader)
-        articulo.appendChild(divBody)
-
-        contenedorComentarios.appendChild(articulo)
-    })
-
-    if (estadoLimpio === "resuelto") {
-        if (nuevoComentario) {
-            nuevoComentario.disabled = true
-            nuevoComentario.placeholder = "Este ticket ha sido resuelto. No se permiten más comentarios."
-        }
-        if (btnGuardarComentario) {
-            btnGuardarComentario.disabled = true
-            btnGuardarComentario.classList.add("disabled")
-        }
-    } else {
-        if (nuevoComentario) {
-            nuevoComentario.disabled = false
-            nuevoComentario.placeholder = "Escribe un comentario o actualización de la PC..."
-        }
-        if (btnGuardarComentario) {
-            btnGuardarComentario.disabled = false
-            btnGuardarComentario.classList.remove("disabled")
-        }
-    }
-}
-
-//EVENTOS
-
-mostrarInfoTicket()
-
-if (btnAutoasignar) {
-    btnAutoasignar.addEventListener("click", () => {
-        const usuarioLogueado = obtenerUsuarioFirmado()
-
-        let idUsuarioActual = "N/A"
-        if (usuarioLogueado) {
-            idUsuarioActual = usuarioLogueado.usuario || "N/A"
-        }
-
-        if (idUsuarioActual === "N/A") {
-            alert("Error: No se pudo identificar tu sesión de operador técnico.")
-            return
-        }
-
-        const lista = cargarTickets()
-
-        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
-
-        if (ticket) {
-            if (ticket.estado.toLowerCase() === "resuelto") {
-                alert("Error: Este ticket ya está resuelto y cerrado.")
-                return
+        botonAsignacion.textContent = "Asignarme";
+        botonAsignacion.classList.add("btn", "btn-success");
+        botonAsignacion.addEventListener(
+            "click",
+            function () {
+                gestionarAsignacion(ticket.id, "asignarse");
             }
-
-            ticket.colaboradores = (ticket.colaboradores || []).filter(col => col !== null && col !== undefined)
-
-            const yaEstaAsignado = ticket.colaboradores.some(col => String(col) === String(idUsuarioActual))
-
-            if (yaEstaAsignado) {
-                alert("Error: Ya te encuentras asignado a este ticket.")
-                return
-            }
-
-            ticket.colaboradores.push(idUsuarioActual)
-
-
-            guardarTickets(lista)
-            mostrarInfoTicket()
-            registrarHistorial(`${idUsuarioActual} se unió como colaborador.`, ticket.id)
-
-            alert("Te has asignado exitosamente al ticket.")
-        }
-    })
-}
-
-if (formControlTicket) {
-    formControlTicket.addEventListener("submit", (e) => {
-        e.preventDefault()
-        const lista = cargarTickets()
-        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
-
-        if (ticket) {
-            if (ticket.estado.toLowerCase() === "resuelto") return
-
-        const estadosValidos = ["pendiente", "en proceso"]
-        const gravedadesValidas = ["ligera", "media", "grave"]
-
-    if (!estadosValidos.includes(selectEstado.value)) {
-        alert("Estado inválido.")
-        return
+        );
     }
 
-    if (!gravedadesValidas.includes(selectGravedad.value)) {
-        alert("Gravedad inválida.")
-        return
+
+    campoAsignacion.appendChild(botonAsignacion);
+    fila.appendChild(campoId);
+    fila.appendChild(campoAsunto);
+    fila.appendChild(campoTipo);
+    fila.appendChild(campoGravedad);
+    fila.appendChild(campoEstado);
+    fila.appendChild(campoInformacion);
+    fila.appendChild(campoDetalle);
+    fila.appendChild(campoAsignacion);
+    cuerpoTablaTickets.appendChild(fila);
+}
+
+function mostrarSinTickets() {
+    const fila = document.createElement("tr");
+    const campo = document.createElement("td");
+
+    campo.colSpan = 8;
+    campo.textContent = "No se encontraron tickets.";
+    campo.classList.add("text-center", "py-4");
+
+    fila.appendChild(campo);
+    cuerpoTablaTickets.appendChild(fila);
+}
+
+async function modificarAsignacionTicket(idTicket, accion) {
+    const datos = {
+        idTicket: idTicket,
+        accion: accion
+    };
+
+    const respuesta = await fetch(
+        API_TICKETS + "/" + encodeURIComponent(idTicket), {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        }, body: JSON.stringify(datos)
+    });
+    return leerRespuestaAPI(respuesta);
+}
+
+async function gestionarAsignacion(
+    idTicket,
+    accion
+) {
+    try {
+
+        const resultado =
+            await modificarAsignacionTicket(
+                idTicket,
+                accion
+            );
+
+
+        alert(resultado.mensaje);
+
+
+        /*
+         * Recargamos la tabla para que
+         * el botón cambie automáticamente.
+         */
+        await actualizarTablaTickets();
+
+
+    } catch (error) {
+        alert("No se pudo modificar la asignación: " + error.message);
     }
-    const usuarioLogueado = obtenerUsuarioFirmado()
-    const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
-
-    ticket.estado = selectEstado.value
-    ticket.gravedad = selectGravedad.value
-
-            guardarTickets(lista)
-            mostrarInfoTicket()
-            registrarHistorial(`${idUsuarioActual} actualizó el estado a ${ticket.estado.toUpperCase()} y la gravedad a ${selectGravedad.value.toUpperCase()}.`, ticket.id)
-            alert("Cambios guardados con éxito.")
-        }
-    })
 }
 
-if (btnFinalizarTicket) {
-    btnFinalizarTicket.addEventListener("click", () => {
-        const justificacionPrevia = prompt("Por favor, introduzca una justificación detallada de cómo se resolvió la incidencia:")
-        const justificacionLimpia = justificacionPrevia.trim() || ""
+async function actualizarTablaTickets() {
+    cuerpoTablaTickets.replaceChildren();
 
-        if (justificacionLimpia === "") {
-            alert("Error: Operación cancelada. La justificación de cierre es obligatoria.")
-            return
+
+    try {
+
+        const tickets =
+            await obtenerTickets();
+
+
+        if (tickets.length === 0) {
+            mostrarSinTickets();
+            return;
         }
 
-        const lista = cargarTickets()
-        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
 
-        if (ticket) {
-            const usuarioLogueado = obtenerUsuarioFirmado()
-            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
+        for (const ticket of tickets) {
+            agregarFilaTicket(ticket);
+        }
 
-            ticket.estado = "resuelto"
-            ticket.justificacion = justificacionLimpia
+    } catch (error) {
 
-            guardarTickets(lista)
-            mostrarInfoTicket()
-            registrarHistorial(`${idUsuarioActual} finalizó el ticket. Solución: "${justificacionLimpia}".`, ticket.id)
-            alert("Ticket finalizado y cerrado con éxito.")
-        } 
-    })
+        console.error(error);
+        mostrarSinTickets();
+        alert(
+            "No se pudieron cargar los tickets: " + error.message);
+    }
 }
 
-if (btnGuardarComentario) {
-    btnGuardarComentario.addEventListener("click", () => {
-        const textoComentario = nuevoComentario.value.trim()
-        if (textoComentario === "") {
-            alert("Error: El comentario no puede estar vacío.")
-            return
-        }
+async function filtrarTickets(evento) {
+    evento.preventDefault();
 
-        const lista = cargarTickets()
-        const ticket = lista.find(t => String(t.id) === String(ticketIdActual))
-
-        if (ticket) {
-            if (ticket.estado.toLowerCase() === "resuelto") {
-                alert("Error: No se permiten comentarios en tickets cerrados.")
-                return
-            }
-
-            const usuarioLogueado = obtenerUsuarioFirmado()
-            const idUsuarioActual = usuarioLogueado ? usuarioLogueado.usuario : "N/A"
-
-            if (!ticket.comentarios) ticket.comentarios = []
-
-            ticket.comentarios.push({
-                autor: idUsuarioActual,
-                fecha: new Date().toLocaleDateString('es-ES'),
-                texto: textoComentario
-            })
-
-            guardarTickets(lista)
-            nuevoComentario.value = ""
-            mostrarInfoTicket()
-            alert("Comentario registrado.")
-        }
-    })
+    await actualizarTablaTickets();
 }
+
+btnLimpiarFiltros.addEventListener("click", async () => {
+    formularioFiltroTickets.reset();
+    await actualizarTablaTickets();
+});
+botonFiltrarTickets.addEventListener("click", filtrarTickets);
+formularioFiltroTickets.addEventListener("submit", filtrarTickets);
+
+actualizarTablaTickets();

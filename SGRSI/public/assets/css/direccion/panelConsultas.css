@@ -33,6 +33,31 @@
     margin-bottom: 1rem;
 }
 
+.contenedor-grafica {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+
+.grafica-scroll {
+    position: relative;
+
+    min-width: 500px;
+    height: 320px;
+}
+
+
+.grafica-incidencias {
+    min-width: 700px;
+}
+
+
+.grafica-scroll canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @media (max-width: 576px) {
     .orden-tablas {
         grid-template-columns: 1fr;

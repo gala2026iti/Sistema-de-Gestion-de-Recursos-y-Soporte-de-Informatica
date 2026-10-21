@@ -7,7 +7,7 @@
  */
 class Solicitud
 {
-    /**
+    /**                            
      * @brief Identificador de la solicitud.
      */
     private string $id;

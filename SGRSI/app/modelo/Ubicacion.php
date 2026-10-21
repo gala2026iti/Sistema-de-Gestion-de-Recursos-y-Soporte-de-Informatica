@@ -1,57 +1,33 @@
 <?php
 
-/**
- * @brief Representa una ubicación del sistema.
- *
- * Almacena el identificador y el tipo de la ubicación.
- */
 class Ubicacion
 {
-    /**
-     * @brief Identificador de la ubicación.
-     */
     private string $id;
-
-    /**
-     * @brief Tipo de la ubicación.
-     */
     private string $tipo;
-
-      /**
-     * @brief Construye un objeto Ubicacion.
-     *
-     * @param string $id Identificador de la ubicación.
-     * @param string $tipo Tipo de ubicación.
-     */
+    private bool $activo;
 
     public function __construct(
         string $id,
-        string $tipo
+        string $tipo,
+        bool $activo
     ) {
         $this->id = $id;
         $this->tipo = $tipo;
+        $this->activo = $activo;
     }
-
-    /**
-     * @brief Obtiene el identificador de la ubicación.
-     *
-     * @return string Identificador de la ubicación.
-     */
 
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @brief Obtiene el tipo de ubicación.
-     *
-     * @return string Tipo de ubicación.
-     */
-    
     public function getTipo(): string
     {
         return $this->tipo;
     }
 
+    public function getActivo(): bool
+    {
+        return $this->activo;
+    }
 }

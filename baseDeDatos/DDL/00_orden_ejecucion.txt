@@ -1,0 +1,30 @@
+Orden recomendado:
+
+00_configuracion.sql
+01_eliminar_tablas.sql
+02_usuario.sql
+03_correo.sql
+04_docente.sql
+05_administrador.sql
+06_tecnico.sql
+07_rol.sql
+08_administrador_modifica_usuario.sql
+09_solicitud.sql
+10_docente_ingresa_solicitud.sql
+11_tecnico_finaliza_solicitud.sql
+12_ubicacion.sql
+13_equipo.sql
+14_equipo_reside_ubicacion.sql
+15_administrador_maneja_equipo.sql
+16_administrador_controla_ubicacion.sql
+17_prestamo.sql
+18_prestamo_corresponde_equipo.sql
+19_tecnico_tramita_prestamo.sql
+20_ticket.sql
+21_docente_reporta_ticket.sql
+22_equipo_ubicacion_genera_ticket.sql
+23_colaborador.sql
+24_tecnico_gestiona_ticket.sql
+25_tecnico_comenta_ticket.sql
+
+Alternativa: ejecutar únicamente 99_creacion_completa.sql para recrear toda la estructura.

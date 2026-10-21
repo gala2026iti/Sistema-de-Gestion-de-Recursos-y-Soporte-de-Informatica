@@ -1,0 +1,16 @@
+/*
+    POBLACION: COLABORADOR
+*/
+
+SET time_zone = '-03:00';
+USE gala;
+
+INSERT INTO COLABORADOR
+(idTicket, ciTecnico) VALUES
+(2, '33333333'),
+(2, '44444444'),
+(3, '66666666'),
+(4, '33333333'),
+(5, '44444444'),
+(6, '33333333'),
+(6, '66666666');

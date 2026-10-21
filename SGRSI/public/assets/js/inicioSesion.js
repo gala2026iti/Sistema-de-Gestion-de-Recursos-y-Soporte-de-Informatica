@@ -1,116 +1,108 @@
-// VARIABLES
+const API_LOGIN = "./index.php/login";
 
-let booleanMostrarClave = false
-const btnMostrarClave = document.getElementById("btnMostrarClave")
-const inputClave = document.getElementById("clave")
+const formularioLogin = document.getElementById("formInicio");
 
-const mostrarClave = () => {
-    booleanMostrarClave = !booleanMostrarClave
-    if (booleanMostrarClave) {
-        inputClave.type = "text"
-        btnMostrarClave.innerText = "Ocultar Contraseña"
-    } else {
-        inputClave.type = "password"
-        btnMostrarClave.innerText = "Mostrar Contraseña"
-    }
-}
+const entradaCedula = document.getElementById("cedula");
+const entradaClave = document.getElementById("clave");
 
-btnMostrarClave.addEventListener("click", mostrarClave)
+const botonMostrarClave = document.getElementById("btnMostrarClave");
+const mensajeError = document.getElementById("mensajeError");
 
-/* ---Descartado por el momento
 
-const form = document.getElementById('formInicio')
+async function loguear(cedula, clave) {
 
-// FUNCIONES
-const cargarUsuarios = () => {
-    const datos = localStorage.getItem('usuarios')
-    if (datos === null || datos === undefined || datos === "") {
-        return []
-    }
-    return JSON.parse(datos)
-}
+    const credenciales = {
+        cedula: cedula,
+        clave: clave
+    };
 
-const obtenerUsuario = (cedula) => {
-    return cargarUsuarios().find(u => u.usuario === cedula)
-}
-
-const usuarioExistente = (cedula) => {
-    return obtenerUsuario(cedula) !== undefined
-}
-const hayAdmins = () => {
-    const usuariosLocales = localStorage.getItem("usuarios")
-    if (!usuariosLocales) return false
-
-    const usuarios = JSON.parse(usuariosLocales)
-    if (!Array.isArray(usuarios)) return false
-
-    return usuarios.some(u => u.rol === "administrador" && u.activo)
-}
-
-const validarInicioSesion = (usuario) => {
-
-    if (!/^\d{8}$/.test(usuario.usuario)) {
-        alert("La cédula debe contener exactamente 8 números.")
-        return false }
-
-    if (usuario.clave.trim() === "") {
-        alert("Debe ingresar una contraseña.")
-        return false }
-    return true
-}
-
-// EVENTOS
-form.addEventListener("submit", function (e) {
-    e.preventDefault()
-
-    const inputCedula = document.getElementById('cedula').value.trim()
-    const inputClave = document.getElementById('clave').value.trim()
-
-    const usuarioLocal = {
-        usuario: inputCedula,
-        clave: inputClave,
-        rol: ""
-    }
-
-    if (!validarInicioSesion(usuarioLocal)) {
-    return
-}
-
-    // Debug de administrador
-    if (inputCedula === "12345678" && inputClave === "adminITI" && !hayAdmins()) {
-        usuarioLocal.rol = "administrador"
-        localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
-        window.location.href = "homeAdmin.php"
-    } else {
-
-        //Logueo normal
-        if (usuarioExistente(inputCedula)) {
-            const usuarioLogueado = obtenerUsuario(inputCedula)
-
-            if (usuarioLogueado.clave === inputClave) {
-
-                if (usuarioLogueado.activo) {
-
-                    usuarioLocal.rol = usuarioLogueado.rol
-                    localStorage.setItem("usuario", JSON.stringify(usuarioLocal))
-
-                    if (usuarioLogueado.rol === "administrador" || usuarioLogueado.rol === "tecnico") {
-                        window.location.href = "homeAdmin.php"
-                    } else if (usuarioLogueado.rol === "docente") {
-                        window.location.href = "homeDocente.php"
-                    } else if (usuarioLogueado.rol === "direccion") {
-                        window.location.href = "homeDirector.php"
-                    }
-                } else {
-                    alert("Error: Usuario no disponible")
-                }
-            } else {
-                alert("Error: Usuario o Contraseña incorrectos")
-            }
-        } else {
-            alert("Error: Usuario o Contraseña incorrectos")
+    const respuesta = await fetch(
+        API_LOGIN,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(credenciales)
         }
-    }
-})
+    );
 
-btnMostrarContra.addEventListener("click", mostrarContra)*/
+    const json = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(json.mensaje ?? "No se pudo iniciar sesión.");
+    }
+    return json.datos;
+}
+
+
+function mostrarClave() {
+
+    if (entradaClave.type === "password") {
+        entradaClave.type = "text";
+        botonMostrarClave.innerText = "Ocultar Contraseña";
+
+    } else {
+        entradaClave.type = "password";
+        botonMostrarClave.innerText = "Mostrar Contraseña";
+    }
+}
+
+
+function mostrarError(mensaje) {
+    mensajeError.textContent = mensaje;
+    mensajeError.classList.remove("d-none");
+}
+
+
+function ocultarError() {
+    mensajeError.textContent = "";
+    mensajeError.classList.add("d-none");
+}
+
+
+async function gestionarLogin(eventoFormulario) {
+
+    eventoFormulario.preventDefault();
+    ocultarError();
+
+    try {
+
+        const sesion = await loguear(entradaCedula.value.trim(), entradaClave.value);
+
+        if (!sesion.csrfToken) {
+            throw new Error("La API no devolvió el token CSRF.");
+        }
+
+        if (!sesion.rolActual) {
+            throw new Error("La API no devolvió el rol del usuario.");
+        }
+
+        sessionStorage.setItem("csrfToken", sesion.csrfToken);
+        window.alert("Sesión iniciada exitosamente.");
+
+        switch (sesion.rolActual) {
+
+            case "administrador":
+                window.location.replace("./paginas/homeAdmin.html");
+                break;
+
+            case "tecnico":
+                window.location.replace("./paginas/homeTecnico.html");
+                break;
+
+            case "docente":
+                window.location.replace("./paginas/homeDocente.html");
+                break;
+
+            default:
+                throw new Error("El usuario no tiene un rol válido.");
+        }
+
+    } catch (error) {
+        mostrarError(error.message);
+    }
+}
+
+formularioLogin.addEventListener("submit", gestionarLogin);
+botonMostrarClave.addEventListener("click", mostrarClave);
