@@ -1,10 +1,20 @@
 const API_EQUIPOS = "../index.php/equipos";
 const API_UBICACIONES = "../index.php/ubicaciones";
-
+const API_TICKETS = "../index.php/tickets";
 
 // ELEMENTOS DEL DOM
 
+const modalIncidenciaTecnico = document.getElementById("incidencia");
+const formularioIncidenciaTecnico = document.getElementById("formDetalleIncidencia");
+const tituloIncidenciaTecnico = document.getElementById("tituloIncidencia");
+const entradaTipoIncidenciaTecnico = document.getElementById("tipoIncidencia");
+const entradaAsuntoIncidenciaTecnico = document.getElementById("asuntoIncidencia");
+const entradaPersonaIncidenciaTecnico = document.getElementById("personaIncidencia");
+const entradaDescripcionIncidenciaTecnico = document.getElementById("descripcionIncidencia");
+const botonAceptarIncidenciaTecnico = document.getElementById("btnAceptarIncidencia");
+const botonCancelarIncidenciaTecnico = document.getElementById("btnCancelarIncidencia");
 
+const seccionHistorialesEquipos = document.getElementById("seccionHistorialesEquipos");
 const botonLimpiarFiltrosEquipos = document.getElementById("btnLimpiarFiltrosEquipos");
 const cuerpoTablaEquipos = document.getElementById("cuerpoTablaEquipos");
 const formularioFiltroEquipos = document.getElementById("formFiltroEquipos");
@@ -45,7 +55,7 @@ const mensajeError = document.getElementById("mensajeError");
 
 
 // ESTADO
-
+let equipoIncidenciaSeleccionado = null;
 let rolActualEquipos = "";
 let modoFormularioEquipo = "registro";
 
@@ -452,10 +462,26 @@ function agregarFilaEquipo(equipo) {
         campoAcciones.appendChild(botonUbicacion);
         campoAcciones.appendChild(botonEstado);
 
-    } else {
-        campoAcciones.textContent = "—";
-    }
+    } else if (rolActualEquipos === "tecnico") {
 
+        const botonIncidencia = document.createElement("button");
+
+        botonIncidencia.type = "button";
+        botonIncidencia.textContent = "Registrar incidencia";
+        botonIncidencia.classList.add("btn", "btn-danger", "text-bold");
+
+        if (equipo.tipoUbicacion === null || equipo.tipoUbicacion === undefined || equipo.idUbicacion === null || equipo.idUbicacion === undefined) {
+            botonIncidencia.disabled = true;
+            botonIncidencia.title = "El equipo no tiene una ubicación asignada.";
+        } else {
+            botonIncidencia.addEventListener(
+                "click",
+                function () {
+                    abrirFormularioIncidenciaTecnico(equipo);
+                });
+        }
+        campoAcciones.appendChild(botonIncidencia);
+    }
     fila.appendChild(campoIntervencion);
     fila.appendChild(campoAcciones);
 
@@ -496,9 +522,7 @@ async function actualizarTablaEquipos() {
     }
 }
 
-
 // FILTROS
-
 async function filtrarEquipos(evento) {
     evento.preventDefault();
     await actualizarTablaEquipos();
@@ -523,7 +547,71 @@ async function mostrarTodosEquipos(evento) {
     cerrarMenuUbicaciones();
     await actualizarTablaEquipos();
 }
+// FORMULARIO DE TICKETS
+function abrirFormularioIncidenciaTecnico(equipo) {
+    equipoIncidenciaSeleccionado = equipo;
+    formularioIncidenciaTecnico.reset();
+    tituloIncidenciaTecnico.textContent = "Registro de incidencia - PC" + equipo.idEquipo;
+    modalIncidenciaTecnico.showModal();
+}
 
+function cerrarFormularioIncidenciaTecnico() {
+    formularioIncidenciaTecnico.reset();
+    equipoIncidenciaSeleccionado = null;
+    modalIncidenciaTecnico.close();
+}
+
+async function registrarIncidenciaTecnico(evento) {
+    evento.preventDefault();
+    if (equipoIncidenciaSeleccionado === null) {
+        return;
+    }
+
+    const gravedad = document.querySelector('input[name="gravedadIncidencia"]:checked');
+    if (gravedad === null) {
+        mostrarMensajeError("Debe seleccionar una gravedad.");
+        return;
+    }
+
+    const datos = {
+        idUbicacion: equipoIncidenciaSeleccionado.idUbicacion,
+        tipoUbicacion: equipoIncidenciaSeleccionado.tipoUbicacion,
+        tickets: [
+            {
+                idEquipo: equipoIncidenciaSeleccionado.idEquipo,
+                tipo: entradaTipoIncidenciaTecnico.value,
+                asunto: entradaAsuntoIncidenciaTecnico.value.trim(),
+                persona: entradaPersonaIncidenciaTecnico.value.trim(),
+                gravedad: gravedad.value,
+                descripcion: entradaDescripcionIncidenciaTecnico.value.trim()
+            }]
+    };
+
+    try {
+        const respuesta = await fetch(
+            API_TICKETS,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+
+                    "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+                },
+                body:
+                    JSON.stringify(datos)
+            });
+
+        const resultado = await leerRespuestaAPI(respuesta);
+
+        cerrarFormularioIncidenciaTecnico();
+        await actualizarTablaEquipos();
+
+        mostrarMensajeExito(resultado.mensaje);
+
+    } catch (error) {
+        mostrarMensajeError("No se pudo registrar la incidencia: " + error.message);
+    }
+}
 
 // FORMULARIO DE EQUIPO
 
@@ -669,6 +757,7 @@ async function gestionarFormularioEquipo(evento) {
 }
 
 
+
 async function gestionarEstadoEquipo(idEquipo, accion) {
     ocultarMensajes();
 
@@ -692,7 +781,10 @@ async function inicializarGestionEquipos() {
         const sesion = await obtenerSesion();
 
         rolActualEquipos = sesion.rolActual;
-
+        if (rolActualEquipos === "administrador") {
+            botonRegistrarEquipo.classList.remove("d-none");
+            seccionHistorialesEquipos.classList.remove("d-none");
+        }
         await cargarUbicaciones();
         await actualizarTablaEquipos();
 
@@ -701,9 +793,10 @@ async function inicializarGestionEquipos() {
     }
 }
 
-
 // EVENTOS
 
+botonAceptarIncidenciaTecnico.addEventListener("click", registrarIncidenciaTecnico);
+botonCancelarIncidenciaTecnico.addEventListener("click", cerrarFormularioIncidenciaTecnico);
 botonAgregarLaboratorio.addEventListener("click", function () {
     gestionarRegistroUbicacion("laboratorio");
 });
@@ -716,8 +809,7 @@ botonLimpiarFiltrosEquipos.addEventListener("click",
     function () {
         formularioFiltroEquipos.reset();
         formularioFiltroEquipos.requestSubmit();
-    }
-);
+    });
 formularioFiltroEquipos.addEventListener("submit", filtrarEquipos);
 
 filtroPrestamo.addEventListener("click", mostrarEquiposPrestamo);
@@ -731,6 +823,5 @@ botonCancelarEquipo.addEventListener("click", cerrarFormularioEquipo);
 
 entradaUbicacionEquipo.addEventListener("change", actualizarCampoPosicion);
 formularioEquipo.addEventListener("submit", gestionarFormularioEquipo);
-
 
 inicializarGestionEquipos();

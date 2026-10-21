@@ -8,7 +8,7 @@ class TicketDAO
         $this->conexion = $conexion;
     }
 
-    public function registrarTickets(string $ciDocente, string $idUbicacion, string $tipoUbicacion, array $tickets): bool
+    public function registrarTickets(string $ciUsuario, string $rolActual, string $idUbicacion, string $tipoUbicacion, array $tickets): bool
     {
         try {
             $this->conexion->beginTransaction();
@@ -31,13 +31,24 @@ class TicketDAO
                 $idTicket = $this->conexion->lastInsertId();
                 $consultaTicket->closeCursor();
 
-                $sqlDocente = "
-                    INSERT INTO docente_reporta_ticket (ciDocente,idTicket)
-                    VALUES (:ciDocente,:idTicket) ";
+                if ($rolActual === "docente") {
+                    $sqlActor = "
+        INSERT INTO docente_reporta_ticket (ciDocente, idTicket)
+        VALUES (:ciUsuario, :idTicket)";
 
-                $consultaDocente = $this->conexion->prepare($sqlDocente);
-                $consultaDocente->execute(["ciDocente" => $ciDocente, "idTicket" => $idTicket]);
-                $consultaDocente->closeCursor();
+                    $consultaActor = $this->conexion->prepare($sqlActor);
+                    $consultaActor->execute(["ciUsuario" => $ciUsuario, "idTicket" => $idTicket]);
+                    $consultaActor->closeCursor();
+                } elseif ($rolActual === "tecnico") {
+
+                    $sqlActor = "
+        INSERT INTO tecnico_gestiona_ticket (ciTecnico, idTicket, fecha, hora, tipoInteraccion)
+        VALUES ( :ciUsuario, :idTicket, CURDATE(), CURTIME(), 'creacion')";
+
+                    $consultaActor = $this->conexion->prepare($sqlActor);
+                    $consultaActor->execute(["ciUsuario" => $ciUsuario, "idTicket" => $idTicket]);
+                    $consultaActor->closeCursor();
+                }
 
                 $sqlEquipo = "
                     INSERT INTO equipo_ubicacion_genera_ticket (idEquipo, idUbicacion, tipoUbicacion, idTicket)

@@ -10,9 +10,9 @@ class HistorialDAO
     }
 
 
-   public function listarUsuarios(string $fecha = ""): array
-{
-    $sql = "
+    public function listarUsuarios(string $fecha = ""): array
+    {
+        $sql = "
         SELECT
             h.fecha,
             h.hora,
@@ -45,28 +45,28 @@ class HistorialDAO
             ON usuario.ci = h.ciUsuario
     ";
 
-    $parametros = [];
+        $parametros = [];
 
-    if ($fecha !== "") {
-        $sql .= "
+        if ($fecha !== "") {
+            $sql .= "
             WHERE h.fecha = :fecha
         ";
 
-        $parametros["fecha"] = $fecha;
-    }
+            $parametros["fecha"] = $fecha;
+        }
 
-    $sql .= "
+        $sql .= "
         ORDER BY
             h.fecha DESC,
             h.hora DESC,
             h.id DESC
     ";
 
-    $consulta = $this->conexion->prepare($sql);
-    $consulta->execute($parametros);
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute($parametros);
 
-    return $consulta->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     public function listarEquipos(string $fecha = ""): array
@@ -182,8 +182,8 @@ class HistorialDAO
 
 
     public function listarTickets(string $fecha = ""): array
-{
-    $sql = "
+    {
+        $sql = "
         SELECT
             historial.fecha,
             historial.hora,
@@ -239,7 +239,8 @@ class HistorialDAO
                 CASE g.tipoInteraccion
                     WHEN 'asignacion'
                         THEN 'Se asignó al ticket'
-
+                    WHEN 'creacion' 
+                        THEN 'Creó el ticket'
                     WHEN 'desasignacion'
                         THEN 'Se desasignó del ticket'
 
@@ -311,25 +312,25 @@ class HistorialDAO
         ) AS historial
     ";
 
-    $parametros = [];
+        $parametros = [];
 
-    if ($fecha !== "") {
-        $sql .= "WHERE historial.fecha = :fecha";
+        if ($fecha !== "") {
+            $sql .= "WHERE historial.fecha = :fecha";
 
-        $parametros["fecha"] = $fecha;
-    }
+            $parametros["fecha"] = $fecha;
+        }
 
-    $sql .= "
+        $sql .= "
         ORDER BY
             historial.fecha DESC,
             historial.hora DESC
     ";
 
-    $consulta = $this->conexion->prepare($sql);
-    $consulta->execute($parametros);
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute($parametros);
 
-    return $consulta->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     public function listarSolicitudes(string $fecha = ""): array

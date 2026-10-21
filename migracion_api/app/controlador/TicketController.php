@@ -54,7 +54,7 @@ class TicketController
 
 
         if ($rolActual !== "tecnico" && $rolActual !== "administrador" && $rolActual !== "docente") {
-            RespuestaJson::error("Acceso denegado: rol incorrecto",403 );
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
 
@@ -135,12 +135,11 @@ class TicketController
 
     private function alta(): void
     {
-        Sesion::verificarRol("docente");
+        $rolActual = $_SESSION["rolActual"] ?? "";
 
-        if (($_SESSION["rolActual"] ?? "") !== "docente") {
+        if ($rolActual !== "docente" && $rolActual !== "tecnico") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
-
         Token::verificarCSRF();
 
         $datos = json_decode(file_get_contents("php://input"), true);
@@ -152,13 +151,19 @@ class TicketController
         $idUbicacion = trim($datos["idUbicacion"] ?? "");
         $tipoUbicacion = strtolower(trim($datos["tipoUbicacion"] ?? ""));
         $tickets = $datos["tickets"] ?? [];
-
+        $tiposUbicacionValidos = ["laboratorio", "taller"];
         if ($idUbicacion === "" || !ctype_digit($idUbicacion)) {
             RespuestaJson::error("La ubicación seleccionada no es válida.", 422);
         }
+        if ($rolActual === "tecnico") {
+            $tiposUbicacionValidos[] = "prestamo";
+        }
 
-        if ($tipoUbicacion !== "laboratorio" && $tipoUbicacion !== "taller") {
-            RespuestaJson::error("El tipo de ubicación no es válido.", 422);
+        if (!in_array($tipoUbicacion, $tiposUbicacionValidos, true)) {
+            RespuestaJson::error("La ubicación seleccionada no es válida.", 422);
+        }
+        if ($tipoUbicacion === "prestamo") {
+            $idUbicacion = "0";
         }
 
         if (!is_array($tickets) || count($tickets) === 0) {
@@ -221,8 +226,7 @@ class TicketController
         $conexion = Conexion::conectar();
         $dao = new TicketDAO($conexion);
 
-        $resultado = $dao->registrarTickets($_SESSION["cedula"], $idUbicacion, $tipoUbicacion, $tickets);
-
+        $resultado = $dao->registrarTickets($_SESSION["cedula"], $rolActual, $idUbicacion, $tipoUbicacion, $tickets);
         unset($dao, $conexion);
         Conexion::desconectar();
 
