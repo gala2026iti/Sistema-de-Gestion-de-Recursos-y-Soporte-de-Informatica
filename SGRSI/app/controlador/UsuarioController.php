@@ -10,11 +10,27 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class UsuarioController
 {
-    public function gestionar(string $metodo, ?string $idRecurso = null): void
+    public function gestionar(string $metodo, ?string $idRecurso = null, array $segmentosRuta = []): void
     {
         Sesion::verificarRol("administrador");
         if (($_SESSION["rolActual"] ?? "") !== "administrador") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        }
+
+        if ($idRecurso === "filtros") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+            $segmentosFiltros = array_slice($segmentosRuta, 1);
+            $this->listar($segmentosFiltros);
+            return;
+        }
+
+        if (count($segmentosRuta) > 1) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+        if ($metodo === "GET" && $idRecurso !== null) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
         }
 
         match ($metodo) {
@@ -27,19 +43,20 @@ class UsuarioController
     }
 
 
-    private function listar(): void
+    private function listar(array $segmentosFiltros = []): void
     {
-        $rol = strtolower(trim($_GET["rol"] ?? ""));
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
+        $filtros = $this->leerFiltrosRuta($segmentosFiltros);
+
+        $rol = $filtros["rol"];
+        $estado = $filtros["estado"];
 
         $conexion = Conexion::conectar();
         $dao = new UsuarioDAO($conexion);
 
         $usuarios = $dao->listarUsuarios($rol, $estado);
-
         unset($dao, $conexion);
-        Conexion::desconectar();
 
+        Conexion::desconectar();
         RespuestaJson::exito($usuarios);
     }
 
@@ -47,7 +64,6 @@ class UsuarioController
     private function alta(): void
     {
         Token::verificarCSRF();
-
         $datos = json_decode(file_get_contents("php://input"), true);
 
         if (!is_array($datos)) {
@@ -69,7 +85,8 @@ class UsuarioController
             function ($rol) {
                 return strtolower(trim($rol));
             },
-            $roles);
+            $roles
+        );
 
         $roles = array_unique($roles);
 
@@ -144,7 +161,9 @@ class UsuarioController
         $roles = array_map(
             function ($rol) {
                 return strtolower(trim($rol));
-            }, $roles);
+            },
+            $roles
+        );
 
         $roles = array_unique($roles);
 
@@ -244,5 +263,43 @@ class UsuarioController
 
         $mensaje = $activo ? "Usuario activado correctamente." : "Usuario desactivado correctamente.";
         RespuestaJson::exito(["mensaje" => $mensaje]);
+    }
+
+    private function leerFiltrosRuta(array $segmentos ): array {
+        $filtros = ["rol" => "", "estado" => ""];
+
+
+        if (empty($segmentos)) {
+            return $filtros;
+        }
+
+        if (count($segmentos) % 2 !== 0) {
+            RespuestaJson::error( "Los filtros de la ruta no son válidos.", 422);
+        }
+
+
+        for ($i = 0; $i < count($segmentos); $i += 2) {
+            $nombre =rawurldecode($segmentos[$i]);
+            $valor = strtolower(trim(rawurldecode( $segmentos[$i + 1] )));
+
+            if (!array_key_exists($nombre, $filtros)) {
+                RespuestaJson::error("El filtro solicitado no es válido.", 422);
+            }
+
+            $filtros[$nombre] = $valor;
+        }
+
+        $rolesValidos = ["", "administrador", "tecnico", "docente"];
+        if (!in_array($filtros["rol"], $rolesValidos, true )) {
+            RespuestaJson::error("El rol seleccionado no es válido.", 422);
+        }
+
+
+        $estadosValidos = ["", "activo", "inactivo" ];
+
+        if (!in_array($filtros["estado"], $estadosValidos, true )) {
+            RespuestaJson::error( "El estado seleccionado no es válido.", 422);
+        }
+        return $filtros;
     }
 }

@@ -13,44 +13,62 @@ class MetricasDAO
     public function obtenerResumen(): array
     {
         $sql = "
-            SELECT
+        SELECT
+            t.ticketsAbiertos,
+            t.ticketsCerrados,
+            e.equiposActivos,
+            e.equiposInactivos,
+            s.solicitudesPendientes,
+            p.prestamosActivos
 
-                (
-                    SELECT COUNT(*)
-                    FROM TICKET
-                    WHERE estado <> 'resuelto'
+        FROM (
+            SELECT
+                COUNT(
+                    CASE
+                        WHEN estado <> 'resuelto' THEN 1
+                    END
                 ) AS ticketsAbiertos,
 
-                (
-                    SELECT COUNT(*)
-                    FROM TICKET
-                    WHERE estado = 'resuelto'
-                ) AS ticketsCerrados,
+                COUNT(
+                    CASE
+                        WHEN estado = 'resuelto' THEN 1
+                    END
+                ) AS ticketsCerrados
 
-                (
-                    SELECT COUNT(*)
-                    FROM EQUIPO
-                    WHERE activo = TRUE
+            FROM TICKET
+        ) AS t
+
+        CROSS JOIN (
+            SELECT
+                COUNT(
+                    CASE
+                        WHEN activo = TRUE THEN 1
+                    END
                 ) AS equiposActivos,
 
-                (
-                    SELECT COUNT(*)
-                    FROM EQUIPO
-                    WHERE activo = FALSE
-                ) AS equiposInactivos,
+                COUNT(
+                    CASE
+                        WHEN activo = FALSE THEN 1
+                    END
+                ) AS equiposInactivos
 
-                (
-                    SELECT COUNT(*)
-                    FROM SOLICITUD
-                    WHERE finalizada = FALSE
-                ) AS solicitudesPendientes,
+            FROM EQUIPO
+        ) AS e
 
-                (
-                    SELECT COUNT(*)
-                    FROM PRESTAMO
-                    WHERE devuelto = FALSE
-                ) AS prestamosActivos
-        ";
+        CROSS JOIN (
+            SELECT
+                COUNT(*) AS solicitudesPendientes
+            FROM SOLICITUD
+            WHERE finalizada = FALSE
+        ) AS s
+
+        CROSS JOIN (
+            SELECT
+                COUNT(*) AS prestamosActivos
+            FROM PRESTAMO
+            WHERE devuelto = FALSE
+        ) AS p
+    ";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute();
@@ -59,7 +77,8 @@ class MetricasDAO
 
         $consulta->closeCursor();
 
-        return ["ticketsAbiertos" => (int) $resultado["ticketsAbiertos"],
+        return [
+            "ticketsAbiertos" => (int) $resultado["ticketsAbiertos"],
             "ticketsCerrados" => (int) $resultado["ticketsCerrados"],
             "equiposActivos" => (int) $resultado["equiposActivos"],
             "equiposInactivos" => (int) $resultado["equiposInactivos"],
@@ -102,40 +121,48 @@ class MetricasDAO
          * Resumen general de las métricas.
          */
         $sql = "
+    SELECT
+        equipos.totalEquipos,
+        equipos.equiposFallados,
+        tickets.ultimoIncidente,
+        tickets.incidenciasGraves
+
+    FROM (
         SELECT
+            COUNT(DISTINCT equipo.id)
+                AS totalEquipos,
 
-            (
-                SELECT COUNT(*)
-                FROM EQUIPO
-            ) AS totalEquipos,
+            COUNT(
+                DISTINCT CASE
+                    WHEN ticket.estado <> 'resuelto'
+                    THEN equipo.id
+                END
+            ) AS equiposFallados
 
-            (
-                SELECT COUNT(DISTINCT relacion.idEquipo)
+        FROM EQUIPO AS equipo
 
-                FROM equipo_ubicacion_genera_ticket AS relacion
+        LEFT JOIN equipo_ubicacion_genera_ticket AS relacion
+            ON relacion.idEquipo = equipo.id
 
-                INNER JOIN TICKET AS ticket
-                    ON ticket.id = relacion.idTicket
+        LEFT JOIN TICKET AS ticket
+            ON ticket.id = relacion.idTicket
 
-                WHERE ticket.estado <> 'resuelto'
-            ) AS equiposFallados,
+    ) AS equipos
 
-            (
-                SELECT MAX(
-                    TIMESTAMP(
-                        fechaCreacion,
-                        horaCreacion
-                    )
+    CROSS JOIN (
+        SELECT
+            MAX(
+                TIMESTAMP(
+                    fechaCreacion,
+                    horaCreacion
                 )
-                FROM TICKET
             ) AS ultimoIncidente,
 
-            (
-                SELECT COUNT(*)
-                FROM TICKET
-                WHERE gravedad = 'grave'
-            ) AS incidenciasGraves
-    ";
+            COUNT(
+                CASE
+                    WHEN gravedad = 'grave' THEN 1
+                END ) AS incidenciasGraves
+        FROM TICKET ) AS tickets";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute();

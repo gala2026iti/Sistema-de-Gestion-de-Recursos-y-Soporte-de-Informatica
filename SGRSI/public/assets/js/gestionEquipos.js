@@ -88,40 +88,47 @@ async function leerRespuestaAPI(respuesta) {
 
 // PETICIONES DE EQUIPOS
 
-async function obtenerEquipos() {
-    let url = API_EQUIPOS;
+async function obtenerEquipos()
+{
+    let url =  API_EQUIPOS;
+    const idEquipo = entradaIdEquipoFiltro.value.trim();
 
-    const parametros = new URLSearchParams();
+    if (idEquipo !== "") {
+        url += "/" + encodeURIComponent(idEquipo);
+    } else {
 
-    if (rolActualEquipos === "administrador" && entradaEstado.value !== "") {
-        parametros.append("estado", entradaEstado.value);
+        const segmentos = [];
+        if ( rolActualEquipos === "administrador" && entradaEstado.value !== "") {
+            segmentos.push( "estado",entradaEstado.value);
+        }
+
+        if (entradaOrden.value !== "") {
+            segmentos.push( "orden", entradaOrden.value);
+        }
+
+        if (filtroUbicacion.value !== "") {
+            segmentos.push( "ubicacion", filtroUbicacion.value);
+        }
+
+
+        if (filtroTipoUbicacion.value !== "") {
+            segmentos.push( "tipoUbicacion", filtroTipoUbicacion.value);
+        }
+
+
+        if (segmentos.length > 0) {
+            url += "/filtros/" + segmentos
+                    .map(
+                        valor =>
+                            encodeURIComponent(
+                                valor
+                            )
+                    )
+                    .join("/");
+        }
     }
-
-    if (entradaOrden.value !== "") {
-        parametros.append("orden", entradaOrden.value);
-    }
-
-    if (entradaIdEquipoFiltro.value.trim() !== "") {
-        parametros.append("idEquipo", entradaIdEquipoFiltro.value.trim());
-    }
-
-    if (filtroUbicacion.value !== "") {
-        parametros.append("ubicacion", filtroUbicacion.value);
-    }
-
-    if (filtroTipoUbicacion.value !== "") {
-        parametros.append("tipoUbicacion", filtroTipoUbicacion.value);
-    }
-
-    const consulta = parametros.toString();
-
-    if (consulta !== "") {
-        url += "?" + consulta;
-    }
-
     const respuesta = await fetch(url);
-
-    return leerRespuestaAPI(respuesta);
+    return leerRespuestaAPI( respuesta );
 }
 
 async function registrarEquipo(equipo) {

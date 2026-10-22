@@ -13,8 +13,7 @@ const cuerpoTablaSolicitudes = document.getElementById("cuerpoTablaSolicitudes")
 
 // RESPUESTAS DE LA API
 
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
@@ -31,9 +30,8 @@ async function leerRespuestaAPI(respuesta)
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar."
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."
             }`);
     }
     return json.datos;
@@ -42,22 +40,14 @@ async function leerRespuestaAPI(respuesta)
 
 // PETICIONES
 
-async function obtenerSolicitudes()
-{
-    const parametros = new URLSearchParams();
-
-    if (filtroEstado.value !== "") {
-        parametros.set("estado", filtroEstado.value);
-    }
-
-    if (filtroId.value.trim() !== "") {
-        parametros.set("idSolicitud", filtroId.value.trim());
-    }
-
+async function obtenerSolicitudes() {
     let url = API_SOLICITUDES;
-
-    if (parametros.toString() !== "") {
-        url += "?" + parametros.toString();
+    const idSolicitud = filtroId.value.trim();
+    
+    if (idSolicitud !== "") {
+        url += "/" + encodeURIComponent(idSolicitud);
+    } else if (filtroEstado.value !== "") {
+        url += "/filtros/estado/" + encodeURIComponent(filtroEstado.value);
     }
 
     const respuesta = await fetch(url);
@@ -65,35 +55,31 @@ async function obtenerSolicitudes()
 }
 
 
-async function finalizarSolicitud(idSolicitud)
-{
+async function finalizarSolicitud(idSolicitud) {
     const respuesta = await fetch(
-        API_SOLICITUDES + "/" + encodeURIComponent(idSolicitud),{
-            method: "PATCH",
-            headers: {
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            }
-        });
+        API_SOLICITUDES + "/" + encodeURIComponent(idSolicitud), {
+        method: "PATCH",
+        headers: {
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        }
+    });
     return leerRespuestaAPI(respuesta);
 }
 // TABLA
 
-function crearCelda(texto)
-{
+function crearCelda(texto) {
     const celda = document.createElement("td");
     celda.textContent = texto;
     return celda;
 }
 
 
-function crearBotonFinalizar(solicitud)
-{
+function crearBotonFinalizar(solicitud) {
     const boton = document.createElement("button");
     boton.type = "button";
     boton.classList.add("btn", "btn-primary", "ms-1", "text-bold");
     boton.textContent = "Finalizar";
-    boton.addEventListener("click",async function ()
-    {
+    boton.addEventListener("click", async function () {
         const confirmar = confirm("¿Desea marcar esta solicitud como finalizada?");
         if (!confirmar) {
             return;
@@ -113,21 +99,20 @@ function crearBotonFinalizar(solicitud)
 }
 
 
-function crearFilaSolicitud(solicitud)
-{
+function crearFilaSolicitud(solicitud) {
     const fila = document.createElement("tr");
 
     fila.appendChild(crearCelda(solicitud.id));
     fila.appendChild(crearCelda(solicitud.asunto));
-    fila.appendChild(crearCelda( solicitud.fechaLimite + " - " + solicitud.horaLimite));
+    fila.appendChild(crearCelda(solicitud.fechaLimite + " - " + solicitud.horaLimite));
     fila.appendChild(crearCelda(solicitud.descripcion));
-    fila.appendChild(crearCelda( solicitud.nombreDocente + " - (" + solicitud.ciDocente + ")"));
-    fila.appendChild(crearCelda( solicitud.finalizada == 1 ? "Finalizada" : "Pendiente"));
+    fila.appendChild(crearCelda(solicitud.nombreDocente + " - (" + solicitud.ciDocente + ")"));
+    fila.appendChild(crearCelda(solicitud.finalizada == 1 ? "Finalizada" : "Pendiente"));
 
     const celdaFinalizacion = document.createElement("td");
 
     if (solicitud.finalizada == 1) {
-        celdaFinalizacion.textContent =solicitud.nombreTecnico + " - " + solicitud.fechaFinalizacion + " " + solicitud.horaFinalizacion;
+        celdaFinalizacion.textContent = solicitud.nombreTecnico + " - " + solicitud.fechaFinalizacion + " " + solicitud.horaFinalizacion;
     } else {
         celdaFinalizacion.textContent = "Sin finalizar";
     }
@@ -144,8 +129,7 @@ function crearFilaSolicitud(solicitud)
 }
 
 
-function mostrarSolicitudes(solicitudes)
-{
+function mostrarSolicitudes(solicitudes) {
     cuerpoTablaSolicitudes.replaceChildren();
 
     if (solicitudes.length === 0) {
@@ -169,20 +153,18 @@ function mostrarSolicitudes(solicitudes)
 
 // GESTIÓN DE SOLICITUDES
 
-async function cargarSolicitudes()
-{
+async function cargarSolicitudes() {
     try {
         const solicitudes = await obtenerSolicitudes();
         mostrarSolicitudes(solicitudes);
 
     } catch (error) {
-        alert( "No se pudieron cargar las solicitudes: " + error.message);
+        alert("No se pudieron cargar las solicitudes: " + error.message);
     }
 }
 
 
-function aplicarFiltros(evento)
-{
+function aplicarFiltros(evento) {
     evento.preventDefault();
     const id = filtroId.value.trim();
 
@@ -194,8 +176,7 @@ function aplicarFiltros(evento)
     cargarSolicitudes();
 }
 
-function limpiarFiltros()
-{
+function limpiarFiltros() {
     filtroEstado.value = "";
     filtroId.value = "";
     cargarSolicitudes();
@@ -204,8 +185,8 @@ function limpiarFiltros()
 
 // EVENTOS
 
-formFiltros.addEventListener("submit",aplicarFiltros);
-btnLimpiarFiltros.addEventListener("click",limpiarFiltros);
+formFiltros.addEventListener("submit", aplicarFiltros);
+btnLimpiarFiltros.addEventListener("click", limpiarFiltros);
 // INICIALIZACIÓN
 
 cargarSolicitudes();

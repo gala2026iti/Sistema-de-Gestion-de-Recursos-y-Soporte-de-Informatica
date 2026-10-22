@@ -10,11 +10,58 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class SolicitudController
 {
-    public function gestionar(string $metodo, ?string $idRecurso = null): void
+    public function gestionar(string $metodo, ?string $idRecurso = null, array $segmentosRuta = []): void
     {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
+        if ($idRecurso === "propias") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            $segundoSegmento = $segmentosRuta[1] ?? null;
+
+            if ($segundoSegmento === null) {
+                $this->listar(null, [], true);
+                return;
+            }
+
+            if ($segundoSegmento === "filtros") {
+
+                $segmentosFiltros = array_slice($segmentosRuta, 2);
+                $this->listar(null, $segmentosFiltros, true);
+                return;
+            }
+
+            if (count($segmentosRuta) === 2) {
+                $this->listar($segundoSegmento, [], true);
+                return;
+            }
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
+        if ($idRecurso === "filtros") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            $segmentosFiltros = array_slice($segmentosRuta, 1);
+
+            $this->listar(null, $segmentosFiltros);
+            return;
+        }
+
+        if (count($segmentosRuta) > 1) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
+        if (
+            $metodo === "POST" && $idRecurso !== null
+        ) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
 
         match ($metodo) {
             "GET" => $this->listar($idRecurso),
@@ -25,25 +72,20 @@ class SolicitudController
     }
 
 
-    private function listar(?string $idRecurso): void
+    private function listar(?string $idSolicitud = null, array $segmentosFiltros = [], bool $soloPropias = false): void
     {
         $rolActual = $_SESSION["rolActual"] ?? "";
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $propias = trim($_GET["propias"] ?? "");
-
-
-        if ($propias !== "" && $propias !== "1") {
-            RespuestaJson::error("El filtro de solicitudes propias no es válido.",422);
-        }
-
+        $filtros = $this->leerFiltrosRuta($segmentosFiltros);
+        $estado = $filtros["estado"];
         $ciDocente = null;
 
         if ($rolActual === "tecnico") {
-            $ciDocente = null;
-
+            if ($soloPropias) {
+                RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+            }
         } elseif ($rolActual === "docente") {
 
-            if ($propias !== "1") {
+            if (!$soloPropias) {
                 RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
             }
             $ciDocente = $_SESSION["cedula"];
@@ -52,18 +94,15 @@ class SolicitudController
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-        if ($idRecurso !== null && $idRecurso !== "") {
-            $idSolicitud = trim($idRecurso);
+        if ($idSolicitud !== null && $idSolicitud !== "") {
+            $idSolicitud = trim($idSolicitud);
+            if (!ctype_digit($idSolicitud)) {
+                RespuestaJson::error("El ID de la solicitud no es válido.", 422);
+            }
         } else {
-            $idSolicitud = trim($_GET["idSolicitud"] ?? "");
+            $idSolicitud = "";
         }
 
-        if ($estado !== "" && $estado !== "pendiente" && $estado !== "finalizada") {
-            RespuestaJson::error("El estado de la solicitud no es válido.", 422);
-        }
-        if ($idSolicitud !== "" && !ctype_digit($idSolicitud)) {
-            RespuestaJson::error("El ID de la solicitud no es válido.", 422);
-        }
 
         $conexion = Conexion::conectar();
         $dao = new SolicitudDAO($conexion);
@@ -185,5 +224,33 @@ class SolicitudController
         }
 
         RespuestaJson::exito(["mensaje" => "Solicitud finalizada correctamente."]);
+    }
+
+    private function leerFiltrosRuta(array $segmentos): array
+    {
+        $filtros = ["estado" => ""];
+        if (empty($segmentos)) {
+            return $filtros;
+        }
+
+        if (count($segmentos) % 2 !== 0) {
+            RespuestaJson::error("Los filtros de la ruta no son válidos.", 422);
+        }
+
+        for ($i = 0; $i < count($segmentos); $i += 2) {
+            $nombre = rawurldecode($segmentos[$i]);
+            $valor = strtolower(trim(rawurldecode($segmentos[$i + 1])));
+            if (!array_key_exists($nombre, $filtros)) {
+                RespuestaJson::error("El filtro solicitado no es válido.", 422);
+            }
+
+            $filtros[$nombre] = $valor;
+        }
+        $estadosValidos = ["", "pendiente", "finalizada"];
+
+        if (!in_array($filtros["estado"], $estadosValidos, true)) {
+            RespuestaJson::error("El estado de la solicitud no es válido.", 422);
+        }
+        return $filtros;
     }
 }

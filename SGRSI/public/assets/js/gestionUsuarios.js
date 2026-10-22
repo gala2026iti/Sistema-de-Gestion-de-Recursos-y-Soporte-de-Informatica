@@ -34,8 +34,7 @@ let modoFormularioUsuario = "registro";
 
 
 // RESPUESTAS DE LA API
-async function leerRespuestaAPI(respuesta)
-{
+async function leerRespuestaAPI(respuesta) {
     const texto = await respuesta.text();
 
     if (!texto.trim()) {
@@ -54,33 +53,30 @@ async function leerRespuestaAPI(respuesta)
 
     if (!respuesta.ok) {
         throw new Error(
-            `HTTP ${respuesta.status}: ${
-                json.mensaje ??
-                "La solicitud no se pudo completar." }`);
+            `HTTP ${respuesta.status}: ${json.mensaje ??
+            "La solicitud no se pudo completar."}`);
     }
 
     return json.datos;
 }
 
 // PETICIONES
-async function obtenerUsuarios()
-{
+async function obtenerUsuarios() {
     let url = API_USUARIOS;
-    const parametros = new URLSearchParams();
+    const segmentos = [];
 
     if (entradaRol.value !== "") {
-    parametros.set("rol", entradaRol.value);
-}
-
-if (entradaEstado.value !== "") {
-    parametros.set("estado", entradaEstado.value);
-}
-
-    const consulta = parametros.toString();
-
-    if (consulta !== "") {
-        url += "?" + consulta;
+        segmentos.push("rol", entradaRol.value);
     }
+
+    if (entradaEstado.value !== "") {
+        segmentos.push("estado", entradaEstado.value);
+    }
+
+    if (segmentos.length > 0) {
+        url += "/filtros/" + segmentos .map(valor => encodeURIComponent(valor)).join("/");
+    }
+
 
     const respuesta = await fetch(url);
 
@@ -88,26 +84,24 @@ if (entradaEstado.value !== "") {
 }
 
 
-async function registrarUsuario(usuario)
-{
+async function registrarUsuario(usuario) {
     const respuesta = await fetch(
-        API_USUARIOS,{
-            method: "POST",
+        API_USUARIOS, {
+        method: "POST",
 
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-            },
-            body: JSON.stringify(usuario)
-        }
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+        },
+        body: JSON.stringify(usuario)
+    }
     );
     return leerRespuestaAPI(respuesta);
 }
 
-async function modificarUsuario(usuario)
-{
+async function modificarUsuario(usuario) {
     const respuesta = await fetch(
-    API_USUARIOS + "/" + encodeURIComponent(usuario.cedula),{
+        API_USUARIOS + "/" + encodeURIComponent(usuario.cedula), {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -121,16 +115,15 @@ async function modificarUsuario(usuario)
             roles: usuario.roles
         })
     }
-);
+    );
 
     return leerRespuestaAPI(respuesta);
 }
 
 
-async function cambiarEstadoUsuario(cedula, accion)
-{
+async function cambiarEstadoUsuario(cedula, accion) {
     const respuesta = await fetch(
-    API_USUARIOS + "/" + encodeURIComponent(cedula),{
+        API_USUARIOS + "/" + encodeURIComponent(cedula), {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -140,14 +133,13 @@ async function cambiarEstadoUsuario(cedula, accion)
             accion: accion
         })
     }
-);
+    );
 
     return leerRespuestaAPI(respuesta);
 }
 
 // ROLES
-function obtenerRolesUsuario(usuario)
-{
+function obtenerRolesUsuario(usuario) {
     const roles = [];
 
     if (Number(usuario.administrador) === 1) {
@@ -166,8 +158,7 @@ function obtenerRolesUsuario(usuario)
 }
 
 
-function obtenerRolesSeleccionados()
-{
+function obtenerRolesSeleccionados() {
     const roles = [];
 
     if (rolDocente.checked) {
@@ -187,8 +178,7 @@ function obtenerRolesSeleccionados()
 
 
 // MENSAJES
-function ocultarMensajes()
-{
+function ocultarMensajes() {
     mensajeExito.textContent = "";
     mensajeError.textContent = "";
 
@@ -197,24 +187,21 @@ function ocultarMensajes()
 }
 
 
-function mostrarMensajeExito(mensaje)
-{
+function mostrarMensajeExito(mensaje) {
     ocultarMensajes();
     mensajeExito.textContent = mensaje;
     mensajeExito.classList.remove("d-none");
 }
 
 
-function mostrarMensajeError(mensaje)
-{
+function mostrarMensajeError(mensaje) {
     ocultarMensajes();
     mensajeError.textContent = mensaje;
     mensajeError.classList.remove("d-none");
 }
 
 // FORMULARIO DE USUARIO
-function abrirFormularioRegistro()
-{
+function abrirFormularioRegistro() {
     modoFormularioUsuario = "registro";
 
     formularioUsuario.reset();
@@ -233,8 +220,7 @@ function abrirFormularioRegistro()
 }
 
 
-function abrirFormularioModificacion(usuario)
-{
+function abrirFormularioModificacion(usuario) {
     modoFormularioUsuario = "modificacion";
 
     formularioUsuario.reset();
@@ -262,8 +248,7 @@ function abrirFormularioModificacion(usuario)
 }
 
 
-function cerrarFormularioUsuario()
-{
+function cerrarFormularioUsuario() {
     formularioUsuario.reset();
 
     modalUsuario.classList.add("d-none");
@@ -271,8 +256,7 @@ function cerrarFormularioUsuario()
 }
 
 
-function mostrarClaveUsuario()
-{
+function mostrarClaveUsuario() {
     if (entradaClave.type === "password") {
         entradaClave.type = "text";
         entradaConfirmarClave.type = "text";
@@ -288,8 +272,7 @@ function mostrarClaveUsuario()
 
 // TABLA DE USUARIOS
 
-function agregarFilaUsuario(usuario)
-{
+function agregarFilaUsuario(usuario) {
     const fila = document.createElement("tr");
 
     const campoCedula = document.createElement("td");
@@ -305,7 +288,7 @@ function agregarFilaUsuario(usuario)
     campoRol.textContent = obtenerRolesUsuario(usuario);
 
     const campoEstado = document.createElement("td");
-    campoEstado.textContent = Number(usuario.activo) === 1 ? "Activo": "De baja";
+    campoEstado.textContent = Number(usuario.activo) === 1 ? "Activo" : "De baja";
 
     const campoAcciones = document.createElement("td");
     const botonModificar = document.createElement("button");
@@ -313,8 +296,7 @@ function agregarFilaUsuario(usuario)
     botonModificar.textContent = "Modificar";
     botonModificar.classList.add("btn", "btn-primary", "btnModificarUsuario", "text-bold");
     botonModificar.addEventListener("click",
-        function ()
-        {
+        function () {
             abrirFormularioModificacion(usuario);
         });
 
@@ -323,23 +305,23 @@ function agregarFilaUsuario(usuario)
     const botonEstado = document.createElement("button");
 
     botonEstado.type = "button";
-    botonEstado.classList.add("btn", "ms-1","text-bold");
+    botonEstado.classList.add("btn", "ms-1", "text-bold");
 
     if (Number(usuario.activo) === 1) {
         botonEstado.textContent = "Desactivar";
         botonEstado.classList.add("btn-danger");
 
         botonEstado.addEventListener("click",
-            function (){
-                gestionarEstadoUsuario( usuario.cedula,"desactivar");
+            function () {
+                gestionarEstadoUsuario(usuario.cedula, "desactivar");
             });
     } else {
         botonEstado.textContent = "Activar";
         botonEstado.classList.add("btn-success");
 
         botonEstado.addEventListener("click",
-            function (){
-                gestionarEstadoUsuario(usuario.cedula, "activar" );
+            function () {
+                gestionarEstadoUsuario(usuario.cedula, "activar");
             });
     }
 
@@ -357,21 +339,19 @@ function agregarFilaUsuario(usuario)
 }
 
 
-function mostrarSinUsuarios()
-{
+function mostrarSinUsuarios() {
     const fila = document.createElement("tr");
     const campoMensaje = document.createElement("td");
 
     campoMensaje.colSpan = 6;
     campoMensaje.textContent = "No se encontraron usuarios.";
-    campoMensaje.classList.add( "text-center", "py-4", "text-muted", "text-bold" );
+    campoMensaje.classList.add("text-center", "py-4", "text-muted", "text-bold");
     fila.appendChild(campoMensaje);
     cuerpoTablaUsuarios.appendChild(fila);
 }
 
 
-async function actualizarTablaUsuarios()
-{
+async function actualizarTablaUsuarios() {
     cuerpoTablaUsuarios.replaceChildren();
     try {
         const usuarios = await obtenerUsuarios();
@@ -392,15 +372,13 @@ async function actualizarTablaUsuarios()
 
 
 // GESTIÓN DE USUARIOS
-async function filtrarUsuarios(eventoFormulario)
-{
+async function filtrarUsuarios(eventoFormulario) {
     eventoFormulario.preventDefault();
     await actualizarTablaUsuarios();
 }
 
 
-async function gestionarFormularioUsuario(eventoFormulario)
-{
+async function gestionarFormularioUsuario(eventoFormulario) {
     eventoFormulario.preventDefault();
 
     ocultarMensajes();
@@ -433,12 +411,11 @@ async function gestionarFormularioUsuario(eventoFormulario)
 }
 
 
-async function gestionarEstadoUsuario(cedula, accion)
-{
+async function gestionarEstadoUsuario(cedula, accion) {
     ocultarMensajes();
 
     try {
-        const resultado = await cambiarEstadoUsuario(cedula,accion);
+        const resultado = await cambiarEstadoUsuario(cedula, accion);
         mostrarMensajeExito(resultado.mensaje);
         await actualizarTablaUsuarios();
 
@@ -448,13 +425,13 @@ async function gestionarEstadoUsuario(cedula, accion)
 }
 
 botonLimpiarFiltrosUsuarios.addEventListener("click", function () {
-        formularioFiltroUsuarios.reset();
-        formularioFiltroUsuarios.requestSubmit();
-    });
-formularioFiltroUsuarios.addEventListener("submit",filtrarUsuarios);
-botonRegistrarUsuario.addEventListener("click",abrirFormularioRegistro);
-botonCancelarUsuario.addEventListener("click",cerrarFormularioUsuario);
-botonMostrarClave.addEventListener("click",mostrarClaveUsuario);
-formularioUsuario.addEventListener("submit",gestionarFormularioUsuario);
+    formularioFiltroUsuarios.reset();
+    formularioFiltroUsuarios.requestSubmit();
+});
+formularioFiltroUsuarios.addEventListener("submit", filtrarUsuarios);
+botonRegistrarUsuario.addEventListener("click", abrirFormularioRegistro);
+botonCancelarUsuario.addEventListener("click", cerrarFormularioUsuario);
+botonMostrarClave.addEventListener("click", mostrarClaveUsuario);
+formularioUsuario.addEventListener("submit", gestionarFormularioUsuario);
 
 actualizarTablaUsuarios();

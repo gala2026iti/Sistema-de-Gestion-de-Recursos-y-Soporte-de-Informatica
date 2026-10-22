@@ -92,13 +92,8 @@ async function obtenerUbicaciones() {
 
 
 async function obtenerEquipos(tipoUbicacion, idUbicacion) {
-    const parametros = new URLSearchParams();
-
-    parametros.append("tipoUbicacion", tipoUbicacion);
-    parametros.append("ubicacion", idUbicacion);
-
-    const respuesta = await fetch(API_EQUIPOS + "?" + parametros.toString());
-
+    const url = API_EQUIPOS + "/filtros" + "/tipoUbicacion/" + encodeURIComponent(tipoUbicacion) + "/ubicacion/" + encodeURIComponent(idUbicacion);
+    const respuesta = await fetch(url);
     const json = await respuesta.json();
 
     if (!respuesta.ok) {

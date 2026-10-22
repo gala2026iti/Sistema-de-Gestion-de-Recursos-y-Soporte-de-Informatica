@@ -12,43 +12,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-filtroEstadoTickets.addEventListener("change",cargarTickets);
-filtroEstadoSolicitudes.addEventListener("change",cargarSolicitudes);
+filtroEstadoTickets.addEventListener("change", cargarTickets);
+filtroEstadoSolicitudes.addEventListener("change", cargarSolicitudes);
 
 
-async function cargarTickets()
-{
+async function cargarTickets() {
     try {
-        let url = `${API_TICKETS}?propios=1`;
+        let url = API_TICKETS + "/propios";
         const estado = filtroEstadoTickets.value;
 
         if (estado !== "") {
-            url += `&estado=${encodeURIComponent(estado)}`;
+            url += "/filtros/estado/" + encodeURIComponent(estado);
         }
+
 
         const respuesta = await fetch(url);
-        const datos =  await respuesta.json();
 
+        const datos = await respuesta.json();
 
         if (!respuesta.ok) {
-            throw new Error( datos.mensaje ?? "No se pudieron cargar los tickets." );
+            throw new Error(datos.mensaje ?? "No se pudieron cargar los tickets.");
         }
+
         mostrarTickets(datos.datos);
 
     } catch (error) {
-        console.error(  "Error al cargar los tickets:", error );
+        console.error("Error al cargar los tickets:", error);
     }
 }
 
 
-async function cargarSolicitudes()
-{
+async function cargarSolicitudes() {
     try {
-        let url = `${API_SOLICITUDES}?propias=1`;
+        let url = API_SOLICITUDES + "/propias";
         const estado = filtroEstadoSolicitudes.value;
 
         if (estado !== "") {
-            url += `&estado=${encodeURIComponent(estado)}`;
+            url += "/filtros/estado/" + encodeURIComponent(estado);
         }
 
         const respuesta = await fetch(url);
@@ -57,6 +57,7 @@ async function cargarSolicitudes()
         if (!respuesta.ok) {
             throw new Error(datos.mensaje ?? "No se pudieron cargar las solicitudes.");
         }
+
         mostrarSolicitudes(datos.datos);
 
     } catch (error) {
@@ -65,25 +66,24 @@ async function cargarSolicitudes()
 }
 
 
-function mostrarTickets(tickets)
-{
+function mostrarTickets(tickets) {
     tablaTickets.innerHTML = "";
 
     if (tickets.length === 0) {
-        mostrarFilaVacia(tablaTickets,8, "No tenés tickets registrados.");
+        mostrarFilaVacia(tablaTickets, 8, "No tenés tickets registrados.");
         return;
     }
 
     tickets.forEach(ticket => {
         const fila = document.createElement("tr");
 
-        agregarCelda(fila,ticket.id);
+        agregarCelda(fila, ticket.id);
         agregarCelda(fila, ticket.asunto);
         agregarCelda(fila, ticket.idEquipo !== null ? `Equipo #${ticket.idEquipo}` : "-");
         agregarCelda(fila, capitalizar(ticket.tipo));
         agregarCelda(fila, capitalizar(ticket.gravedad));
         agregarCeldaEstadoTicket(fila, ticket.estado);
-        agregarCelda(fila, formatearFechaHora( ticket.fechaCreacion,ticket.horaCreacion));
+        agregarCelda(fila, formatearFechaHora(ticket.fechaCreacion, ticket.horaCreacion));
         agregarCelda(fila, ticket.justificacion ?? "-");
 
         tablaTickets.appendChild(fila);
@@ -91,12 +91,11 @@ function mostrarTickets(tickets)
 }
 
 
-function mostrarSolicitudes(solicitudes)
-{
+function mostrarSolicitudes(solicitudes) {
     tablaSolicitudes.innerHTML = "";
 
     if (solicitudes.length === 0) {
-        mostrarFilaVacia(tablaSolicitudes, 7, "No tenés solicitudes registradas." );
+        mostrarFilaVacia(tablaSolicitudes, 7, "No tenés solicitudes registradas.");
         return;
     }
 
@@ -107,23 +106,22 @@ function mostrarSolicitudes(solicitudes)
 
         agregarCelda(fila, solicitud.id);
         agregarCelda(fila, solicitud.asunto);
-        agregarCelda(fila, formatearFechaHora( solicitud.fechaIngreso, solicitud.horaIngreso));
-        agregarCelda(fila, formatearFechaHora(solicitud.fechaLimite, solicitud.horaLimite ));
-        agregarCeldaEstadoSolicitud(fila, solicitud.finalizada );
-        agregarCelda(fila, solicitud.nombreTecnico ?? "-" );
+        agregarCelda(fila, formatearFechaHora(solicitud.fechaIngreso, solicitud.horaIngreso));
+        agregarCelda(fila, formatearFechaHora(solicitud.fechaLimite, solicitud.horaLimite));
+        agregarCeldaEstadoSolicitud(fila, solicitud.finalizada);
+        agregarCelda(fila, solicitud.nombreTecnico ?? "-");
 
         if (esVerdadero(solicitud.finalizada)) {
-            agregarCelda(fila, formatearFechaHora(solicitud.fechaFinalizacion, solicitud.horaFinalizacion ));
+            agregarCelda(fila, formatearFechaHora(solicitud.fechaFinalizacion, solicitud.horaFinalizacion));
 
         } else {
-            agregarCelda(fila, "-" );
+            agregarCelda(fila, "-");
         }
         tablaSolicitudes.appendChild(fila);
     });
 }
 
-function agregarCelda(fila, texto)
-{
+function agregarCelda(fila, texto) {
     const celda = document.createElement("td");
     celda.textContent = texto ?? "-";
     fila.appendChild(celda);
@@ -139,7 +137,7 @@ function agregarCeldaEstadoTicket(fila, estado) {
 
     switch (estado) {
         case "pendiente":
-            etiqueta.classList.add( "bg-danger");
+            etiqueta.classList.add("bg-danger");
             break;
         case "en proceso":
             etiqueta.classList.add("bg-warning", "text-dark");
@@ -157,7 +155,7 @@ function agregarCeldaEstadoTicket(fila, estado) {
 
 function agregarCeldaEstadoSolicitud(fila, finalizada) {
     const celda = document.createElement("td");
-    const etiqueta =  document.createElement("span");
+    const etiqueta = document.createElement("span");
     etiqueta.classList.add("badge");
 
     if (esVerdadero(finalizada)) {
@@ -166,7 +164,7 @@ function agregarCeldaEstadoSolicitud(fila, finalizada) {
     } else {
 
         etiqueta.textContent = "Pendiente";
-        etiqueta.classList.add( "bg-warning", "text-dark" );
+        etiqueta.classList.add("bg-warning", "text-dark");
     }
 
     celda.appendChild(etiqueta);
@@ -208,16 +206,14 @@ function formatearFechaHora(fecha, hora) {
 }
 
 
-function esVerdadero(valor)
-{
+function esVerdadero(valor) {
     return (valor === true || valor === 1 || valor === "1");
 }
 
 
-function capitalizar(texto)
-{
+function capitalizar(texto) {
     if (!texto) {
         return "-";
     }
-    return (texto.charAt(0).toUpperCase() +texto.slice(1));
+    return (texto.charAt(0).toUpperCase() + texto.slice(1));
 }

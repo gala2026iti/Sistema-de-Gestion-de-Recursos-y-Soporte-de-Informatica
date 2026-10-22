@@ -73,130 +73,137 @@ class TicketDAO
         }
     }
     public function listarTickets(string $ciTecnico, ?string $orden, ?string $gravedad, ?string $tipo, ?string $estado, ?string $idTicket, ?string $idEquipo, bool $soloAsignados = false, ?string $ciDocente = null, bool $incluirResueltos = false): array
-    {
-        $sql = "
+{
+    $sql = "
+        SELECT
+            t.id,
+            t.tipo,
+            t.asunto,
+            t.descripcion,
+            t.persona,
+            t.gravedad,
+            t.estado,
+            t.fechaCreacion,
+            t.horaCreacion,
+            t.justificacion,
+
+            drt.ciDocente,
+            u.nombre AS nombreDocente,
+
+            eugt.idEquipo,
+            eugt.idUbicacion,
+            eugt.tipoUbicacion,
+
+            colaboradores.colaboradores AS colaboradores,
+
+            COALESCE(
+                colaboradores.esColaborador,
+                0
+            ) AS esColaborador
+
+        FROM TICKET AS t
+
+        LEFT JOIN docente_reporta_ticket AS drt
+            ON drt.idTicket = t.id
+
+        LEFT JOIN USUARIO AS u
+            ON u.ci = drt.ciDocente
+
+        LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
+            ON eugt.idTicket = t.id
+
+        LEFT JOIN (
             SELECT
-                t.id,
-                t.tipo,
-                t.asunto,
-                t.descripcion,
-                t.persona,
-                t.gravedad,
-                t.estado,
-                t.fechaCreacion,
-                t.horaCreacion,
-                t.justificacion,
+                c.idTicket,
 
-                drt.ciDocente,
-                u.nombre AS nombreDocente,
-
-                eugt.idEquipo,
-                eugt.idUbicacion,
-                eugt.tipoUbicacion,
-
-                (
-                    SELECT GROUP_CONCAT(
-                        uTecnico.nombre
-                        ORDER BY uTecnico.nombre
-                        SEPARATOR ', '
-                    )
-
-                    FROM COLABORADOR AS c
-
-                    LEFT JOIN USUARIO AS uTecnico
-                        ON uTecnico.ci = c.ciTecnico
-
-                    WHERE c.idTicket = t.id
+                GROUP_CONCAT(
+                    uTecnico.nombre
+                    ORDER BY uTecnico.nombre
+                    SEPARATOR ', '
                 ) AS colaboradores,
 
-                EXISTS (
-                    SELECT 1
-                    FROM COLABORADOR AS c
-                    WHERE c.idTicket = t.id
-                    AND c.ciTecnico = :ciTecnico
+                MAX(
+                    CASE
+                        WHEN c.ciTecnico = :ciTecnico THEN 1
+                        ELSE 0
+                    END
                 ) AS esColaborador
 
-            FROM TICKET AS t
+            FROM COLABORADOR AS c
 
-            LEFT JOIN docente_reporta_ticket AS drt
-                ON drt.idTicket = t.id
+            LEFT JOIN USUARIO AS uTecnico
+                ON uTecnico.ci = c.ciTecnico
 
-            LEFT JOIN USUARIO AS u
-                ON u.ci = drt.ciDocente
+            GROUP BY c.idTicket
 
-            LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
-                ON eugt.idTicket = t.id
-        ";
-
-        $condiciones = [];
-        $parametros = ["ciTecnico" => $ciTecnico];
-
-        if ($ciDocente !== null && $ciDocente !== "") {
-            $condiciones[] = "drt.ciDocente = :ciDocente";
-            $parametros["ciDocente"] = $ciDocente;
-        }
-        if (!empty($gravedad)) {
-            $condiciones[] = "t.gravedad = :gravedad";
-            $parametros["gravedad"] = $gravedad;
-        }
-
-        if (!empty($tipo)) {
-            $condiciones[] = "t.tipo = :tipo";
-            $parametros["tipo"] = $tipo;
-        }
-
-        if (!empty($estado)) {
-            $condiciones[] = "t.estado = :estado";
-            $parametros["estado"] = $estado;
-        } elseif (empty($idTicket) && !$soloAsignados && !$incluirResueltos) {
-            $condiciones[] = "t.estado <> 'resuelto'";
-        }
-
-        if (!empty($idTicket)) {
-            $condiciones[] = "t.id = :idTicket";
-            $parametros["idTicket"] = $idTicket;
-        }
-
-        if (!empty($idEquipo)) {
-            $condiciones[] = "eugt.idEquipo = :idEquipo";
-            $parametros["idEquipo"] = $idEquipo;
-        }
-
-        if ($soloAsignados) {
-            $condiciones[] = "
-        EXISTS (
-            SELECT 1
-            FROM COLABORADOR AS ca
-            WHERE ca.idTicket = t.id
-            AND ca.ciTecnico = :ciTecnicoAsignado
-        )
+        ) AS colaboradores
+            ON colaboradores.idTicket = t.id
     ";
 
-            $parametros["ciTecnicoAsignado"] = $ciTecnico;
-        }
+    $condiciones = [];
+    $parametros = ["ciTecnico" => $ciTecnico];
 
-        if (!empty($condiciones)) {
-            $sql .= " WHERE " . implode(" AND ", $condiciones);
-        }
-
-        if ($orden === "antiguo") {
-            $sql .= "
-        ORDER BY
-            t.fechaCreacion ASC,
-            t.horaCreacion ASC";
-        } else {
-            $sql .= "
-        ORDER BY
-            t.fechaCreacion DESC,
-            t.horaCreacion DESC";
-        }
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute($parametros);
-        $tickets = $consulta->fetchAll(PDO::FETCH_ASSOC);
-        $consulta->closeCursor();
-
-        return $tickets;
+    if ($ciDocente !== null && $ciDocente !== "") {
+        $condiciones[] = "drt.ciDocente = :ciDocente";
+        $parametros["ciDocente"] = $ciDocente;
     }
+
+    if (!empty($gravedad)) {
+        $condiciones[] = "t.gravedad = :gravedad";
+        $parametros["gravedad"] = $gravedad;
+    }
+
+    if (!empty($tipo)) {
+        $condiciones[] = "t.tipo = :tipo";
+        $parametros["tipo"] = $tipo;
+    }
+
+    if (!empty($estado)) {
+        $condiciones[] = "t.estado = :estado";
+        $parametros["estado"] = $estado;
+
+    } elseif (empty($idTicket) && !$soloAsignados && !$incluirResueltos) {
+        $condiciones[] = "t.estado <> 'resuelto'";
+    }
+
+    if (!empty($idTicket)) {
+        $condiciones[] = "t.id = :idTicket";
+        $parametros["idTicket"] = $idTicket;
+    }
+
+    if (!empty($idEquipo)) {
+        $condiciones[] = "eugt.idEquipo = :idEquipo";
+        $parametros["idEquipo"] = $idEquipo;
+    }
+
+    if ($soloAsignados) {
+        $condiciones[] = "colaboradores.esColaborador = 1";
+    }
+
+    if (!empty($condiciones)) {
+        $sql .= " WHERE " . implode(" AND ", $condiciones);
+    }
+
+    if ($orden === "antiguo") {
+        $sql .= "
+            ORDER BY
+                t.fechaCreacion ASC,
+                t.horaCreacion ASC
+        ";
+    } else {
+        $sql .= "
+            ORDER BY
+                t.fechaCreacion DESC,
+                t.horaCreacion DESC
+        ";
+    }
+
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute($parametros);
+    $tickets = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $consulta->closeCursor();
+    return $tickets;
+}
 
     public function modificarTicket(string $idTicket, string $gravedad, string $estado, ?string $justificacion): bool
     {

@@ -5,7 +5,6 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 try {
     $metodo = $_SERVER["REQUEST_METHOD"];
-
     $pathInfo = trim($_SERVER["PATH_INFO"] ?? "", "/");
 
     /*
@@ -18,24 +17,21 @@ try {
     }
 
     $segmentos = explode("/", $pathInfo);
+    $ruta = $segmentos[0] ?? "";
 
-    if (count($segmentos) > 3) {
+    if ($ruta === "") {
         RespuestaJson::error("La ruta solicitada no es válida.", 404);
     }
 
-    $ruta = $segmentos[0] ?? "";
-    $idRecurso = $segmentos[1] ?? null;
-    $subrecurso = $segmentos[2] ?? null;
+    $segmentosRuta = array_slice($segmentos, 1);
 
-    if ($ruta === "") {
-        RespuestaJson::error( "La ruta solicitada no es válida.", 404);
-    }
+    $idRecurso = $segmentosRuta[0] ?? null;
+    $subrecurso = $segmentosRuta[1] ?? null;
 
     session_start();
-
     require RUTA_APP . "/rutas/api.php";
 
 } catch (Throwable $error) {
     error_log((string) $error);
-    RespuestaJson::error( "Error interno del servidor", 500);
+    RespuestaJson::error("Error interno del servidor", 500);
 }

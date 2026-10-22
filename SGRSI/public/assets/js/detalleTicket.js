@@ -67,15 +67,21 @@ async function obtenerTicket(id) {
 }
 
 async function modificarTicket(ticket) {
+    const datos = {
+        gravedad: ticket.gravedad,
+        estado: ticket.estado,
+        justificacion: ticket.justificacion
+    };
+
     const respuesta = await fetch(
-        API_TICKETS + "/" + ticket.idTicket, {
+        API_TICKETS + "/" + encodeURIComponent(ticket.idTicket), {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-        },
-        body: JSON.stringify(ticket)
+        },  body: JSON.stringify(datos)
     });
+
     return leerRespuestaAPI(respuesta);
 }
 

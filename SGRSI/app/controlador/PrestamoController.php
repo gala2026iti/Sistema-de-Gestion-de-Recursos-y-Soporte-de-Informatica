@@ -10,10 +10,40 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class PrestamoController
 {
-    public function gestionar(string $metodo, ?string $idRecurso = null): void
+    public function gestionar(string $metodo, ?string $idRecurso = null, array $segmentosRuta = []): void
     {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
+        }
+
+        if ($idRecurso === "disponibles") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            if (count($segmentosRuta) !== 1) {
+                RespuestaJson::error("La ruta solicitada no es válida.", 404);
+            }
+            $this->listarDisponibles();
+            return;
+        }
+
+        if ($idRecurso === "filtros") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            $segmentosFiltros = array_slice($segmentosRuta, 1);
+            $this->listar(null, $segmentosFiltros);
+            return;
+        }
+
+        if (count($segmentosRuta) > 1) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
+        if ($metodo === "POST" && $idRecurso !== null) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
         }
 
         match ($metodo) {
@@ -25,55 +55,36 @@ class PrestamoController
     }
 
 
-    private function listar(?string $idRecurso): void
+    private function listar(?string $idPrestamo = null, array $segmentosFiltros = []): void
     {
-        Sesion::verificarRol("tecnico");
 
+        Sesion::verificarRol("tecnico");
         if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
+        $filtros = $this->leerFiltrosRuta($segmentosFiltros);
+        $estado = $filtros["estado"];
 
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $idPrestamo = trim($idRecurso ?? "");
-        $disponibles = trim($_GET["disponibles"] ?? "");
+        if ($idPrestamo !== null && $idPrestamo !== "") {
 
-        if ($idRecurso !== null && $idRecurso !== "") {
-            $idPrestamo = trim($idRecurso);
+            $idPrestamo = trim($idPrestamo);
+            if (!ctype_digit($idPrestamo)) {
+                RespuestaJson::error("El ID del préstamo no es válido.", 422);
+            }
         } else {
-            $idPrestamo = trim($_GET["idPrestamo"] ?? "");
-        }
-
-        if ($estado !== "" && $estado !== "prestado" && $estado !== "devuelto") {
-            RespuestaJson::error("El estado del préstamo no es válido.", 422);
-        }
-
-        if ($idPrestamo !== "" && !ctype_digit($idPrestamo)) {
-            RespuestaJson::error("El ID del préstamo no es válido.", 422);
-        }
-
-        if ($disponibles !== "" && $disponibles !== "1") {
-            RespuestaJson::error("El filtro de equipos disponibles no es válido.", 422);
+            $idPrestamo = "";
         }
 
         $conexion = Conexion::conectar();
         $dao = new PrestamoDAO($conexion);
 
-        if ($disponibles === "1") {
-            $equipos = $dao->listarEquiposDisponibles();
-
-            unset($dao, $conexion);
-            Conexion::desconectar();
-
-            RespuestaJson::exito($equipos);
-        }
-
         $prestamos = $dao->listarPrestamos($estado, $idPrestamo);
 
         unset($dao, $conexion);
+
         Conexion::desconectar();
         RespuestaJson::exito($prestamos);
     }
-
 
     private function alta(): void
     {
@@ -195,4 +206,55 @@ class PrestamoController
 
         RespuestaJson::exito(["mensaje" => "Devolución registrada correctamente."]);
     }
+
+    private function listarDisponibles(): void
+    {
+        Sesion::verificarRol("tecnico");
+
+        if (($_SESSION["rolActual"] ?? "") !== "tecnico") {
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
+        }
+
+        $conexion = Conexion::conectar();
+
+        $dao = new PrestamoDAO($conexion);
+        $equipos = $dao->listarEquiposDisponibles();
+        unset($dao, $conexion);
+
+        Conexion::desconectar();
+        RespuestaJson::exito($equipos);
+    }
+
+    private function leerFiltrosRuta(array $segmentos): array
+    {
+
+        $filtros = ["estado" => ""];
+
+        if (empty($segmentos)) {
+            return $filtros;
+        }
+
+        if (count($segmentos) % 2 !== 0) {
+            RespuestaJson::error("Los filtros de la ruta no son válidos.", 422);
+        }
+
+        for ($i = 0; $i < count($segmentos); $i += 2) {
+
+            $nombre = rawurldecode($segmentos[$i]);
+            $valor = strtolower(trim(rawurldecode($segmentos[$i + 1])));
+
+            if (!array_key_exists($nombre, $filtros)) {
+                RespuestaJson::error("El filtro solicitado no es válido.", 422);
+            }
+            $filtros[$nombre] = $valor;
+        }
+        $estadosValidos = ["", "prestado", "devuelto"];
+
+        if (!in_array($filtros["estado"], $estadosValidos, true)) {
+            RespuestaJson::error("El estado del préstamo no es válido.", 422);
+        }
+
+        return $filtros;
+    }
+
 }

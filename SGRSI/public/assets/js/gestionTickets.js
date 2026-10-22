@@ -43,36 +43,37 @@ async function leerRespuestaAPI(respuesta) {
 // PETICIONES
 async function obtenerTickets() {
     let url = API_TICKETS;
-    const parametros = new URLSearchParams();
+    const idTicket = entradaIdTicket.value.trim();
 
-    if (entradaOrden.value !== "") {
-        parametros.append("orden", entradaOrden.value);
-    }
+    if (idTicket !== "") {
+        url += "/" + encodeURIComponent(idTicket);
 
-    if (entradaGravedad.value !== "") {
-        parametros.append("gravedad", entradaGravedad.value);
-    }
+    } else {
+        const segmentos = [];
 
-    if (entradaTipo.value !== "") {
-        parametros.append("tipo", entradaTipo.value);
-    }
+        if (entradaOrden.value !== "") {
+            segmentos.push("orden", entradaOrden.value);
+        }
 
-    if (entradaEstado.value !== "") {
-        parametros.append("estado", entradaEstado.value);
-    }
 
-    if (entradaIdTicket.value.trim() !== "") {
-        parametros.append("idTicket", entradaIdTicket.value.trim());
-    }
+        if (entradaGravedad.value !== "") {
+            segmentos.push("gravedad", entradaGravedad.value);
+        }
 
-    const consulta = parametros.toString();
+        if (entradaTipo.value !== "") {
+            segmentos.push("tipo", entradaTipo.value);
+        }
 
-    if (consulta !== "") {
-        url += "?" + consulta;
+        if (entradaEstado.value !== "") {
+            segmentos.push("estado", entradaEstado.value);
+        }
+
+        if (segmentos.length > 0) {
+            url += "/filtros/" + segmentos .map(valor =>  encodeURIComponent(valor)) .join("/");
+        }
     }
 
     const respuesta = await fetch(url);
-
     return leerRespuestaAPI(respuesta);
 }
 
@@ -197,18 +198,19 @@ function mostrarSinTickets() {
 
 async function modificarAsignacionTicket(idTicket, accion) {
     const datos = {
-        idTicket: idTicket,
         accion: accion
     };
 
-    const respuesta = await fetch(
-        API_TICKETS + "/" + encodeURIComponent(idTicket), {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
-        }, body: JSON.stringify(datos)
-    });
+    const respuesta = await fetch(API_TICKETS + "/" + encodeURIComponent(idTicket),
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token":
+                    sessionStorage.getItem("csrfToken") ?? ""
+            },
+            body: JSON.stringify(datos)
+        });
     return leerRespuestaAPI(respuesta);
 }
 
@@ -246,10 +248,7 @@ async function actualizarTablaTickets() {
 
     try {
 
-        const tickets =
-            await obtenerTickets();
-
-
+        const tickets = await obtenerTickets();
         if (tickets.length === 0) {
             mostrarSinTickets();
             return;
@@ -264,8 +263,7 @@ async function actualizarTablaTickets() {
 
         console.error(error);
         mostrarSinTickets();
-        alert(
-            "No se pudieron cargar los tickets: " + error.message);
+        alert("No se pudieron cargar los tickets: " + error.message);
     }
 }
 

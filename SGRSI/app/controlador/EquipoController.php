@@ -10,21 +10,35 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class EquipoController
 {
-    public function gestionar(string $metodo, ?string $idRecurso = null, ?string $subrecurso = null): void
+    public function gestionar(string $metodo, ?string $idRecurso = null, ?string $subrecurso = null, array $segmentosRuta = []): void
     {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
+        if ($idRecurso === "filtros") {                          
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            $segmentosFiltros = array_slice($segmentosRuta, 1);
+            $this->listar(null, $segmentosFiltros);
+            return;
+        }
+
+        if (count($segmentosRuta) > 2) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
         if ($subrecurso !== null) {
             if ($subrecurso === "ubicacion") {
-
                 if ($metodo !== "PUT") {
                     RespuestaJson::error("Método no permitido", 405);
                 }
                 $this->modificarUbicacion($idRecurso);
                 return;
             }
+
             RespuestaJson::error("Subrecurso no encontrado", 404);
         }
 
@@ -36,41 +50,38 @@ class EquipoController
         };
     }
 
-
-    private function listar(?string $idRecurso): void
+    private function listar(?string $idRecurso, array $segmentosFiltros = []): void
     {
         $rolActual = $_SESSION["rolActual"] ?? "";
 
         if ($rolActual !== "administrador" && $rolActual !== "tecnico" && $rolActual !== "docente") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
-
-        $orden = strtolower(trim($_GET["orden"] ?? ""));
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $ubicacion = trim($_GET["ubicacion"] ?? "");
-        $tipoUbicacion = strtolower(trim($_GET["tipoUbicacion"] ?? ""));
+        $orden = "";
+        $estado = "";
+        $ubicacion = "";
+        $tipoUbicacion = "";
+        $idEquipo = "";
 
         if ($idRecurso !== null && $idRecurso !== "") {
             $idEquipo = trim($idRecurso);
-        } else {
-            $idEquipo = trim($_GET["idEquipo"] ?? "");
-        }
-
-        if ($idEquipo !== "") {
             $this->validarIdEquipo($idEquipo, "El código del equipo no es válido.");
+        } else {
+            $filtros = $this->leerFiltrosRuta($segmentosFiltros);
+            $orden = $filtros["orden"];
+            $estado = $filtros["estado"];
+            $ubicacion = $filtros["ubicacion"];
+            $tipoUbicacion = $filtros["tipoUbicacion"];
         }
 
         $conexion = Conexion::conectar();
         $dao = new EquipoDAO($conexion);
-
         $equipos = $dao->listarEquipos($rolActual, $orden, $estado, $ubicacion, $tipoUbicacion, $idEquipo);
-
         unset($dao, $conexion);
-        Conexion::desconectar();
 
+        Conexion::desconectar();
         RespuestaJson::exito($equipos);
     }
-
 
     private function alta(): void
     {
@@ -78,7 +89,6 @@ class EquipoController
         Token::verificarCSRF();
 
         $datos = $this->leerJson();
-
         $idEquipo = trim($datos["idEquipo"] ?? "");
         $tipoUbicacion = strtolower(trim($datos["tipoUbicacion"] ?? ""));
         $idUbicacion = trim($datos["idUbicacion"] ?? "");
@@ -100,7 +110,7 @@ class EquipoController
         $conexion = Conexion::conectar();
         $dao = new EquipoDAO($conexion);
 
-        $resultado = $dao->registrarEquipo( $idEquipo, $idUbicacion, $tipoUbicacion, $posicion, $_SESSION["cedula"] );
+        $resultado = $dao->registrarEquipo($idEquipo, $idUbicacion, $tipoUbicacion, $posicion, $_SESSION["cedula"]);
         unset($dao, $conexion);
         Conexion::desconectar();
         if (!$resultado) {
@@ -221,7 +231,8 @@ class EquipoController
     }
 
 
-    private function validarUbicacion( string $tipoUbicacion, string $idUbicacion, string $posicion ): void {
+    private function validarUbicacion(string $tipoUbicacion, string $idUbicacion, string $posicion): void
+    {
         $tiposValidos = ["laboratorio", "taller", "prestamo", "ninguna"];
 
         if (!in_array($tipoUbicacion, $tiposValidos, true)) {
@@ -238,5 +249,63 @@ class EquipoController
                 RespuestaJson::error("La posición del equipo no es válida.", 422);
             }
         }
+    }
+
+    private function leerFiltrosRuta(array $segmentos): array
+    {
+        $filtros = ["orden" => "", "estado" => "", "ubicacion" => "", "tipoUbicacion" => ""];
+
+        if (empty($segmentos)) {
+            return $filtros;
+        }
+
+        if (count($segmentos) % 2 !== 0) {
+            RespuestaJson::error("Los filtros de la ruta no son válidos.", 422);
+        }
+
+
+        for ($i = 0; $i < count($segmentos); $i += 2) {
+
+            $nombre = rawurldecode($segmentos[$i]);
+            $valor = rawurldecode($segmentos[$i + 1]);
+
+            if (!array_key_exists($nombre, $filtros)) {
+                RespuestaJson::error("El filtro solicitado no es válido.", 422);
+            }
+
+            $filtros[$nombre] = trim($valor);
+        }
+
+
+        $filtros["orden"] = strtolower($filtros["orden"]);
+        $filtros["estado"] = strtolower($filtros["estado"]);
+
+        $filtros["tipoUbicacion"] = strtolower($filtros["tipoUbicacion"]);
+
+        $ordenesValidos = ["", "masincidencias", "menosincidencias", "reciente", "antiguo"];
+
+        if (!in_array($filtros["orden"], $ordenesValidos, true)) {
+            RespuestaJson::error("El orden seleccionado no es válido.", 422);
+        }
+        $estadosValidos = ["", "activo", "inactivo"];
+
+        if (!in_array($filtros["estado"], $estadosValidos, true)) {
+            RespuestaJson::error("El estado seleccionado no es válido.", 422);
+        }
+
+
+        $tiposUbicacionValidos = ["", "laboratorio", "taller", "prestamo", "ninguna"];
+
+
+        if (!in_array($filtros["tipoUbicacion"], $tiposUbicacionValidos, true)) {
+            RespuestaJson::error("El tipo de ubicación no es válido.", 422);
+        }
+
+        if ($filtros["ubicacion"] !== "" && !ctype_digit($filtros["ubicacion"])) {
+            RespuestaJson::error("La ubicación seleccionada no es válida.", 422);
+        }
+
+
+        return $filtros;
     }
 }

@@ -10,24 +10,86 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class TicketController
 {
-    public function gestionar(string $metodo, ?string $idRecurso = null, ?string $subrecurso = null): void
+    public function gestionar(string $metodo, ?string $idRecurso = null, ?string $subrecurso = null, array $segmentosRuta = []): void
     {
+
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
 
+        if ($idRecurso === "asignados") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            if ($subrecurso === null) {
+                $this->listar(null, [], true, false);
+                return;
+            }
+
+            if ($subrecurso === "filtros") {
+                $segmentosFiltros = array_slice($segmentosRuta, 2);
+                $this->listar(null, $segmentosFiltros, true, false);
+                return;
+            }
+
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
+        if ($idRecurso === "propios") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            if ($subrecurso === null) {
+                $this->listar(null, [], false, true);
+                return;
+            }
+
+            if ($subrecurso === "filtros") {
+                $segmentosFiltros = array_slice($segmentosRuta, 2);
+
+                $this->listar(null, $segmentosFiltros, false, true);
+                return;
+            }
+
+            if (count($segmentosRuta) === 2) {
+                $this->listar($subrecurso, [], false, true);
+                return;
+            }
+
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+        if ($idRecurso === "filtros") {
+            if ($metodo !== "GET") {
+                RespuestaJson::error("Método no permitido", 405);
+            }
+
+            $segmentosFiltros = array_slice($segmentosRuta, 1);
+
+            $this->listar(null, $segmentosFiltros);
+            return;
+        }
+
         if ($subrecurso !== null) {
-
-            if ($subrecurso === "comentarios") {
-
+            if ($subrecurso === "comentarios" && count($segmentosRuta) === 2) {
                 if ($metodo !== "POST") {
                     RespuestaJson::error("Método no permitido", 405);
                 }
+
                 $this->registrarComentario($idRecurso);
                 return;
             }
 
             RespuestaJson::error("Subrecurso no encontrado", 404);
+        }
+
+        if (count($segmentosRuta) > 1) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+
+        if ($metodo === "POST" && $idRecurso !== null) {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
         }
 
         match ($metodo) {
@@ -39,92 +101,53 @@ class TicketController
         };
     }
 
-    private function listar(?string $idRecurso): void
-    {
+    private function listar(?string $idTicket = null, array $segmentosFiltros = [], bool $soloAsignados = false, bool $soloPropios = false): void {
         $rolActual = $_SESSION["rolActual"] ?? "";
-
-        $asignados = trim($_GET["asignados"] ?? "");
-        $propios = trim($_GET["propios"] ?? "");
-
-        $orden = strtolower(trim($_GET["orden"] ?? ""));
-        $gravedad = strtolower(trim($_GET["gravedad"] ?? ""));
-        $tipo = strtolower(trim($_GET["tipo"] ?? ""));
-        $estado = strtolower(trim($_GET["estado"] ?? ""));
-        $idEquipo = trim($_GET["idEquipo"] ?? "");
-
 
         if ($rolActual !== "tecnico" && $rolActual !== "administrador" && $rolActual !== "docente") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-
-        if ($propios !== "" && $propios !== "1") {
-            RespuestaJson::error("El filtro de tickets propios no es válido.", 422);
+        if ( $soloAsignados && $rolActual !== "tecnico") {
+            RespuestaJson::error("Los tickets asignados no están disponibles para este rol.", 403);
         }
 
-
-        if ($asignados !== "" && $asignados !== "1") {
-            RespuestaJson::error("El filtro de tickets asignados no es válido.", 422);
+        if ($soloPropios && $rolActual !== "docente") {
+            RespuestaJson::error("Los tickets propios no están disponibles para este rol.", 403 );
         }
 
-        if ($asignados === "1" && $rolActual !== "tecnico") {
-            RespuestaJson::error("El filtro de tickets asignados no está disponible para este rol.", 403);
+        if ($rolActual === "docente" && !$soloPropios) {
+            RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
+        $filtros = $this->leerFiltrosRuta($segmentosFiltros);
+        $orden = $filtros["orden"];
+        $gravedad = $filtros["gravedad"];
+        $tipo = $filtros["tipo"];
+        $estado = $filtros["estado"];
+        $idEquipo = $filtros["idEquipo"];
+
+        if ($idTicket !== null && $idTicket !== "") {
+            $idTicket = trim($idTicket);
+
+            if (!ctype_digit($idTicket)) {
+                RespuestaJson::error("El ID del ticket no es válido.", 422);
+            }
+        } else {
+            $idTicket = "";
+        }
         $ciDocente = null;
 
-        if ($rolActual === "docente") {
-
-            if ($propios !== "1") {
-                RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
-            }
+        if ($soloPropios) {
             $ciDocente = $_SESSION["cedula"];
         }
 
-        if ($propios === "1" && $rolActual !== "docente") {
-            RespuestaJson::error("El filtro de tickets propios no está disponible para este rol.", 422);
-        }
-
-        if ($idRecurso !== null && $idRecurso !== "") {
-            $idTicket = trim($idRecurso);
-
-        } else {
-            $idTicket = trim($_GET["idTicket"] ?? "");
-        }
-
-        if ($idTicket !== "" && !ctype_digit($idTicket)) {
-            RespuestaJson::error("El ID del ticket no es válido.", 422);
-        }
-
-        if ($idEquipo !== "" && !ctype_digit($idEquipo)) {
-            RespuestaJson::error("El ID del equipo no es válido.", 422);
-        }
-
-        if ($gravedad !== "" && $gravedad !== "ligera" && $gravedad !== "media" && $gravedad !== "grave") {
-            RespuestaJson::error("La gravedad no es válida.", 422);
-        }
-
-        if ($tipo !== "" && $tipo !== "hardware" && $tipo !== "software" && $tipo !== "red") {
-            RespuestaJson::error("El tipo de ticket no es válido.", 422);
-        }
-
-        if ($orden !== "" && $orden !== "reciente" && $orden !== "antiguo") {
-            RespuestaJson::error("El orden seleccionado no es válido.", 422);
-        }
-
-
-        if ($estado !== "" && $estado !== "pendiente" && $estado !== "en proceso" && $estado !== "resuelto") {
-            RespuestaJson::error("El estado seleccionado no es válido.", 422);
-        }
-
         $incluirResueltos = $rolActual === "administrador" || $rolActual === "docente";
-
         $conexion = Conexion::conectar();
         $dao = new TicketDAO($conexion);
-        $tickets = $dao->listarTickets($_SESSION["cedula"], $orden, $gravedad, $tipo, $estado, $idTicket, $idEquipo, $asignados === "1", $ciDocente, $incluirResueltos);
 
-
-        if ($idRecurso !== null && $idRecurso !== "" && count($tickets) > 0) {
+        $tickets = $dao->listarTickets($_SESSION["cedula"], $orden, $gravedad, $tipo, $estado, $idTicket, $idEquipo, $soloAsignados, $ciDocente, $incluirResueltos);
+        if ($idTicket !== "" && count($tickets) > 0) {
             $tickets[0]["comentarios"] = $dao->listarComentarios($idTicket);
         }
 
@@ -443,5 +466,74 @@ class TicketController
         }
 
         RespuestaJson::exito(["mensaje" => "Comentario registrado correctamente."], 201);
+    }
+
+    private function leerFiltrosRuta(
+        array $segmentos
+    ): array {
+
+        $filtros = [
+            "orden" => "",
+            "gravedad" => "",
+            "tipo" => "",
+            "estado" => "",
+            "idEquipo" => ""
+        ];
+
+        if (empty($segmentos)) {
+            return $filtros;
+        }
+
+        if (count($segmentos) % 2 !== 0) {
+            RespuestaJson::error("Los filtros de la ruta no son válidos.", 422);
+        }
+
+        for ($i = 0; $i < count($segmentos); $i += 2) {
+            $nombre = rawurldecode($segmentos[$i]);
+            $valor = rawurldecode($segmentos[$i + 1]);
+
+            if (!array_key_exists($nombre, $filtros)) {
+                RespuestaJson::error("El filtro solicitado no es válido.", 422);
+            }
+
+            $filtros[$nombre] = trim($valor);
+        }
+
+        $filtros["orden"] = strtolower($filtros["orden"]);
+        $filtros["gravedad"] = strtolower($filtros["gravedad"]);
+        $filtros["tipo"] = strtolower($filtros["tipo"]);
+        $filtros["estado"] = strtolower($filtros["estado"]);
+        $ordenesValidos = ["", "reciente", "antiguo"];
+
+        if (!in_array($filtros["orden"], $ordenesValidos, true)) {
+            RespuestaJson::error("El orden seleccionado no es válido.", 422);
+        }
+        $gravedadesValidas = ["", "ligera", "media", "grave"];
+
+        if (!in_array($filtros["gravedad"], $gravedadesValidas, true)) {
+            RespuestaJson::error("La gravedad no es válida.", 422);
+        }
+
+
+        /*
+         * TIPO
+         */
+        $tiposValidos = ["", "hardware", "software", "red"];
+
+        if (!in_array($filtros["tipo"], $tiposValidos, true)) {
+            RespuestaJson::error("El tipo de ticket no es válido.", 422);
+        }
+        $estadosValidos = ["", "pendiente", "en proceso", "resuelto"];
+
+        if (!in_array($filtros["estado"], $estadosValidos, true)) {
+            RespuestaJson::error("El estado seleccionado no es válido.", 422);
+        }
+
+        if ($filtros["idEquipo"] !== "" && !ctype_digit($filtros["idEquipo"])) {
+            RespuestaJson::error("El ID del equipo no es válido.", 422);
+        }
+
+
+        return $filtros;
     }
 }

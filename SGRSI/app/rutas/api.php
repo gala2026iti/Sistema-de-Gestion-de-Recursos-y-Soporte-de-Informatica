@@ -23,12 +23,12 @@ switch ($ruta) {
 
     case "usuarios":
         $controlador = new UsuarioController();
-        $controlador->gestionar($metodo, $idRecurso);
+        $controlador->gestionar($metodo, $idRecurso, $segmentosRuta);
         break;
 
     case "equipos":
         $controlador = new EquipoController();
-        $controlador->gestionar($metodo, $idRecurso, $subrecurso);
+        $controlador->gestionar($metodo, $idRecurso, $subrecurso, $segmentosRuta);
         break;
 
     case "ubicaciones":
@@ -38,17 +38,17 @@ switch ($ruta) {
 
     case "tickets":
         $controlador = new TicketController();
-        $controlador->gestionar($metodo, $idRecurso, $subrecurso);
+        $controlador->gestionar($metodo, $idRecurso, $subrecurso, $segmentosRuta);
         break;
 
     case "solicitudes":
         $controlador = new SolicitudController();
-        $controlador->gestionar($metodo, $idRecurso);
+        $controlador->gestionar($metodo, $idRecurso, $segmentosRuta);
         break;
 
     case "prestamos":
         $controlador = new PrestamoController();
-        $controlador->gestionar($metodo, $idRecurso);
+        $controlador->gestionar($metodo, $idRecurso, $segmentosRuta);
         break;
     case "historiales":
         $controlador = new HistorialController();

@@ -40,7 +40,7 @@ async function leerRespuestaAPI(respuesta) {
 
 async function obtenerTicketsAsignados()
 {
-    const respuesta = await fetch(API_TICKETS + "?asignados=1");
+    const respuesta = await fetch(API_TICKETS + "/asignados" );
     return leerRespuestaAPI(respuesta);
 }
 

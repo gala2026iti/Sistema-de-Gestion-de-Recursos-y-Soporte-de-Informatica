@@ -55,28 +55,21 @@ async function leerRespuestaAPI(respuesta) {
 // PETICIONES
 
 async function obtenerPrestamos() {
-    const parametros = new URLSearchParams();
-
-    if (filtroEstado.value !== "") {
-        parametros.set("estado", filtroEstado.value);
-    }
-
-    if (filtroId.value.trim() !== "") {
-        parametros.set("idPrestamo", filtroId.value.trim());
-    }
-
     let url = API_PRESTAMOS;
+    const idPrestamo = filtroId.value.trim();
+    const estado = filtroEstado.value;
 
-    if (parametros.toString() !== "") {
-        url += "?" + parametros.toString();
+    if (idPrestamo !== "") {
+        url += "/" + encodeURIComponent(idPrestamo);
+    } else if (estado !== "") {
+        url += "/filtros/estado/" + encodeURIComponent(estado);
     }
-
     const respuesta = await fetch(url);
     return leerRespuestaAPI(respuesta);
 }
 
 async function obtenerEquiposDisponibles() {
-    const respuesta = await fetch(API_PRESTAMOS + "?disponibles=1");
+    const respuesta = await fetch(API_PRESTAMOS + "/disponibles" );
     return leerRespuestaAPI(respuesta);
 }
 
