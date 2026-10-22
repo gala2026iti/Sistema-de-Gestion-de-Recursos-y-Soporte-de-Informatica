@@ -1,0 +1,11 @@
+/*
+    POBLACION: ADMINISTRADOR
+*/
+
+SET time_zone = '-03:00';
+USE gala;
+
+INSERT INTO ADMINISTRADOR (ci) VALUES
+('11111111'),
+('44444444'),
+('77777777');

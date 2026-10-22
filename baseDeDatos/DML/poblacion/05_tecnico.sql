@@ -1,0 +1,11 @@
+/*
+    POBLACION: TECNICO
+*/
+
+SET time_zone = '-03:00';
+USE gala;
+
+INSERT INTO TECNICO (ci) VALUES
+('33333333'),
+('44444444'),
+('66666666');

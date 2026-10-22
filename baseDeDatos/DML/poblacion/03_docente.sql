@@ -1,0 +1,12 @@
+/*
+    POBLACION: DOCENTE
+*/
+
+SET time_zone = '-03:00';
+USE gala;
+
+INSERT INTO DOCENTE (ci) VALUES
+('22222222'),
+('55555555'),
+('66666666'),
+('88888888');

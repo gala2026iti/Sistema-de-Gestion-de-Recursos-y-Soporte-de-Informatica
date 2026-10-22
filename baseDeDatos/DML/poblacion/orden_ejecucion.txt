@@ -1,0 +1,28 @@
+Ejecutar después del DDL, en este orden:
+
+01_usuario.sql
+02_correo.sql
+03_docente.sql
+04_administrador.sql
+05_tecnico.sql
+06_rol.sql
+07_administrador_modifica_usuario.sql
+08_solicitud.sql
+09_docente_ingresa_solicitud.sql
+10_tecnico_finaliza_solicitud.sql
+11_ubicacion.sql
+12_equipo.sql
+13_equipo_reside_ubicacion.sql
+14_administrador_maneja_equipo.sql
+15_administrador_controla_ubicacion.sql
+16_prestamo.sql
+17_prestamo_corresponde_equipo.sql
+18_tecnico_tramita_prestamo.sql
+19_ticket.sql
+20_docente_reporta_ticket.sql
+21_equipo_ubicacion_genera_ticket.sql
+22_colaborador.sql
+23_tecnico_gestiona_ticket.sql
+24_tecnico_comenta_ticket.sql
+
+Alternativa: creacionBDcompletaGALA.sql

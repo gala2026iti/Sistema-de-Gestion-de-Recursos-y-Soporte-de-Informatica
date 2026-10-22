@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solicitud de Servicio</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+</head>
+
+<body data-rol-permitido="docente">
+
+    <header class="d-flex justify-content-center align-items-center py-4">
+        <img class="img-logo" src="../assets/img/logo_iti.png" alt="Logo">
+    </header>
+
+
+    <nav class="navbarSGRSI">
+
+        <section class="nav-container">
+
+            <section class="nav-primera-fila">
+
+                <button class="btn-menu" id="btnMenu">
+                    ☰
+                </button>
+
+                <button class="btn-cerrar-lateral" id="btnCerrar">
+                    X
+                </button>
+
+
+                <ul class="nav-opciones-sistema">
+
+                    <li class="desplegable desplegable-derecha" id="menuUsuario">
+                        <a href="#" id="datosUsuario">
+                            Usuario 🡻
+                        </a>
+                        <ul class="desplegable-menu" id="opcionesRoles">
+                            <li>
+                                <a href="#" id="cerrarSesion">
+                                    Cerrar Sesion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <ul class="nav-menu">
+                <li>
+                    <a href="./homeDocente.html">
+                        Registro de incidencias
+                    </a>
+                </li>
+                <li>
+                    <a href="./seguimientoDocente.html">
+                        Mis tickets y solicitudes
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </nav>
+
+
+    <main class="d-flex flex-column align-items-center justify-content-center py-5 px-3">
+
+        <section class="text-center mb-4">
+
+            <h2 class="fw-bold texto-azul mb-3">
+                Solicitud de servicio
+            </h2>
+
+            <p class="text-muted mb-1 fs-6">
+                Aquí podrás realizar solicitudes en caso de precisar ayuda con la planificación o preparación de clases.
+            </p>
+
+            <p class="text-danger fw-semibold small">
+                Realice la solicitud con un tiempo de anticipación adecuado.
+            </p>
+
+        </section>
+
+
+        <section class="Tarjeta-login card p-4 shadow border-0 w-100">
+
+            <form id="formSolicitud">
+                <fieldset class="border-0 p-0 m-0">
+                    <label for="asunto" class="form-label fw-semibold texto-azul-dark">
+                        Asunto
+                    </label>
+
+                    <input type="text" id="asunto" name="asunto" class="form-control form-control-lg mb-3"
+                        minlength="10" maxlength="30" placeholder="Ej: Instalación de NetBeans" required>
+
+                    <label for="descripcion" class="form-label fw-semibold texto-azul-dark">
+                        Descripción
+                    </label>
+
+                    <textarea id="descripcion" name="descripcion" class="form-control mb-3" rows="4" minlength="10"
+                        maxlength="200"
+                        placeholder="Ej: Solicito que las PC del Laboratorio 1 tengan instalado NetBeans"
+                        required></textarea>
+
+                    <label for="fecha" class="form-label fw-semibold texto-azul-dark">
+                        Fecha y Hora solicitada
+                    </label>
+
+                    <label for="fecha" class="form-label fw-semibold texto-azul-dark">
+                             Hacer click en el calendario -->
+                    </label>
+      
+                    <input type="datetime-local" id="fecha" name="fecha" class="form-control form-control-lg mb-4"
+                        required>
+
+                </fieldset>
+
+                <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-dark fs-5 shadow-sm">
+                    Enviar
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+
+        <span class="footer-bold">
+            Copyright 2026 - S.G.R.S.I - Instituto tecnológico de Informática
+        </span>
+
+    </footer>
+
+
+    <script src="../assets/js/btnMenuCelular.js"></script>
+    <script src="../assets/js/verificarSesion.js"></script>
+    <script src="../assets/js/cerrarSesion.js"></script>
+    <script src="../assets/js/solicitudesDocente.js"></script>
+
+</body>
+
+</html>

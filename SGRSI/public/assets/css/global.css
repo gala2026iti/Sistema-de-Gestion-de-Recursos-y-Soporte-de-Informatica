@@ -320,6 +320,77 @@ textarea {
 .btn-asignar:hover {
     background-color: rgb(15, 15, 160);
 }
+
+
+.form-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+
+    gap: 1.25rem;
+
+    padding: 1rem;
+}
+
+
+.grupo-filtro {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.4rem;
+
+    min-width: 180px;
+}
+
+
+.grupo-filtro label {
+    font-weight: 600;
+}
+
+
+.grupo-filtro select,
+.grupo-filtro input {
+    min-height: 38px;
+}
+
+
+.grupo-botones-filtro {
+    display: flex;
+
+    gap: 0.75rem;
+
+    align-items: center;
+}
+
+.tabla-scroll {
+    max-height: 500px;
+
+    overflow-y: auto;
+    overflow-x: auto;
+
+    width: 100%;
+}
+
+
+.tabla-scroll table {
+    margin-bottom: 0;
+}
+
+
+.tabla-scroll thead th {
+    position: sticky;
+    top: 0;
+
+    z-index: 2;
+}
+
+.tickets-scroll {
+    max-height: 500px;
+    overflow-y: auto;
+
+    padding-right: 0.5rem;
+}
+
 @media screen and (max-width: 1046px) {
 
     header,
@@ -410,4 +481,18 @@ textarea {
         font-size: 0.8rem;
     }
 
+
+    .grupo-filtro {
+        width: 100%;
+    }
+
+    .grupo-filtro select,
+    .grupo-filtro input {
+        width: 100%;
+    }
+
+    .grupo-botones-filtro {
+        width: 100%;
+        flex-wrap: wrap;
+    }
 }

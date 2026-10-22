@@ -1,21 +1,39 @@
-//VARIABLES
+const API_SESION_CIERRE = "../index.php/sesion";
 
-/* ---Descartado por el momento
+const botonCerrarSesion = document.getElementById("cerrarSesion");
 
-const btnSalir = document.getElementById("cerrarSesion")
 
-// EVENTOS
-btnSalir.addEventListener("click", function (e) {
-    e.preventDefault()
+async function cerrarSesion()
+{
+    const respuesta = await fetch(
+        API_SESION_CIERRE,{
+            method: "DELETE",
 
-    const urlActual = window.location.pathname
-    let rutaSalida = "index.html"
+            headers: {
+                "X-CSRF-Token": sessionStorage.getItem("csrfToken") ?? ""
+            }
+        });
 
-    if (urlActual.includes("administracion-tecnico") || urlActual.includes("direccion")) {
+    const json = await respuesta.json();
 
-        rutaSalida = "../index.html"
+    if (!respuesta.ok) {
+        throw new Error(json.mensaje ?? "No se pudo cerrar la sesión.");
     }
 
-    localStorage.setItem("usuario", "")
-    window.location.href = rutaSalida
-})*/
+    return json.datos;
+}
+
+
+async function gestionarCierreSesion(evento)
+{
+    evento.preventDefault();
+    try {
+        await cerrarSesion();
+        sessionStorage.removeItem("csrfToken");
+        window.location.replace("../index.html");
+    } catch (error) {
+        window.alert(error.message);
+    }
+}
+
+botonCerrarSesion.addEventListener("click",gestionarCierreSesion);
