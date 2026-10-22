@@ -93,13 +93,10 @@ class HistorialDAO
 
                 '' AS detalle
 
-            FROM administrador_maneja_equipo AS h
+           FROM administrador_maneja_equipo AS h
 
-            INNER JOIN USUARIO AS actor
-                ON actor.ci = h.ciAdmin
-
-            INNER JOIN EQUIPO AS e
-                ON e.id = h.idEquipo
+           INNER JOIN USUARIO AS actor
+           ON actor.ci = h.ciAdmin
         ";
 
         $parametros = [];
@@ -153,11 +150,7 @@ class HistorialDAO
             FROM administrador_controla_ubicacion AS h
 
             INNER JOIN USUARIO AS actor
-                ON actor.ci = h.ciAdmin
-
-            INNER JOIN UBICACION AS u
-                ON u.id = h.idUbicacion
-                AND u.tipo = h.tipoUbicacion
+            ON actor.ci = h.ciAdmin
         ";
 
         $parametros = [];

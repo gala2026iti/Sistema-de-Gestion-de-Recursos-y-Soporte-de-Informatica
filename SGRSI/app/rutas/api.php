@@ -52,7 +52,7 @@ switch ($ruta) {
         break;
     case "historiales":
         $controlador = new HistorialController();
-        $controlador->gestionar($metodo, $idRecurso);
+        $controlador->gestionar($metodo, $idRecurso, $segmentosRuta);
         break;
     case "metricas":
         $controlador = new MetricasController();

@@ -10,7 +10,8 @@ class PrestamoDAO
     }
 
 
-    public function listarPrestamos( ?string $estado, ?string $idPrestamo): array {
+    public function listarPrestamos(?string $estado, ?string $idPrestamo): array
+    {
         $sql = "
             SELECT
                 p.id,
@@ -79,107 +80,71 @@ class PrestamoDAO
 
     public function listarEquiposDisponibles(): array
     {
-        $sql = "
-            SELECT
-                e.id AS idEquipo
-
-            FROM EQUIPO AS e
-
-            INNER JOIN equipo_reside_ubicacion AS eru
-                ON eru.idEquipo = e.id
-
-            WHERE e.activo = 1
-
-            AND eru.idUbicacion = 0
-            AND eru.tipoUbicacion = 'prestamo'
-
-            AND NOT EXISTS (
-                SELECT 1
-
-                FROM prestamo_corresponde_equipo AS pce
-
-                INNER JOIN PRESTAMO AS p
-                    ON p.id = pce.idPrestamo
-
-                WHERE pce.idEquipo = e.id
-                AND p.devuelto = 0
-            )
-
-            AND NOT EXISTS (
-                SELECT 1
-
-                FROM equipo_ubicacion_genera_ticket AS eugt
-
-                INNER JOIN TICKET AS t
-                    ON t.id = eugt.idTicket
-
-                WHERE eugt.idEquipo = e.id
-                AND t.estado <> 'resuelto'
-            )
-
-            ORDER BY e.id
-        ";
-
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute();
-        $equipos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-        $consulta->closeCursor();
-
-        return $equipos;
+        return $this->consultarEquiposDisponibles();
     }
 
 
     public function equipoDisponible(string $idEquipo): bool
     {
-        $sql = "
-            SELECT COUNT(*)
-
-            FROM EQUIPO AS e
-
-            INNER JOIN equipo_reside_ubicacion AS eru
-                ON eru.idEquipo = e.id
-
-            WHERE e.id = :idEquipo
-            AND e.activo = 1
-
-            AND eru.idUbicacion = 0
-            AND eru.tipoUbicacion = 'prestamo'
-
-            AND NOT EXISTS (
-                SELECT 1
-
-                FROM prestamo_corresponde_equipo AS pce
-
-                INNER JOIN PRESTAMO AS p
-                    ON p.id = pce.idPrestamo
-
-                WHERE pce.idEquipo = e.id
-                AND p.devuelto = 0
-            )
-
-            AND NOT EXISTS (
-                SELECT 1
-
-                FROM equipo_ubicacion_genera_ticket AS eugt
-
-                INNER JOIN TICKET AS t
-                    ON t.id = eugt.idTicket
-
-                WHERE eugt.idEquipo = e.id
-                AND t.estado <> 'resuelto'
-            )
-        ";
-
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute(["idEquipo" => $idEquipo]);
-        $disponible = (int) $consulta->fetchColumn() > 0;
-        $consulta->closeCursor();
-
-        return $disponible;
+        $equipos = $this->consultarEquiposDisponibles($idEquipo);
+        return count($equipos) > 0;
     }
 
+    private function consultarEquiposDisponibles(?string $idEquipo = null): array
+    {
+        $sql = "
+        SELECT
+            e.id AS idEquipo
 
-    public function registrarPrestamo(string $ciTecnico, string $nombrePrestado, string $ciPrestado, string $fechaFin, string $horaFin, string $idEquipo): bool {
+        FROM EQUIPO AS e
+
+        INNER JOIN equipo_reside_ubicacion AS eru
+            ON eru.idEquipo = e.id
+
+        LEFT JOIN prestamo_corresponde_equipo AS pce
+            ON pce.idEquipo = e.id
+
+        LEFT JOIN PRESTAMO AS p
+            ON p.id = pce.idPrestamo
+            AND p.devuelto = 0
+
+        LEFT JOIN equipo_ubicacion_genera_ticket AS eugt
+            ON eugt.idEquipo = e.id
+
+        LEFT JOIN TICKET AS t
+            ON t.id = eugt.idTicket
+            AND t.estado <> 'resuelto'
+
+        WHERE e.activo = 1
+        AND eru.idUbicacion = 0
+        AND eru.tipoUbicacion = 'prestamo'
+    ";
+
+        $parametros = [];
+
+        if ($idEquipo !== null) {
+            $sql .= " AND e.id = :idEquipo";
+            $parametros["idEquipo"] = $idEquipo;
+        }
+
+        $sql .= "
+        GROUP BY e.id
+
+        HAVING COUNT(p.id) = 0
+        AND COUNT(t.id) = 0
+
+        ORDER BY e.id
+    ";
+
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute($parametros);
+        $equipos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $consulta->closeCursor();
+        return $equipos;
+    }
+
+    public function registrarPrestamo(string $ciTecnico, string $nombrePrestado, string $ciPrestado, string $fechaFin, string $horaFin, string $idEquipo): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -241,7 +206,7 @@ class PrestamoDAO
             ";
 
             $consultaTecnico = $this->conexion->prepare($sqlTecnico);
-            $consultaTecnico->execute([ "ciTecnico" => $ciTecnico, "idPrestamo" => $idPrestamo]);
+            $consultaTecnico->execute(["ciTecnico" => $ciTecnico, "idPrestamo" => $idPrestamo]);
             $consultaTecnico->closeCursor();
 
             $this->conexion->commit();

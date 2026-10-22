@@ -8,7 +8,11 @@ require_once RUTA_VISTA . "/RespuestaJson.php";
 
 class HistorialController
 {
-    public function gestionar(string $metodo, ?string $tipoHistorial = null ): void {
+    public function gestionar(
+        string $metodo,
+        ?string $tipoHistorial = null,
+        array $segmentosRuta = []
+    ): void {
         if (!isset($_SESSION["cedula"])) {
             RespuestaJson::error("Acceso denegado: sesión no iniciada", 401);
         }
@@ -16,22 +20,32 @@ class HistorialController
         if ($metodo !== "GET") {
             RespuestaJson::error("Método no permitido", 405);
         }
-        $this->listar($tipoHistorial);
+
+        $fecha = "";
+
+        if (count($segmentosRuta) === 1) {
+            $fecha = "";
+        } elseif (count($segmentosRuta) === 4 && $segmentosRuta[1] === "filtros" && $segmentosRuta[2] === "fecha") {
+            $fecha = rawurldecode($segmentosRuta[3]);
+        } else {
+            RespuestaJson::error("La ruta solicitada no es válida.", 404);
+        }
+        $this->listar($tipoHistorial, $fecha);
     }
 
 
-    private function listar(?string $tipoHistorial): void
+    private function listar(?string $tipoHistorial, string $fecha = ""): void
     {
         $tipoHistorial = strtolower(trim($tipoHistorial ?? ""));
         $tiposValidos = ["usuarios", "equipos", "ubicaciones", "tickets", "solicitudes", "prestamos"];
 
-        if (!in_array( $tipoHistorial, $tiposValidos, true)) {
+        if (!in_array($tipoHistorial, $tiposValidos, true)) {
             RespuestaJson::error("El tipo de historial no es válido.", 422);
         }
 
         $this->verificarAcceso($tipoHistorial);
 
-        $fecha = trim($_GET["fecha"] ?? "");
+        $fecha = trim($fecha);
 
         if ($fecha !== "") {
             $this->validarFecha($fecha);
@@ -55,7 +69,8 @@ class HistorialController
     }
 
 
-    private function verificarAcceso(string $tipoHistorial): void {
+    private function verificarAcceso(string $tipoHistorial): void
+    {
         $rolActual = $_SESSION["rolActual"] ?? "";
         $historialAdministrador = ["usuarios", "equipos", "ubicaciones"];
         $historialTecnico = ["tickets", "solicitudes", "prestamos"];
@@ -64,16 +79,16 @@ class HistorialController
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
 
-        if (in_array($tipoHistorial, $historialTecnico,true) &&$rolActual !== "tecnico") {
+        if (in_array($tipoHistorial, $historialTecnico, true) && $rolActual !== "tecnico") {
             RespuestaJson::error("Acceso denegado: rol incorrecto", 403);
         }
     }
     private function validarFecha(string $fecha): void
     {
-        $fechaValida = DateTime::createFromFormat( "Y-m-d", $fecha );
+        $fechaValida = DateTime::createFromFormat("Y-m-d", $fecha);
 
-        if ( !$fechaValida || $fechaValida->format("Y-m-d") !== $fecha) {
-            RespuestaJson::error( "La fecha no es válida.",422);
+        if (!$fechaValida || $fechaValida->format("Y-m-d") !== $fecha) {
+            RespuestaJson::error("La fecha no es válida.", 422);
         }
     }
 }

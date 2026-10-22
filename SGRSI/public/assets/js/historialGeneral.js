@@ -89,24 +89,12 @@ async function leerRespuestaAPI(respuesta)
 async function obtenerHistorial()
 {
     let url = API_HISTORIALES + "/" + encodeURIComponent(tipoHistorial);
-
-    const parametros = new URLSearchParams();
-
     if (filtroFecha.value !== "") {
-        parametros.set("fecha", filtroFecha.value);
+        url += "/filtros/fecha/" + encodeURIComponent(filtroFecha.value);
     }
-
-    const consulta = parametros.toString();
-
-    if (consulta !== "") {
-        url += "?" + consulta;
-    }
-
     const respuesta = await fetch(url);
-
     return leerRespuestaAPI(respuesta);
 }
-
 
 // VISTA
 

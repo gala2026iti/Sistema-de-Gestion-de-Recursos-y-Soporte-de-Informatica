@@ -9,7 +9,8 @@ class SolicitudDAO
         $this->conexion = $conexion;
     }
 
-    public function registrarSolicitud(string $ciDocente, string $asunto, string $descripcion, string $fechaLimite, string $horaLimite): bool {
+    public function registrarSolicitud(string $ciDocente, string $asunto, string $descripcion, string $fechaLimite, string $horaLimite): bool
+    {
         try {
             $this->conexion->beginTransaction();
 
@@ -70,7 +71,8 @@ class SolicitudDAO
     }
 
 
-  public function listarSolicitudes( ?string $estado, ?string $id, ?string $ciDocente = null): array{
+    public function listarSolicitudes(?string $estado, ?string $id, ?string $ciDocente = null): array
+    {
         $sql = "
             SELECT
                 s.id,
@@ -121,6 +123,11 @@ class SolicitudDAO
             $parametros["id"] = $id;
         }
 
+        if ($ciDocente !== null && $ciDocente !== "") {
+            $condiciones[] = "dis.ciDocente = :ciDocente";
+            $parametros["ciDocente"] = $ciDocente;
+        }
+
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
@@ -159,7 +166,8 @@ class SolicitudDAO
         return (bool) $estado;
     }
 
-    public function finalizarSolicitud(string $idSolicitud, string $ciTecnico): bool {
+    public function finalizarSolicitud(string $idSolicitud, string $ciTecnico): bool
+    {
         try {
             $this->conexion->beginTransaction();
 

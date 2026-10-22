@@ -65,10 +65,12 @@ class UsuarioDAO
             (bool) $usuario["activo"],
             (bool) $usuario["administrador"],
             (bool) $usuario["tecnico"],
-            (bool) $usuario["docente"]);
+            (bool) $usuario["docente"]
+        );
     }
 
-    public function listarUsuarios(string $rol = "", string $estado = ""): array {
+    public function listarUsuarios(string $rol = "", string $estado = ""): array
+    {
         $sql = "
             SELECT
                 u.ci AS cedula,
@@ -130,20 +132,21 @@ class UsuarioDAO
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " .
-            implode(" AND ", $condiciones);
+                implode(" AND ", $condiciones);
         }
 
         $sql .= " ORDER BY u.ci";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute($parametros);
-        $usuarios = $consulta->fetchAll( PDO::FETCH_ASSOC);
+        $usuarios = $consulta->fetchAll(PDO::FETCH_ASSOC);
         $consulta = null;
 
         return $usuarios;
     }
 
-    public function registrarUsuario(string $cedula, string $nombre, string $correo, string $claveHash, array $roles, string $ciAdmin): bool {
+    public function registrarUsuario(string $cedula, string $nombre, string $correo, string $claveHash, array $roles, string $ciAdmin): bool
+    {
         try {
             $this->conexion->beginTransaction();
             $sqlUsuario = "
@@ -177,7 +180,7 @@ class UsuarioDAO
                 )
             ";
 
-            $consultaCorreo =$this->conexion->prepare($sqlCorreo);
+            $consultaCorreo = $this->conexion->prepare($sqlCorreo);
             $consultaCorreo->execute(["cedula" => $cedula, "correo" => $correo]);
             $consultaCorreo->closeCursor();
 
@@ -269,26 +272,21 @@ class UsuarioDAO
         try {
             $this->conexion->beginTransaction();
 
+            $sqlUsuario = "
+        UPDATE USUARIO
+        SET nombre = :nombre";
+
+            $parametrosUsuario = [
+                "nombre" => $nombre,
+                "cedula" => $cedula
+            ];
+
             if ($claveHash !== null) {
-                $sqlUsuario = "
-                    UPDATE USUARIO
-                    SET
-                        nombre = :nombre,
-                        clave = :clave
-                    WHERE ci = :cedula
-                ";
-
-                $parametrosUsuario = ["nombre" => $nombre, "clave" => $claveHash, "cedula" => $cedula];
-
-            } else {
-                $sqlUsuario = "
-                    UPDATE USUARIO
-                    SET nombre = :nombre
-                    WHERE ci = :cedula
-                ";
-
-                $parametrosUsuario = ["nombre" => $nombre, "cedula" => $cedula];
+                $sqlUsuario .= ", clave = :clave";
+                $parametrosUsuario["clave"] = $claveHash;
             }
+
+            $sqlUsuario .= " WHERE ci = :cedula";
 
             $consultaUsuario = $this->conexion->prepare($sqlUsuario);
 

@@ -159,24 +159,8 @@ class EquipoDAO
                     $posicion = $this->obtenerPosicionLibrePrestamo();
                 }
 
-                $sqlUbicacion = "
-                    INSERT INTO equipo_reside_ubicacion (
-                        idEquipo,
-                        idUbicacion,
-                        tipoUbicacion,
-                        posicion
-                    )
-                    VALUES (
-                        :idEquipo,
-                        :idUbicacion,
-                        :tipoUbicacion,
-                        :posicion
-                    )
-                ";
+                $this->registrarUbicacionEquipo($idEquipo, $idUbicacion, $tipoUbicacion, $posicion);
 
-                $consultaUbicacion = $this->conexion->prepare($sqlUbicacion);
-                $consultaUbicacion->execute(["idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
-                $consultaUbicacion->closeCursor();
             }
             $this->registrarHistorialEquipo($ciAdmin, $idEquipo, "creacion");
 
@@ -225,25 +209,8 @@ class EquipoDAO
                     $posicion = $this->obtenerPosicionLibrePrestamo();
                 }
 
-                $sql = "
-                    INSERT INTO equipo_reside_ubicacion (
-                        idEquipo,
-                        idUbicacion,
-                        tipoUbicacion,
-                        posicion
-                    )
-                    VALUES (
-                        :idEquipo,
-                        :idUbicacion,
-                        :tipoUbicacion,
-                        :posicion
-                    )
-                ";
-
-                $consulta = $this->conexion->prepare($sql);
-                $consulta->execute(["idEquipo" => $idEquipo, "idUbicacion" => $idUbicacion, "tipoUbicacion" => $tipoUbicacion, "posicion" => $posicion]);
-
-                $consulta->closeCursor();
+                $this->registrarUbicacionEquipo($idEquipo, $idUbicacion, $tipoUbicacion, $posicion);
+             
             }
             $this->registrarHistorialEquipo($ciAdmin, $idEquipo, "modificacion");
 
@@ -258,6 +225,34 @@ class EquipoDAO
         }
     }
 
+    private function registrarUbicacionEquipo(string $idEquipo, string $idUbicacion, string $tipoUbicacion, string $posicion): void {
+
+        $sql = "
+        INSERT INTO equipo_reside_ubicacion (
+            idEquipo,
+            idUbicacion,
+            tipoUbicacion,
+            posicion
+        )
+        VALUES (
+            :idEquipo,
+            :idUbicacion,
+            :tipoUbicacion,
+            :posicion
+        )
+    ";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        $consulta->execute([
+            "idEquipo" => $idEquipo,
+            "idUbicacion" => $idUbicacion,
+            "tipoUbicacion" => $tipoUbicacion,
+            "posicion" => $posicion
+        ]);
+
+        $consulta->closeCursor();
+    }
     public function cambiarEstadoEquipo(string $idEquipo, bool $activo, string $ciAdmin): bool
     {
         try {

@@ -180,27 +180,32 @@ class UbicacionDAO
     }
 
 
-    private function obtenerIdLibre(string $tipo): string
-    {
-        for ($id = 1; ; $id++) {
-            $sql = "
-                SELECT id
-                FROM UBICACION
-                WHERE id = :id
-                AND tipo = :tipo
-            ";
+private function obtenerIdLibre(string $tipo): string
+{
+    $sql = "
+        SELECT id
+        FROM UBICACION
+        WHERE tipo = :tipo
+        AND id >= 1
+        ORDER BY id ASC
+    ";
 
-            $consulta = $this->conexion->prepare($sql);
-            $consulta->execute([ "id" => $id, "tipo" => $tipo]);
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute(["tipo" => $tipo]);
+    $idLibre = 1;
 
-            if (!$consulta->fetch()) {
-                $consulta->closeCursor();
-                return (string) $id;
-            }
-
-            $consulta->closeCursor();
+    while (($idOcupado = $consulta->fetchColumn()) !== false) {
+        $idOcupado = (int) $idOcupado;
+        if ($idOcupado === $idLibre) {
+            $idLibre++;
+        } elseif ($idOcupado > $idLibre) {
+            break;
         }
     }
+
+    $consulta->closeCursor();
+    return (string) $idLibre;
+}
 
 
     private function registrarHistorialUbicacion(string $ciAdmin, string $idUbicacion, string $tipoUbicacion, string $tipoInteraccion): void {
