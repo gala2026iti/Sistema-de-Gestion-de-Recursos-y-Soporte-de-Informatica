@@ -11,8 +11,8 @@
 
 SET time_zone = '-03:00';
 
+CREATE DATABASE IF NOT EXISTS gala;
 USE gala;
-
 
 /*
     ELIMINACION DE TABLAS
