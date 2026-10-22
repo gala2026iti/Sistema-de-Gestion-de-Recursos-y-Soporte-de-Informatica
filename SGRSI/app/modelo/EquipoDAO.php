@@ -10,7 +10,8 @@ class EquipoDAO
         $this->conexion = $conexion;
     }
 
-    public function listarEquipos(string $rolActual, string $orden = "", string $estado = "", string $ubicacion = "", string $tipoUbicacion = "", string $id = ""): array {
+    public function listarEquipos(string $rolActual, string $orden = "", string $estado = "", string $ubicacion = "", string $tipoUbicacion = "", string $id = ""): array
+    {
         $condiciones = [];
         $parametros = [];
 
@@ -324,17 +325,11 @@ class EquipoDAO
     private function registrarHistorialEquipo(string $ciAdmin, string $idEquipo, string $tipoInteraccion): void
     {
         $sql = "
-        INSERT INTO administrador_maneja_equipo (
-            ciAdmin,
-            idEquipo,
-            tipoInteraccion
-        )
+        INSERT INTO administrador_maneja_equipo ( ciAdmin, idEquipo, tipoInteraccion)
         VALUES (
             :ciAdmin,
             :idEquipo,
-            :tipoInteraccion
-        )
-    ";
+            :tipoInteraccion)";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute(["ciAdmin" => $ciAdmin, "idEquipo" => $idEquipo, "tipoInteraccion" => $tipoInteraccion]);

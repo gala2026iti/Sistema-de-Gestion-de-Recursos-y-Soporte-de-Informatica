@@ -27,4 +27,4 @@ Orden recomendado:
 24_tecnico_gestiona_ticket.sql
 25_tecnico_comenta_ticket.sql
 
-Alternativa: ejecutar únicamente 99_creacion_completa.sql para recrear toda la estructura.
+Alternativa: ejecutar únicamente creacionBDcompleta para recrear toda la estructura.

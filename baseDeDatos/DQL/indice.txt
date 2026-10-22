@@ -1,12 +1,12 @@
-Consultas DQL extraídas de los DAO finales del proyecto:
+Consultas DQL extraídas de los DAO:
 
-- equipo.sql  <- EquipoDAO.php
-- historial.sql  <- HistorialDAO.php
-- metricas.sql  <- MetricasDAO.php
-- prestamo.sql  <- PrestamoDAO.php
-- solicitud.sql  <- SolicitudDAO.php
-- ticket.sql  <- TicketDAO.php
-- ubicacion.sql  <- UbicacionDAO.php
-- usuario.sql  <- UsuarioDAO.php
+- equipo.sql tiene las consultas en EquipoDAO.php
+- historial.sql  tiene las consultas en HistorialDAO.php
+- metricas.sql  tiene las consultas en MetricasDAO.php
+- prestamo.sql  tiene las consultas en PrestamoDAO.php
+- solicitud.sql  tiene las consultas en SolicitudDAO.php
+- ticket.sql  tiene las consultas en TicketDAO.php
+- ubicacion.sql  tiene las consultas en UbicacionDAO.php
+- usuario.sql  tiene las consultas en UsuarioDAO.php
 
 Nota: los parámetros :nombre corresponden a consultas preparadas PDO.
