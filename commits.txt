@@ -1,140 +1,950 @@
-ebf5ac6 fix: Correcciones en Controlador y Modelo de Tickets, además, se modifico la normalización de Prestamo y correspondientes a Ubicacion.
-42513c7 feat: Controlador de Recursos Creado, aclaración: faltan corregir doxygen correspondientes a cada archivo.
-f396bb8 resolves #35: Cambios de estilizado y arreglos a hrefs
-6afac21 adiciones minimas
-5a00a42 Controlador de Solicitudes Creado
-5916270 Implementación de Modelos y Controladores de Solicitud
-8bf1ccb Avances en adaptación a PHP, nuevas consultas SQL integradas, ampliación del MVC, aunque nada integrado aun, faltan corregir doxygens
-81037a0 Reorganización de archivos, creación de consultas SQL restantes, y renombrado de archivos
-cc2931a feat, fix: Corrección de sentencias SQL, Correcciones en Mensajes de error en inicio de sesión e implementación de nuevas sentencias SQL
-790975a fix: Corrección de sentencias SQL de Usuarios
-767f486 fix: Corrección de Mergeo de ramas paz->marin
-822c9ba feat: Agregado el soporte a variables de entorno
-c45ed79 fix: Corrección de sentencias SQL
-29df7c2 docs: se agrega los archivos de las consultas en DQL
-e76b112 feat: se añade la seguridad de tokens y el doxygen
-ebcf128 docs: Implementación de Teórico correspondiente a Normalización.
-5194598 archivos no pusheados
-cea6269 fix & feat: se traduce el js de gestion de usuario a php, en donde ahora el sistema de gestion de usuario es funcional, habilitando el registro, modificacion y activar o desactivar a los usuarios
-7ce0bce fix: al cerrar sesion no te deja navegar por ninguna pagina de administracion
-0183975 fix: reorganizacion del sistema de login
-b4b96a5 fix: se arregla la representacion del atributo correo en la base de datos, en donde ahora pasa a ser otra tabla con clave foranea de usuario
-73e67a5 feat: creacion de boceto de la base de datos
-c433b2b fix: se corrige el error en donde la carpeta baseDeDatos se encontraba en SGRSI
-b6987bd fix: se añade el id de las claves primarias en donde antes no estaban
-f0d71ef feat: implementacion de la base de datos y vinculacion con el sistema de inicio de sesion
-a320ff6 feat: implementacion de mysql en el sistema de inicio de sesion
-655aab4 actualizar rama
-942e17f se restaura la rama guerra
-0c43aba fix: mas cambios de php y estructura de archivos
-a49b90b feature: se implementaron cambios en la estructura y se modificatorn los html a php
-345ec66 Vaciar contenido de la rama
-9604468 Actualizacion de html
-ea35a95 actualizacion de rama
-e0149f2 feat: Introducción a sistema de archivos PHP, por el momento solo se hizo funcional el sistema de Inició de sesión y restricciones de acceso, pero se espera que se continue con el avance de esta integración. En el archivo procesarLogin.php se dejan lineas de comentario explicando los comandos usados en ese archivo correspondiente.
-02d6c9e N/A
-25fa3cb N/A
-c750598 1.3.0: feat, fixed: Se implementarion cambios de estructura drasticos para la adaptacion al uso de php y el eso de mvc como arquitectura de software. El codigo todavia contiene errores en el logueo no implementados
-4cca6bc Merge branch 'beta' into paz
-ef24800 fix: resuelto problemas minimos de la barra de navegación
-05c6b8e feat: v1.2.4 Se implementan campos para las tablas que indican que la tabla no tiene contenido correspondiente para mostrar.
-afa38f3 fix, feat: resolves #28. v1.2.3: En esta versión, al estar ubicado en una parte del sistema correspondiente a la barra de navegación, su opción correspondiente no aparecerá en la misma. Además, se implementan mínimas correcciones con respecto al mostrado de texto, implementando adaptación de texto a Mayúsculas y minúsculas. Además, de prueba se implementa un campo en las tablas cuando se quiera indicar que en las mismas no hay información. Se corrigieron inconsistencias leves correspondientes a redirección y manejo de registros.
-0586e25 Merge branch 'beta' into marin
-3e95ecc Merge branch 'beta' into paz
-f1d69d2 fix: Resolucion de conflictos.
-3a9f1b8 feat: resolves #19 se añade la opcion de mostrar contraseña en el inicio de sesion
-11df7e4 fix: v1.2.2. Corrección en la barra de navegación de la página de historiales, ahora funcionan las redirecciones.
-0b3f4b5 v1.2.1. resolves #27 Implementacion de validacion de datos en javascript
-6c04563 fix, feat. v1.2.0. closes #25, #26. Se modifica el sistema de registros, incluyendo un guardado mas amplio de los cambios e interracciones dentro del sistema por los distintos usuarios, permitiendo seguir con facilidad las acciones correspondientes. Además, se implementa una modificación crucial en el usuario debug, el mismo unicamente esta habilitado para configuración inicial del sistema, y solo será accesible cuando no haya un usuario administrador registrado dentro del sistema. Con respecto a la cronología, se modifico el sistema de fechas, optando por un formato universal y incluyendo el parametro de hora como adicional que proporciona más detalles. Los formatos son: fecha:DD/MM/AAAA, y hora:HH:MM.
-fde0ab0 fix, feat: closes #25, #26. v1.1.2: Se implementan correcciones en el sistema de tickets, donde en vez de guardar la información como comentarios, se guardan los datos relevantes de los distintos historiales y, dependiendo de los casos y las banderas, se escribe información correspondiente en las páginas. Además, se añadieron nuevos registros (o historiales), tales como: Historial de Cambios (Usuarios), Historial de Solicitudes, y Modificaciones leves en Historial de Préstamos e Historial de Tickets. Ahora se muestran cédulas y nombres de usuarios registrados, para ayudar a la identificación de los mismos.
-c53999c Merge branch 'beta' into paz
-9682794 v1.1.1: feat, fix: Resolves #21, #22, #23, #24. Esta versión del sistema contiene correcciones y cambios mínimos con respecto a funcionalidades ya existentes.
-f76dd54 Beta v1.1.0: feat, fix: Resolves #13, #14, #15, #16, #17, #20. Esta versión del sistema incluye correcciones drásticas dentro del sistema SGRSI, entre ellas, corrección masiva de archivos .js y .html, donde se mejora la prevención ante falta de arrchivos, se corrigieron errores graves con respecto a la versión anterior, se reconstruyeron y corrigieron bastantes areas del sistema, como el sistema de Incidencias, Tickets, Prestamos, etc. Además, se incluyeron mejoras en funcionalidades, como alertas o mensajes de error, mejoras en la gestión de salones y una navegación más correspondiente al usario. Con respecto al backend, se hizo una reestructuración de cada js. existente y de los .html requeridos, donde se modificaron las variables con el fin de hacerlas mas faciles de comprender y de diferenciar de las clases de estilos, y se crearon y modificaron los métodos existentes con el objetivo de eliminar código redundante y confuso, mejorando su comprensión para los desarrolladores.
-d7748b1 fixes: cambios minimos al inicio de sesion en CSS
-6ce5c91 SemVer 1.0.0
-ce16a23 Merge branch 'beta' feat: Mergeo a beta, correción leve de JS y CSS.
-a7f2a97 Correcciones de incidencias
-1e26563 fix: Correccion de padding
-7f24620 Correcciones leves con respecto a variable duplicada en btn-menu,  los d-flex y d-none estaban invertidos, por lo que el formulario no se ocultaba.
-ee784c4 fix: se resolvio el conflicto de btn para celular en donde antes se hizo push a la version pasada
-d4ee482 feat & fix: se adapta la navegacion de paz al sistema actual
-405e1ee fix: se adapta los cambios de navegacion de paz que con anterioridad se habrian perdido
-68f34cb Merge branch 'marin' into beta fix: Resolución de mergeo
-ec45012 fix: Corrección minima de funcionalidades
-4a2f062 N/A
-6891310 N/A
-9750733 fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
-ad96e00 fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
-dfe910d paso las graficas a metricas
-163382e fix, feat: Continuación del Issue #11: Se realizan correcciones en funcionalidad, como por ejemplo, cambiar el sistema de almacenamiento de laboratorios y equipos, asimismo, corrgiendo los cambios en cada interfaz correspondiente. Se corrigieron inconsistencias con el sitema de solicitudes y se incorporo el sistema de incidencias. Las interfaces docente, administrador, y tecnico ya estan completas, este último ahora compartiendo páginas con admin, debiendo implementar funcionalidades extra para evitar conflictos con información o accesos no correspondidos.
-78732bd feat: Continuación del Issue #11. Implementación de sistema de ingreso y gestión de solicitudes.
-66005f9 fix: se solucionan los errores relacionados a la barra de navegacion en administrador,tecnico y docente. en donde algunas paginas tenian opciones que llevaban a paginas que no tenian que ver con la opcion seleccionada, y otras paginas tenian el cerrar sesion duplicados. tambien se le agrego nuevamente la navegacion a la pagina de solicitudes del docente, en donde con anterioridad se borraron
-9904d94 N/A
-62adb6d Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
-735a67d Merge branch 'marin' into beta fix, feat: Implementación de nuevas funciones con respecto al inicio de sesión y correcciones de la nav-bar, por mas detalles, ir al commit 7adf06e en la rama marin.
-7adf06e fix, feat: Continuando el Issue #11, #12, Implementación de verificación de usuarios en el sistema, con el fin de no permitir el paso no correspondido a demás roles. Se mejora el sistema de ingreso de usuario debug y de usuarios normales, además de corregir nuevamente la nav-bar.
-dd65f59 N/A
-c88e40c N/A
-a4b0e4c Merge branch 'marin' into beta fix: Resolución de conflitos correspondiente a inicio de sesión
-7322fa0 fix: Arreglo del inicio de sesión debug
-ab2f5e6 N/A
-0ee79a3 Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
-7f0b683 Merge branch 'marin' into beta fix: Solución de mergeo
-60fa018 fix: Resolución de conflcitos no finalizados
-2ebdeea N/A
-a25edff Merge branch 'marin' into beta fix: #Resolves 12. Paz implementa mejoras en la barra de navegación, aparte de eso, se implementan mas avances con respecto al sistema de usuarios dentro del DOM, para mas detalle revisar commit personal en rama correspondiente.
-f5381f2 fixes, feat: Resolves #12. Con respecto al Issue 12, se implementa nuevamente la nueva barra de navegación hecha por Paz, queda pendiente de revisión. Con respecto al Issue #11, se realizan minimas correcciones en el apartado de inicio de sesión.
-37f4af1 N/A
-4ef54fd Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
-bf4384c N/A
-d4a907c fix: Resolución de conflictos: se vació el repositorio, reemplazando su contenido con una copia de seguridad reciente. Un mergeo previo con la rama 'marin' mezcló, movió y modificó archivos de manera critica en la rama, pero en teoría ya estan los conflictos resueltos.
-4856d67 fix: Intento de resolución de conflictos, continuacion: se suben los últimos cambios actualizados para no perderlos por cambio de rama
-a506d62 fix: Intento de resolución de conflictos, reparación de rama beta corrompida
-a167bd4 fix: Resolución de merge a beta. Continuación del Issue #11, Aumento en el desarrollo del DOM, ahora el mismo contempla mas áreas que antes. Para mas detalles revisar commits en mi rama correspondiente.
-0b670b0 fix, feat: Continuación del Issue #11. Corrección de funcionalidades co respecto a .js ya existentes, se amplió el funcionamiento del DOM, mejorando el sistea de almacenamiento local para manejar mas casos, las zonas incluidas son: Usuarios, Equipos + Salones, Prestamos + Historial, Inicio de Sesión.
-ca6ceb5 fixed: arreglos continuos al navbar
-57f0ff9 fixed: arreglos al navbar
-9e3e698 push generico
-cb2bf04 fix: Resolves #3. Se realizan correcciones con respecto a duplicado de información en la documentación correspondiente.
-65881b6 fixed: se solucionaron problemas del navbar
-ce51a27 N/A
-eb924e4 N/A
-17ca71a feat:se agregan las interfaces de historiales mas el ingreso mediante botones o IDs de las PCs, tambien el ingreso a detalles de tickets mediante el asunto de los mismos
-a5533c5 Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta fix: Corrección de conflictos debido a merge.
-f841c7c fix, feat: Avance del Issue #11, se implementan las funcionalidades del DOM principales, gestión de usuarios, equipos y laboratorios, creando js. correspondientes al caso. Este trabajo involucro fusión de archivos, resolución de conflictos, modificación en nombres y eliminación de archivos obsoletos.
-dfe9ede fixed: cambios minimos a la estructuracion de direccion y css
-433a6ab N/A
-fee49ad feat: Avances manejo general del DOM
-8375319 style: Se le agrega un estilo a los nuevos formularios de registros de pc, usuarios y prestamos, ademas de borrar clases reduntantes que tenian el mismo contenido a pasar a ser solo una clase que es formulariopopup
-55fdc6e resolves #10 se implementan modales y graficas para direccion
-31cc8ef feat: Se agrega el html de detalle de tickets para administracion y tecnico
-2d189d4 fix: eliminacion de la opcion de navegacion de administrador denminada ´Gestion de NULL´ y eliminacion de htmls sin uso
-0b3e7b0 style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
-b2cac4e style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
-34ce880 style: arreglada la forma de identificar a las PC en la interfaz de dirección
-5fc3f13 mismo commit 2
-898477f Merge branch 'beta' into paz
-ec3555f Hecha la parte de dirección
-f4d68df se arreglan conflictos
-f42959a N/A
-40afe19 feat & style: se añade una navegacion secundaria entre laboratorios,talleres, dispositivos de prestamos y inventario tecnologico
-5ec90ef resolves #7 cambia la redireccion a formularios por la aparicion de estos
-35fabfb N/A
-c0e8695 Merge branch 'marin' into beta fix: Se implentan modificaciones correspodientes al sistema de roles, mencionado detalladamente en el Issue #6.
-3b48f74 fixes: Resolve #6. Se implementan mejoras con respecto al funcionamiento de los roles, eliminando la función de eliminar botones de un mismo inicio, siendo esto reemplazado por una interfaz de inicio distinta para cada rol correspondiente. Se realizaron modificaciones en los js para modificar las redirecciones y eliminar residuos de viejas funcionalidades. Se movieron los archivos home de sus carpetas de rol designado, por lo que tocó modificarlos para que la ruta hacia sus distintos recursos relacionados funcionara correctamente.
-c715718 resolves #5 se implementaron formularios modal en la pagina formulariohtml y se elimino la condicionalidad con css
-da53768 style: implementacion del framework bootstrap a la pagina SGRSI, como resultado se eliminaron css que eran redundantes debido a que sus funcionalidades se podian cubrir con las clases de bootstrap
-364fe60 stylë: cambios visuales.
-c4fe6f1 feat: comienzo de la interfaz de direccion
-523c4e7 fix: Corrección de nombres de variables en javascript. Se realizaron correcciones minimas con respecto al nombre de los botones.
-b78dbd7 fix: Resolve #4. Se implementa la capacidad a la pagina de filtrar las opciones mostradas por usuario mediante el uso de archivos js., permitiendo que los distintos usuarios solo puedan acceder a sus opciones designadas. Asimismo, en el inicio de sesión se implementan usuarios de prueba para poder probar los distintos roles del sistema, incluyendo mensaje generico de información incorrecta, esto para mantener una mayor seguridad a la hora de manejar tal información sensible. Para realizar las acciones previas se hizo uso de nuevos identificadores para las etiquetas correspondientes en html. ¡ACLARACIÓN!: ¡¡¡ESTO ES ÚNICAMENTE MANEJO DE DOM BASICO, AÚN NO HAY FUNCIONALIDADES VERADERAS, VALIDACIONES O RESTRICCIONES AVANZADAS.!!!
-0410080 fix: Eliminación de archivos innecesarios/duplicados de rama personal. Al no ser borrador o implementación personal, no hay razón para mantenerlo en rama personal.
-e568703 feat: Se realiza copia de la pagina principal, esto para poder manipular y/o crear nuevos archivos con mas facilidad sin arriesgar la integridad de las demás ramas.
-a2c58b3 refactor: Se corrige la estructura semantica del nav resolves #1
-acbf9b4 feat: Implementación de carpeta contenedora de documentos correspondientes al sistema y renombrado de archivos según camelCase.
-332a6cd feat: incorporar primera versión de las interfaces del SGRSI
-63f7ca7 Rename Formato de Git to Formato de Git.md
-83afc50 Create Formato de Git
-30b2aa9 Update README.md
-1ba488a Update README.md
-cdafb3d Create README.md
+Commit: aab4ed9f9168c92ef8d20207ee74100ea7f318c1
+Autor: jere
+Fecha: 2026-10-22 21:10:02 -0300
+Mensaje: feat: confirmacion antes de registrar una incidencia
+------------------------------
+Commit: e366953e88c210618e92e483e819dd5c52d19e6e
+Autor: jere
+Fecha: 2026-10-22 17:20:17 -0300
+Mensaje: Merge remote-tracking branch 'refs/remotes/origin/guerra' into guerra
+------------------------------
+Commit: 6bdaff391b4fb9ecea72bc061f577edc9615a2ef
+Autor: jere
+Fecha: 2026-10-22 17:14:51 -0300
+Mensaje: fix: correcion de errores en consultas SQL
+------------------------------
+Commit: a963ea980d2836af5f73665897c0ebfb1633cafe
+Autor: jere
+Fecha: 2026-10-22 15:05:08 -0300
+Mensaje: fix: migracio a api del filtrado
+------------------------------
+Commit: 53affe36e690ca59699fd0a7ce7b37ab6f68865b
+Autor: FacundoAPaz
+Fecha: 2026-10-22 09:09:00 -0300
+Mensaje: Merge branch 'guerra' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into guerra
+------------------------------
+Commit: a945e21fd16d8fce79c4716012c13414345bf351
+Autor: FacundoAPaz
+Fecha: 2026-10-22 09:02:28 -0300
+Mensaje: cambios para que me deje pullear
+------------------------------
+Commit: 1f82fe34818f8ed78002a7e2c229733270b4f8cc
+Autor: jere
+Fecha: 2026-10-21 22:53:22 -0300
+Mensaje: docs: se arregla el referenciado de archivo de la base de datos
+------------------------------
+Commit: ba511651b348f043cf4211b133b17598f2566cff
+Autor: jere
+Fecha: 2026-10-21 20:08:46 -0300
+Mensaje: docs: documentacion de DDL,DQL y DML
+------------------------------
+Commit: a7eeeac639b3eaac031acf54f925fd08db41b6d5
+Autor: jere
+Fecha: 2026-10-21 09:38:21 -0300
+Mensaje: fix: navegador
+------------------------------
+Commit: 76fb2748a354835a68a1a18c6a2ac89fcfc5932e
+Autor: jere
+Fecha: 2026-10-20 22:33:48 -0300
+Mensaje: feat: el tecnico ahora puede ingresar insidencias en PCs las cuales crea correspondiente
+------------------------------
+Commit: a2c65673a7f03910cc3b113a1b7d3703aef016a9
+Autor: jere
+Fecha: 2026-10-20 20:27:31 -0300
+Mensaje: fix: se corrige que el formulario de usuarios se salga de la pantalla
+------------------------------
+Commit: c209d8bd3b365145e50b6792c00b352efa5db0b9
+Autor: jere
+Fecha: 2026-10-20 19:27:43 -0300
+Mensaje: N/A
+------------------------------
+Commit: 7ea1cc583c575d091c45388a5fade91866593b80
+Autor: jere
+Fecha: 2026-10-20 18:52:28 -0300
+Mensaje: feat: el docente ahora tiene la capacidad de ver el estado de sus tickets y solicitudes registradas. Fix: se corrigio el orden de los filtrados y el boton de registrar pc que estaba en un distinto niven que el de ubicacion
+------------------------------
+Commit: 722f47fb843a9daa81c7a1d1387e0ce31f766b90
+Autor: jere
+Fecha: 2026-10-20 01:23:42 -0300
+Mensaje: feat: migracion a api de historiales y metricas de administrador
+------------------------------
+Commit: 77877cafa35c7b496e760adeda34b494438ea64d
+Autor: jere
+Fecha: 2026-10-18 23:43:44 -0300
+Mensaje: feat: implementacion de API REST - interfaz uniforme: se añade el uso de URI
+------------------------------
+Commit: d41aa26bb5e875117549cafa09c33712e7683bbd
+Autor: jere
+Fecha: 2026-10-17 23:22:06 -0300
+Mensaje: feat: migracion a api de tickets, solicitud y prestamo
+------------------------------
+Commit: 914974f03b95ba9797274333c03699503a7eb7a2
+Autor: jere
+Fecha: 2026-10-15 00:44:47 -0300
+Mensaje: feat: migracion a API de usaurio,equipo,tickets
+------------------------------
+Commit: d530aa5473021c37bd7f37f87c16a8e790861c0f
+Autor: jere
+Fecha: 2026-10-13 08:07:34 -0300
+Mensaje: fix: navegacion de gestionequipos
+------------------------------
+Commit: 19fa4dc160f1a9d4295f9c56aae0584e0e8d4beb
+Autor: jere
+Fecha: 2026-10-13 07:58:30 -0300
+Mensaje: feat: migracion html de grestionequipos
+------------------------------
+Commit: 62a17890b41c6fe7a3e5c6f3191fac725ae74a58
+Autor: Emanuel Marín
+Fecha: 2026-10-13 07:34:11 -0300
+Mensaje: fix: Correcciones mínimas API
+------------------------------
+Commit: 6c98acbec981abbc6c50d9bdfbe9bd1362c936eb
+Autor: Emanuel Marín
+Fecha: 2026-10-13 07:32:26 -0300
+Mensaje: feat: Avances en API
+------------------------------
+Commit: 38cd28550ef218dd3856e5dbcaf46101c1b359ea
+Autor: jere
+Fecha: 2026-10-12 20:34:49 -0300
+Mensaje: feat: migracion a api de gestion de usuario, en donde el listado, registro, modificacion y estado fueron migrados correctamente
+------------------------------
+Commit: 3e8d9a596ea7d05162248286622fecdad22ec656
+Autor: jere
+Fecha: 2026-10-11 00:46:58 -0300
+Mensaje: feat:Migracion API: estructura base, login, sesion y homes
+------------------------------
+Commit: 4763256c148a6e40ccd781e02811f77215df8e41
+Autor: FacundoAPaz
+Fecha: 2026-10-07 23:01:17 -0300
+Mensaje: migracion api
+------------------------------
+Commit: 787d812e7e99977a8ee80ad98c0472281502d544
+Autor: FacundoAPaz
+Fecha: 2026-10-07 23:00:32 -0300
+Mensaje: esperemos que funcione :) (migracion api cosas)
+------------------------------
+Commit: 3def16949949d698153e5eb7558e674b5577fd10
+Autor: jere
+Fecha: 2026-10-07 14:52:11 -0300
+Mensaje: feat: introduccion a API, se empieza con migracion de solicitudes
+------------------------------
+Commit: e4d46be631305477e436bee4c16281e82931332f
+Autor: Manu
+Fecha: 2026-10-02 17:57:27 -0300
+Mensaje: feat, fix: Modificaciones leves en BD, incremento de funcionalidad en módulo tickets
+------------------------------
+Commit: a12dde020b47fcc67347cadad4667aa14dab46b3
+Autor: Manu
+Fecha: 2026-10-01 07:15:12 -0300
+Mensaje: feat, fix: Corrección leve relacionada a DER, aumento de funcionalidades de módulo de Tickets
+------------------------------
+Commit: 636af3d734c428d2969fbd45ed97b56d82dd7352
+Autor: Manu
+Fecha: 2026-09-28 11:07:04 -0300
+Mensaje: Implementación de cambio de rol dinámico, Avances en el sistema de filtros de Tickets
+------------------------------
+Commit: fed052f2456e363a177d66dd5b348ee5b5c41de1
+Autor: Manu
+Fecha: 2026-09-25 03:04:13 -0300
+Mensaje: feat: Modificación adicional en el sistema de filtrados, implementación de funcionalidad y dinamismo al sistema de cambio de roles, implementaciones pendientes de finalización.
+------------------------------
+Commit: 32acca8bbc97ad3a85f5e43508c5e7b8d8cf1cd0
+Autor: Manu
+Fecha: 2026-09-24 04:46:21 -0300
+Mensaje: feat, style: Implementación adicional PARCIAL de seguridad, gestión de validación de modulos mediante validación de roles, modificaciones leves en archivos .css.
+------------------------------
+Commit: 7258b5d09e4f51dfc522c50593b6b39b37a87855
+Autor: FacundoAPaz
+Fecha: 2026-09-23 23:09:30 -0300
+Mensaje: merge2¿?
+------------------------------
+Commit: aa13a68b7b8bd7fcc00a98e6850bc0c9f32c3f97
+Autor: FacundoAPaz
+Fecha: 2026-09-23 19:36:37 -0300
+Mensaje: feature: resuleto el html del navbar, sin funcionalidad real
+------------------------------
+Commit: 552ce7ad6b385faeb028686c067ce6e7d8446cc5
+Autor: FacundoAPaz
+Fecha: 2026-09-23 18:06:30 -0300
+Mensaje: merge de paz a beta
+------------------------------
+Commit: c7873c73bb2e41f88f05e817d6f285a6818a28ed
+Autor: FacundoAPaz
+Fecha: 2026-09-23 17:38:21 -0300
+Mensaje: fix: Arreglos al apartado de tickets
+------------------------------
+Commit: 4809cb03b996a17215c685bef987cee1d4d46e4b
+Autor: Manu
+Fecha: 2026-09-23 17:06:38 -0300
+Mensaje: feat, fix: Cambios en la estructura de la BD debido a Entidades débiles, modificación de funcionalidades según decisiones del equipo.
+------------------------------
+Commit: afcbc0f52a529494de03c87880742581241563f2
+Autor: Manu
+Fecha: 2026-09-17 21:17:09 -0300
+Mensaje: feat: Implementación de funcionalidad mediante PHP en módulo de tickets de Tecnico, Además de implementar una nueva versión de prueba de la BD de sgrsi
+------------------------------
+Commit: fa989e0b133aa7b2e7da13bcee470c7493ed374f
+Autor: jere
+Fecha: 2026-09-15 13:18:36 -0300
+Mensaje: feat: Avances con módulo solicitudes docente (Manu)
+------------------------------
+Commit: 5e2b956e2f346216d63a7e4cfdb464e9cf4a342a
+Autor: jere
+Fecha: 2026-09-15 08:27:25 -0300
+Mensaje: style, feat: Comienzo de implementación de funcionalidad a rol docente
+------------------------------
+Commit: 568ae954d1ef7c0b57c4c5871a5f9dc65107e96f
+Autor: Manu
+Fecha: 2026-09-14 21:21:33 -0300
+Mensaje: feat: Se continua el desarrollo de los módulos del rol Tecnico, implementando sistema de filtros. Falta añadirles permanencia a los filtros.
+------------------------------
+Commit: 84287157d12a1ea77524acea14f492ed2a10bc60
+Autor: Manu
+Fecha: 2026-09-12 12:40:58 -0300
+Mensaje: feat: Avances en la producción se módulos de Préstamos, Solicitudes, y Modificaciones leves en obtención de datos del cliente
+------------------------------
+Commit: ef293fc8d83f20b25350035ffc4285b2f688df66
+Autor: FacundoAPaz
+Fecha: 2026-09-09 22:02:05 -0300
+Mensaje: trabajo migracion api
+------------------------------
+Commit: a75b09ab83b9461394952a834aad375c3b5fb0ee
+Autor: jere
+Fecha: 2026-09-09 21:57:26 -0300
+Mensaje: migracion a api
+------------------------------
+Commit: ddb520321d1993ba7db4cf27abaa1992587fee63
+Autor: Manu
+Fecha: 2026-09-06 18:57:37 -0300
+Mensaje: feat: comienzo de implementación de gestión de prestamos al rol tecnico
+------------------------------
+Commit: f93c9a6714ca43d5cb9e35efe51e95a52f465e0c
+Autor: Manu
+Fecha: 2026-09-05 14:13:37 -0300
+Mensaje: Implementación de funcionalidad PHP y conexión de BD a modulo de Gestión de Solicitudes, minimas modificaciones en funcionalidad .js con formularios con banderas.
+------------------------------
+Commit: 41ff07c9406418593d4d84e3ee2ed5021dd99383
+Autor: FacundoAPaz
+Fecha: 2026-09-03 09:35:59 -0300
+Mensaje: merge
+------------------------------
+Commit: edce1ea2dcfd8bf7294bb75a8ee5d3b265d96feb
+Autor: Manu
+Fecha: 2026-09-03 09:32:39 -0300
+Mensaje: fix: Corrección en modulo de gestión de equipos y ubicaciones
+------------------------------
+Commit: d09fa89938a99f60a3d7653dd924ab0f2ae00312
+Autor: FacundoAPaz
+Fecha: 2026-09-03 07:37:12 -0300
+Mensaje: fix: minimos cambios a redirecciones
+------------------------------
+Commit: 059da179edd3c320216193f303148888a4351e63
+Autor: Manu
+Fecha: 2026-08-29 01:44:36 -0300
+Mensaje: feat: fix: Correccion en llamadas públicas a controladores, se corrigen sentencias SQL existentes para acceder a la información de la BD, se implementan controladores adicionales y llamadas correspondientes al sistema de gestión de equipos y ubicaciones, en el área correspondiente quedan secciones por corregir, se modifica el flujo desde public hasta vista, con el fin de que se pueda acceder a todos los recursos necesarios antes de lanzar la misma.
+------------------------------
+Commit: 1fb7dcd4ba274a39d260d02b733063b0fe4728ba
+Autor: Manu
+Fecha: 2026-08-27 20:51:55 -0300
+Mensaje: feat, fix, style: Rerganización de carpetas, minimos cambios estéticos, comienzo de creación de interfaz de multi-usuario
+------------------------------
+Commit: 7ba4951e7edc679518cb17ab48a1daf9a1bd1fdf
+Autor: Manu
+Fecha: 2026-08-24 14:29:10 -0300
+Mensaje: feat, fix :Actualización de Doxygen
+------------------------------
+Commit: 7fc63ec097902e0b78dea76697505c0f77f4a16e
+Autor: Manu
+Fecha: 2026-07-28 12:16:01 -0300
+Mensaje: fix: Corrección inicial de DoxyGen.
+------------------------------
+Commit: ebf5ac6b7d6d22bc95c9f1c4f75b309022390cc1
+Autor: Manu
+Fecha: 2026-08-24 06:29:31 -0300
+Mensaje: fix: Correcciones en Controlador y Modelo de Tickets, además, se modifico la normalización de Prestamo y correspondientes a Ubicacion.
+------------------------------
+Commit: 42513c75331bbcd3c17d24b22de42cbc0e74d9b3
+Autor: Manu
+Fecha: 2026-08-24 02:35:02 -0300
+Mensaje: feat: Controlador de Recursos Creado, aclaración: faltan corregir doxygen correspondientes a cada archivo.
+------------------------------
+Commit: 5a00a429133a8b2afaafd47d5e15119b1c45dd8d
+Autor: Manu
+Fecha: 2026-08-23 22:47:27 -0300
+Mensaje: Controlador de Solicitudes Creado
+------------------------------
+Commit: 5916270123c2eb8d68b41f01f2602236bc61493c
+Autor: Manu
+Fecha: 2026-08-23 20:50:03 -0300
+Mensaje: Implementación de Modelos y Controladores de Solicitud
+------------------------------
+Commit: 8bf1ccb5032b57f23b02c2c11dab372a8d68463a
+Autor: Manu
+Fecha: 2026-08-23 13:31:18 -0300
+Mensaje: Avances en adaptación a PHP, nuevas consultas SQL integradas, ampliación del MVC, aunque nada integrado aun, faltan corregir doxygens
+------------------------------
+Commit: 81037a00fa68f203321cbe498ec54f97ded2f88a
+Autor: Manu
+Fecha: 2026-08-22 18:52:28 -0300
+Mensaje: Reorganización de archivos, creación de consultas SQL restantes, y renombrado de archivos
+------------------------------
+Commit: cc2931a0cc17e94259a6dae59f09023205ee66ad
+Autor: Manu
+Fecha: 2026-08-22 01:41:03 -0300
+Mensaje: feat, fix: Corrección de sentencias SQL, Correcciones en Mensajes de error en inicio de sesión e implementación de nuevas sentencias SQL
+------------------------------
+Commit: 790975ab1bb30278e14845e41f78ca8b4ba77f47
+Autor: Manu
+Fecha: 2026-08-21 15:27:21 -0300
+Mensaje: fix: Corrección de sentencias SQL de Usuarios
+------------------------------
+Commit: 767f486db6133aa0395e446567187bfe48968266
+Autor: Manu
+Fecha: 2026-08-21 12:13:01 -0300
+Mensaje: fix: Corrección de Mergeo de ramas paz->marin
+------------------------------
+Commit: 822c9ba622a59fbe9a133a58b618d9ec160df7fd
+Autor: FacundoAPaz
+Fecha: 2026-08-21 09:03:46 -0300
+Mensaje: feat: Agregado el soporte a variables de entorno
+------------------------------
+Commit: c45ed799d2ed0e32c477d9698215565f6d580074
+Autor: Manu
+Fecha: 2026-08-19 20:57:16 -0300
+Mensaje: fix: Corrección de sentencias SQL
+------------------------------
+Commit: 29df7c2e02470a89babd1c664310c9a2bfad127b
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-18 22:47:37 -0300
+Mensaje: docs: se agrega los archivos de las consultas en DQL
+------------------------------
+Commit: e76b11200c157961823d9703814101f249d86d42
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-18 22:24:40 -0300
+Mensaje: feat: se añade la seguridad de tokens y el doxygen
+------------------------------
+Commit: ebcf1280893587e227e43c8cc698db4a5afb2130
+Autor: “Manu”
+Fecha: 2026-08-18 13:01:39 -0300
+Mensaje: docs: Implementación de Teórico correspondiente a Normalización.
+------------------------------
+Commit: 5194598e9ad73cacc4c221aaff47a7f63c60526d
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-15 19:16:34 -0300
+Mensaje: archivos no pusheados
+------------------------------
+Commit: cea6269d7c2723b5768f14511050f9453ed9bbf0
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-15 19:08:13 -0300
+Mensaje: fix & feat: se traduce el js de gestion de usuario a php, en donde ahora el sistema de gestion de usuario es funcional, habilitando el registro, modificacion y activar o desactivar a los usuarios
+------------------------------
+Commit: 7ce0bce026e5c8cfbb0b8c98237089d1abc4edf9
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-13 20:31:00 -0300
+Mensaje: fix: al cerrar sesion no te deja navegar por ninguna pagina de administracion
+------------------------------
+Commit: 0183975e8b24bb2ba5cf202c9ce704a6689d3e50
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-13 19:24:58 -0300
+Mensaje: fix: reorganizacion del sistema de login
+------------------------------
+Commit: b4b96a5c54c880867d3f2e3dbb146ce1ef5ad5e8
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-07 17:03:18 -0300
+Mensaje: fix: se arregla la representacion del atributo correo en la base de datos, en donde ahora pasa a ser otra tabla con clave foranea de usuario
+------------------------------
+Commit: 3a9f1b896b5471a9152c1e37e26d55699d3e6efe
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-22 09:23:27 -0300
+Mensaje: feat: resolves #19 se añade la opcion de mostrar contraseña en el inicio de sesion
+------------------------------
+Commit: 9682794be9e629e7fb4e40c948da7c3426c6fb99
+Autor: “Manu”
+Fecha: 2026-07-12 18:05:11 -0300
+Mensaje: v1.1.1: feat, fix: Resolves #21, #22, #23, #24. Esta versión del sistema contiene correcciones y cambios mínimos con respecto a funcionalidades ya existentes.
+------------------------------
+Commit: f76dd542807be54c1723d3b10f634986e962dd9b
+Autor: “Manu”
+Fecha: 2026-07-11 00:37:23 -0300
+Mensaje: Beta v1.1.0: feat, fix: Resolves #13, #14, #15, #16, #17, #20. Esta versión del sistema incluye correcciones drásticas dentro del sistema SGRSI, entre ellas, corrección masiva de archivos .js y .html, donde se mejora la prevención ante falta de arrchivos, se corrigieron errores graves con respecto a la versión anterior, se reconstruyeron y corrigieron bastantes areas del sistema, como el sistema de Incidencias, Tickets, Prestamos, etc. Además, se incluyeron mejoras en funcionalidades, como alertas o mensajes de error, mejoras en la gestión de salones y una navegación más correspondiente al usario. Con respecto al backend, se hizo una reestructuración de cada js. existente y de los .html requeridos, donde se modificaron las variables con el fin de hacerlas mas faciles de comprender y de diferenciar de las clases de estilos, y se crearon y modificaron los métodos existentes con el objetivo de eliminar código redundante y confuso, mejorando su comprensión para los desarrolladores.
+------------------------------
+Commit: 6ce5c918d74c607abe123efbe3981a7ddfd761ba
+Autor: “Manu”
+Fecha: 2026-06-22 12:15:34 -0300
+Mensaje: SemVer 1.0.0
+------------------------------
+Commit: ce16a23499f352650c996cde7fe006748d53dbb5
+Autor: “Manu”
+Fecha: 2026-06-22 11:57:20 -0300
+Mensaje: Merge branch 'beta' feat: Mergeo a beta, correción leve de JS y CSS.
+------------------------------
+Commit: a7f2a974ea33cb364766e0b9ab82084c2657e7d7
+Autor: “Manu”
+Fecha: 2026-06-22 11:53:11 -0300
+Mensaje: Correcciones de incidencias
+------------------------------
+Commit: 1e26563ee2f6c41ce53c2ac9ff0a8144ffbe9677
+Autor: “Manu”
+Fecha: 2026-06-22 11:05:58 -0300
+Mensaje: fix: Correccion de padding
+------------------------------
+Commit: 7f246205340da616e0063056781202879dffdf81
+Autor: “Manu”
+Fecha: 2026-06-22 10:42:30 -0300
+Mensaje: Correcciones leves con respecto a variable duplicada en btn-menu,  los d-flex y d-none estaban invertidos, por lo que el formulario no se ocultaba.
+------------------------------
+Commit: ee784c4b200eae1bdd531531f2f50bd5222e9b03
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-22 10:00:29 -0300
+Mensaje: fix: se resolvio el conflicto de btn para celular en donde antes se hizo push a la version pasada
+------------------------------
+Commit: d4ee482bd1cb830feb612aff57886a3a7bbdef2a
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-22 09:57:21 -0300
+Mensaje: feat & fix: se adapta la navegacion de paz al sistema actual
+------------------------------
+Commit: 405e1ee203c6dc2399ce120cb53f230e27103dab
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-22 09:53:23 -0300
+Mensaje: fix: se adapta los cambios de navegacion de paz que con anterioridad se habrian perdido
+------------------------------
+Commit: 68f34cbee042e30cfdbaeca546f5039db0d57e49
+Autor: “Manu”
+Fecha: 2026-06-22 09:44:24 -0300
+Mensaje: Merge branch 'marin' into beta fix: Resolución de mergeo
+------------------------------
+Commit: ec45012148a18c4110e185cd9c10f57e0e4ccef1
+Autor: “Manu”
+Fecha: 2026-06-22 09:37:25 -0300
+Mensaje: fix: Corrección minima de funcionalidades
+------------------------------
+Commit: 4a2f0620e71a45f51ac3551d6e89e3a873a24c18
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-22 09:06:51 -0300
+Mensaje: N/A
+------------------------------
+Commit: 68913104a04009136c239eafb5f3ca1a8c675388
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-22 09:06:43 -0300
+Mensaje: N/A
+------------------------------
+Commit: 9750733464606eee961a5de9c83406bf88a02068
+Autor: “Manu”
+Fecha: 2026-06-22 07:02:17 -0300
+Mensaje: fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
+------------------------------
+Commit: ad96e00e4f546944132c38db7a364ee342270c6a
+Autor: “Manu”
+Fecha: 2026-06-22 06:53:24 -0300
+Mensaje: fix, feat: Resolves #11. Se implementa la totalidad del DOM, incluyendo correcciones con respecto a los demás roles, aparte de incorporar la interfaz de dirección. Se requiere revisar la integridad de la pagina responsive.
+------------------------------
+Commit: dfe910de8bcd20c3b6af639d6ae8ba7c5da8dbbe
+Autor: Juan Lemos
+Fecha: 2026-06-21 19:59:33 -0300
+Mensaje: paso las graficas a metricas
+------------------------------
+Commit: 163382eb73660d60d046d12434dee1fc5678e120
+Autor: “Manu”
+Fecha: 2026-06-21 16:40:55 -0300
+Mensaje: fix, feat: Continuación del Issue #11: Se realizan correcciones en funcionalidad, como por ejemplo, cambiar el sistema de almacenamiento de laboratorios y equipos, asimismo, corrgiendo los cambios en cada interfaz correspondiente. Se corrigieron inconsistencias con el sitema de solicitudes y se incorporo el sistema de incidencias. Las interfaces docente, administrador, y tecnico ya estan completas, este último ahora compartiendo páginas con admin, debiendo implementar funcionalidades extra para evitar conflictos con información o accesos no correspondidos.
+------------------------------
+Commit: 78732bd7b8ed7e3348120746106051aff6c9d4e7
+Autor: “Manu”
+Fecha: 2026-06-20 19:00:57 -0300
+Mensaje: feat: Continuación del Issue #11. Implementación de sistema de ingreso y gestión de solicitudes.
+------------------------------
+Commit: 66005f9a56f1a0ae1842be698cb4daeb0b30ec84
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 17:21:45 -0300
+Mensaje: fix: se solucionan los errores relacionados a la barra de navegacion en administrador,tecnico y docente. en donde algunas paginas tenian opciones que llevaban a paginas que no tenian que ver con la opcion seleccionada, y otras paginas tenian el cerrar sesion duplicados. tambien se le agrego nuevamente la navegacion a la pagina de solicitudes del docente, en donde con anterioridad se borraron
+------------------------------
+Commit: 9904d94dd7ca5c865455ee869e9b28c8c724dc9f
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 16:52:04 -0300
+Mensaje: N/A
+------------------------------
+Commit: 62adb6d6879d25fc5c4ce794850ea42739501359
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 16:51:42 -0300
+Mensaje: Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+------------------------------
+Commit: 735a67d6bd00f30274de0be59281852b1887e585
+Autor: “Manu”
+Fecha: 2026-06-20 16:45:44 -0300
+Mensaje: Merge branch 'marin' into beta fix, feat: Implementación de nuevas funciones con respecto al inicio de sesión y correcciones de la nav-bar, por mas detalles, ir al commit 7adf06e en la rama marin.
+------------------------------
+Commit: 7adf06e805077681356fe49499cd99f402e87aa1
+Autor: “Manu”
+Fecha: 2026-06-20 16:45:06 -0300
+Mensaje: fix, feat: Continuando el Issue #11, #12, Implementación de verificación de usuarios en el sistema, con el fin de no permitir el paso no correspondido a demás roles. Se mejora el sistema de ingreso de usuario debug y de usuarios normales, además de corregir nuevamente la nav-bar.
+------------------------------
+Commit: dd65f591e460e170c2b4cefbc166bec08075e318
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 15:56:17 -0300
+Mensaje: N/A
+------------------------------
+Commit: c88e40cf5f8cf1ed659a1e3a62dee9d7d9942be1
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 15:54:46 -0300
+Mensaje: N/A
+------------------------------
+Commit: a4b0e4c901a8aeb7d39460ae5c407971f318bade
+Autor: “Manu”
+Fecha: 2026-06-20 15:44:25 -0300
+Mensaje: Merge branch 'marin' into beta fix: Resolución de conflitos correspondiente a inicio de sesión
+------------------------------
+Commit: 7322fa0edb06f8333ced3b98078e8c761e12ff09
+Autor: “Manu”
+Fecha: 2026-06-20 15:40:21 -0300
+Mensaje: fix: Arreglo del inicio de sesión debug
+------------------------------
+Commit: ab2f5e673fd47383d2db35d91ae331aac6434312
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 15:23:01 -0300
+Mensaje: N/A
+------------------------------
+Commit: 0ee79a35a6341fef6172c0f40f5c259f156be0ba
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 15:22:32 -0300
+Mensaje: Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+------------------------------
+Commit: 7f0b6835441f377b43d48d8d0d8eff79274927d6
+Autor: “Manu”
+Fecha: 2026-06-20 15:21:17 -0300
+Mensaje: Merge branch 'marin' into beta fix: Solución de mergeo
+------------------------------
+Commit: 60fa018e794a3c70ed29a28cbd633e7702d82444
+Autor: “Manu”
+Fecha: 2026-06-20 15:16:27 -0300
+Mensaje: fix: Resolución de conflcitos no finalizados
+------------------------------
+Commit: 2ebdeeaa489adfd2e6ce025b43114bdfb590d6e2
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 14:43:55 -0300
+Mensaje: N/A
+------------------------------
+Commit: a25edff743e626e914e576c0dd465c4071bca4ec
+Autor: “Manu”
+Fecha: 2026-06-20 14:27:32 -0300
+Mensaje: Merge branch 'marin' into beta fix: #Resolves 12. Paz implementa mejoras en la barra de navegación, aparte de eso, se implementan mas avances con respecto al sistema de usuarios dentro del DOM, para mas detalle revisar commit personal en rama correspondiente.
+------------------------------
+Commit: f5381f252bb0c289d90a856dffd0c18b7fbc1522
+Autor: “Manu”
+Fecha: 2026-06-20 14:22:38 -0300
+Mensaje: fixes, feat: Resolves #12. Con respecto al Issue 12, se implementa nuevamente la nueva barra de navegación hecha por Paz, queda pendiente de revisión. Con respecto al Issue #11, se realizan minimas correcciones en el apartado de inicio de sesión.
+------------------------------
+Commit: 37f4af1c9881fc8703570bda7fb562dd29562cb9
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 01:08:25 -0300
+Mensaje: N/A
+------------------------------
+Commit: 4ef54fd4feea682adb7bf3cfa174f18999099d49
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 01:07:36 -0300
+Mensaje: Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta
+------------------------------
+Commit: bf4384c4f222fe40466835142fa3d60a83c9cadd
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-20 01:07:27 -0300
+Mensaje: N/A
+------------------------------
+Commit: d4a907c8d91e2a5392a52a2c1eac90b7a28a04fb
+Autor: “Manu”
+Fecha: 2026-06-20 01:01:39 -0300
+Mensaje: fix: Resolución de conflictos: se vació el repositorio, reemplazando su contenido con una copia de seguridad reciente. Un mergeo previo con la rama 'marin' mezcló, movió y modificó archivos de manera critica en la rama, pero en teoría ya estan los conflictos resueltos.
+------------------------------
+Commit: 4856d67422e172be2c1b4fe2085357222fae7318
+Autor: “Manu”
+Fecha: 2026-06-20 00:53:15 -0300
+Mensaje: fix: Intento de resolución de conflictos, continuacion: se suben los últimos cambios actualizados para no perderlos por cambio de rama
+------------------------------
+Commit: a506d621048af849d47accd1b4620c4d32d39571
+Autor: “Manu”
+Fecha: 2026-06-20 00:38:16 -0300
+Mensaje: fix: Intento de resolución de conflictos, reparación de rama beta corrompida
+------------------------------
+Commit: a167bd4143931fe270c7bf5d0fecae4d21c5b3d8
+Autor: “Manu”
+Fecha: 2026-06-19 23:18:03 -0300
+Mensaje: fix: Resolución de merge a beta. Continuación del Issue #11, Aumento en el desarrollo del DOM, ahora el mismo contempla mas áreas que antes. Para mas detalles revisar commits en mi rama correspondiente.
+------------------------------
+Commit: 0b670b031e2b3644785bdfbd8b794a9797800106
+Autor: “Manu”
+Fecha: 2026-06-19 22:59:47 -0300
+Mensaje: fix, feat: Continuación del Issue #11. Corrección de funcionalidades co respecto a .js ya existentes, se amplió el funcionamiento del DOM, mejorando el sistea de almacenamiento local para manejar mas casos, las zonas incluidas son: Usuarios, Equipos + Salones, Prestamos + Historial, Inicio de Sesión.
+------------------------------
+Commit: ca6ceb5165c1b2b295fe4364c5f97f2060f6dd9a
+Autor: FacundoAPaz
+Fecha: 2026-06-18 22:27:25 -0300
+Mensaje: fixed: arreglos continuos al navbar
+------------------------------
+Commit: 57f0ff90b1fdd38619eefa54e4450fc3c778794c
+Autor: FacundoAPaz
+Fecha: 2026-06-18 16:13:12 -0300
+Mensaje: fixed: arreglos al navbar
+------------------------------
+Commit: 9e3e698eced94d32686ba5151dfd7854e3ef8a16
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-18 12:23:36 -0300
+Mensaje: push generico
+------------------------------
+Commit: ce51a27186090dbf81e71cb47bd6c0088e1588a9
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-18 09:04:06 -0300
+Mensaje: N/A
+------------------------------
+Commit: eb924e43f953f8d27337571bf4b3d14499313402
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-18 08:35:12 -0300
+Mensaje: N/A
+------------------------------
+Commit: 17ca71a1fec318f4d1d6bc4d2a40c34e7978812f
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-18 08:34:06 -0300
+Mensaje: feat:se agregan las interfaces de historiales mas el ingreso mediante botones o IDs de las PCs, tambien el ingreso a detalles de tickets mediante el asunto de los mismos
+------------------------------
+Commit: a5533c5f302f5e3c297cafa0cff6efc01a231821
+Autor: “Manu”
+Fecha: 2026-06-18 07:41:22 -0300
+Mensaje: Merge branch 'beta' of https://github.com/gala2026iti/Sistema-de-Gestion-de-Recursos-y-Soporte-de-Informatica into beta fix: Corrección de conflictos debido a merge.
+------------------------------
+Commit: f841c7c63b645379b2f2e2e9355087755f366e7a
+Autor: “Manu”
+Fecha: 2026-06-18 07:37:07 -0300
+Mensaje: fix, feat: Avance del Issue #11, se implementan las funcionalidades del DOM principales, gestión de usuarios, equipos y laboratorios, creando js. correspondientes al caso. Este trabajo involucro fusión de archivos, resolución de conflictos, modificación en nombres y eliminación de archivos obsoletos.
+------------------------------
+Commit: dfe9ede33a749b3ec23e29958df218f91c690b12
+Autor: FacundoAPaz
+Fecha: 2026-06-17 23:40:04 -0300
+Mensaje: fixed: cambios minimos a la estructuracion de direccion y css
+------------------------------
+Commit: 433a6abd6cf0c9bb086ebf2dbeaae861b3a4b538
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-17 22:20:06 -0300
+Mensaje: N/A
+------------------------------
+Commit: fee49ad392c154a0fac2c49232de81e1d89b4578
+Autor: “Manu”
+Fecha: 2026-06-17 21:12:56 -0300
+Mensaje: feat: Avances manejo general del DOM
+------------------------------
+Commit: 8375319d2c132613c3617bad73cd6d169b0e5a6e
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-17 21:01:51 -0300
+Mensaje: style: Se le agrega un estilo a los nuevos formularios de registros de pc, usuarios y prestamos, ademas de borrar clases reduntantes que tenian el mismo contenido a pasar a ser solo una clase que es formulariopopup
+------------------------------
+Commit: 55fdc6e48ae0ca694907489e77b5439783f9b7ec
+Autor: Juan Lemos
+Fecha: 2026-06-17 15:52:01 -0300
+Mensaje: resolves #10 se implementan modales y graficas para direccion
+------------------------------
+Commit: 31cc8efe1607a2ee62da118283db1095f018dd1c
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-16 23:56:37 -0300
+Mensaje: feat: Se agrega el html de detalle de tickets para administracion y tecnico
+------------------------------
+Commit: 2d189d40ad24ca3a411d5d8b53748d1300589f03
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-16 20:22:32 -0300
+Mensaje: fix: eliminacion de la opcion de navegacion de administrador denminada ´Gestion de NULL´ y eliminacion de htmls sin uso
+------------------------------
+Commit: 0b3e7b0f55b631874cae82b709d8683887fecaff
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-15 18:26:16 -0300
+Mensaje: style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
+------------------------------
+Commit: b2cac4e092bd21a1526a356e0b74e2a6d872a264
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-15 18:24:37 -0300
+Mensaje: style & feat: se cambio el uso de colores para la pagina a un color mas oscuro y agradable a la vista, ademas de añadir la navegacion entre tablas a la interfaz de direccion
+------------------------------
+Commit: 34ce8805c97e9f7c280f743cd1916414f86e7891
+Autor: FacundoAPaz
+Fecha: 2026-06-15 18:22:11 -0300
+Mensaje: style: arreglada la forma de identificar a las PC en la interfaz de dirección
+------------------------------
+Commit: 5fc3f13fb3888c5ecdf8c28f3f68716b5b201bea
+Autor: FacundoAPaz
+Fecha: 2026-06-15 16:54:35 -0300
+Mensaje: mismo commit 2
+------------------------------
+Commit: 898477fd26ff980de206a520c3cf7783206f5c2f
+Autor: FacundoAPaz
+Fecha: 2026-06-15 16:48:57 -0300
+Mensaje: Merge branch 'beta' into paz
+------------------------------
+Commit: ec3555f593b68e015d026299e2917067bf862648
+Autor: FacundoAPaz
+Fecha: 2026-06-15 16:39:42 -0300
+Mensaje: Hecha la parte de dirección
+------------------------------
+Commit: f4d68dfbc45e2acdbdbd61594b24f4c564eca3c3
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-14 19:22:13 -0300
+Mensaje: se arreglan conflictos
+------------------------------
+Commit: f42959a060add8d814f9802da0bd32e21eefd34a
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-14 19:14:31 -0300
+Mensaje: N/A
+------------------------------
+Commit: 40afe19aacb85c7a9a0c2e9fea68f400f1bfbb81
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-14 19:08:31 -0300
+Mensaje: feat & style: se añade una navegacion secundaria entre laboratorios,talleres, dispositivos de prestamos y inventario tecnologico
+------------------------------
+Commit: 5ec90ef6b2b9580037e96fd515665fe446bfd309
+Autor: Juan Lemos
+Fecha: 2026-06-14 18:30:42 -0300
+Mensaje: resolves #7 cambia la redireccion a formularios por la aparicion de estos
+------------------------------
+Commit: 35fabfbfa386ac8807240568639fa7c037762612
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-12 22:04:20 -0300
+Mensaje: N/A
+------------------------------
+Commit: c0e8695839c4cf662cae4df3fbb3ca342a5fc2d2
+Autor: “Manu”
+Fecha: 2026-06-11 23:03:36 -0300
+Mensaje: Merge branch 'marin' into beta fix: Se implentan modificaciones correspodientes al sistema de roles, mencionado detalladamente en el Issue #6.
+------------------------------
+Commit: 3b48f745a93ccddb10679e616d352b3f6ab9e435
+Autor: “Manu”
+Fecha: 2026-06-11 23:02:53 -0300
+Mensaje: fixes: Resolve #6. Se implementan mejoras con respecto al funcionamiento de los roles, eliminando la función de eliminar botones de un mismo inicio, siendo esto reemplazado por una interfaz de inicio distinta para cada rol correspondiente. Se realizaron modificaciones en los js para modificar las redirecciones y eliminar residuos de viejas funcionalidades. Se movieron los archivos home de sus carpetas de rol designado, por lo que tocó modificarlos para que la ruta hacia sus distintos recursos relacionados funcionara correctamente.
+------------------------------
+Commit: c715718b7fe4606307611e435b787a68f826d9cb
+Autor: Juan Lemos
+Fecha: 2026-06-11 20:50:50 -0300
+Mensaje: resolves #5 se implementaron formularios modal en la pagina formulariohtml y se elimino la condicionalidad con css
+------------------------------
+Commit: da537686c5e624778607cb1f37e90b761cb23ac6
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-11 11:00:00 -0300
+Mensaje: style: implementacion del framework bootstrap a la pagina SGRSI, como resultado se eliminaron css que eran redundantes debido a que sus funcionalidades se podian cubrir con las clases de bootstrap
+------------------------------
+Commit: 364fe60210c87d3f3f65f17b7d786fd1b318cfcb
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-08 09:29:03 -0300
+Mensaje: stylë: cambios visuales.
+------------------------------
+Commit: c4fe6f1f9e59adbb37690e51f907d05ca0647140
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-08 09:09:58 -0300
+Mensaje: feat: comienzo de la interfaz de direccion
+------------------------------
+Commit: 523c4e7fb3e6d1f8aeca6462c3468edb50152220
+Autor: Abraham
+Fecha: 2026-06-06 02:01:51 -0300
+Mensaje: fix: Corrección de nombres de variables en javascript. Se realizaron correcciones minimas con respecto al nombre de los botones.
+------------------------------
+Commit: b78dbd76a95b42c28714796fd5cfdb672af5d4f1
+Autor: Abraham
+Fecha: 2026-06-06 00:09:39 -0300
+Mensaje: fix: Resolve #4. Se implementa la capacidad a la pagina de filtrar las opciones mostradas por usuario mediante el uso de archivos js., permitiendo que los distintos usuarios solo puedan acceder a sus opciones designadas. Asimismo, en el inicio de sesión se implementan usuarios de prueba para poder probar los distintos roles del sistema, incluyendo mensaje generico de información incorrecta, esto para mantener una mayor seguridad a la hora de manejar tal información sensible. Para realizar las acciones previas se hizo uso de nuevos identificadores para las etiquetas correspondientes en html. ¡ACLARACIÓN!: ¡¡¡ESTO ES ÚNICAMENTE MANEJO DE DOM BASICO, AÚN NO HAY FUNCIONALIDADES VERADERAS, VALIDACIONES O RESTRICCIONES AVANZADAS.!!!
+------------------------------
+Commit: 0410080bea2268932ecf86c6102b340ef7e3754c
+Autor: Abraham
+Fecha: 2026-06-05 17:38:31 -0300
+Mensaje: fix: Eliminación de archivos innecesarios/duplicados de rama personal. Al no ser borrador o implementación personal, no hay razón para mantenerlo en rama personal.
+------------------------------
+Commit: e5687030e7ec1231547ef86c1326e6f76dfec416
+Autor: Abraham
+Fecha: 2026-06-05 17:37:32 -0300
+Mensaje: feat: Se realiza copia de la pagina principal, esto para poder manipular y/o crear nuevos archivos con mas facilidad sin arriesgar la integridad de las demás ramas.
+------------------------------
+Commit: cb2bf046fc11d8a19ec0d8864899bdffe99114df
+Autor: Abraham
+Fecha: 2026-06-05 17:18:39 -0300
+Mensaje: fix: Resolves #3. Se realizan correcciones con respecto a duplicado de información en la documentación correspondiente.
+------------------------------
+Commit: a2c58b391a616297c113edca1f9a0e11218d9bbc
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-05 17:10:18 -0300
+Mensaje: refactor: Se corrige la estructura semantica del nav resolves #1
+------------------------------
+Commit: acbf9b4c0a21056431f714e9580e77ad26fdbcda
+Autor: Abraham
+Fecha: 2026-06-04 08:52:45 -0300
+Mensaje: feat: Implementación de carpeta contenedora de documentos correspondientes al sistema y renombrado de archivos según camelCase.
+------------------------------
+Commit: 332a6cde3ccdd6cb3493a5f2c4a19c8d253b9db8
+Autor: jeregpruebas-cpu
+Fecha: 2026-06-03 19:42:54 -0300
+Mensaje: feat: incorporar primera versión de las interfaces del SGRSI
+------------------------------
+Commit: 63f7ca77eeb39e47832a1ef1e630febdd42953fa
+Autor: JuanLemos123
+Fecha: 2026-05-27 14:37:12 -0300
+Mensaje: Rename Formato de Git to Formato de Git.md
+------------------------------
+Commit: 83afc5061f5af2b37a8c8f50214dd72a89d6b145
+Autor: JuanLemos123
+Fecha: 2026-05-26 22:09:41 -0300
+Mensaje: Create Formato de Git
+------------------------------
+Commit: 30b2aa9637da8c4a76f51b8b2a402df0f0f71470
+Autor: JuanLemos123
+Fecha: 2026-05-26 21:28:48 -0300
+Mensaje: Update README.md
+------------------------------
+Commit: 1ba488abbca047dc857ad32576aa84bc9d16012c
+Autor: JuanLemos123
+Fecha: 2026-05-26 21:28:24 -0300
+Mensaje: Update README.md
+------------------------------
+Commit: cdafb3db900826409a93376b01b06ed0144d8872
+Autor: JuanLemos123
+Fecha: 2026-05-26 21:25:29 -0300
+Mensaje: Create README.md
+------------------------------
+Commit: 73e67a5154d77c64faa181234a803d9b4451828e
+Autor: jeregpruebas-cpu
+Fecha: 2022-05-07 02:28:27 -0300
+Mensaje: feat: creacion de boceto de la base de datos
+------------------------------
+Commit: c433b2b022b3ba4c449dd48b10bd66253ad746c2
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-05 20:14:54 -0300
+Mensaje: fix: se corrige el error en donde la carpeta baseDeDatos se encontraba en SGRSI
+------------------------------
+Commit: b6987bd9e02e77b708b6adf8c94160a4e40192b9
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-05 16:30:10 -0300
+Mensaje: fix: se añade el id de las claves primarias en donde antes no estaban
+------------------------------
+Commit: f0d71ef311e0aa28d95eafa189e20db97d20d852
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-04 11:31:37 -0300
+Mensaje: feat: implementacion de la base de datos y vinculacion con el sistema de inicio de sesion
+------------------------------
+Commit: a320ff60a80665fbea034308a9d8f75d8460906c
+Autor: jeregpruebas-cpu
+Fecha: 2026-08-01 21:25:29 -0300
+Mensaje: feat: implementacion de mysql en el sistema de inicio de sesion
+------------------------------
+Commit: 655aab4bc3377a02ec94adeb202e23e6a1b21cc6
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-30 09:35:27 -0300
+Mensaje: actualizar rama
+------------------------------
+Commit: 942e17f5937d517c280069af42d9f28e6ff928e9
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-30 09:30:09 -0300
+Mensaje: se restaura la rama guerra
+------------------------------
+Commit: 0c43aba7e968b738d2615f3c964131de9f7da689
+Autor: FacundoAPaz
+Fecha: 2026-07-30 09:26:49 -0300
+Mensaje: fix: mas cambios de php y estructura de archivos
+------------------------------
+Commit: a49b90b9097cb7a0568abbf4d7f9cd5242e400ff
+Autor: FacundoAPaz
+Fecha: 2026-07-30 07:20:34 -0300
+Mensaje: feature: se implementaron cambios en la estructura y se modificatorn los html a php
+------------------------------
+Commit: 345ec668bfd5e519b026843b5bddfee4a60dbaf2
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-27 12:38:06 -0300
+Mensaje: Vaciar contenido de la rama
+------------------------------
+Commit: 9604468bbb9f10054b15221f4f4ec942e3745434
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-27 09:49:30 -0300
+Mensaje: Actualizacion de html
+------------------------------
+Commit: ea35a95803320a6214ead2486e16c47138bdccb6
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-26 00:12:29 -0300
+Mensaje: actualizacion de rama
+------------------------------
+Commit: e0149f2875de6110285898446154e48efd12b612
+Autor: “Manu”
+Fecha: 2026-07-25 21:29:12 -0300
+Mensaje: feat: Introducción a sistema de archivos PHP, por el momento solo se hizo funcional el sistema de Inició de sesión y restricciones de acceso, pero se espera que se continue con el avance de esta integración. En el archivo procesarLogin.php se dejan lineas de comentario explicando los comandos usados en ese archivo correspondiente.
+------------------------------
+Commit: c750598816c7483bd609858aeadf0ce1f7b57915
+Autor: FacundoAPaz
+Fecha: 2026-07-23 20:11:45 -0300
+Mensaje: 1.3.0: feat, fixed: Se implementarion cambios de estructura drasticos para la adaptacion al uso de php y el eso de mvc como arquitectura de software. El codigo todavia contiene errores en el logueo no implementados
+------------------------------
+Commit: 4cca6bcba80127b24470ed15dd752c3adf5ff1fa
+Autor: FacundoAPaz
+Fecha: 2026-07-23 09:09:43 -0300
+Mensaje: Merge branch 'beta' into paz
+------------------------------
+Commit: ef24800515418210ca971b515edac3f0277df931
+Autor: FacundoAPaz
+Fecha: 2026-07-23 09:08:23 -0300
+Mensaje: fix: resuelto problemas minimos de la barra de navegación
+------------------------------
+Commit: 05c6b8e540ad4a711a3203396012d23e9b4a919b
+Autor: “Manu”
+Fecha: 2026-07-23 07:59:48 -0300
+Mensaje: feat: v1.2.4 Se implementan campos para las tablas que indican que la tabla no tiene contenido correspondiente para mostrar.
+------------------------------
+Commit: afa38f3d78e3f96ff17ebf85058d40d8845b6081
+Autor: “Manu”
+Fecha: 2026-07-22 23:56:47 -0300
+Mensaje: fix, feat: resolves #28. v1.2.3: En esta versión, al estar ubicado en una parte del sistema correspondiente a la barra de navegación, su opción correspondiente no aparecerá en la misma. Además, se implementan mínimas correcciones con respecto al mostrado de texto, implementando adaptación de texto a Mayúsculas y minúsculas. Además, de prueba se implementa un campo en las tablas cuando se quiera indicar que en las mismas no hay información. Se corrigieron inconsistencias leves correspondientes a redirección y manejo de registros.
+------------------------------
+Commit: 0586e25fa37f9da334274300043102c25fd4e40d
+Autor: “Manu”
+Fecha: 2026-07-22 16:30:51 -0300
+Mensaje: Merge branch 'beta' into marin
+------------------------------
+Commit: 3e95ecc8c05d3d9f3e388f22f26bf995442468f2
+Autor: FacundoAPaz
+Fecha: 2026-07-22 09:32:34 -0300
+Mensaje: Merge branch 'beta' into paz
+------------------------------
+Commit: f1d69d2b672fc22c9f9da10b7612c7e3e02927d1
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-22 09:26:20 -0300
+Mensaje: fix: Resolucion de conflictos.
+------------------------------
+Commit: 11df7e49fa4993ab74d7df1ce7098601a660d05a
+Autor: “Manu”
+Fecha: 2026-07-21 18:28:29 -0300
+Mensaje: fix: v1.2.2. Corrección en la barra de navegación de la página de historiales, ahora funcionan las redirecciones.
+------------------------------
+Commit: 0b3f4b54549c097467493266307dcb27fd47585f
+Autor: Juan Lemos
+Fecha: 2026-07-20 16:10:33 -0300
+Mensaje: v1.2.1. resolves #27 Implementacion de validacion de datos en javascript
+------------------------------
+Commit: 6c04563ecfb7f7341d264252baeea7a3967cac55
+Autor: “Manu”
+Fecha: 2026-07-19 21:32:22 -0300
+Mensaje: fix, feat. v1.2.0. closes #25, #26. Se modifica el sistema de registros, incluyendo un guardado mas amplio de los cambios e interracciones dentro del sistema por los distintos usuarios, permitiendo seguir con facilidad las acciones correspondientes. Además, se implementa una modificación crucial en el usuario debug, el mismo unicamente esta habilitado para configuración inicial del sistema, y solo será accesible cuando no haya un usuario administrador registrado dentro del sistema. Con respecto a la cronología, se modifico el sistema de fechas, optando por un formato universal y incluyendo el parametro de hora como adicional que proporciona más detalles. Los formatos son: fecha:DD/MM/AAAA, y hora:HH:MM.
+------------------------------
+Commit: fde0ab0b1ee93f9e4982f0e41534df71bf0f5d48
+Autor: “Manu”
+Fecha: 2026-07-16 22:03:58 -0300
+Mensaje: fix, feat: closes #25, #26. v1.1.2: Se implementan correcciones en el sistema de tickets, donde en vez de guardar la información como comentarios, se guardan los datos relevantes de los distintos historiales y, dependiendo de los casos y las banderas, se escribe información correspondiente en las páginas. Además, se añadieron nuevos registros (o historiales), tales como: Historial de Cambios (Usuarios), Historial de Solicitudes, y Modificaciones leves en Historial de Préstamos e Historial de Tickets. Ahora se muestran cédulas y nombres de usuarios registrados, para ayudar a la identificación de los mismos.
+------------------------------
+Commit: c53999cd8b1f1565a88a98208aeb4fe880824cb8
+Autor: FacundoAPaz
+Fecha: 2026-07-16 07:19:22 -0300
+Mensaje: Merge branch 'beta' into paz
+------------------------------
+Commit: d7748b113c7d0de785b4d6e1328af58c32fea41c
+Autor: FacundoAPaz
+Fecha: 2026-07-05 17:36:31 -0300
+Mensaje: fixes: cambios minimos al inicio de sesion en CSS
+------------------------------
+Commit: 02d6c9e1d77d4950701d779d4a0bb7c66dceb18c
+Autor: jeregpruebas-cpu
+Fecha: 2022-05-07 02:29:36 -0300
+Mensaje: N/A
+------------------------------
+Commit: 25fa3cb1e5722732879c52524e138a5256fa142c
+Autor: jeregpruebas-cpu
+Fecha: 2026-07-23 22:21:46 -0300
+Mensaje: N/A
+------------------------------
+Commit: 65881b6c9ed0a38470521e8af06e743aae174485
+Autor: jeregpruebas-cpu
+Fecha: 2022-05-07 02:27:40 -0300
+Mensaje: fixed: se solucionaron problemas del navbar
+------------------------------
