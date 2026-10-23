@@ -88,9 +88,8 @@ async function leerRespuestaAPI(respuesta) {
 
 // PETICIONES DE EQUIPOS
 
-async function obtenerEquipos()
-{
-    let url =  API_EQUIPOS;
+async function obtenerEquipos() {
+    let url = API_EQUIPOS;
     const idEquipo = entradaIdEquipoFiltro.value.trim();
 
     if (idEquipo !== "") {
@@ -98,37 +97,37 @@ async function obtenerEquipos()
     } else {
 
         const segmentos = [];
-        if ( rolActualEquipos === "administrador" && entradaEstado.value !== "") {
-            segmentos.push( "estado",entradaEstado.value);
+        if (rolActualEquipos === "administrador" && entradaEstado.value !== "") {
+            segmentos.push("estado", entradaEstado.value);
         }
 
         if (entradaOrden.value !== "") {
-            segmentos.push( "orden", entradaOrden.value);
+            segmentos.push("orden", entradaOrden.value);
         }
 
         if (filtroUbicacion.value !== "") {
-            segmentos.push( "ubicacion", filtroUbicacion.value);
+            segmentos.push("ubicacion", filtroUbicacion.value);
         }
 
 
         if (filtroTipoUbicacion.value !== "") {
-            segmentos.push( "tipoUbicacion", filtroTipoUbicacion.value);
+            segmentos.push("tipoUbicacion", filtroTipoUbicacion.value);
         }
 
 
         if (segmentos.length > 0) {
             url += "/filtros/" + segmentos
-                    .map(
-                        valor =>
-                            encodeURIComponent(
-                                valor
-                            )
-                    )
-                    .join("/");
+                .map(
+                    valor =>
+                        encodeURIComponent(
+                            valor
+                        )
+                )
+                .join("/");
         }
     }
     const respuesta = await fetch(url);
-    return leerRespuestaAPI( respuesta );
+    return leerRespuestaAPI(respuesta);
 }
 
 async function registrarEquipo(equipo) {
@@ -593,6 +592,11 @@ async function registrarIncidenciaTecnico(evento) {
                 descripcion: entradaDescripcionIncidenciaTecnico.value.trim()
             }]
     };
+
+    const confirmar = confirm("¿Está seguro de que desea registrar una incidencia para la PC " + equipoIncidenciaSeleccionado.idEquipo + "?" );
+    if (!confirmar) {
+        return;
+    }
 
     try {
         const respuesta = await fetch(

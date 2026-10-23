@@ -372,23 +372,31 @@ async function gestionarRegistroTickets() {
         return;
     }
 
-    const partes = valorUbicacion.split(" ");
+    if (contenedorEquipos.querySelector("[data-id-equipo]") === null) {
+        alert("No hay PCs cargadas para revisar. No se registró ninguna incidencia.");
+        return;
+    }
 
+    const partes = valorUbicacion.split(" ");
     const tipoUbicacion = partes[0] ?? "";
     const idUbicacion = partes[1] ?? "";
-
     const tickets = obtenerTicketsRegistrados();
 
-    /*
-     * Por ahora la API de tickets solamente
-     * registra incidencias.
-     *
-     * Las PCs marcadas como "Sin problemas"
-     * no generan un ticket.
-     */
     if (tickets.length === 0) {
-        alert("No hay incidencias para registrar.");
+        const confirmar = confirm("No se seleccionaron PCs con incidencias. " + "¿Desea finalizar la revisión sin registrar incidencias?");
 
+        if (!confirmar) {
+            return;
+        }
+
+        alert("No se registraron incidencias porque no se indicó ninguna PC con problemas.");
+
+        window.location.reload();
+        return;
+    }
+    const confirmar = confirm("¿Está seguro de que desea registrar " + tickets.length + (tickets.length === 1 ? " incidencia?" : " incidencias?"));
+
+    if (!confirmar) {
         return;
     }
 
@@ -398,29 +406,15 @@ async function gestionarRegistroTickets() {
         tickets: tickets
     };
 
+    botonRegistrarEstado.disabled = true;
     try {
         const resultado = await registrarTickets(datos);
-
         alert(resultado.mensaje);
-
-        /*
-         * Limpiamos las incidencias
-         * temporales después de que
-         * el servidor confirmó el registro.
-         */
-        for (const idEquipo in incidencias) {
-            delete incidencias[idEquipo];
-        }
-
-        /*
-         * Volvemos a cargar las PCs.
-         * Por lo tanto aparecerán nuevamente
-         * como "Sin problemas".
-         */
-        await cargarEquipos();
-
+        window.location.reload();
     } catch (error) {
         alert("No se pudieron registrar las incidencias: " + error.message);
+    } finally {
+        botonRegistrarEstado.disabled = false;
     }
 }
 
